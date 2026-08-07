@@ -14,7 +14,7 @@
  *   components ordered by adjusted effect size, reflecting the sub-additivity
  *   consistently observed when care components are combined.
  *
- *   P(response)  = logistic(a + b * expectedDrop + c * baselineCentred)
+ *   P(response)  = logistic(a + b * (expectedDrop / baseline - 0.5))
  *   P(remission) = logistic(a' + b' * (baseline - expectedDrop))
  *
  * Component effects are expressed in PHQ-9 points at ~6 months follow-up
@@ -58,7 +58,8 @@ export const MODEL_META = {
   version: "0.1-provisional",
   combinationWeights: [1, 0.6, 0.4, 0.25, 0.15],
   usualCare: { intercept: 3.1, baselineSlope: 0.17 },
-  response: { intercept: -2.6, dropSlope: 0.42, baselineSlope: 0.04 },
+  /** Response = >=50% symptom reduction; modelled on the relative reduction. */
+  response: { intercept: -0.25, ratioSlope: 8.0 },
   remission: { intercept: 2.4, endpointSlope: -0.34 },
 };
 
@@ -321,10 +322,9 @@ export function predictScenario(
   const drop = clamp(usualCareDrop(input.baseline) + combined, 0, input.baseline);
   const endpoint = Math.max(0, input.baseline - drop);
 
+  const ratio = drop / Math.max(input.baseline, 1);
   const response = logistic(
-    MODEL_META.response.intercept +
-      MODEL_META.response.dropSlope * drop +
-      MODEL_META.response.baselineSlope * (input.baseline - 14),
+    MODEL_META.response.intercept + MODEL_META.response.ratioSlope * (ratio - 0.5),
   );
   const remission = logistic(
     MODEL_META.remission.intercept + MODEL_META.remission.endpointSlope * endpoint,
