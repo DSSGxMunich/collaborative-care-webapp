@@ -224,7 +224,7 @@ function Clinician() {
                     {tr(item)}
                   </span>
                   <span className="flex gap-0.5" aria-label={`${v}/3`}>
-                    {[0, 1, 2, 3].map((step) => (
+                    {[0, 1, 2].map((step) => (
                       <span
                         key={step}
                         aria-hidden
