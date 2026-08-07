@@ -10,33 +10,63 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ErgebnisRouteImport } from './routes/ergebnis'
+import { Route as FragebogenRouteImport } from './routes/fragebogen'
+import { Route as SoforthilfeRouteImport } from './routes/soforthilfe'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ErgebnisRoute = ErgebnisRouteImport.update({
+  id: '/ergebnis',
+  path: '/ergebnis',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FragebogenRoute = FragebogenRouteImport.update({
+  id: '/fragebogen',
+  path: '/fragebogen',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SoforthilfeRoute = SoforthilfeRouteImport.update({
+  id: '/soforthilfe',
+  path: '/soforthilfe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ergebnis': typeof ErgebnisRoute
+  '/fragebogen': typeof FragebogenRoute
+  '/soforthilfe': typeof SoforthilfeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ergebnis': typeof ErgebnisRoute
+  '/fragebogen': typeof FragebogenRoute
+  '/soforthilfe': typeof SoforthilfeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ergebnis': typeof ErgebnisRoute
+  '/fragebogen': typeof FragebogenRoute
+  '/soforthilfe': typeof SoforthilfeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/ergebnis' | '/fragebogen' | '/soforthilfe'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/ergebnis' | '/fragebogen' | '/soforthilfe'
+  id: '__root__' | '/' | '/ergebnis' | '/fragebogen' | '/soforthilfe'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ErgebnisRoute: typeof ErgebnisRoute
+  FragebogenRoute: typeof FragebogenRoute
+  SoforthilfeRoute: typeof SoforthilfeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +78,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ergebnis': {
+      id: '/ergebnis'
+      path: '/ergebnis'
+      fullPath: '/ergebnis'
+      preLoaderRoute: typeof ErgebnisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fragebogen': {
+      id: '/fragebogen'
+      path: '/fragebogen'
+      fullPath: '/fragebogen'
+      preLoaderRoute: typeof FragebogenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/soforthilfe': {
+      id: '/soforthilfe'
+      path: '/soforthilfe'
+      fullPath: '/soforthilfe'
+      preLoaderRoute: typeof SoforthilfeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ErgebnisRoute: ErgebnisRoute,
+  FragebogenRoute: FragebogenRoute,
+  SoforthilfeRoute: SoforthilfeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
