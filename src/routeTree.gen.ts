@@ -10,13 +10,20 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AngeboteRouteImport } from './routes/angebote'
 import { Route as ErgebnisRouteImport } from './routes/ergebnis'
 import { Route as FragebogenRouteImport } from './routes/fragebogen'
+import { Route as PraxisRouteImport } from './routes/praxis'
 import { Route as SoforthilfeRouteImport } from './routes/soforthilfe'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AngeboteRoute = AngeboteRouteImport.update({
+  id: '/angebote',
+  path: '/angebote',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ErgebnisRoute = ErgebnisRouteImport.update({
@@ -29,6 +36,11 @@ const FragebogenRoute = FragebogenRouteImport.update({
   path: '/fragebogen',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PraxisRoute = PraxisRouteImport.update({
+  id: '/praxis',
+  path: '/praxis',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SoforthilfeRoute = SoforthilfeRouteImport.update({
   id: '/soforthilfe',
   path: '/soforthilfe',
@@ -37,35 +49,52 @@ const SoforthilfeRoute = SoforthilfeRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/angebote': typeof AngeboteRoute
   '/ergebnis': typeof ErgebnisRoute
   '/fragebogen': typeof FragebogenRoute
+  '/praxis': typeof PraxisRoute
   '/soforthilfe': typeof SoforthilfeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/angebote': typeof AngeboteRoute
   '/ergebnis': typeof ErgebnisRoute
   '/fragebogen': typeof FragebogenRoute
+  '/praxis': typeof PraxisRoute
   '/soforthilfe': typeof SoforthilfeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/angebote': typeof AngeboteRoute
   '/ergebnis': typeof ErgebnisRoute
   '/fragebogen': typeof FragebogenRoute
+  '/praxis': typeof PraxisRoute
   '/soforthilfe': typeof SoforthilfeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/ergebnis' | '/fragebogen' | '/soforthilfe'
+  fullPaths:
+    '/' | '/angebote' | '/ergebnis' | '/fragebogen' | '/praxis' | '/soforthilfe'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/ergebnis' | '/fragebogen' | '/soforthilfe'
-  id: '__root__' | '/' | '/ergebnis' | '/fragebogen' | '/soforthilfe'
+  to:
+    '/' | '/angebote' | '/ergebnis' | '/fragebogen' | '/praxis' | '/soforthilfe'
+  id:
+    | '__root__'
+    | '/'
+    | '/angebote'
+    | '/ergebnis'
+    | '/fragebogen'
+    | '/praxis'
+    | '/soforthilfe'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AngeboteRoute: typeof AngeboteRoute
   ErgebnisRoute: typeof ErgebnisRoute
   FragebogenRoute: typeof FragebogenRoute
+  PraxisRoute: typeof PraxisRoute
   SoforthilfeRoute: typeof SoforthilfeRoute
 }
 
@@ -76,6 +105,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/angebote': {
+      id: '/angebote'
+      path: '/angebote'
+      fullPath: '/angebote'
+      preLoaderRoute: typeof AngeboteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ergebnis': {
@@ -92,6 +128,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FragebogenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/praxis': {
+      id: '/praxis'
+      path: '/praxis'
+      fullPath: '/praxis'
+      preLoaderRoute: typeof PraxisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/soforthilfe': {
       id: '/soforthilfe'
       path: '/soforthilfe'
@@ -104,8 +147,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AngeboteRoute: AngeboteRoute,
   ErgebnisRoute: ErgebnisRoute,
   FragebogenRoute: FragebogenRoute,
+  PraxisRoute: PraxisRoute,
   SoforthilfeRoute: SoforthilfeRoute,
 }
 export const routeTree = rootRouteImport
