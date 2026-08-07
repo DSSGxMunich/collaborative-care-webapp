@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { phq9Total, severityFor } from "./phq9";
 import { assessRisk } from "./safety";
-import { buildPredictions, CARE_COMPONENTS, type ComponentId } from "./model";
+import { buildPredictions, CARE_COMPONENTS, type CareComponent, type ComponentId } from "./model";
 import { useSession } from "./session";
 import { matchOffers } from "./social";
 
@@ -26,5 +26,5 @@ export function usePrediction() {
   }, [session, hydrated]);
 }
 
-export const componentLabel = (id: ComponentId) =>
-  CARE_COMPONENTS.find((c) => c.id === id) ?? CARE_COMPONENTS[0];
+export const componentLabel = (id: ComponentId): CareComponent =>
+  CARE_COMPONENTS.find((c) => c.id === id)!;
