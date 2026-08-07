@@ -11,6 +11,8 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { LanguageProvider, useLang, ui } from "../lib/i18n";
+import { SessionProvider } from "../lib/session";
 
 function NotFoundComponent() {
   return (
@@ -77,19 +79,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { name: "author", content: "Depression Compass" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Figtree:wght@400;500;600&display=swap",
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
@@ -102,7 +102,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="de">
       <head>
         <HeadContent />
       </head>
@@ -114,13 +114,113 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+function LanguageToggle() {
+  const { lang, setLang } = useLang();
+  return (
+    <div className="flex items-center rounded-full border border-border bg-card p-0.5 text-xs font-semibold">
+      {(["de", "en"] as const).map((l) => (
+        <button
+          key={l}
+          type="button"
+          onClick={() => setLang(l)}
+          aria-pressed={lang === l}
+          className={
+            lang === l
+              ? "rounded-full bg-primary px-3 py-1 text-primary-foreground"
+              : "rounded-full px-3 py-1 text-muted-foreground transition-colors hover:text-foreground"
+          }
+        >
+          {l.toUpperCase()}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function SiteHeader() {
+  const { tr } = useLang();
+  const navItems = [
+    { to: "/", label: ui.home },
+    { to: "/fragebogen", label: ui.start },
+    { to: "/ergebnis", label: ui.results },
+    { to: "/praxis", label: ui.clinician },
+    { to: "/angebote", label: ui.support },
+  ] as const;
+
+  return (
+    <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur">
+      <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3">
+        <Link to="/" className="flex items-center gap-2.5">
+          <span
+            aria-hidden
+            className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-sm font-bold text-primary-foreground"
+          >
+            DK
+          </span>
+          <span className="font-display text-base font-semibold leading-none">
+            {tr(ui.appName)}
+          </span>
+        </Link>
+        <nav className="order-3 flex w-full flex-wrap gap-1 text-sm sm:order-none sm:w-auto">
+          {navItems.slice(1).map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              activeProps={{ className: "bg-primary-soft text-foreground" }}
+              className="rounded-lg px-2.5 py-1.5 text-muted-foreground transition-colors hover:text-foreground"
+            >
+              {tr(item.label)}
+            </Link>
+          ))}
+        </nav>
+        <div className="ml-auto flex items-center gap-2">
+          <Link
+            to="/soforthilfe"
+            className="rounded-lg bg-destructive-soft px-2.5 py-1.5 text-sm font-semibold text-destructive"
+          >
+            {tr(ui.crisis)}
+          </Link>
+          <LanguageToggle />
+        </div>
+      </div>
+    </header>
+  );
+}
+
+function SiteFooter() {
+  const { tr } = useLang();
+  return (
+    <footer className="mt-16 border-t border-border/70 bg-secondary/60">
+      <div className="mx-auto max-w-5xl px-4 py-8 text-xs leading-relaxed text-muted-foreground">
+        <p className="max-w-3xl">{tr(ui.disclaimer)}</p>
+        <p className="mt-3">
+          {tr([
+            "Forschungsprototyp – Modellversion 0.1 (vorläufige Parameter).",
+            "Research prototype — model version 0.1 (provisional parameters).",
+          ])}
+        </p>
+      </div>
+    </footer>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <LanguageProvider>
+        <SessionProvider>
+          <div className="flex min-h-screen flex-col">
+            <SiteHeader />
+            <main className="flex-1">
+              {/* Required: nested routes render here. */}
+              <Outlet />
+            </main>
+            <SiteFooter />
+          </div>
+        </SessionProvider>
+      </LanguageProvider>
     </QueryClientProvider>
   );
 }
