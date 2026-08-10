@@ -10,35 +10,13 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AngeboteRouteImport } from './routes/angebote'
-import { Route as ErgebnisRouteImport } from './routes/ergebnis'
-import { Route as FragebogenRouteImport } from './routes/fragebogen'
-import { Route as PraxisRouteImport } from './routes/praxis'
 import { Route as SoforthilfeRouteImport } from './routes/soforthilfe'
+import { Route as AuthenticatedAngeboteRouteImport } from './routes/_authenticated.angebote'
+import { Route as AuthenticatedFragebogenRouteImport } from './routes/_authenticated.fragebogen'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AngeboteRoute = AngeboteRouteImport.update({
-  id: '/angebote',
-  path: '/angebote',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ErgebnisRoute = ErgebnisRouteImport.update({
-  id: '/ergebnis',
-  path: '/ergebnis',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FragebogenRoute = FragebogenRouteImport.update({
-  id: '/fragebogen',
-  path: '/fragebogen',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PraxisRoute = PraxisRouteImport.update({
-  id: '/praxis',
-  path: '/praxis',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SoforthilfeRoute = SoforthilfeRouteImport.update({
@@ -46,56 +24,54 @@ const SoforthilfeRoute = SoforthilfeRouteImport.update({
   path: '/soforthilfe',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAngeboteRoute = AuthenticatedAngeboteRouteImport.update({
+  id: '/_authenticated/angebote',
+  path: '/angebote',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedFragebogenRoute = AuthenticatedFragebogenRouteImport.update({
+  id: '/_authenticated/fragebogen',
+  path: '/fragebogen',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/angebote': typeof AngeboteRoute
-  '/ergebnis': typeof ErgebnisRoute
-  '/fragebogen': typeof FragebogenRoute
-  '/praxis': typeof PraxisRoute
   '/soforthilfe': typeof SoforthilfeRoute
+  '/angebote': typeof AuthenticatedAngeboteRoute
+  '/fragebogen': typeof AuthenticatedFragebogenRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/angebote': typeof AngeboteRoute
-  '/ergebnis': typeof ErgebnisRoute
-  '/fragebogen': typeof FragebogenRoute
-  '/praxis': typeof PraxisRoute
   '/soforthilfe': typeof SoforthilfeRoute
+  '/angebote': typeof AuthenticatedAngeboteRoute
+  '/fragebogen': typeof AuthenticatedFragebogenRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/angebote': typeof AngeboteRoute
-  '/ergebnis': typeof ErgebnisRoute
-  '/fragebogen': typeof FragebogenRoute
-  '/praxis': typeof PraxisRoute
   '/soforthilfe': typeof SoforthilfeRoute
+  '/_authenticated/angebote': typeof AuthenticatedAngeboteRoute
+  '/_authenticated/fragebogen': typeof AuthenticatedFragebogenRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    '/' | '/angebote' | '/ergebnis' | '/fragebogen' | '/praxis' | '/soforthilfe'
+  fullPaths: '/' | '/soforthilfe' | '/angebote' | '/fragebogen'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    '/' | '/angebote' | '/ergebnis' | '/fragebogen' | '/praxis' | '/soforthilfe'
+  to: '/' | '/soforthilfe' | '/angebote' | '/fragebogen'
   id:
     | '__root__'
     | '/'
-    | '/angebote'
-    | '/ergebnis'
-    | '/fragebogen'
-    | '/praxis'
     | '/soforthilfe'
+    | '/_authenticated/angebote'
+    | '/_authenticated/fragebogen'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AngeboteRoute: typeof AngeboteRoute
-  ErgebnisRoute: typeof ErgebnisRoute
-  FragebogenRoute: typeof FragebogenRoute
-  PraxisRoute: typeof PraxisRoute
   SoforthilfeRoute: typeof SoforthilfeRoute
+  AuthenticatedAngeboteRoute: typeof AuthenticatedAngeboteRoute
+  AuthenticatedFragebogenRoute: typeof AuthenticatedFragebogenRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -107,34 +83,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/angebote': {
-      id: '/angebote'
-      path: '/angebote'
-      fullPath: '/angebote'
-      preLoaderRoute: typeof AngeboteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ergebnis': {
-      id: '/ergebnis'
-      path: '/ergebnis'
-      fullPath: '/ergebnis'
-      preLoaderRoute: typeof ErgebnisRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/fragebogen': {
-      id: '/fragebogen'
-      path: '/fragebogen'
-      fullPath: '/fragebogen'
-      preLoaderRoute: typeof FragebogenRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/praxis': {
-      id: '/praxis'
-      path: '/praxis'
-      fullPath: '/praxis'
-      preLoaderRoute: typeof PraxisRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/soforthilfe': {
       id: '/soforthilfe'
       path: '/soforthilfe'
@@ -142,27 +90,29 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SoforthilfeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/angebote': {
+      id: '/_authenticated/angebote'
+      path: '/angebote'
+      fullPath: '/angebote'
+      preLoaderRoute: typeof AuthenticatedAngeboteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/fragebogen': {
+      id: '/_authenticated/fragebogen'
+      path: '/fragebogen'
+      fullPath: '/fragebogen'
+      preLoaderRoute: typeof AuthenticatedFragebogenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AngeboteRoute: AngeboteRoute,
-  ErgebnisRoute: ErgebnisRoute,
-  FragebogenRoute: FragebogenRoute,
-  PraxisRoute: PraxisRoute,
   SoforthilfeRoute: SoforthilfeRoute,
+  AuthenticatedAngeboteRoute: AuthenticatedAngeboteRoute,
+  AuthenticatedFragebogenRoute: AuthenticatedFragebogenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

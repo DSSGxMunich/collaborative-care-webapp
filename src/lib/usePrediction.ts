@@ -1,28 +1,15 @@
 import { useMemo } from "react";
-import { phq9Total, severityFor } from "./phq9";
-import { assessRisk } from "./safety";
-import { buildPredictions, CARE_COMPONENTS, type CareComponent, type ComponentId } from "./model";
+import { CARE_COMPONENTS, type CareComponent, type ComponentId } from "./model";
+import { computePrediction } from "./predict";
 import { useSession } from "./session";
-import { matchOffers } from "./social";
 
+/** Prediction for the questionnaire draft currently held in this browser. */
 export function usePrediction() {
   const { session, hydrated } = useSession();
 
   return useMemo(() => {
-    const baseline = phq9Total(session.phq);
-    const complete = session.completedAt !== null && session.phq.every((v) => v !== null);
-    const input = { baseline, functioning: session.functioning, profile: session.profile };
-    const predictions = buildPredictions(input);
-    return {
-      hydrated,
-      complete,
-      baseline,
-      severity: severityFor(baseline),
-      risk: assessRisk(session),
-      session,
-      offers: matchOffers(session, baseline),
-      ...predictions,
-    };
+    const p = computePrediction(session);
+    return { hydrated, ...p, complete: p.complete && session.completedAt !== null };
   }, [session, hydrated]);
 }
 
