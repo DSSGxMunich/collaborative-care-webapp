@@ -115,15 +115,29 @@ function Questionnaire() {
 
   const isLast = index === total - 1;
 
-  const goNext = () => {
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+
+  const goNext = async () => {
     if (isLast) {
-      update({ completedAt: new Date().toISOString() });
-      navigate({ to: "/ergebnis" });
+      setSaving(true);
+      setSaveError(null);
+      try {
+        const completedAt = new Date().toISOString();
+        update({ completedAt });
+        await saveAssessment({ ...session, completedAt });
+        navigate({ to: "/ergebnis" });
+      } catch (e) {
+        setSaveError(e instanceof Error ? e.message : String(e));
+      } finally {
+        setSaving(false);
+      }
       return;
     }
     setIndex((i) => i + 1);
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
 
   const toggle = (list: string[], id: string) =>
     list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
