@@ -20,7 +20,7 @@ import {
   type Duration,
 } from "@/lib/session";
 
-export const Route = createFileRoute("/fragebogen")({
+export const Route = createFileRoute("/_authenticated/fragebogen")({
   head: () => ({
     meta: [
       { title: "Fragebogen – Depressions-Kompass" },

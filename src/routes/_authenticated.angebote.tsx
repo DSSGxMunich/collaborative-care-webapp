@@ -4,7 +4,7 @@ import { useLang, ui } from "@/lib/i18n";
 import { usePrediction } from "@/lib/usePrediction";
 import { SOCIAL_OFFERS } from "@/lib/social";
 
-export const Route = createFileRoute("/angebote")({
+export const Route = createFileRoute("/_authenticated/angebote")({
   head: () => ({
     meta: [
       { title: "Angebote vor Ort – Depressions-Kompass" },
