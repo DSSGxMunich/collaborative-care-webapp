@@ -4,7 +4,7 @@ import { useLang } from "@/lib/i18n";
 import { useAuth, type Role } from "@/lib/auth";
 import { joinPractice } from "@/lib/data";
 
-type Search = { role?: Role; mode?: "signin" | "signup" };
+type Search = { role?: Role | undefined; mode?: "signin" | "signup" | undefined };
 
 export const Route = createFileRoute("/anmelden")({
   validateSearch: (s: Record<string, unknown>): Search => ({
