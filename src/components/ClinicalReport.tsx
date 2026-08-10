@@ -1,29 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useLang, ui, type L } from "@/lib/i18n";
+import { useLang, type L } from "@/lib/i18n";
 import { PHQ9_ITEMS, SEVERITY_LABEL } from "@/lib/phq9";
-import { assessRisk } from "@/lib/safety";
 import { MODEL_META } from "@/lib/model";
-import { componentLabel, usePrediction } from "@/lib/usePrediction";
+import { componentLabel } from "@/lib/usePrediction";
 import { PREFERENCES, PRIOR_TREATMENTS } from "@/lib/session";
-
-export const Route = createFileRoute("/praxis")({
-  head: () => ({
-    meta: [
-      { title: "Kurzbefund für die Praxis – Depressions-Kompass" },
-      {
-        name: "description",
-        content:
-          "Aggregierte Übersicht für Hausärztinnen, Hausärzte und psychosoziale Fachkräfte: PHQ-9-Itemprofil, Risikoflag, Prädiktoren und geschätzte Effekte der Versorgungsbausteine.",
-      },
-      { property: "og:title", content: "Kurzbefund für die Praxis" },
-      {
-        property: "og:description",
-        content: "Ein Blick statt Nachfragen: Symptomprofil, Risiko, Prädiktoren und Modellschätzungen.",
-      },
-    ],
-  }),
-  component: Clinician,
-});
+import type { Prediction } from "@/lib/predict";
 
 const YES_NO: Record<string, L> = {
   yes: ["ja", "yes"],
@@ -36,37 +16,17 @@ const DURATION_LABEL: Record<string, L> = {
   gt12m: ["> 12 Monate", "> 12 months"],
 };
 
-function Clinician() {
+export const RISK_FLAG: Record<string, L> = {
+  none: ["kein Hinweis", "no indication"],
+  low: ["Item 9 positiv (einzelne Tage)", "item 9 positive (several days)"],
+  elevated: ["erhöht – zeitnahe Abklärung", "elevated — timely review"],
+  acute: ["AKUT – sofortiges Handeln", "ACUTE — act immediately"],
+};
+
+export function ClinicalReport({ p }: { p: Prediction }) {
   const { tr } = useLang();
-  const p = usePrediction();
-
-  if (!p.hydrated) return <div className="mx-auto max-w-3xl px-4 py-16" />;
-
-  if (!p.complete) {
-    return (
-      <div className="mx-auto max-w-3xl px-4 py-16">
-        <div className="surface-card p-8 text-center">
-          <h1 className="font-display text-2xl font-semibold">{tr(ui.clinician)}</h1>
-          <p className="mt-3 text-sm text-muted-foreground">{tr(ui.noData)}</p>
-          <Link
-            to="/fragebogen"
-            className="mt-6 inline-flex rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
-          >
-            {tr(ui.start)}
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
   const { profile, safety } = p.session;
-  const risk = assessRisk(p.session);
-  const riskFlag: Record<string, L> = {
-    none: ["kein Hinweis", "no indication"],
-    low: ["Item 9 positiv (einzelne Tage)", "item 9 positive (several days)"],
-    elevated: ["erhöht – zeitnahe Abklärung", "elevated — timely review"],
-    acute: ["AKUT – sofortiges Handeln", "ACUTE — act immediately"],
-  };
+  const risk = p.risk;
 
   const rows: { label: L; value: string }[] = [
     { label: ["PHQ-9 Summenwert", "PHQ-9 total"], value: `${p.baseline}/27` },
@@ -75,8 +35,14 @@ function Clinician() {
       label: ["Funktionsbeeinträchtigung", "Functional impairment"],
       value: `${p.session.functioning ?? "–"}/3`,
     },
-    { label: ["Suizidalität (Item 9)", "Suicidality (item 9)"], value: `${p.session.phq[8] ?? 0}/3` },
-    { label: ["Risikoeinschätzung", "Risk assessment"], value: tr(riskFlag[risk] ?? riskFlag["none"]!) },
+    {
+      label: ["Suizidalität (Item 9)", "Suicidality (item 9)"],
+      value: `${p.session.phq[8] ?? 0}/3`,
+    },
+    {
+      label: ["Risikoeinschätzung", "Risk assessment"],
+      value: tr(RISK_FLAG[risk] ?? RISK_FLAG["none"]!),
+    },
     {
       label: ["Konkreter Plan / Vorbereitung", "Concrete plan / preparation"],
       value: safety.plan ? tr(YES_NO[safety.plan]!) : "–",
@@ -116,7 +82,10 @@ function Clinician() {
       }`,
     },
     {
-      label: ["Psychosoziale Belastung (Arbeit/Geld/Wohnen)", "Psychosocial strain (work/money/housing)"],
+      label: [
+        "Psychosoziale Belastung (Arbeit/Geld/Wohnen)",
+        "Psychosocial strain (work/money/housing)",
+      ],
       value: profile.workStrain ? tr(YES_NO[profile.workStrain]!) : "–",
     },
     {
@@ -159,32 +128,11 @@ function Clinician() {
   ];
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="font-display text-3xl font-semibold">
-            {tr(["Kurzbefund für die Praxis", "Short report for the practice"])}
-          </h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {tr([
-              "Vom Patienten selbst ausgefüllt. Alle Angaben sind Selbstauskunft und ersetzen keine Diagnostik.",
-              "Completed by the patient. All entries are self-report and do not replace clinical assessment.",
-            ])}
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={() => window.print()}
-          className="rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-semibold hover:bg-secondary"
-        >
-          {tr(["Drucken / als PDF speichern", "Print / save as PDF"])}
-        </button>
-      </div>
-
+    <div>
       {(risk === "acute" || risk === "elevated") && (
-        <div className="mt-6 rounded-2xl border border-destructive bg-destructive-soft p-5">
+        <div className="rounded-2xl border border-destructive bg-destructive-soft p-5">
           <p className="font-display text-base font-semibold text-destructive">
-            {tr(["Risikoflag", "Risk flag"])}: {tr(riskFlag[risk]!)}
+            {tr(["Risikoflag", "Risk flag"])}: {tr(RISK_FLAG[risk]!)}
           </p>
           <p className="mt-2 text-sm">
             {tr([
@@ -195,7 +143,7 @@ function Clinician() {
         </div>
       )}
 
-      <section className="mt-8 grid gap-6 md:grid-cols-2">
+      <section className="mt-6 grid gap-6 md:grid-cols-2">
         <div className="surface-card p-5">
           <h2 className="font-display text-lg font-semibold">
             {tr(["Zusammenfassung", "Summary"])}
@@ -230,11 +178,7 @@ function Clinician() {
                         aria-hidden
                         className={[
                           "h-4 w-2 rounded-sm",
-                          step < v
-                            ? i === 8
-                              ? "bg-destructive"
-                              : "bg-primary"
-                            : "bg-secondary",
+                          step < v ? (i === 8 ? "bg-destructive" : "bg-primary") : "bg-secondary",
                         ].join(" ")}
                       />
                     ))}
@@ -257,8 +201,8 @@ function Clinician() {
                 <th className="px-4 py-3 font-semibold">{tr(["Szenario", "Scenario"])}</th>
                 <th className="px-4 py-3 font-semibold">Δ PHQ-9</th>
                 <th className="px-4 py-3 font-semibold">{tr(["PHQ-9 6 Mo.", "PHQ-9 6 mo."])}</th>
-                <th className="px-4 py-3 font-semibold">{tr(["Response", "Response"])}</th>
-                <th className="px-4 py-3 font-semibold">{tr(["Remission", "Remission"])}</th>
+                <th className="px-4 py-3 font-semibold">Response</th>
+                <th className="px-4 py-3 font-semibold">Remission</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">

@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { LanguageProvider, useLang, ui } from "../lib/i18n";
 import { SessionProvider } from "../lib/session";
+import { AuthProvider, useAuth } from "../lib/auth";
 
 function NotFoundComponent() {
   return (
@@ -139,13 +140,15 @@ function LanguageToggle() {
 
 function SiteHeader() {
   const { tr } = useLang();
-  const navItems = [
-    { to: "/", label: ui.home },
+  const { status, account, signOut } = useAuth();
+
+  const patientNav = [
     { to: "/fragebogen", label: ui.start },
     { to: "/ergebnis", label: ui.results },
-    { to: "/praxis", label: ui.clinician },
     { to: "/angebote", label: ui.support },
   ] as const;
+  const gpNav = [{ to: "/praxis", label: ui.clinician }] as const;
+  const navItems = account?.role === "gp" ? gpNav : account ? patientNav : [];
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur">
@@ -162,7 +165,7 @@ function SiteHeader() {
           </span>
         </Link>
         <nav className="order-3 flex w-full flex-wrap gap-1 text-sm sm:order-none sm:w-auto">
-          {navItems.slice(1).map((item) => (
+          {navItems.map((item) => (
             <Link
               key={item.to}
               to={item.to}
@@ -180,12 +183,30 @@ function SiteHeader() {
           >
             {tr(ui.crisis)}
           </Link>
+          {status === "signedIn" ? (
+            <button
+              type="button"
+              onClick={() => void signOut()}
+              className="rounded-lg border border-border bg-card px-2.5 py-1.5 text-sm font-semibold"
+            >
+              {tr(["Abmelden", "Sign out"])}
+            </button>
+          ) : (
+            <Link
+              to="/anmelden"
+              search={{ role: "patient", mode: "signin" }}
+              className="rounded-lg border border-border bg-card px-2.5 py-1.5 text-sm font-semibold"
+            >
+              {tr(["Anmelden", "Sign in"])}
+            </Link>
+          )}
           <LanguageToggle />
         </div>
       </div>
     </header>
   );
 }
+
 
 function SiteFooter() {
   const { tr } = useLang();
@@ -210,6 +231,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
+        <AuthProvider>
         <SessionProvider>
           <div className="flex min-h-screen flex-col">
             <SiteHeader />
@@ -220,6 +242,7 @@ function RootComponent() {
             <SiteFooter />
           </div>
         </SessionProvider>
+        </AuthProvider>
       </LanguageProvider>
     </QueryClientProvider>
   );
