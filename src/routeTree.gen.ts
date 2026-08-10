@@ -10,27 +10,35 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
-import { Route as AnmeldenRouteImport } from './routes/anmelden'
+import { Route as AngeboteRouteImport } from './routes/angebote'
+import { Route as ErgebnisRouteImport } from './routes/ergebnis'
+import { Route as FragebogenRouteImport } from './routes/fragebogen'
+import { Route as PraxisRouteImport } from './routes/praxis'
 import { Route as SoforthilfeRouteImport } from './routes/soforthilfe'
-import { Route as AuthenticatedAngeboteRouteImport } from './routes/_authenticated.angebote'
-import { Route as AuthenticatedErgebnisRouteImport } from './routes/_authenticated.ergebnis'
-import { Route as AuthenticatedFragebogenRouteImport } from './routes/_authenticated.fragebogen'
-import { Route as AuthenticatedPraxisRouteImport } from './routes/_authenticated.praxis'
-import { Route as AuthenticatedPatientPatientIdRouteImport } from './routes/_authenticated.patient.$patientId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRoute = AuthenticatedRouteImport.update({
-  id: '/_authenticated',
+const AngeboteRoute = AngeboteRouteImport.update({
+  id: '/angebote',
+  path: '/angebote',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AnmeldenRoute = AnmeldenRouteImport.update({
-  id: '/anmelden',
-  path: '/anmelden',
+const ErgebnisRoute = ErgebnisRouteImport.update({
+  id: '/ergebnis',
+  path: '/ergebnis',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FragebogenRoute = FragebogenRouteImport.update({
+  id: '/fragebogen',
+  path: '/fragebogen',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PraxisRoute = PraxisRouteImport.update({
+  id: '/praxis',
+  path: '/praxis',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SoforthilfeRoute = SoforthilfeRouteImport.update({
@@ -38,103 +46,55 @@ const SoforthilfeRoute = SoforthilfeRouteImport.update({
   path: '/soforthilfe',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedAngeboteRoute = AuthenticatedAngeboteRouteImport.update({
-  id: '/angebote',
-  path: '/angebote',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedErgebnisRoute = AuthenticatedErgebnisRouteImport.update({
-  id: '/ergebnis',
-  path: '/ergebnis',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedFragebogenRoute = AuthenticatedFragebogenRouteImport.update({
-  id: '/fragebogen',
-  path: '/fragebogen',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedPraxisRoute = AuthenticatedPraxisRouteImport.update({
-  id: '/praxis',
-  path: '/praxis',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedPatientPatientIdRoute =
-  AuthenticatedPatientPatientIdRouteImport.update({
-    id: '/patient/$patientId',
-    path: '/patient/$patientId',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/anmelden': typeof AnmeldenRoute
+  '/angebote': typeof AngeboteRoute
+  '/ergebnis': typeof ErgebnisRoute
+  '/fragebogen': typeof FragebogenRoute
+  '/praxis': typeof PraxisRoute
   '/soforthilfe': typeof SoforthilfeRoute
-  '/angebote': typeof AuthenticatedAngeboteRoute
-  '/ergebnis': typeof AuthenticatedErgebnisRoute
-  '/fragebogen': typeof AuthenticatedFragebogenRoute
-  '/praxis': typeof AuthenticatedPraxisRoute
-  '/patient/$patientId': typeof AuthenticatedPatientPatientIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/anmelden': typeof AnmeldenRoute
+  '/angebote': typeof AngeboteRoute
+  '/ergebnis': typeof ErgebnisRoute
+  '/fragebogen': typeof FragebogenRoute
+  '/praxis': typeof PraxisRoute
   '/soforthilfe': typeof SoforthilfeRoute
-  '/angebote': typeof AuthenticatedAngeboteRoute
-  '/ergebnis': typeof AuthenticatedErgebnisRoute
-  '/fragebogen': typeof AuthenticatedFragebogenRoute
-  '/praxis': typeof AuthenticatedPraxisRoute
-  '/patient/$patientId': typeof AuthenticatedPatientPatientIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_authenticated': typeof AuthenticatedRouteWithChildren
-  '/anmelden': typeof AnmeldenRoute
+  '/angebote': typeof AngeboteRoute
+  '/ergebnis': typeof ErgebnisRoute
+  '/fragebogen': typeof FragebogenRoute
+  '/praxis': typeof PraxisRoute
   '/soforthilfe': typeof SoforthilfeRoute
-  '/_authenticated/angebote': typeof AuthenticatedAngeboteRoute
-  '/_authenticated/ergebnis': typeof AuthenticatedErgebnisRoute
-  '/_authenticated/fragebogen': typeof AuthenticatedFragebogenRoute
-  '/_authenticated/praxis': typeof AuthenticatedPraxisRoute
-  '/_authenticated/patient/$patientId': typeof AuthenticatedPatientPatientIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/anmelden'
-    | '/soforthilfe'
-    | '/angebote'
-    | '/ergebnis'
-    | '/fragebogen'
-    | '/praxis'
-    | '/patient/$patientId'
+    '/' | '/angebote' | '/ergebnis' | '/fragebogen' | '/praxis' | '/soforthilfe'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | '/anmelden'
-    | '/soforthilfe'
-    | '/angebote'
-    | '/ergebnis'
-    | '/fragebogen'
-    | '/praxis'
-    | '/patient/$patientId'
+    '/' | '/angebote' | '/ergebnis' | '/fragebogen' | '/praxis' | '/soforthilfe'
   id:
     | '__root__'
     | '/'
-    | '/_authenticated'
-    | '/anmelden'
+    | '/angebote'
+    | '/ergebnis'
+    | '/fragebogen'
+    | '/praxis'
     | '/soforthilfe'
-    | '/_authenticated/angebote'
-    | '/_authenticated/ergebnis'
-    | '/_authenticated/fragebogen'
-    | '/_authenticated/praxis'
-    | '/_authenticated/patient/$patientId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
-  AnmeldenRoute: typeof AnmeldenRoute
+  AngeboteRoute: typeof AngeboteRoute
+  ErgebnisRoute: typeof ErgebnisRoute
+  FragebogenRoute: typeof FragebogenRoute
+  PraxisRoute: typeof PraxisRoute
   SoforthilfeRoute: typeof SoforthilfeRoute
 }
 
@@ -147,18 +107,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteImport
+    '/angebote': {
+      id: '/angebote'
+      path: '/angebote'
+      fullPath: '/angebote'
+      preLoaderRoute: typeof AngeboteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/anmelden': {
-      id: '/anmelden'
-      path: '/anmelden'
-      fullPath: '/anmelden'
-      preLoaderRoute: typeof AnmeldenRouteImport
+    '/ergebnis': {
+      id: '/ergebnis'
+      path: '/ergebnis'
+      fullPath: '/ergebnis'
+      preLoaderRoute: typeof ErgebnisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fragebogen': {
+      id: '/fragebogen'
+      path: '/fragebogen'
+      fullPath: '/fragebogen'
+      preLoaderRoute: typeof FragebogenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/praxis': {
+      id: '/praxis'
+      path: '/praxis'
+      fullPath: '/praxis'
+      preLoaderRoute: typeof PraxisRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/soforthilfe': {
@@ -168,68 +142,15 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SoforthilfeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/angebote': {
-      id: '/_authenticated/angebote'
-      path: '/angebote'
-      fullPath: '/angebote'
-      preLoaderRoute: typeof AuthenticatedAngeboteRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/ergebnis': {
-      id: '/_authenticated/ergebnis'
-      path: '/ergebnis'
-      fullPath: '/ergebnis'
-      preLoaderRoute: typeof AuthenticatedErgebnisRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/fragebogen': {
-      id: '/_authenticated/fragebogen'
-      path: '/fragebogen'
-      fullPath: '/fragebogen'
-      preLoaderRoute: typeof AuthenticatedFragebogenRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/praxis': {
-      id: '/_authenticated/praxis'
-      path: '/praxis'
-      fullPath: '/praxis'
-      preLoaderRoute: typeof AuthenticatedPraxisRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/patient/$patientId': {
-      id: '/_authenticated/patient/$patientId'
-      path: '/patient/$patientId'
-      fullPath: '/patient/$patientId'
-      preLoaderRoute: typeof AuthenticatedPatientPatientIdRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
   }
 }
 
-interface AuthenticatedRouteChildren {
-  AuthenticatedAngeboteRoute: typeof AuthenticatedAngeboteRoute
-  AuthenticatedErgebnisRoute: typeof AuthenticatedErgebnisRoute
-  AuthenticatedFragebogenRoute: typeof AuthenticatedFragebogenRoute
-  AuthenticatedPraxisRoute: typeof AuthenticatedPraxisRoute
-  AuthenticatedPatientPatientIdRoute: typeof AuthenticatedPatientPatientIdRoute
-}
-
-const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedAngeboteRoute: AuthenticatedAngeboteRoute,
-  AuthenticatedErgebnisRoute: AuthenticatedErgebnisRoute,
-  AuthenticatedFragebogenRoute: AuthenticatedFragebogenRoute,
-  AuthenticatedPraxisRoute: AuthenticatedPraxisRoute,
-  AuthenticatedPatientPatientIdRoute: AuthenticatedPatientPatientIdRoute,
-}
-
-const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
-  AuthenticatedRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthenticatedRoute: AuthenticatedRouteWithChildren,
-  AnmeldenRoute: AnmeldenRoute,
+  AngeboteRoute: AngeboteRoute,
+  ErgebnisRoute: ErgebnisRoute,
+  FragebogenRoute: FragebogenRoute,
+  PraxisRoute: PraxisRoute,
   SoforthilfeRoute: SoforthilfeRoute,
 }
 export const routeTree = rootRouteImport

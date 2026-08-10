@@ -1,10 +1,28 @@
-import { Link } from "@tanstack/react-router";
-import { useLang } from "@/lib/i18n";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useLang, ui } from "@/lib/i18n";
 import { SEVERITY_LABEL, SEVERITY_RANGE } from "@/lib/phq9";
 import { RISK_MESSAGE, RISK_TITLE } from "@/lib/safety";
 import { MODEL_META, type Scenario } from "@/lib/model";
-import { componentLabel } from "@/lib/usePrediction";
-import type { Prediction } from "@/lib/predict";
+import { componentLabel, usePrediction } from "@/lib/usePrediction";
+
+export const Route = createFileRoute("/ergebnis")({
+  head: () => ({
+    meta: [
+      { title: "Ihre Auswertung – Depressions-Kompass" },
+      {
+        name: "description",
+        content:
+          "Patientenindividuelle Schätzung des Symptomverlaufs unter üblicher Versorgung sowie unter einzelnen und kombinierten Bausteinen strukturierter Depressionsversorgung.",
+      },
+      { property: "og:title", content: "Ihre Auswertung – Depressions-Kompass" },
+      {
+        property: "og:description",
+        content: "PHQ-9-Ergebnis, Risikohinweise und geschätzte Behandlungsergebnisse für Ihr Profil.",
+      },
+    ],
+  }),
+  component: Results,
+});
 
 function ScenarioCard({
   scenario,
@@ -67,24 +85,43 @@ function ScenarioCard({
   );
 }
 
-export function ResultsView({
-  p,
-  audience = "patient",
-}: {
-  p: Prediction;
-  audience?: "patient" | "clinician";
-}) {
+function Results() {
   const { tr } = useLang();
+  const p = usePrediction();
+
+  if (!p.hydrated) return <div className="mx-auto max-w-3xl px-4 py-16" />;
+
+  if (!p.complete) {
+    return (
+      <div className="mx-auto max-w-3xl px-4 py-16">
+        <div className="surface-card p-8 text-center">
+          <h1 className="font-display text-2xl font-semibold">{tr(ui.results)}</h1>
+          <p className="mt-3 text-sm text-muted-foreground">{tr(ui.noData)}</p>
+          <Link
+            to="/fragebogen"
+            className="mt-6 inline-flex rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
+          >
+            {tr(ui.start)}
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   const topThree = p.ranked.slice(0, 3);
 
   return (
-    <div>
-      {audience === "patient" && p.risk !== "none" && (
+    <div className="mx-auto max-w-3xl px-4 py-10">
+      <h1 className="font-display text-3xl font-semibold">
+        {tr(["Ihre Auswertung", "Your results"])}
+      </h1>
+
+      {p.risk !== "none" && (
         <div
           className={[
-            "rounded-2xl border p-5",
+            "mt-6 rounded-2xl border p-5",
             p.risk === "low"
-              ? "border-accent bg-accent-soft"
+              ? "border-warning/50 bg-accent-soft"
               : "border-destructive bg-destructive-soft",
           ].join(" ")}
         >
@@ -123,8 +160,8 @@ export function ResultsView({
         </h2>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           {tr([
-            "Die Zahlen sind Schätzungen für Menschen mit einem Profil wie diesem – keine Zusage für den persönlichen Verlauf. „Deutliche Besserung“ bedeutet mindestens eine Halbierung der Beschwerden.",
-            "These numbers are estimates for people with a profile like this — not a promise about the personal course. “Meaningful improvement” means at least halving of symptoms.",
+            "Die Zahlen sind Schätzungen für Menschen mit einem Profil wie Ihrem – keine Zusage für Ihren persönlichen Verlauf. „Deutliche Besserung“ bedeutet mindestens eine Halbierung der Beschwerden.",
+            "These numbers are estimates for people with a profile like yours — not a promise about your personal course. “Meaningful improvement” means at least halving of symptoms.",
           ])}
         </p>
 
@@ -173,8 +210,8 @@ export function ResultsView({
             highlight
             title={p.pair.components.map((c) => tr(componentLabel(c).short)).join(" + ")}
             subtitle={tr([
-              "Die beiden am stärksten geschätzten Bausteine für dieses Profil.",
-              "The two components estimated strongest for this profile.",
+              "Die beiden für Ihr Profil am stärksten geschätzten Bausteine.",
+              "The two components estimated strongest for your profile.",
             ])}
           />
           <ScenarioCard
@@ -236,6 +273,21 @@ export function ResultsView({
           })}
         </div>
       </section>
+
+      <div className="mt-10 flex flex-wrap gap-3">
+        <Link
+          to="/praxis"
+          className="rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-soft"
+        >
+          {tr(["Zusammenfassung für die Praxis", "Summary for the practice"])}
+        </Link>
+        <Link
+          to="/angebote"
+          className="rounded-xl border border-border bg-card px-5 py-3 text-sm font-semibold hover:bg-secondary"
+        >
+          {tr(["Passende Angebote vor Ort", "Suitable local offers"])}
+        </Link>
+      </div>
 
       <p className="mt-8 text-xs leading-relaxed text-muted-foreground">
         {tr([

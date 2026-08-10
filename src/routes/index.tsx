@@ -5,44 +5,55 @@ import heroImage from "@/assets/hero-calm.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Depressions-Kompass – Vorhersage-Tool für die Hausarztpraxis" },
+      { title: "Depressions-Kompass – Vorhersage-Tool für Depressionsversorgung" },
       {
         name: "description",
         content:
-          "Zugang für Patientinnen, Patienten und Praxen: PHQ-9-Fragebogen mit Sicherheitsalgorithmus und evidenzinformierter Vorhersage passender Bausteine strukturierter Depressionsversorgung.",
+          "Fragebogen mit PHQ-9, Sicherheitsalgorithmus und evidenzinformierter Vorhersage: Welche Bausteine strukturierter Depressionsversorgung passen zu welchem Patientenprofil?",
       },
-      {
-        property: "og:title",
-        content: "Depressions-Kompass – Vorhersage-Tool für die Hausarztpraxis",
-      },
+      { property: "og:title", content: "Depressions-Kompass – Vorhersage-Tool für Depressionsversorgung" },
       {
         property: "og:description",
         content:
-          "Patientenfragebogen, Risikoprüfung und patientenindividuelle Vorhersage – plus Praxis-Dashboard für Ihre Patientenprofile.",
+          "Patientenfragebogen, Risikoprüfung und patientenindividuelle Vorhersage von Behandlungsergebnissen für die hausärztliche Praxis.",
       },
     ],
   }),
   component: Index,
 });
 
-const roles: { role: "patient" | "gp"; title: L; body: L; cta: L }[] = [
+const steps: { n: string; title: L; body: L }[] = [
   {
-    role: "patient",
-    title: ["Ich bin Patientin oder Patient", "I am a patient"],
+    n: "1",
+    title: ["Fragebogen ausfüllen", "Complete the questionnaire"],
     body: [
-      "Fragebogen ausfüllen, Auswertung ansehen und passende Angebote vor Ort finden. Mit dem Code Ihrer Praxis sieht Ihr Behandlungsteam die Ergebnisse.",
-      "Complete the questionnaire, view your results and find suitable local offers. With your practice's code your care team can see the results.",
+      "PHQ-9 sowie wenige Angaben zu Beschwerdedauer, Lebenssituation und Vorlieben. Etwa 5–8 Minuten, in der Praxis oder zu Hause.",
+      "The PHQ-9 plus a few questions on symptom duration, life situation and preferences. About 5–8 minutes, at the practice or at home.",
     ],
-    cta: ["Als Patient:in anmelden", "Continue as patient"],
   },
   {
-    role: "gp",
-    title: ["Ich bin Ärztin oder Arzt", "I am a clinician"],
+    n: "2",
+    title: ["Sicherheitsprüfung", "Safety check"],
     body: [
-      "Praxis-Dashboard mit allen verknüpften Patientenprofilen: PHQ-9-Verlauf, Risikoflags, Rangfolge der Versorgungsbausteine und Kombinationen.",
-      "Practice dashboard with all linked patient profiles: PHQ-9 trajectory, risk flags, ranking of care components and combinations.",
+      "Hinweise auf akute Belastung oder Suizidgedanken lösen sofort klare Handlungsempfehlungen und Krisenkontakte aus.",
+      "Signs of acute distress or suicidal thoughts immediately trigger clear guidance and crisis contacts.",
     ],
-    cta: ["Als Praxis anmelden", "Continue as practice"],
+  },
+  {
+    n: "3",
+    title: ["Vorhersage ansehen", "See the prediction"],
+    body: [
+      "Geschätzte Verläufe unter üblicher Versorgung und unter einzelnen bzw. kombinierten Versorgungsbausteinen – für Profile wie Ihres.",
+      "Estimated outcomes under usual care and under single or combined care components — for profiles like yours.",
+    ],
+  },
+  {
+    n: "4",
+    title: ["Mit der Praxis besprechen", "Discuss with the practice"],
+    body: [
+      "Eine kompakte Übersicht für Ärztin oder Arzt plus passende Angebote im Wohnumfeld.",
+      "A compact summary for the clinician plus suitable offers in your local area.",
+    ],
   },
 ];
 
@@ -59,20 +70,34 @@ function Index() {
             </p>
             <h1 className="mt-5 text-balance-tight font-display text-4xl font-semibold leading-[1.08] sm:text-5xl">
               {tr([
-                "Welche Depressionsbehandlung passt zu wem?",
-                "Which depression care is likely to help whom?",
+                "Welche Depressionsbehandlung passt zu mir?",
+                "Which depression care is likely to help me?",
               ])}
             </h1>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
               {tr([
-                "Der Depressions-Kompass verbindet Patientenantworten mit Ergebnissen einer Metaanalyse individueller Patientendaten und schätzt, wie sich Beschwerden unter verschiedenen Bausteinen strukturierter Depressionsversorgung entwickeln könnten.",
-                "Depression Compass links patient answers to results from an individual-patient-data meta-analysis and estimates how symptoms might develop under different components of structured depression care.",
+                "Der Depressions-Kompass verbindet Ihre Antworten mit Ergebnissen aus einer Metaanalyse individueller Patientendaten und schätzt, wie sich Ihre Beschwerden unter verschiedenen Bausteinen strukturierter Depressionsversorgung entwickeln könnten.",
+                "Depression Compass links your answers to results from an individual-patient-data meta-analysis and estimates how your symptoms might develop under different components of structured depression care.",
               ])}
             </p>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Link
+                to="/fragebogen"
+                className="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition-transform hover:-translate-y-0.5"
+              >
+                {tr(ui.start)}
+              </Link>
+              <Link
+                to="/praxis"
+                className="inline-flex items-center justify-center rounded-xl border border-border bg-card px-5 py-3 text-sm font-semibold transition-colors hover:bg-secondary"
+              >
+                {tr(["Ansicht für die Praxis", "View for the practice"])}
+              </Link>
+            </div>
             <p className="mt-5 text-xs text-muted-foreground">
               {tr([
-                "Zugang mit E-Mail und Passwort. Patientendaten sind nur für die verknüpfte Praxis sichtbar.",
-                "Access with email and password. Patient data is only visible to the linked practice.",
+                "Keine Anmeldung. Ihre Antworten bleiben auf diesem Gerät und werden nicht übertragen.",
+                "No sign-up. Your answers stay on this device and are not transmitted.",
               ])}
             </p>
           </div>
@@ -91,34 +116,21 @@ function Index() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-4 py-12">
+      <section className="mx-auto max-w-5xl px-4 py-14">
         <h2 className="font-display text-2xl font-semibold">
-          {tr(["Wie möchten Sie fortfahren?", "How would you like to continue?"])}
+          {tr(["So läuft es ab", "How it works"])}
         </h2>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          {roles.map((r) => (
-            <div key={r.role} className="surface-card flex flex-col p-6">
-              <h3 className="font-display text-lg font-semibold">{tr(r.title)}</h3>
-              <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
-                {tr(r.body)}
-              </p>
-              <Link
-                to="/anmelden"
-                search={{ role: r.role, mode: "signin" }}
-                className="mt-5 inline-flex items-center justify-center rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition-transform hover:-translate-y-0.5"
-              >
-                {tr(r.cta)}
-              </Link>
-              <Link
-                to="/anmelden"
-                search={{ role: r.role, mode: "signup" }}
-                className="mt-2 text-center text-xs font-semibold text-primary"
-              >
-                {tr(["Neues Konto anlegen", "Create a new account"])}
-              </Link>
-            </div>
+        <ol className="mt-6 grid gap-4 sm:grid-cols-2">
+          {steps.map((s) => (
+            <li key={s.n} className="surface-card p-5">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-soft font-display text-sm font-bold text-accent-foreground">
+                {s.n}
+              </span>
+              <h3 className="mt-3 text-base font-semibold">{tr(s.title)}</h3>
+              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{tr(s.body)}</p>
+            </li>
           ))}
-        </div>
+        </ol>
       </section>
 
       <section className="mx-auto max-w-5xl px-4 pb-6">
@@ -136,7 +148,7 @@ function Index() {
             to="/soforthilfe"
             className="mt-4 inline-flex rounded-xl bg-destructive px-5 py-2.5 text-sm font-semibold text-destructive-foreground"
           >
-            {tr(ui.crisis)}
+            {tr(["Alle Krisenkontakte", "All crisis contacts"])}
           </Link>
         </div>
       </section>

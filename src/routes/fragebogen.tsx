@@ -1,6 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { saveAssessment } from "@/lib/data";
 import { Choice, MultiChoice, YesNoField } from "@/components/fields";
 import { useLang, ui, type L } from "@/lib/i18n";
 import {
@@ -20,7 +19,7 @@ import {
   type Duration,
 } from "@/lib/session";
 
-export const Route = createFileRoute("/_authenticated/fragebogen")({
+export const Route = createFileRoute("/fragebogen")({
   head: () => ({
     meta: [
       { title: "Fragebogen – Depressions-Kompass" },
@@ -115,29 +114,15 @@ function Questionnaire() {
 
   const isLast = index === total - 1;
 
-  const [saving, setSaving] = useState(false);
-  const [saveError, setSaveError] = useState<string | null>(null);
-
-  const goNext = async () => {
+  const goNext = () => {
     if (isLast) {
-      setSaving(true);
-      setSaveError(null);
-      try {
-        const completedAt = new Date().toISOString();
-        update({ completedAt });
-        await saveAssessment({ ...session, completedAt });
-        navigate({ to: "/ergebnis" });
-      } catch (e) {
-        setSaveError(e instanceof Error ? e.message : String(e));
-      } finally {
-        setSaving(false);
-      }
+      update({ completedAt: new Date().toISOString() });
+      navigate({ to: "/ergebnis" });
       return;
     }
     setIndex((i) => i + 1);
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
   };
-
 
   const toggle = (list: string[], id: string) =>
     list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
@@ -425,7 +410,6 @@ function Questionnaire() {
           {tr(ui.back)}
         </button>
         <div className="flex items-center gap-3">
-          {saveError && <span className="text-xs text-destructive">{saveError}</span>}
           {!canContinue && (
             <span className="text-xs text-muted-foreground">
               {tr(["Bitte alle Fragen beantworten", "Please answer all questions"])}
@@ -433,18 +417,13 @@ function Questionnaire() {
           )}
           <button
             type="button"
-            onClick={() => void goNext()}
-            disabled={!canContinue || saving}
+            onClick={goNext}
+            disabled={!canContinue}
             className="rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-soft transition-transform enabled:hover:-translate-y-0.5 disabled:opacity-40"
           >
-            {saving
-              ? tr(["Wird gespeichert …", "Saving …"])
-              : isLast
-                ? tr(ui.finish)
-                : tr(ui.continue)}
+            {isLast ? tr(ui.finish) : tr(ui.continue)}
           </button>
         </div>
-
       </div>
 
       <p className="mt-6 text-xs text-muted-foreground">
