@@ -411,6 +411,7 @@ function Questionnaire() {
           {tr(ui.back)}
         </button>
         <div className="flex items-center gap-3">
+          {saveError && <span className="text-xs text-destructive">{saveError}</span>}
           {!canContinue && (
             <span className="text-xs text-muted-foreground">
               {tr(["Bitte alle Fragen beantworten", "Please answer all questions"])}
@@ -418,13 +419,18 @@ function Questionnaire() {
           )}
           <button
             type="button"
-            onClick={goNext}
-            disabled={!canContinue}
+            onClick={() => void goNext()}
+            disabled={!canContinue || saving}
             className="rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-soft transition-transform enabled:hover:-translate-y-0.5 disabled:opacity-40"
           >
-            {isLast ? tr(ui.finish) : tr(ui.continue)}
+            {saving
+              ? tr(["Wird gespeichert …", "Saving …"])
+              : isLast
+                ? tr(ui.finish)
+                : tr(ui.continue)}
           </button>
         </div>
+
       </div>
 
       <p className="mt-6 text-xs text-muted-foreground">
