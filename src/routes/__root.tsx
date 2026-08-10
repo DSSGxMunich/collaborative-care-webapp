@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { LanguageProvider, useLang, ui } from "../lib/i18n";
 import { SessionProvider } from "../lib/session";
+import { AuthProvider, useAuth } from "../lib/auth";
 
 function NotFoundComponent() {
   return (
@@ -230,6 +231,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
+        <AuthProvider>
         <SessionProvider>
           <div className="flex min-h-screen flex-col">
             <SiteHeader />
@@ -240,6 +242,7 @@ function RootComponent() {
             <SiteFooter />
           </div>
         </SessionProvider>
+        </AuthProvider>
       </LanguageProvider>
     </QueryClientProvider>
   );
