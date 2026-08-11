@@ -24,7 +24,11 @@ export type Profile = {
   workStrain: YesNo | null;
   substanceUse: YesNo | null;
   preferences: string[];
+  /** Practical constraints — used for fit, never for effect estimates. */
+  constraints: string[];
   mobilityLimited: YesNo | null;
+  lowActivity: YesNo | null;
+  caregiving: YesNo | null;
 };
 
 export type SafetyAnswers = {
@@ -59,7 +63,10 @@ export const emptySession = (): Session => ({
     workStrain: null,
     substanceUse: null,
     preferences: [],
+    constraints: [],
     mobilityLimited: null,
+    lowActivity: null,
+    caregiving: null,
   },
   completedAt: null,
 });
@@ -72,13 +79,34 @@ export const PRIOR_TREATMENTS: { id: string; label: L }[] = [
   { id: "none", label: ["Noch keine Behandlung", "No treatment so far"] },
 ];
 
+/** What the patient could imagine — practical fit, kept apart from predicted effect. */
 export const PREFERENCES: { id: string; label: L }[] = [
-  { id: "talking", label: ["Gespräche / Psychotherapie", "Talking therapy"] },
-  { id: "medication", label: ["Medikamente", "Medication"] },
-  { id: "activity", label: ["Bewegung & Aktivität", "Movement & activity"] },
+  {
+    id: "closeContact",
+    label: ["Regelmäßiger Kontakt mit der Praxis", "Regular contact with the practice"],
+  },
+  { id: "phone", label: ["Kontakt per Telefon oder Video", "Contact by telephone or video"] },
+  {
+    id: "selfManagement",
+    label: ["Selbst mit Materialien und Übungen arbeiten", "Working with materials and exercises myself"],
+  },
   { id: "digital", label: ["Digitale Programme", "Digital programmes"] },
+  { id: "activity", label: ["Bewegung & Aktivität", "Movement & activity"] },
   { id: "group", label: ["Gruppen- oder Gemeinschaftsangebote", "Group or community offers"] },
-  { id: "gpLed", label: ["Engere Begleitung durch die Praxis", "Closer follow-up by the practice"] },
+  {
+    id: "specialist",
+    label: ["Mitbeurteilung durch Fachleute", "Input from specialist professionals"],
+  },
+];
+
+/** Practical constraints that shape what is feasible, not what works. */
+export const CONSTRAINTS: { id: string; label: L }[] = [
+  { id: "time", label: ["Wenig Zeit für Termine", "Little time for appointments"] },
+  { id: "fewAppointments", label: ["Möglichst wenige Termine", "As few appointments as possible"] },
+  { id: "travel", label: ["Wege sind schwierig", "Travelling is difficult"] },
+  { id: "noDigital", label: ["Kein oder schlechter Internetzugang", "No or poor internet access"] },
+  { id: "costs", label: ["Kosten sind ein Problem", "Costs are a problem"] },
+  { id: "privacy", label: ["Möchte nicht in einer Gruppe sprechen", "Would rather not speak in a group"] },
 ];
 
 type Ctx = {
