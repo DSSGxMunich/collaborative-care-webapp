@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import { phq9Total, severityFor } from "./phq9";
 import { assessRisk } from "./safety";
-import { buildPredictions, CARE_COMPONENTS, type CareComponent, type ComponentId } from "./model";
+import { buildPredictions, componentById, type CareComponent, type ComponentId } from "./model";
 import { useSession } from "./session";
-import { matchOffers } from "./social";
+import { matchCategories } from "./social";
 
 export function usePrediction() {
   const { session, hydrated } = useSession();
@@ -20,11 +20,10 @@ export function usePrediction() {
       severity: severityFor(baseline),
       risk: assessRisk(session),
       session,
-      offers: matchOffers(session, baseline),
+      categories: matchCategories(session, baseline),
       ...predictions,
     };
   }, [session, hydrated]);
 }
 
-export const componentLabel = (id: ComponentId): CareComponent =>
-  CARE_COMPONENTS.find((c) => c.id === id)!;
+export const componentLabel = (id: ComponentId): CareComponent => componentById(id);

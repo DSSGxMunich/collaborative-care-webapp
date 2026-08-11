@@ -12,6 +12,7 @@ import {
 } from "@/lib/phq9";
 import { assessRisk, RISK_MESSAGE, RISK_TITLE } from "@/lib/safety";
 import {
+  CONSTRAINTS,
   PREFERENCES,
   PRIOR_TREATMENTS,
   useSession,
@@ -103,7 +104,9 @@ function Questionnaire() {
           session.profile.lowSupport !== null &&
           session.profile.workStrain !== null &&
           session.profile.substanceUse !== null &&
-          session.profile.mobilityLimited !== null
+          session.profile.mobilityLimited !== null &&
+          session.profile.lowActivity !== null &&
+          session.profile.caregiving !== null
         );
       case "preferences":
         return session.profile.preferences.length > 0;
@@ -378,10 +381,33 @@ function Questionnaire() {
             value={session.profile.mobilityLimited}
             onChange={(v) => updateProfile({ mobilityLimited: v })}
           />
+          <YesNoField
+            label={[
+              "Bewegen Sie sich derzeit wenig (weniger als etwa 2 Stunden pro Woche)?",
+              "Are you currently physically inactive (less than about 2 hours per week)?",
+            ]}
+            value={session.profile.lowActivity}
+            onChange={(v) => updateProfile({ lowActivity: v })}
+          />
+          <YesNoField
+            label={[
+              "Pflegen oder betreuen Sie regelmäßig eine andere Person?",
+              "Do you regularly care for or look after another person?",
+            ]}
+            value={session.profile.caregiving}
+            onChange={(v) => updateProfile({ caregiving: v })}
+          />
         </div>
       )}
 
       {key === "preferences" && (
+        <div className="space-y-6">
+        <p className="text-sm leading-relaxed text-muted-foreground">
+          {tr([
+            "Diese Angaben gehen nicht in die Schätzungen ein. Sie zeigen im Ergebnis getrennt, was praktisch zu Ihnen passt.",
+            "These answers do not enter the estimates. They are shown separately in the results as what practically suits you.",
+          ])}
+        </p>
         <fieldset className="surface-card p-5">
           <legend className="mb-1 block text-base font-semibold">
             {tr([
@@ -398,6 +424,23 @@ function Questionnaire() {
             onToggle={(id) => updateProfile({ preferences: toggle(session.profile.preferences, id) })}
           />
         </fieldset>
+        <fieldset className="surface-card p-5">
+          <legend className="mb-1 block text-base font-semibold">
+            {tr([
+              "Was macht eine Behandlung für Sie praktisch schwierig?",
+              "What makes treatment practically difficult for you?",
+            ])}
+          </legend>
+          <p className="mb-4 text-sm text-muted-foreground">
+            {tr(["Mehrfachauswahl möglich, auch keine.", "Select any number, including none."])}
+          </p>
+          <MultiChoice
+            options={CONSTRAINTS}
+            values={session.profile.constraints}
+            onToggle={(id) => updateProfile({ constraints: toggle(session.profile.constraints, id) })}
+          />
+        </fieldset>
+        </div>
       )}
 
       <div className="mt-8 flex items-center justify-between gap-4">

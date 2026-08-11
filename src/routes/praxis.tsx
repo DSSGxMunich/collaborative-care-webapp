@@ -2,9 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useLang, ui, type L } from "@/lib/i18n";
 import { PHQ9_ITEMS, SEVERITY_LABEL } from "@/lib/phq9";
 import { assessRisk } from "@/lib/safety";
-import { MODEL_META } from "@/lib/model";
-import { componentLabel, usePrediction } from "@/lib/usePrediction";
-import { PREFERENCES, PRIOR_TREATMENTS } from "@/lib/session";
+import { DATA_SUPPORT_LABEL, MODEL_META, PROTOTYPE_NOTE } from "@/lib/model";
+import { usePrediction } from "@/lib/usePrediction";
+import { CONSTRAINTS, PREFERENCES, PRIOR_TREATMENTS } from "@/lib/session";
 
 export const Route = createFileRoute("/praxis")({
   head: () => ({
@@ -128,7 +128,22 @@ function Clinician() {
       value: profile.mobilityLimited ? tr(YES_NO[profile.mobilityLimited]!) : "–",
     },
     {
-      label: ["Patientenpräferenzen", "Patient preferences"],
+      label: ["Körperliche Inaktivität", "Physical inactivity"],
+      value: profile.lowActivity ? tr(YES_NO[profile.lowActivity]!) : "–",
+    },
+    {
+      label: ["Pflege-/Sorgeverantwortung", "Caring responsibilities"],
+      value: profile.caregiving ? tr(YES_NO[profile.caregiving]!) : "–",
+    },
+    {
+      label: ["Praktische Einschränkungen", "Practical constraints"],
+      value:
+        profile.constraints
+          .map((id) => tr(CONSTRAINTS.find((t) => t.id === id)?.label ?? (["–", "–"] as L)))
+          .join(", ") || "–",
+    },
+    {
+      label: ["Patientenpräferenzen (nicht im Modell)", "Patient preferences (not in the model)"],
       value:
         profile.preferences
           .map((id) => tr(PREFERENCES.find((t) => t.id === id)?.label ?? (["–", "–"] as L)))
@@ -137,25 +152,16 @@ function Clinician() {
   ];
 
   const scenarios = [
-    { label: ["Übliche Versorgung", "Usual care"] as L, s: p.usual },
-    ...p.singles.slice(0, 3).map((s) => ({
-      label: componentLabel(s.components[0]!).short,
-      s,
+    ...p.singles.map((x) => ({
+      label: x.component.short,
+      kind: ["Baustein", "Component"] as L,
+      s: x.scenario,
     })),
-    {
-      label: [
-        p.pair.components.map((c) => componentLabel(c).short[0]).join(" + "),
-        p.pair.components.map((c) => componentLabel(c).short[1]).join(" + "),
-      ] as L,
-      s: p.pair,
-    },
-    {
-      label: [
-        p.triple.components.map((c) => componentLabel(c).short[0]).join(" + "),
-        p.triple.components.map((c) => componentLabel(c).short[1]).join(" + "),
-      ] as L,
-      s: p.triple,
-    },
+    ...p.configurations.map((c) => ({
+      label: c.config.label,
+      kind: DATA_SUPPORT_LABEL[c.config.dataSupport],
+      s: c.scenario,
+    })),
   ];
 
   return (
@@ -254,21 +260,38 @@ function Clinician() {
           <table className="w-full min-w-[34rem] text-sm">
             <thead>
               <tr className="text-left text-xs uppercase tracking-wide text-muted-foreground">
-                <th className="px-4 py-3 font-semibold">{tr(["Szenario", "Scenario"])}</th>
-                <th className="px-4 py-3 font-semibold">Δ PHQ-9</th>
-                <th className="px-4 py-3 font-semibold">{tr(["PHQ-9 6 Mo.", "PHQ-9 6 mo."])}</th>
-                <th className="px-4 py-3 font-semibold">{tr(["Response", "Response"])}</th>
-                <th className="px-4 py-3 font-semibold">{tr(["Remission", "Remission"])}</th>
+                <th className="px-4 py-3 font-semibold">{tr(["Versorgungsoption", "Care option"])}</th>
+                <th className="px-4 py-3 font-semibold">{tr(["Datenlage", "Data support"])}</th>
+                <th className="px-4 py-3 font-semibold">{tr(["PHQ-9 6 Mo. (Bereich)", "PHQ-9 6 mo. (range)"])}</th>
+                <th className="px-4 py-3 font-semibold">{tr(["Response ≥ 50 %", "Response ≥ 50%"])}</th>
+                <th className="px-4 py-3 font-semibold">{tr(["Remission < 5", "Remission < 5"])}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
               {scenarios.map((row) => (
                 <tr key={row.s.key + tr(row.label)}>
                   <td className="px-4 py-3 font-medium">{tr(row.label)}</td>
-                  <td className="px-4 py-3">−{row.s.expectedDrop}</td>
-                  <td className="px-4 py-3">{row.s.expectedEndpoint}</td>
-                  <td className="px-4 py-3">{Math.round(row.s.responseProbability * 100)}%</td>
-                  <td className="px-4 py-3">{Math.round(row.s.remissionProbability * 100)}%</td>
+                  <td className="px-4 py-3 text-xs text-muted-foreground">{tr(row.kind)}</td>
+                  <td className="px-4 py-3">
+                    {row.s.expectedEndpoint}{" "}
+                    <span className="text-xs text-muted-foreground">
+                      ({row.s.endpointRange[0]}–{row.s.endpointRange[1]})
+                    </span>
+                  </td>
+                  <td className="px-4 py-3">
+                    {Math.round(row.s.responseProbability * 100)}%{" "}
+                    <span className="text-xs text-muted-foreground">
+                      ({Math.round(row.s.responseRange[0] * 100)}–
+                      {Math.round(row.s.responseRange[1] * 100)}%)
+                    </span>
+                  </td>
+                  <td className="px-4 py-3">
+                    {Math.round(row.s.remissionProbability * 100)}%{" "}
+                    <span className="text-xs text-muted-foreground">
+                      ({Math.round(row.s.remissionRange[0] * 100)}–
+                      {Math.round(row.s.remissionRange[1] * 100)}%)
+                    </span>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -276,8 +299,8 @@ function Clinician() {
         </div>
         <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
           {tr([
-            `Regelbasiertes, additives Modell mit abnehmenden Kombinationsgewichten (${MODEL_META.combinationWeights.join(", ")}); Effekte in PHQ-9-Punkten, gepoolte SD ${MODEL_META.pooledSd}. Modellversion ${MODEL_META.version} – vorläufige Parameter, ersetzbar durch die Koeffizienten der IPD-Metaanalyse.`,
-            `Rule-based additive model with diminishing combination weights (${MODEL_META.combinationWeights.join(", ")}); effects in PHQ-9 points, pooled SD ${MODEL_META.pooledSd}. Model version ${MODEL_META.version} — provisional parameters, replaceable with the IPD meta-analysis coefficients.`,
+            `${PROTOTYPE_NOTE[0]} Regelbasiertes Prototyp-Modell mit abnehmenden Kombinationsgewichten (${MODEL_META.combinationWeights.join(", ")}); Konfigurationen sind eigenständige Versorgungsformen, keine Summen einzelner Bausteine. Modellversion ${MODEL_META.version}. Keine Rangfolge, keine klinisch validierten Vorhersagen. Angaben verbleiben in der Browser-Sitzung des Patienten.`,
+            `${PROTOTYPE_NOTE[1]} Rule-based prototype model with diminishing combination weights (${MODEL_META.combinationWeights.join(", ")}); configurations are distinct care arrangements, not sums of single components. Model version ${MODEL_META.version}. No ranking, no clinically validated predictions. Data remain in the patient's browser session.`,
           ])}
         </p>
       </section>
