@@ -164,8 +164,10 @@ function OutcomeCard({
 function Results() {
   const { tr } = useLang();
   const p = usePrediction();
+  const [revealed, setRevealed] = useState(false);
 
   if (!p.hydrated) return <div className="mx-auto max-w-3xl px-4 py-16" />;
+
 
   if (!p.complete) {
     return (
