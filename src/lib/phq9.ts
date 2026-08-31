@@ -18,7 +18,7 @@ export const PHQ9_INTRO: L = [
 
 export const PHQ9_ITEMS: L[] = [
   ["Wenig Interesse oder Freude an Ihren Tätigkeiten", "Little interest or pleasure in doing things"],
-  ["Niedergeschlagenheit, Schwermut oder Hoffnungslosigkeit", "Feeling down, depressed, or hopeless"],
+  ["Niedergeschlagenheit, Melancholie oder Hoffnungslosigkeit", "Feeling down, depressed, or hopeless"],
   [
     "Schwierigkeiten ein- oder durchzuschlafen oder vermehrter Schlaf",
     "Trouble falling or staying asleep, or sleeping too much",
