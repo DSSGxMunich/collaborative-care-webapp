@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useLang, ui, type L } from "@/lib/i18n";
 import { SEVERITY_LABEL, SEVERITY_RANGE } from "@/lib/phq9";
@@ -164,8 +165,10 @@ function OutcomeCard({
 function Results() {
   const { tr } = useLang();
   const p = usePrediction();
+  const [revealed, setRevealed] = useState(false);
 
   if (!p.hydrated) return <div className="mx-auto max-w-3xl px-4 py-16" />;
+
 
   if (!p.complete) {
     return (
@@ -184,7 +187,78 @@ function Results() {
     );
   }
 
+  if (!revealed) {
+    return (
+      <div className="mx-auto max-w-3xl px-4 py-12">
+        <h1 className="font-display text-3xl font-semibold">
+          {tr(["Danke für Ihre Antworten", "Thank you for your answers"])}
+        </h1>
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+          {tr([
+            "Sie entscheiden selbst, ob Sie Ihre persönliche Auswertung jetzt sehen möchten. Manche Menschen finden Zahlen zu ihrer Situation hilfreich, andere empfinden sie als belastend. Beides ist in Ordnung – Sie können die Auswertung auch später oder gemeinsam mit Ihrer Ärztin oder Ihrem Arzt ansehen.",
+            "You decide whether you want to see your personal results now. Some people find numbers about their situation helpful, others find them distressing. Both are fine — you can also look at the results later or together with your doctor.",
+          ])}
+        </p>
+
+        {p.risk !== "none" && (
+          <div
+            className={[
+              "mt-6 rounded-2xl border p-5",
+              p.risk === "low"
+                ? "border-warning/50 bg-accent-soft"
+                : "border-destructive bg-destructive-soft",
+            ].join(" ")}
+          >
+            <h2 className="font-display text-base font-semibold">{tr(RISK_TITLE[p.risk])}</h2>
+            <p className="mt-2 text-sm leading-relaxed">{tr(RISK_MESSAGE[p.risk])}</p>
+            <Link
+              to="/soforthilfe"
+              className="mt-3 inline-flex rounded-xl bg-destructive px-4 py-2 text-sm font-semibold text-destructive-foreground"
+            >
+              {tr(["Krisenkontakte", "Crisis contacts"])}
+            </Link>
+          </div>
+        )}
+
+        <div className="surface-card mt-6 space-y-3 p-6">
+          <button
+            type="button"
+            onClick={() => setRevealed(true)}
+            className="w-full rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition-transform hover:-translate-y-0.5"
+          >
+            {tr(["Ja, meine Auswertung anzeigen", "Yes, show my results"])}
+          </button>
+          <Link
+            to="/angebote"
+            className="block w-full rounded-xl border border-border bg-card px-6 py-3 text-center text-sm font-semibold transition-colors hover:bg-secondary"
+          >
+            {tr([
+              "Nein danke – stattdessen Angebote vor Ort ansehen",
+              "No thanks — show local support instead",
+            ])}
+          </Link>
+          <Link
+            to="/praxis"
+            className="block w-full rounded-xl border border-border bg-card px-6 py-3 text-center text-sm font-semibold transition-colors hover:bg-secondary"
+          >
+            {tr([
+              "Nur die Zusammenfassung für die Praxis öffnen",
+              "Only open the summary for the practice",
+            ])}
+          </Link>
+          <p className="text-xs text-muted-foreground">
+            {tr([
+              "Ihre Antworten bleiben ausschließlich in diesem Browser gespeichert. Sie können die Auswertung jederzeit über diese Seite öffnen.",
+              "Your answers stay only in this browser. You can open the results from this page at any time.",
+            ])}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   const chosenPrefs = PREFERENCES.filter((x) => p.session.profile.preferences.includes(x.id));
+
   const chosenConstraints = CONSTRAINTS.filter((x) => p.session.profile.constraints.includes(x.id));
 
   const gpQuestions: L[] = [
