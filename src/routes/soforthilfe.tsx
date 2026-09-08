@@ -14,7 +14,8 @@ export const Route = createFileRoute("/soforthilfe")({
       { property: "og:title", content: "Soforthilfe und Krisenkontakte" },
       {
         property: "og:description",
-        content: "Kostenlose, rund um die Uhr erreichbare Hilfsangebote bei akuter seelischer Krise.",
+        content:
+          "Kostenlose, rund um die Uhr erreichbare Hilfsangebote bei akuter seelischer Krise.",
       },
     ],
   }),
@@ -37,7 +38,10 @@ function Crisis() {
 
       <ul className="mt-8 space-y-3">
         {CRISIS_CONTACTS.map((c) => (
-          <li key={c.detail} className="surface-card flex flex-wrap items-baseline gap-x-4 gap-y-1 p-5">
+          <li
+            key={c.detail}
+            className="surface-card flex flex-wrap items-baseline gap-x-4 gap-y-1 p-5"
+          >
             <span className="font-display text-lg font-semibold">{tr(c.name)}</span>
             <span className="font-display text-lg font-bold text-primary">{c.detail}</span>
             <span className="w-full text-sm text-muted-foreground">{tr(c.note)}</span>

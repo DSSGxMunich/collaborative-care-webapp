@@ -11,7 +11,10 @@ export const Route = createFileRoute("/")({
         content:
           "Fragebogen mit PHQ-9, Sicherheitsalgorithmus und evidenzinformierter Vorhersage: Welche Bausteine strukturierter Depressionsversorgung passen zu welchem Patientenprofil?",
       },
-      { property: "og:title", content: "Depressions-Kompass – Vorhersage-Tool für Depressionsversorgung" },
+      {
+        property: "og:title",
+        content: "Depressions-Kompass – Vorhersage-Tool für Depressionsversorgung",
+      },
       {
         property: "og:description",
         content:

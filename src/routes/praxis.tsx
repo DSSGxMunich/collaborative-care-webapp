@@ -18,7 +18,8 @@ export const Route = createFileRoute("/praxis")({
       { property: "og:title", content: "Kurzbefund für die Praxis" },
       {
         property: "og:description",
-        content: "Ein Blick statt Nachfragen: Symptomprofil, Risiko, Prädiktoren und Modellschätzungen.",
+        content:
+          "Ein Blick statt Nachfragen: Symptomprofil, Risiko, Prädiktoren und Modellschätzungen.",
       },
     ],
   }),
@@ -75,8 +76,14 @@ function Clinician() {
       label: ["Funktionsbeeinträchtigung", "Functional impairment"],
       value: `${p.session.functioning ?? "–"}/3`,
     },
-    { label: ["Suizidalität (Item 9)", "Suicidality (item 9)"], value: `${p.session.phq[8] ?? 0}/3` },
-    { label: ["Risikoeinschätzung", "Risk assessment"], value: tr(riskFlag[risk] ?? riskFlag["none"]!) },
+    {
+      label: ["Suizidalität (Item 9)", "Suicidality (item 9)"],
+      value: `${p.session.phq[8] ?? 0}/3`,
+    },
+    {
+      label: ["Risikoeinschätzung", "Risk assessment"],
+      value: tr(riskFlag[risk] ?? riskFlag["none"]!),
+    },
     {
       label: ["Konkreter Plan / Vorbereitung", "Concrete plan / preparation"],
       value: safety.plan ? tr(YES_NO[safety.plan]!) : "–",
@@ -116,7 +123,10 @@ function Clinician() {
       }`,
     },
     {
-      label: ["Psychosoziale Belastung (Arbeit/Geld/Wohnen)", "Psychosocial strain (work/money/housing)"],
+      label: [
+        "Psychosoziale Belastung (Arbeit/Geld/Wohnen)",
+        "Psychosocial strain (work/money/housing)",
+      ],
       value: profile.workStrain ? tr(YES_NO[profile.workStrain]!) : "–",
     },
     {
@@ -236,11 +246,7 @@ function Clinician() {
                         aria-hidden
                         className={[
                           "h-4 w-2 rounded-sm",
-                          step < v
-                            ? i === 8
-                              ? "bg-destructive"
-                              : "bg-primary"
-                            : "bg-secondary",
+                          step < v ? (i === 8 ? "bg-destructive" : "bg-primary") : "bg-secondary",
                         ].join(" ")}
                       />
                     ))}
@@ -260,11 +266,19 @@ function Clinician() {
           <table className="w-full min-w-[34rem] text-sm">
             <thead>
               <tr className="text-left text-xs uppercase tracking-wide text-muted-foreground">
-                <th className="px-4 py-3 font-semibold">{tr(["Versorgungsoption", "Care option"])}</th>
+                <th className="px-4 py-3 font-semibold">
+                  {tr(["Versorgungsoption", "Care option"])}
+                </th>
                 <th className="px-4 py-3 font-semibold">{tr(["Datenlage", "Data support"])}</th>
-                <th className="px-4 py-3 font-semibold">{tr(["PHQ-9 6 Mo. (Bereich)", "PHQ-9 6 mo. (range)"])}</th>
-                <th className="px-4 py-3 font-semibold">{tr(["Response ≥ 50 %", "Response ≥ 50%"])}</th>
-                <th className="px-4 py-3 font-semibold">{tr(["Remission < 5", "Remission < 5"])}</th>
+                <th className="px-4 py-3 font-semibold">
+                  {tr(["PHQ-9 6 Mo. (Bereich)", "PHQ-9 6 mo. (range)"])}
+                </th>
+                <th className="px-4 py-3 font-semibold">
+                  {tr(["Response ≥ 50 %", "Response ≥ 50%"])}
+                </th>
+                <th className="px-4 py-3 font-semibold">
+                  {tr(["Remission < 5", "Remission < 5"])}
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">

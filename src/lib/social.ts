@@ -10,12 +10,7 @@ import type { Session } from "./session";
  */
 
 export type CategoryId =
-  | "movement"
-  | "peer"
-  | "counselling"
-  | "digital"
-  | "carer"
-  | "participation";
+  "movement" | "peer" | "counselling" | "digital" | "carer" | "participation";
 
 export type OfferCategory = {
   id: CategoryId;
@@ -82,10 +77,7 @@ export const OFFER_CATEGORIES: OfferCategory[] = [
       s.profile.constraints.includes("noDigital")
         ? null
         : s.profile.preferences.includes("digital")
-          ? [
-              "Sie sind offen für digitale Programme.",
-              "You are open to digital programmes.",
-            ]
+          ? ["Sie sind offen für digitale Programme.", "You are open to digital programmes."]
           : s.profile.constraints.includes("travel") || s.profile.constraints.includes("time")
             ? [
                 "Wege oder Zeit sind für Sie schwierig – Angebote von zu Hause aus können passen.",
@@ -212,7 +204,10 @@ export const SOCIAL_OFFERS: SocialOffer[] = [
       "Anerkannte Stellen beraten kostenfrei zu Schulden, Anträgen und Ansprüchen.",
       "Recognised services advise free of charge on debt, applications and entitlements.",
     ],
-    route: ["Kommunale Schuldnerberatung, Verbraucherzentrale", "Municipal debt advice, consumer advice centre"],
+    route: [
+      "Kommunale Schuldnerberatung, Verbraucherzentrale",
+      "Municipal debt advice, consumer advice centre",
+    ],
     searchTerm: ["Schuldnerberatung", "debt advice"],
   },
   {
@@ -248,7 +243,10 @@ export const SOCIAL_OFFERS: SocialOffer[] = [
       "Beratung, Pflegekurse, Tagespflege und stundenweise Betreuung entlasten den Alltag messbar.",
       "Advice, carer courses, day care and hourly support measurably relieve everyday life.",
     ],
-    route: ["Pflegestützpunkt, Pflegekasse, Angehörigenverbände", "Care support point, care insurer, carer associations"],
+    route: [
+      "Pflegestützpunkt, Pflegekasse, Angehörigenverbände",
+      "Care support point, care insurer, carer associations",
+    ],
     searchTerm: ["Pflegestützpunkt Angehörige Entlastung", "carer support respite"],
   },
   {
@@ -259,7 +257,10 @@ export const SOCIAL_OFFERS: SocialOffer[] = [
       "Regelmäßige Treffen für Menschen mit Sorge- und Pflegeverantwortung, oft mit Betreuungsangebot.",
       "Regular meetings for people with caring responsibilities, often with a care service on site.",
     ],
-    route: ["Sozialpsychiatrischer Dienst, Angehörigenverbände", "Community mental health service, carer associations"],
+    route: [
+      "Sozialpsychiatrischer Dienst, Angehörigenverbände",
+      "Community mental health service, carer associations",
+    ],
     searchTerm: ["Angehörigengruppe", "carers group"],
   },
   {
@@ -270,13 +271,19 @@ export const SOCIAL_OFFERS: SocialOffer[] = [
       "Regelmäßige Treffen, gemeinsame Mahlzeiten und Ausflüge, häufig mit Fahrdienst.",
       "Regular meet-ups, shared meals and outings, often with a transport service.",
     ],
-    route: ["Gemeinde, Seniorenbüro, Kirchengemeinden", "Municipality, senior citizens' office, parishes"],
+    route: [
+      "Gemeinde, Seniorenbüro, Kirchengemeinden",
+      "Municipality, senior citizens' office, parishes",
+    ],
     searchTerm: ["Seniorentreff Begegnungsstätte", "senior meeting point"],
   },
   {
     id: "ehrenamt",
     category: "participation",
-    title: ["Ehrenamt, Gemeinschaftsgarten, Repair-Café", "Volunteering, community garden, repair café"],
+    title: [
+      "Ehrenamt, Gemeinschaftsgarten, Repair-Café",
+      "Volunteering, community garden, repair café",
+    ],
     body: [
       "Tätigkeiten mit fester Zeitstruktur und Kontakt, niedrigschwellig und kostenfrei.",
       "Activities with a fixed weekly structure and contact, low-threshold and free of charge.",

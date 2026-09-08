@@ -25,12 +25,7 @@ import type { L } from "./i18n";
 import type { Profile } from "./session";
 
 export type ComponentId =
-  | "careManager"
-  | "monitoring"
-  | "education"
-  | "followUp"
-  | "specialistConsult"
-  | "coordination";
+  "careManager" | "monitoring" | "education" | "followUp" | "specialistConsult" | "coordination";
 
 export type PredictionInput = {
   baseline: number;
@@ -216,7 +211,10 @@ export const CARE_COMPONENTS: CareComponent[] = [
       },
       {
         id: "priorTreatment",
-        label: ["Bereits behandelt, ohne ausreichende Besserung", "Already treated without sufficient improvement"],
+        label: [
+          "Bereits behandelt, ohne ausreichende Besserung",
+          "Already treated without sufficient improvement",
+        ],
         factor: 1.2,
         applies: (c) => priorTx(c, "psychotherapy") || priorTx(c, "inpatient"),
       },
@@ -243,7 +241,10 @@ export const CARE_COMPONENTS: CareComponent[] = [
     moderators: [
       {
         id: "comorbidity",
-        label: ["Mehrere Behandelnde wegen Begleiterkrankung", "Several providers due to comorbidity"],
+        label: [
+          "Mehrere Behandelnde wegen Begleiterkrankung",
+          "Several providers due to comorbidity",
+        ],
         factor: 1.25,
         applies: (c) => c.profile.chronicIllness === "yes",
       },
@@ -262,10 +263,7 @@ export const componentById = (id: ComponentId): CareComponent =>
 
 /** Distinct care configurations, not additive sums of components. */
 export type ConfigurationId =
-  | "usualCare"
-  | "cmMonitoring"
-  | "cmMonitoringEducation"
-  | "multiComponent";
+  "usualCare" | "cmMonitoring" | "cmMonitoringEducation" | "multiComponent";
 
 export type DataSupport = "estimable" | "partial" | "uncertain";
 
@@ -310,7 +308,10 @@ export const CARE_CONFIGURATIONS: CareConfiguration[] = [
   },
   {
     id: "cmMonitoring",
-    label: ["Care-Management mit regelmäßiger Verlaufsmessung", "Care management with regular monitoring"],
+    label: [
+      "Care-Management mit regelmäßiger Verlaufsmessung",
+      "Care management with regular monitoring",
+    ],
     description: [
       "Feste Ansprechperson in der Praxis plus Fragebogen-Verlaufsmessung in festen Abständen.",
       "A named contact person in the practice plus questionnaire-based monitoring at fixed intervals.",
@@ -346,7 +347,14 @@ export const CARE_CONFIGURATIONS: CareConfiguration[] = [
       "Vollständiges Modell: Care-Management, Verlaufsmessung, Schulung, geplante Nachverfolgung, fachliche Mitbeurteilung und Abstimmung im Team.",
       "Full model: care management, monitoring, education, planned follow-up, specialist input and coordination between providers.",
     ],
-    components: ["careManager", "monitoring", "education", "followUp", "specialistConsult", "coordination"],
+    components: [
+      "careManager",
+      "monitoring",
+      "education",
+      "followUp",
+      "specialistConsult",
+      "coordination",
+    ],
     dataSupport: "partial",
     dataNote: [
       "Studien setzen unterschiedliche Teile dieses Modells um; die Kombination wird nur dort geschätzt, wo die Studiendaten sie tragen.",
@@ -442,7 +450,10 @@ export function predictScenario(
     components,
     expectedDrop: round1(drop),
     expectedEndpoint: round1(endpoint),
-    endpointRange: [round1(Math.max(0, endpoint - spread)), round1(Math.min(27, endpoint + spread))],
+    endpointRange: [
+      round1(Math.max(0, endpoint - spread)),
+      round1(Math.min(27, endpoint + spread)),
+    ],
     responseProbability: response,
     responseRange: [clamp(response - pSpread, 0.01, 1), clamp(response + pSpread, 0, 0.98)],
     remissionProbability: remission,
