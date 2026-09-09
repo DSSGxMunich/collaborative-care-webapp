@@ -1,18 +1,26 @@
 /**
  * Depression-care outcome model — fitted coefficients (Bayesian, az.summary()).
  * ----------------------------------------------------------------------------
- * FITTED_COEFFICIENTS below are the real posterior means (with 95% credible
- * intervals) supplied for the IPD meta-analysis model. Two things are still
- * PLACEHOLDERS, and everything downstream of them is a best-effort, clearly
- * flagged approximation until they're confirmed:
+ * FITTED_COEFFICIENTS below are the real posterior means (with 95% HDI /
+ * credible intervals) from the fitted IPD meta-analysis model. One thing is
+ * still a PLACEHOLDER, and everything downstream of it is a best-effort,
+ * clearly flagged approximation until it's confirmed:
  *
- *   1. `alphaStudy` — the study-level intercept (mean of alpha_study). It
- *      was not part of the fitted-coefficient table supplied; currently 0.
- *   2. `STANDARDIZATION` — the mean/SD used to standardize baseline PHQ-9
- *      and age when the model was fit, and `SEX_CODE` — which sex category
- *      the model treats as the 0/reference level. Using the wrong constants
- *      here silently shifts every prediction, so these must be confirmed
- *      before the numbers below are treated as clinically valid.
+ *   `STANDARDIZATION` — the mean/SD used to standardize baseline PHQ-9 and
+ *   age when the model was fit, and `SEX_CODE` — which sex category the
+ *   model treats as the 0/reference level. Using the wrong constants here
+ *   silently shifts every prediction, so these must be confirmed before the
+ *   numbers below are treated as clinically valid.
+ *
+ * `alphaStudy` (the population-level intercept) is now real, but it is an
+ * APPROXIMATION: az.summary() reported a separate posterior mean per trial
+ * (`alpha_study[...]`, see ALPHA_STUDY_BY_TRIAL below) rather than a single
+ * pooled hyperparameter (e.g. a `mu_alpha`) for a new/typical practice.
+ * `alphaStudy` here is the unweighted mean across the reported trials, which
+ * treats every included trial as equally informative about a "typical" new
+ * practice — a properly precision-weighted or model-based population mean
+ * may differ, and between-study heterogeneity is substantial (trial
+ * intercepts range from about -3.8 to -1.0).
  *
  * Model structure — linear predictor for the modelled PHQ-9 change
  * ("improvement"; c1 = "followUp" component present, c2 =
@@ -45,7 +53,8 @@
  * summary table alone), and the resulting interval is propagated through
  * the same endpoint / response / remission transforms as the point
  * estimate. This is an approximation, not the model's true joint credible
- * interval — treat it as indicative, not exact.
+ * interval — treat it as indicative, not exact. `alphaStudy`'s own
+ * between-trial uncertainty is not folded into this range (see above).
  */
 
 import type { L } from "./i18n";
@@ -63,29 +72,50 @@ export type PredictionInput = {
 export type CoefCI = { estimate: number; ci: readonly [number, number] };
 
 /**
- * Real fitted coefficients, as supplied. `alphaStudy` is a placeholder
- * (missing from the source table) and `sigma` has no CI in az.summary().
+ * Per-trial posterior mean intercept (alpha_study[<trial>]) from az.summary().
+ * Kept for transparency; ALPHA_STUDY_MEAN below (an unweighted average of
+ * these) is what the model actually uses — see the file header for caveats.
  */
+export const ALPHA_STUDY_BY_TRIAL: Record<string, number> = {
+  "02_Aragones_2012": -3.561,
+  "04_Bekelman_2018": -1.995,
+  "08_Coventry_2015": -1.479,
+  "10_Fletcher_2021a": -1.928,
+  "11_Fletcher_2021b": -1.459,
+  "12_Gensichen_2009": -2.241,
+  "13_Hölzel_2018": -0.989,
+  "21_Richards_2008": -3.829,
+  "22_Richards_2013": -2.555,
+  "24_Rollman_2016": -1.32,
+  "30_Srinivasan_2022": -3.353,
+  "33_Zimmerman_2016": -3.254,
+};
+
+const trialAlphas = Object.values(ALPHA_STUDY_BY_TRIAL);
+/** Unweighted mean of ALPHA_STUDY_BY_TRIAL — see file header for caveats. */
+export const ALPHA_STUDY_MEAN = trialAlphas.reduce((a, b) => a + b, 0) / trialAlphas.length;
+
+/** Real fitted coefficients, as supplied (az.summary() posterior means + 95% HDI). */
 export const FITTED_COEFFICIENTS = {
-  /** PLACEHOLDER — mean of alpha_study; not supplied yet. */
-  alphaStudy: 0,
+  /** Approximated population-level intercept — see file header. */
+  alphaStudy: ALPHA_STUDY_MEAN,
 
-  betaFollowUp: { estimate: -0.558, ci: [-1.121, 0.084] } as CoefCI,
-  betaRelapse: { estimate: 0.293, ci: [-1.264, 1.773] } as CoefCI,
-  betaInteraction: { estimate: 0.306, ci: [-1.23, 1.811] } as CoefCI,
+  betaFollowUp: { estimate: -0.39, ci: [-0.902, 0.112] } as CoefCI,
+  betaRelapse: { estimate: -1.62, ci: [-2.584, -0.691] } as CoefCI,
+  betaInteraction: { estimate: 0.765, ci: [-0.168, 1.725] } as CoefCI,
 
-  gammaPhq9: { estimate: -2.186, ci: [-2.404, -1.965] } as CoefCI,
+  gammaPhq9: { estimate: -2.755, ci: [-2.892, -2.62] } as CoefCI,
 
-  thetaAge: { estimate: -0.36, ci: [-0.676, -0.04] } as CoefCI,
-  thetaSex: { estimate: -0.501, ci: [-1.021, -0.001] } as CoefCI,
+  thetaAge: { estimate: -0.105, ci: [-0.274, 0.07] } as CoefCI,
+  thetaSex: { estimate: -0.029, ci: [-0.341, 0.273] } as CoefCI,
 
-  deltaC1Age: { estimate: 0.377, ci: [-0.026, 0.795] } as CoefCI,
-  deltaC2Age: { estimate: -0.888, ci: [-1.754, -0.004] } as CoefCI,
-  deltaC1Sex: { estimate: 0.514, ci: [-0.205, 1.235] } as CoefCI,
-  deltaC2Sex: { estimate: -0.778, ci: [-1.92, 0.304] } as CoefCI,
+  deltaC1Age: { estimate: 0.199, ci: [-0.089, 0.507] } as CoefCI,
+  deltaC2Age: { estimate: 0.12, ci: [-0.276, 0.493] } as CoefCI,
+  deltaC1Sex: { estimate: 0.242, ci: [-0.327, 0.803] } as CoefCI,
+  deltaC2Sex: { estimate: -0.432, ci: [-1.076, 0.237] } as CoefCI,
 
-  /** Residual noise (SD), no CI reported. */
-  sigma: 5.067,
+  /** Residual noise (SD); posterior SD 0.040, 95% HDI [4.807, 4.963]. */
+  sigma: 4.886,
 };
 
 /** PLACEHOLDER — standardization constants used when the model was fit. */
@@ -107,7 +137,7 @@ const AGE_MIDPOINT: Record<NonNullable<Profile["ageBand"]>, number> = {
 
 export const MODEL_META = {
   followUpMonths: 6,
-  version: "0.3-fitted (pending intercept & calibration)",
+  version: "0.4-fitted (pending standardization constants)",
   remissionCutoff: 5,
   /** Response = >= 50% symptom reduction relative to baseline. */
   responseRatio: 0.5,
@@ -115,8 +145,8 @@ export const MODEL_META = {
 
 /** Shown wherever numbers appear. */
 export const PROTOTYPE_NOTE: L = [
-  "Die Effektstärken der Bausteine stammen aus dem gefitteten Modell der IPD-Metaanalyse. Der Studien-Achsenabschnitt und die Standardisierungskonstanten für Alter und PHQ-9 sind vorläufige Platzhalter, bis die endgültigen Werte vorliegen — absolute Schätzungen können sich dadurch noch verschieben.",
-  "The component effect sizes come from the fitted IPD meta-analysis model. The study intercept and the standardization constants for age and PHQ-9 are provisional placeholders until final values are available — absolute estimates may still shift once they are.",
+  "Alle Koeffizienten stammen aus dem gefitteten Modell der IPD-Metaanalyse, einschließlich des Achsenabschnitts (Mittelwert über die eingeschlossenen Studien). Die Standardisierungskonstanten für Alter und PHQ-9 sind noch vorläufige Platzhalter, bis die endgültigen Werte vorliegen — absolute Schätzungen können sich dadurch noch verschieben.",
+  "All coefficients come from the fitted IPD meta-analysis model, including the intercept (averaged across the included trials). The standardization constants for age and PHQ-9 are still provisional placeholders until final values are available — absolute estimates may still shift once they are.",
 ];
 
 export const COMPONENT_NOTE: L = [
@@ -139,21 +169,24 @@ export type CareComponent = {
 export const CARE_COMPONENTS: CareComponent[] = [
   {
     id: "followUp",
-    label: ["Strukturierte Wiedervorstellung / Nachverfolgung", "Structured follow-up"],
-    short: ["Strukturierte Nachverfolgung", "Structured follow-up"],
+    label: [
+      "Nachverfolgungstermin innerhalb von 2–4 Wochen",
+      "Follow-up appointment within 2–4 weeks",
+    ],
+    short: ["Nachverfolgung (2–4 Wochen)", "Follow-up (2–4 weeks)"],
     description: [
-      "Termine und Rückmeldungen sind im Voraus geplant, auch telefonisch; niemand fällt aus der Behandlung heraus.",
-      "Appointments and check-backs are planned in advance, also by telephone, so nobody drops out of care.",
+      "Ein Termin oder Kontakt zur Nachverfolgung ist fest für 2 bis 4 Wochen nach der Erstvorstellung eingeplant, auch telefonisch.",
+      "A follow-up appointment or contact — in person or by telephone — is firmly scheduled for 2 to 4 weeks after the initial visit.",
     ],
     beta: FITTED_COEFFICIENTS.betaFollowUp,
   },
   {
     id: "relapsePrevention",
-    label: ["Strukturierte Rückfallprävention", "Structured relapse prevention"],
-    short: ["Rückfallprävention", "Relapse prevention"],
+    label: ["Strukturierter Rückfallpräventionsplan", "Structured relapse-prevention plan"],
+    short: ["Rückfallpräventionsplan", "Relapse-prevention plan"],
     description: [
-      "Geplante Maßnahmen, um ein Wiederauftreten der Beschwerden früh zu erkennen und ihm vorzubeugen.",
-      "Planned measures to detect and prevent a recurrence of symptoms early.",
+      "Ein schriftlicher Plan legt fest, wie ein Wiederauftreten der Beschwerden früh erkannt und ihm vorgebeugt wird.",
+      "A written plan sets out how a recurrence of symptoms is detected early and prevented.",
     ],
     beta: FITTED_COEFFICIENTS.betaRelapse,
   },
@@ -206,37 +239,37 @@ export const CARE_CONFIGURATIONS: CareConfiguration[] = [
   },
   {
     id: "followUp",
-    label: ["Strukturierte Nachverfolgung", "Structured follow-up"],
+    label: ["Nachverfolgung (2–4 Wochen)", "Follow-up (2–4 weeks)"],
     description: [
-      "Nur der Baustein strukturierte Wiedervorstellung / Nachverfolgung, zusätzlich zur üblichen Versorgung.",
-      "Only the structured follow-up component, in addition to usual care.",
+      "Nur der Baustein Nachverfolgungstermin innerhalb von 2–4 Wochen, zusätzlich zur üblichen Versorgung.",
+      "Only the follow-up-within-2–4-weeks component, in addition to usual care.",
     ],
     components: ["followUp"],
     dataSupport: "estimable",
     dataNote: [
-      "Direkt geschätzter Haupteffekt (beta_follow_up).",
-      "Directly estimated main effect (beta_follow_up).",
+      "Direkt geschätzter Haupteffekt (beta_component[follow_up_2_4_weeks]).",
+      "Directly estimated main effect (beta_component[follow_up_2_4_weeks]).",
     ],
   },
   {
     id: "relapsePrevention",
-    label: ["Rückfallprävention", "Relapse prevention"],
+    label: ["Rückfallpräventionsplan", "Relapse-prevention plan"],
     description: [
-      "Nur der Baustein strukturierte Rückfallprävention, zusätzlich zur üblichen Versorgung.",
-      "Only the structured relapse-prevention component, in addition to usual care.",
+      "Nur der Baustein strukturierter Rückfallpräventionsplan, zusätzlich zur üblichen Versorgung.",
+      "Only the structured relapse-prevention-plan component, in addition to usual care.",
     ],
     components: ["relapsePrevention"],
     dataSupport: "estimable",
     dataNote: [
-      "Direkt geschätzter Haupteffekt (beta_relapse).",
-      "Directly estimated main effect (beta_relapse).",
+      "Direkt geschätzter Haupteffekt (beta_component[relapse_prevention_plan]).",
+      "Directly estimated main effect (beta_component[relapse_prevention_plan]).",
     ],
   },
   {
     id: "combined",
     label: [
-      "Nachverfolgung und Rückfallprävention kombiniert",
-      "Follow-up and relapse prevention combined",
+      "Nachverfolgung und Rückfallpräventionsplan kombiniert",
+      "Follow-up and relapse-prevention plan combined",
     ],
     description: [
       "Beide Bausteine gemeinsam, einschließlich ihres gefitteten Interaktionseffekts.",
@@ -245,8 +278,8 @@ export const CARE_CONFIGURATIONS: CareConfiguration[] = [
     components: ["followUp", "relapsePrevention"],
     dataSupport: "estimable",
     dataNote: [
-      "Enthält den direkt geschätzten Interaktionsterm (beta_interaction).",
-      "Includes the directly estimated interaction term (beta_interaction).",
+      "Enthält den direkt geschätzten Interaktionsterm (beta_component_interaction).",
+      "Includes the directly estimated interaction term (beta_component_interaction).",
     ],
   },
 ];
@@ -396,7 +429,8 @@ export function predictScenario(
   const s = standardizeInput(input);
   const terms = scenarioTerms(components, s);
   const change = combineTerms(terms);
-  // alphaStudy has no CI (not yet supplied) — add its point value only.
+  // alphaStudy has no CI (only per-trial point estimates were supplied,
+  // no pooled hyperparameter) — add its point value only, see file header.
   const alpha = FITTED_COEFFICIENTS.alphaStudy;
 
   const dropPoint = change.point + alpha;
