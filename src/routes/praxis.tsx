@@ -98,6 +98,12 @@ function Clinician() {
     },
     { label: ["Alter", "Age"], value: profile.ageBand ?? "–" },
     {
+      label: ["Geschlecht", "Sex"],
+      value: profile.sex
+        ? tr(profile.sex === "female" ? ["weiblich", "female"] : ["männlich", "male"])
+        : "–",
+    },
+    {
       label: ["Episodendauer", "Episode duration"],
       value: profile.duration ? tr(DURATION_LABEL[profile.duration]!) : "–",
     },
@@ -313,8 +319,8 @@ function Clinician() {
         </div>
         <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
           {tr([
-            `${PROTOTYPE_NOTE[0]} Regelbasiertes Prototyp-Modell mit abnehmenden Kombinationsgewichten (${MODEL_META.combinationWeights.join(", ")}); Konfigurationen sind eigenständige Versorgungsformen, keine Summen einzelner Bausteine. Modellversion ${MODEL_META.version}. Keine Rangfolge, keine klinisch validierten Vorhersagen. Angaben verbleiben in der Browser-Sitzung des Patienten.`,
-            `${PROTOTYPE_NOTE[1]} Rule-based prototype model with diminishing combination weights (${MODEL_META.combinationWeights.join(", ")}); configurations are distinct care arrangements, not sums of single components. Model version ${MODEL_META.version}. No ranking, no clinically validated predictions. Data remain in the patient's browser session.`,
+            `${PROTOTYPE_NOTE[0]} Kombinierte Bausteine nutzen den im Modell direkt geschätzten Interaktionsterm, keine Summe der Einzeleffekte. Modellversion ${MODEL_META.version}. Keine Rangfolge, keine klinisch validierten Vorhersagen. Angaben verbleiben in der Browser-Sitzung des Patienten.`,
+            `${PROTOTYPE_NOTE[1]} Combined components use the interaction term directly estimated by the model, not a sum of the single effects. Model version ${MODEL_META.version}. No ranking, no clinically validated predictions. Data remain in the patient's browser session.`,
           ])}
         </p>
       </section>

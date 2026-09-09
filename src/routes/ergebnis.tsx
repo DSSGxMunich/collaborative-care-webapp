@@ -528,9 +528,10 @@ function Results() {
                     {s.estimate.activeModerators
                       .map(
                         (m) =>
-                          `${tr(m.label)} (${m.factor >= 1 ? "+" : ""}${Math.round(
-                            (m.factor - 1) * 100,
-                          )} %)`,
+                          `${tr(m.label)} (${m.delta >= 0 ? "+" : ""}${m.delta} ${tr([
+                            "Punkte",
+                            "points",
+                          ])})`,
                       )
                       .join(", ")}
                   </span>
