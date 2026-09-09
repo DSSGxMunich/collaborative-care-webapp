@@ -1,4 +1,5 @@
 import type { L } from "./i18n";
+import { parseIntegerScore, type ScoreInvalidReason, type ScoreValidation } from "./scoreInput";
 
 export const PHQ9_OPTIONS: { value: 0 | 1 | 2 | 3; label: L; hint: L }[] = [
   { value: 0, label: ["Überhaupt nicht", "Not at all"], hint: ["0 Tage", "0 days"] },
@@ -96,3 +97,35 @@ export const SEVERITY_RANGE: Record<Severity, string> = {
 
 export const phq9Total = (answers: (number | null)[]) =>
   answers.slice(0, 9).reduce<number>((sum, a) => sum + (a ?? 0), 0);
+
+/** Valid range of a PHQ-9 total score: 9 items, each scored 0-3. */
+export const PHQ9_MIN = 0;
+export const PHQ9_MAX = 27;
+
+export type Phq9ScoreInvalidReason = ScoreInvalidReason;
+export type Phq9ScoreValidation = ScoreValidation;
+
+/** Human-readable message for each way a directly-entered PHQ-9 score can fail validation. */
+export const PHQ9_SCORE_ERROR: Record<Phq9ScoreInvalidReason, L> = {
+  empty: ["", ""],
+  "not-a-number": ["Bitte eine Zahl eingeben.", "Please enter a number."],
+  "not-integer": [
+    "Bitte eine ganze Zahl ohne Kommastellen eingeben.",
+    "Please enter a whole number, with no decimals.",
+  ],
+  "out-of-range": [
+    `Bitte einen Wert zwischen ${PHQ9_MIN} und ${PHQ9_MAX} eingeben.`,
+    `Please enter a value between ${PHQ9_MIN} and ${PHQ9_MAX}.`,
+  ],
+};
+
+/**
+ * Validates a directly-entered PHQ-9 total score (as opposed to one summed
+ * from the 9 individual item answers). See parseIntegerScore for the format
+ * rules; range is 0-27. A total entered this way carries no per-item
+ * breakdown, so item 9 (suicidality) is unknown — fragebogen.tsx always
+ * shows the separate safety-check questions in that case instead (see
+ * safety.ts, which treats item 9 as unknown rather than assuming 0).
+ */
+export const parsePhq9Score = (raw: string): Phq9ScoreValidation =>
+  parseIntegerScore(raw, PHQ9_MIN, PHQ9_MAX);

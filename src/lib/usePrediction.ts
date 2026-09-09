@@ -11,8 +11,14 @@ export function usePrediction() {
   const { session, hydrated } = useSession();
 
   return useMemo(() => {
-    const baseline = phq9Total(session.phq);
-    const complete = session.completedAt !== null && session.phq.every((v) => v !== null);
+    // A directly entered phqKnownScore (already range/format-validated by
+    // parsePhq9Score before being stored, see session.tsx) takes priority
+    // over the 9 item answers — see also assessRisk() in safety.ts, which
+    // treats item 9 as unknown (not 0) whenever it's used.
+    const phqItemsComplete = session.phq.every((v) => v !== null);
+    const baseline = session.phqKnownScore ?? phq9Total(session.phq);
+    const complete =
+      session.completedAt !== null && (session.phqKnownScore !== null || phqItemsComplete);
     const input = { baseline, functioning: session.functioning, profile: session.profile };
     const predictions = buildPredictions(input);
 

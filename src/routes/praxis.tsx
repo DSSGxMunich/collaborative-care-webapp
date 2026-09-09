@@ -61,6 +61,7 @@ function Clinician() {
   }
 
   const { profile, safety } = p.session;
+  const usingKnownPhqScore = p.session.phqKnownScore !== null;
   const risk = assessRisk(p.session);
   const riskFlag: Record<string, L> = {
     none: ["kein Hinweis", "no indication"],
@@ -78,7 +79,9 @@ function Clinician() {
     },
     {
       label: ["Suizidalität (Item 9)", "Suicidality (item 9)"],
-      value: `${p.session.phq[8] ?? 0}/3`,
+      value: usingKnownPhqScore
+        ? tr(["unbekannt (Gesamtwert direkt eingegeben)", "unknown (total entered directly)"])
+        : `${p.session.phq[8] ?? 0}/3`,
     },
     {
       label: ["Risikoeinschätzung", "Risk assessment"],
@@ -236,31 +239,40 @@ function Clinician() {
           <h2 className="font-display text-lg font-semibold">
             {tr(["PHQ-9 Itemprofil", "PHQ-9 item profile"])}
           </h2>
-          <ul className="mt-4 space-y-2 text-sm">
-            {PHQ9_ITEMS.map((item, i) => {
-              const v = p.session.phq[i] ?? 0;
-              return (
-                <li key={i} className="flex items-center gap-3">
-                  <span className="w-5 shrink-0 text-xs text-muted-foreground">{i + 1}</span>
-                  <span className="flex-1 truncate" title={tr(item)}>
-                    {tr(item)}
-                  </span>
-                  <span className="flex gap-0.5" aria-label={`${v}/3`}>
-                    {[0, 1, 2].map((step) => (
-                      <span
-                        key={step}
-                        aria-hidden
-                        className={[
-                          "h-4 w-2 rounded-sm",
-                          step < v ? (i === 8 ? "bg-destructive" : "bg-primary") : "bg-secondary",
-                        ].join(" ")}
-                      />
-                    ))}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
+          {usingKnownPhqScore ? (
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+              {tr([
+                `Einzelitems nicht erhoben — Patient hat den PHQ-9-Gesamtwert direkt eingegeben: ${p.baseline}/27. Item 9 (Suizidalität) ist daher unbekannt; siehe Sicherheitsfragen.`,
+                `Individual items not collected — patient entered the PHQ-9 total directly: ${p.baseline}/27. Item 9 (suicidality) is therefore unknown; see the safety questions.`,
+              ])}
+            </p>
+          ) : (
+            <ul className="mt-4 space-y-2 text-sm">
+              {PHQ9_ITEMS.map((item, i) => {
+                const v = p.session.phq[i] ?? 0;
+                return (
+                  <li key={i} className="flex items-center gap-3">
+                    <span className="w-5 shrink-0 text-xs text-muted-foreground">{i + 1}</span>
+                    <span className="flex-1 truncate" title={tr(item)}>
+                      {tr(item)}
+                    </span>
+                    <span className="flex gap-0.5" aria-label={`${v}/3`}>
+                      {[0, 1, 2].map((step) => (
+                        <span
+                          key={step}
+                          aria-hidden
+                          className={[
+                            "h-4 w-2 rounded-sm",
+                            step < v ? (i === 8 ? "bg-destructive" : "bg-primary") : "bg-secondary",
+                          ].join(" ")}
+                        />
+                      ))}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </div>
       </section>
 

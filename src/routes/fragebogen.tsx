@@ -16,7 +16,11 @@ import {
   PHQ9_FUNCTION_ITEM,
   PHQ9_INTRO,
   PHQ9_ITEMS,
+  PHQ9_MAX,
+  PHQ9_MIN,
   PHQ9_OPTIONS,
+  PHQ9_SCORE_ERROR,
+  parsePhq9Score,
   phq9Total,
 } from "@/lib/phq9";
 import { assessRisk, RISK_MESSAGE, RISK_TITLE } from "@/lib/safety";
@@ -77,6 +81,8 @@ function Questionnaire() {
     () => session.gad7KnownScore?.toString() ?? "",
   );
   const [gad7ScoreError, setGad7ScoreError] = useState<L | null>(null);
+  const [phqScoreInput, setPhqScoreInput] = useState(() => session.phqKnownScore?.toString() ?? "");
+  const [phqScoreError, setPhqScoreError] = useState<L | null>(null);
 
   const handleGad7ScoreInput = (raw: string) => {
     setGad7ScoreInput(raw);
@@ -95,15 +101,39 @@ function Questionnaire() {
     }
   };
 
-  const item9 = session.phq[8] ?? 0;
-  const needsSafety = item9 >= 1;
+  const handlePhqScoreInput = (raw: string) => {
+    setPhqScoreInput(raw);
+    if (raw.trim() === "") {
+      setPhqScoreError(null);
+      update({ phqKnownScore: null });
+      return;
+    }
+    const result = parsePhq9Score(raw);
+    if (result.valid) {
+      setPhqScoreError(null);
+      update({ phqKnownScore: result.value });
+    } else {
+      setPhqScoreError(PHQ9_SCORE_ERROR[result.reason]);
+      update({ phqKnownScore: null });
+    }
+  };
+
+  // item9 is null both when unanswered and when a known PHQ-9 total was
+  // entered directly (no per-item breakdown) — see safety.ts assessRisk(),
+  // which treats it the same way rather than assuming 0.
+  const item9 = session.phq[8] ?? null;
+  const usingKnownPhqScore = session.phqKnownScore !== null;
+  // A known total has no item-9 answer, so the safety-check questions are
+  // always asked in that case — they're the only risk signal available.
+  const needsSafety = usingKnownPhqScore || (item9 !== null && item9 >= 1);
   const risk = assessRisk(session);
 
   const stepKeys = useMemo(() => {
-    const base = ["phqA", "phqB", "phqC", "function", "gad7"];
+    const phqItemSteps = usingKnownPhqScore ? [] : ["phqA", "phqB", "phqC"];
+    const base = ["phqScore", ...phqItemSteps, "function", "gad7"];
     if (needsSafety) base.push("safety");
     return [...base, "basics", "context", "preferences"];
-  }, [needsSafety]);
+  }, [needsSafety, usingKnownPhqScore]);
 
   const key = stepKeys[Math.min(index, stepKeys.length - 1)];
   const total = stepKeys.length;
@@ -113,6 +143,10 @@ function Questionnaire() {
 
   const canContinue = (() => {
     switch (key) {
+      case "phqScore":
+        // Optional: leaving it blank is fine (falls through to the item
+        // questions); a non-empty value must be valid to continue.
+        return phqScoreError === null;
       case "phqA":
         return answered(0, 3);
       case "phqB":
@@ -221,18 +255,81 @@ function Questionnaire() {
         </div>
       </div>
 
+      {key === "phqScore" && (
+        <div className="space-y-4">
+          <div className="rounded-2xl border border-border bg-accent-soft p-5">
+            <h2 className="font-display text-base font-semibold">
+              {tr([
+                "Kennen Sie Ihren PHQ-9-Gesamtwert bereits?",
+                "Do you already know your PHQ-9 total score?",
+              ])}
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              {tr([
+                `Falls ja, tragen Sie ihn hier ein (${PHQ9_MIN}–${PHQ9_MAX}) — dann können Sie die folgenden neun Fragen überspringen. Die kurzen Sicherheitsfragen weiter unten werden in diesem Fall trotzdem gestellt, da der Gesamtwert allein keine Aussage zu Gedanken an Selbstverletzung erlaubt.`,
+                `If so, enter it here (${PHQ9_MIN}–${PHQ9_MAX}) — you can then skip the following nine questions. The short safety questions further on will still be asked in that case, since a total score alone says nothing about thoughts of self-harm.`,
+              ])}
+            </p>
+            <div className="mt-3 rounded-xl border border-border bg-card p-4">
+              <div className="flex items-center gap-2">
+                <input
+                  id="phq-known-score"
+                  type="number"
+                  inputMode="numeric"
+                  min={PHQ9_MIN}
+                  max={PHQ9_MAX}
+                  step={1}
+                  placeholder={`${PHQ9_MIN}–${PHQ9_MAX}`}
+                  value={phqScoreInput}
+                  onChange={(e) => handlePhqScoreInput(e.target.value)}
+                  aria-invalid={phqScoreError !== null}
+                  aria-describedby="phq-known-score-error"
+                  className={[
+                    "w-24 rounded-lg border bg-background px-3 py-1.5 text-sm",
+                    phqScoreError ? "border-destructive" : "border-border",
+                  ].join(" ")}
+                />
+                <span className="text-xs text-muted-foreground">{tr(["Punkte", "points"])}</span>
+              </div>
+              {phqScoreError && (
+                <p
+                  id="phq-known-score-error"
+                  className="mt-1.5 text-xs font-medium text-destructive"
+                >
+                  {tr(phqScoreError)}
+                </p>
+              )}
+              {usingKnownPhqScore && !phqScoreError && (
+                <p className="mt-1.5 text-xs text-muted-foreground">
+                  {tr([
+                    "Wird für die Schätzung verwendet. Die folgenden neun Fragen entfallen.",
+                    "Will be used for the estimate. The following nine questions will be skipped.",
+                  ])}
+                </p>
+              )}
+            </div>
+            <p className="mt-2 text-xs text-muted-foreground">
+              {tr([
+                "Falls Sie ihn nicht kennen, lassen Sie das Feld leer und beantworten Sie die folgenden Fragen einzeln.",
+                "If you don't know it, leave this blank and answer the following questions one by one.",
+              ])}
+            </p>
+          </div>
+        </div>
+      )}
+
       {key === "phqA" && phqBlock(0, 3)}
       {key === "phqB" && phqBlock(3, 6)}
       {key === "phqC" && (
         <div className="space-y-6">
           {phqBlock(6, 9)}
-          {item9 >= 1 && (
+          {(item9 ?? 0) >= 1 && (
             <div className="rounded-2xl border border-destructive/40 bg-destructive-soft p-5">
               <h2 className="font-display text-base font-semibold text-destructive">
-                {tr(RISK_TITLE[item9 >= 2 ? "elevated" : "low"])}
+                {tr(RISK_TITLE[(item9 ?? 0) >= 2 ? "elevated" : "low"])}
               </h2>
               <p className="mt-2 text-sm leading-relaxed">
-                {tr(RISK_MESSAGE[item9 >= 2 ? "elevated" : "low"])}
+                {tr(RISK_MESSAGE[(item9 ?? 0) >= 2 ? "elevated" : "low"])}
               </p>
               <Link
                 to="/soforthilfe"
@@ -639,8 +736,8 @@ function Questionnaire() {
 
       <p className="mt-6 text-xs text-muted-foreground">
         {tr([
-          `Aktueller PHQ-9 Zwischenstand: ${phq9Total(session.phq)} von 27 Punkten.`,
-          `Current PHQ-9 running total: ${phq9Total(session.phq)} of 27 points.`,
+          `Aktueller PHQ-9 Zwischenstand: ${session.phqKnownScore ?? phq9Total(session.phq)} von 27 Punkten.`,
+          `Current PHQ-9 running total: ${session.phqKnownScore ?? phq9Total(session.phq)} of 27 points.`,
         ])}
       </p>
     </div>

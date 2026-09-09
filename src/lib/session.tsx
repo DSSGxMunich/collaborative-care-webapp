@@ -45,6 +45,16 @@ export type SafetyAnswers = {
 
 export type Session = {
   phq: (number | null)[];
+  /**
+   * A PHQ-9 total (0-27) entered directly instead of the 9 items, for
+   * patients who already know their score. Validated by parsePhq9Score()
+   * before being written here — always either null or a valid score. Takes
+   * priority over `phq` wherever the baseline PHQ-9 is used. Because a
+   * directly-entered total has no item-9 (suicidality) breakdown, the
+   * safety-check questions are always asked when this is set — see
+   * fragebogen.tsx / safety.ts.
+   */
+  phqKnownScore: number | null;
   functioning: number | null;
   /** GAD-7 anxiety items — used only by the step-2 trajectory model. Optional: see gad7Skipped. */
   gad7: (number | null)[];
@@ -64,6 +74,7 @@ export type Session = {
 
 export const emptySession = (): Session => ({
   phq: Array<number | null>(9).fill(null),
+  phqKnownScore: null,
   functioning: null,
   gad7: Array<number | null>(7).fill(null),
   gad7Skipped: false,

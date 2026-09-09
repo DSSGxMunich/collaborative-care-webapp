@@ -1,4 +1,5 @@
 import type { L } from "./i18n";
+import { parseIntegerScore, type ScoreInvalidReason, type ScoreValidation } from "./scoreInput";
 
 /** GAD-7 uses the same 4-point response scale and recall period as the PHQ-9. */
 export { PHQ9_OPTIONS as GAD7_OPTIONS } from "./phq9";
@@ -34,10 +35,8 @@ export const gad7Total = (answers: (number | null)[]) =>
 export const GAD7_MIN = 0;
 export const GAD7_MAX = 21;
 
-export type Gad7ScoreInvalidReason = "empty" | "not-a-number" | "not-integer" | "out-of-range";
-
-export type Gad7ScoreValidation =
-  { valid: true; value: number } | { valid: false; reason: Gad7ScoreInvalidReason };
+export type Gad7ScoreInvalidReason = ScoreInvalidReason;
+export type Gad7ScoreValidation = ScoreValidation;
 
 /** Human-readable message for each way a directly-entered GAD-7 score can fail validation. */
 export const GAD7_SCORE_ERROR: Record<Gad7ScoreInvalidReason, L> = {
@@ -55,25 +54,8 @@ export const GAD7_SCORE_ERROR: Record<Gad7ScoreInvalidReason, L> = {
 
 /**
  * Validates a directly-entered GAD-7 total score (as opposed to one summed
- * from the 7 individual item answers). Checks format first (a plain integer,
- * optionally signed, no decimals/thousands separators/exponents), then range
- * (0-21) — the two are reported as distinct reasons so callers can show a
- * precise message.
+ * from the 7 individual item answers). See parseIntegerScore for the format
+ * rules; range is 0-21.
  */
-export function parseGad7Score(raw: string): Gad7ScoreValidation {
-  const trimmed = raw.trim();
-  if (trimmed === "") return { valid: false, reason: "empty" };
-
-  if (!/^[+-]?\d+$/.test(trimmed)) {
-    // Not a plain integer literal — distinguish "5.5" (a number, wrong
-    // shape) from "abc" (not a number at all) for a clearer message.
-    return {
-      valid: false,
-      reason: Number.isFinite(Number(trimmed)) ? "not-integer" : "not-a-number",
-    };
-  }
-
-  const value = Number(trimmed);
-  if (value < GAD7_MIN || value > GAD7_MAX) return { valid: false, reason: "out-of-range" };
-  return { valid: true, value };
-}
+export const parseGad7Score = (raw: string): Gad7ScoreValidation =>
+  parseIntegerScore(raw, GAD7_MIN, GAD7_MAX);

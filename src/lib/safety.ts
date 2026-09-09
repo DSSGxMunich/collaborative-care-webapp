@@ -4,12 +4,20 @@ import type { Session } from "./session";
 export type RiskLevel = "none" | "low" | "elevated" | "acute";
 
 export function assessRisk(s: Session): RiskLevel {
-  const item9 = s.phq[8] ?? 0;
+  // item9 is null both when unanswered and when a known PHQ-9 total was
+  // entered directly (no per-item breakdown) — treated as "unknown", not as
+  // a confirmed 0, so it can never silently mask risk. In that case, the
+  // safety-check questions below are the only signal, which is why
+  // fragebogen.tsx always asks them when a known total is used.
+  const item9 = s.phq[8] ?? null;
   const { plan, canStaySafe, pastAttempt } = s.safety;
 
   if (plan === "yes" || canStaySafe === "no") return "acute";
-  if (item9 >= 2 || (item9 >= 1 && pastAttempt === "yes")) return "elevated";
-  if (item9 >= 1) return "low";
+  // pastAttempt alone (regardless of item9) is enough for "elevated": a
+  // self-harm attempt/episode in the past 12 months is a meaningful risk
+  // factor on its own, and is the only signal available when item9 is unknown.
+  if ((item9 !== null && item9 >= 2) || pastAttempt === "yes") return "elevated";
+  if (item9 !== null && item9 >= 1) return "low";
   return "none";
 }
 
