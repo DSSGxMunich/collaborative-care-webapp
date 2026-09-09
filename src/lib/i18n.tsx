@@ -61,6 +61,7 @@ export const ui = {
   home: ["Start", "Home"] as L,
   results: ["Ergebnis", "Results"] as L,
   clinician: ["Für die Praxis", "For the practice"] as L,
+  ipdModel: ["IPD-Modell", "IPD model"] as L,
   support: ["Angebote vor Ort", "Local support"] as L,
   crisis: ["Soforthilfe", "Urgent help"] as L,
   step: ["Schritt", "Step"] as L,

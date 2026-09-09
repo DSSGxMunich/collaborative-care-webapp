@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AngeboteRouteImport } from './routes/angebote'
 import { Route as ErgebnisRouteImport } from './routes/ergebnis'
 import { Route as FragebogenRouteImport } from './routes/fragebogen'
+import { Route as IpdModellRouteImport } from './routes/ipd-modell'
 import { Route as PraxisRouteImport } from './routes/praxis'
 import { Route as SoforthilfeRouteImport } from './routes/soforthilfe'
 
@@ -36,6 +37,11 @@ const FragebogenRoute = FragebogenRouteImport.update({
   path: '/fragebogen',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IpdModellRoute = IpdModellRouteImport.update({
+  id: '/ipd-modell',
+  path: '/ipd-modell',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PraxisRoute = PraxisRouteImport.update({
   id: '/praxis',
   path: '/praxis',
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/angebote': typeof AngeboteRoute
   '/ergebnis': typeof ErgebnisRoute
   '/fragebogen': typeof FragebogenRoute
+  '/ipd-modell': typeof IpdModellRoute
   '/praxis': typeof PraxisRoute
   '/soforthilfe': typeof SoforthilfeRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/angebote': typeof AngeboteRoute
   '/ergebnis': typeof ErgebnisRoute
   '/fragebogen': typeof FragebogenRoute
+  '/ipd-modell': typeof IpdModellRoute
   '/praxis': typeof PraxisRoute
   '/soforthilfe': typeof SoforthilfeRoute
 }
@@ -69,22 +77,36 @@ export interface FileRoutesById {
   '/angebote': typeof AngeboteRoute
   '/ergebnis': typeof ErgebnisRoute
   '/fragebogen': typeof FragebogenRoute
+  '/ipd-modell': typeof IpdModellRoute
   '/praxis': typeof PraxisRoute
   '/soforthilfe': typeof SoforthilfeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/angebote' | '/ergebnis' | '/fragebogen' | '/praxis' | '/soforthilfe'
+    | '/'
+    | '/angebote'
+    | '/ergebnis'
+    | '/fragebogen'
+    | '/ipd-modell'
+    | '/praxis'
+    | '/soforthilfe'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/angebote' | '/ergebnis' | '/fragebogen' | '/praxis' | '/soforthilfe'
+    | '/'
+    | '/angebote'
+    | '/ergebnis'
+    | '/fragebogen'
+    | '/ipd-modell'
+    | '/praxis'
+    | '/soforthilfe'
   id:
     | '__root__'
     | '/'
     | '/angebote'
     | '/ergebnis'
     | '/fragebogen'
+    | '/ipd-modell'
     | '/praxis'
     | '/soforthilfe'
   fileRoutesById: FileRoutesById
@@ -94,6 +116,7 @@ export interface RootRouteChildren {
   AngeboteRoute: typeof AngeboteRoute
   ErgebnisRoute: typeof ErgebnisRoute
   FragebogenRoute: typeof FragebogenRoute
+  IpdModellRoute: typeof IpdModellRoute
   PraxisRoute: typeof PraxisRoute
   SoforthilfeRoute: typeof SoforthilfeRoute
 }
@@ -128,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FragebogenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ipd-modell': {
+      id: '/ipd-modell'
+      path: '/ipd-modell'
+      fullPath: '/ipd-modell'
+      preLoaderRoute: typeof IpdModellRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/praxis': {
       id: '/praxis'
       path: '/praxis'
@@ -150,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   AngeboteRoute: AngeboteRoute,
   ErgebnisRoute: ErgebnisRoute,
   FragebogenRoute: FragebogenRoute,
+  IpdModellRoute: IpdModellRoute,
   PraxisRoute: PraxisRoute,
   SoforthilfeRoute: SoforthilfeRoute,
 }

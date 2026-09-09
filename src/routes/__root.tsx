@@ -139,6 +139,7 @@ function SiteHeader() {
     { to: "/", label: ui.home },
     { to: "/fragebogen", label: ui.start },
     { to: "/ergebnis", label: ui.results },
+    { to: "/ipd-modell", label: ui.ipdModel },
     { to: "/praxis", label: ui.clinician },
     { to: "/angebote", label: ui.support },
   ] as const;
