@@ -6,11 +6,8 @@
  * `STANDARDIZATION` is now real too — the mean/SD of baseline PHQ-9 and age
  * in the training data (analysis_df), used to standardize both before
  * applying gamma_phq9 / theta_age / the delta_c*_age terms, exactly as the
- * model was fit. One assumption remains unconfirmed: `SEX_CODE` — which sex
- * category the model treats as the 0/reference level. Using the wrong
- * coding here silently flips the sign of every sex-related adjustment, so
- * this should be confirmed before the numbers below are treated as
- * clinically valid.
+ * model was fit. `SEX_CODE` — which sex category the model treats as the
+ * 0/reference level — is now confirmed: Male = 0, Female = 1.
  *
  * `alphaStudy` (the population-level intercept) is now real, but it is an
  * APPROXIMATION: az.summary() reported a separate posterior mean per trial
@@ -137,8 +134,8 @@ export const STANDARDIZATION = {
   age: { mean: 49.85614969535585, sd: 15.878823152237644 },
 };
 
-/** PLACEHOLDER reference coding — confirm against the fitted model. */
-export const SEX_CODE: Record<Sex, 0 | 1> = { female: 0, male: 1 };
+// Sex: Male = 0, Female = 1
+export const SEX_CODE: Record<Sex, 0 | 1> = { male: 0, female: 1 };
 
 /** Representative age (years) used to standardize each age band. */
 const AGE_MIDPOINT: Record<NonNullable<Profile["ageBand"]>, number> = {
@@ -150,7 +147,7 @@ const AGE_MIDPOINT: Record<NonNullable<Profile["ageBand"]>, number> = {
 
 export const MODEL_META = {
   followUpMonths: 6,
-  version: "0.5-fitted (pending sex-coding confirmation)",
+  version: "0.5-fitted",
   remissionCutoff: 5,
   /** Response = >= 50% symptom reduction relative to baseline. */
   responseRatio: 0.5,
@@ -158,8 +155,8 @@ export const MODEL_META = {
 
 /** Shown wherever numbers appear. */
 export const PROTOTYPE_NOTE: L = [
-  "Alle Koeffizienten sowie die Standardisierung von Alter und PHQ-9 stammen aus dem gefitteten Modell der IPD-Metaanalyse (einschließlich des Achsenabschnitts, gemittelt über die eingeschlossenen Studien). Offen ist noch, welche Kodierung des Geschlechts (0/1) dem Modellfit zugrunde liegt.",
-  "All coefficients and the age/PHQ-9 standardization come from the fitted IPD meta-analysis model (including the intercept, averaged across the included trials). Still open: which sex coding (0/1) the model fit actually used.",
+  "Alle Koeffizienten sowie die Standardisierung von Alter und PHQ-9 stammen aus dem gefitteten Modell der IPD-Metaanalyse (einschließlich des Achsenabschnitts, gemittelt über die eingeschlossenen Studien).",
+  "All coefficients and the age/PHQ-9 standardization come from the fitted IPD meta-analysis model (including the intercept, averaged across the included trials).",
 ];
 
 export const COMPONENT_NOTE: L = [
@@ -168,7 +165,7 @@ export const COMPONENT_NOTE: L = [
 ];
 
 const dash: L = ["keine Angabe", "not provided"];
-const SEX_LABEL: Record<Sex, L> = { female: ["weiblich", "female"], male: ["männlich", "male"] };
+const SEX_LABEL: Record<Sex, L> = { female: ["weiblich", "Female"], male: ["männlich", "Male"] };
 
 export type CareComponent = {
   id: ComponentId;

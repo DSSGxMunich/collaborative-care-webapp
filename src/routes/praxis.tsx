@@ -100,7 +100,7 @@ function Clinician() {
     {
       label: ["Geschlecht", "Sex"],
       value: profile.sex
-        ? tr(profile.sex === "female" ? ["weiblich", "female"] : ["männlich", "male"])
+        ? tr(profile.sex === "female" ? ["weiblich", "Female"] : ["männlich", "Male"])
         : "–",
     },
     {
