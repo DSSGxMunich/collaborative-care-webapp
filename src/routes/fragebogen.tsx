@@ -236,7 +236,10 @@ function Questionnaire() {
               </h2>
               <button
                 type="button"
-                onClick={() => update({ gad7Skipped: true })}
+                onClick={() => {
+                  update({ gad7Skipped: true });
+                  goNext();
+                }}
                 className="shrink-0 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-muted-foreground underline-offset-2 transition-colors hover:bg-secondary hover:text-foreground"
               >
                 {tr(["Diesen Schritt überspringen", "Skip this step"])}
