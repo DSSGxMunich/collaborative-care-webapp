@@ -226,12 +226,37 @@ function Questionnaire() {
 
       {key === "gad7" && (
         <div className="space-y-6">
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            {tr([
-              "Diese kurzen Zusatzfragen zu Anspannung und Sorgen (GAD-7) verbessern die Schätzung Ihres möglichen Verlaufs nach 12 Monaten. Sie können diesen Schritt auch überspringen.",
-              "These short additional questions about tension and worry (GAD-7) improve the estimate of your possible 12-month course. You can also skip this step.",
-            ])}
-          </p>
+          <div className="rounded-2xl border border-border bg-accent-soft p-5">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <h2 className="font-display text-base font-semibold">
+                {tr([
+                  "Zusatzfragen: Angst und Anspannung (GAD-7)",
+                  "Additional questions: anxiety and tension (GAD-7)",
+                ])}
+              </h2>
+              <button
+                type="button"
+                onClick={() => update({ gad7Skipped: true })}
+                className="shrink-0 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-muted-foreground underline-offset-2 transition-colors hover:bg-secondary hover:text-foreground"
+              >
+                {tr(["Diesen Schritt überspringen", "Skip this step"])}
+              </button>
+            </div>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              {tr([
+                "Diese kurzen Zusatzfragen zu Anspannung und Sorgen (GAD-7) verbessern die Schätzung Ihres möglichen Verlaufs nach 12 Monaten. Sie können diesen Schritt auch überspringen.",
+                "These short additional questions about tension and worry (GAD-7) improve the estimate of your possible 12-month course. You can also skip this step.",
+              ])}
+            </p>
+            {session.gad7Skipped && (
+              <p className="mt-2 text-xs font-medium text-foreground">
+                {tr([
+                  "Übersprungen. Sie können jederzeit unten eine Frage beantworten, um dies rückgängig zu machen.",
+                  "Skipped. You can answer a question below at any time to undo this.",
+                ])}
+              </p>
+            )}
+          </div>
           <p className="text-sm leading-relaxed text-muted-foreground">{tr(GAD7_INTRO)}</p>
           {GAD7_ITEMS.map((item, idx) => (
             <fieldset key={idx} className="surface-card p-5">
@@ -249,21 +274,6 @@ function Questionnaire() {
               />
             </fieldset>
           ))}
-          <button
-            type="button"
-            onClick={() => update({ gad7Skipped: true })}
-            className="text-sm font-semibold text-muted-foreground underline underline-offset-2 hover:text-foreground"
-          >
-            {tr(["Diesen Schritt überspringen", "Skip this step"])}
-          </button>
-          {session.gad7Skipped && (
-            <p className="text-xs text-muted-foreground">
-              {tr([
-                "Übersprungen. Sie können jederzeit oben eine Frage beantworten, um dies rückgängig zu machen.",
-                "Skipped. You can answer a question above at any time to undo this.",
-              ])}
-            </p>
-          )}
         </div>
       )}
 
