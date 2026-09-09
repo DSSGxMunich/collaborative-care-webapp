@@ -71,7 +71,7 @@ function Index() {
             <p className="inline-flex items-center gap-2 rounded-full bg-primary-soft px-3 py-1 text-xs font-semibold uppercase tracking-wide text-foreground">
               {tr(["Forschungsprototyp", "Research prototype"])}
             </p>
-            <h1 className="mt-5 text-balance-tight font-display text-4xl font-semibold leading-[1.08] sm:text-5xl">
+            <h1 className="mt-5 break-words text-balance-tight font-display text-4xl font-semibold leading-[1.08] sm:text-5xl">
               {tr([
                 "Welche Depressionsbehandlung passt zu mir?",
                 "Which depression care is likely to help me?",
