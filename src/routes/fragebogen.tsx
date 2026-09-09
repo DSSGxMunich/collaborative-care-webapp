@@ -32,7 +32,8 @@ export const Route = createFileRoute("/fragebogen")({
       { property: "og:title", content: "Fragebogen – Depressions-Kompass" },
       {
         property: "og:description",
-        content: "PHQ-9, Beschwerdedauer, Lebenssituation und Behandlungsvorlieben in wenigen Minuten.",
+        content:
+          "PHQ-9, Beschwerdedauer, Lebenssituation und Behandlungsvorlieben in wenigen Minuten.",
       },
     ],
   }),
@@ -190,7 +191,10 @@ function Questionnaire() {
               <p className="mt-2 text-sm leading-relaxed">
                 {tr(RISK_MESSAGE[item9 >= 2 ? "elevated" : "low"])}
               </p>
-              <Link to="/soforthilfe" className="mt-3 inline-flex text-sm font-semibold text-destructive underline">
+              <Link
+                to="/soforthilfe"
+                className="mt-3 inline-flex text-sm font-semibold text-destructive underline"
+              >
                 {tr(["Krisenkontakte anzeigen", "Show crisis contacts"])}
               </Link>
             </div>
@@ -402,44 +406,48 @@ function Questionnaire() {
 
       {key === "preferences" && (
         <div className="space-y-6">
-        <p className="text-sm leading-relaxed text-muted-foreground">
-          {tr([
-            "Diese Angaben gehen nicht in die Schätzungen ein. Sie zeigen im Ergebnis getrennt, was praktisch zu Ihnen passt.",
-            "These answers do not enter the estimates. They are shown separately in the results as what practically suits you.",
-          ])}
-        </p>
-        <fieldset className="surface-card p-5">
-          <legend className="mb-1 block text-base font-semibold">
+          <p className="text-sm leading-relaxed text-muted-foreground">
             {tr([
-              "Was können Sie sich für sich selbst am ehesten vorstellen?",
-              "What could you most imagine for yourself?",
+              "Diese Angaben gehen nicht in die Schätzungen ein. Sie zeigen im Ergebnis getrennt, was praktisch zu Ihnen passt.",
+              "These answers do not enter the estimates. They are shown separately in the results as what practically suits you.",
             ])}
-          </legend>
-          <p className="mb-4 text-sm text-muted-foreground">
-            {tr(["Mehrfachauswahl möglich.", "You can select more than one."])}
           </p>
-          <MultiChoice
-            options={PREFERENCES}
-            values={session.profile.preferences}
-            onToggle={(id) => updateProfile({ preferences: toggle(session.profile.preferences, id) })}
-          />
-        </fieldset>
-        <fieldset className="surface-card p-5">
-          <legend className="mb-1 block text-base font-semibold">
-            {tr([
-              "Was macht eine Behandlung für Sie praktisch schwierig?",
-              "What makes treatment practically difficult for you?",
-            ])}
-          </legend>
-          <p className="mb-4 text-sm text-muted-foreground">
-            {tr(["Mehrfachauswahl möglich, auch keine.", "Select any number, including none."])}
-          </p>
-          <MultiChoice
-            options={CONSTRAINTS}
-            values={session.profile.constraints}
-            onToggle={(id) => updateProfile({ constraints: toggle(session.profile.constraints, id) })}
-          />
-        </fieldset>
+          <fieldset className="surface-card p-5">
+            <legend className="mb-1 block text-base font-semibold">
+              {tr([
+                "Was können Sie sich für sich selbst am ehesten vorstellen?",
+                "What could you most imagine for yourself?",
+              ])}
+            </legend>
+            <p className="mb-4 text-sm text-muted-foreground">
+              {tr(["Mehrfachauswahl möglich.", "You can select more than one."])}
+            </p>
+            <MultiChoice
+              options={PREFERENCES}
+              values={session.profile.preferences}
+              onToggle={(id) =>
+                updateProfile({ preferences: toggle(session.profile.preferences, id) })
+              }
+            />
+          </fieldset>
+          <fieldset className="surface-card p-5">
+            <legend className="mb-1 block text-base font-semibold">
+              {tr([
+                "Was macht eine Behandlung für Sie praktisch schwierig?",
+                "What makes treatment practically difficult for you?",
+              ])}
+            </legend>
+            <p className="mb-4 text-sm text-muted-foreground">
+              {tr(["Mehrfachauswahl möglich, auch keine.", "Select any number, including none."])}
+            </p>
+            <MultiChoice
+              options={CONSTRAINTS}
+              values={session.profile.constraints}
+              onToggle={(id) =>
+                updateProfile({ constraints: toggle(session.profile.constraints, id) })
+              }
+            />
+          </fieldset>
         </div>
       )}
 

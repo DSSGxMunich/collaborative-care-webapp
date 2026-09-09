@@ -8,7 +8,11 @@ export const PHQ9_OPTIONS: { value: 0 | 1 | 2 | 3; label: L; hint: L }[] = [
     label: ["An mehr als der Hälfte der Tage", "More than half the days"],
     hint: ["7–11 Tage", "7–11 days"],
   },
-  { value: 3, label: ["Beinahe jeden Tag", "Nearly every day"], hint: ["12–14 Tage", "12–14 days"] },
+  {
+    value: 3,
+    label: ["Beinahe jeden Tag", "Nearly every day"],
+    hint: ["12–14 Tage", "12–14 days"],
+  },
 ];
 
 export const PHQ9_INTRO: L = [
@@ -17,8 +21,14 @@ export const PHQ9_INTRO: L = [
 ];
 
 export const PHQ9_ITEMS: L[] = [
-  ["Wenig Interesse oder Freude an Ihren Tätigkeiten", "Little interest or pleasure in doing things"],
-  ["Niedergeschlagenheit, Melancholie oder Hoffnungslosigkeit", "Feeling down, depressed, or hopeless"],
+  [
+    "Wenig Interesse oder Freude an Ihren Tätigkeiten",
+    "Little interest or pleasure in doing things",
+  ],
+  [
+    "Niedergeschlagenheit, Melancholie oder Hoffnungslosigkeit",
+    "Feeling down, depressed, or hopeless",
+  ],
   [
     "Schwierigkeiten ein- oder durchzuschlafen oder vermehrter Schlaf",
     "Trouble falling or staying asleep, or sleeping too much",

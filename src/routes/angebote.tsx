@@ -101,7 +101,9 @@ function Support() {
                 <h3 className="font-display text-lg font-semibold">{tr(o.title)}</h3>
                 <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{tr(o.body)}</p>
                 <p className="mt-3 text-sm">
-                  <span className="font-semibold">{tr(["Wo zu finden", "Where to find it"])}: </span>
+                  <span className="font-semibold">
+                    {tr(["Wo zu finden", "Where to find it"])}:{" "}
+                  </span>
                   {tr(o.route)}
                 </p>
                 <a

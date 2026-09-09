@@ -31,14 +31,16 @@ The dev server starts at `http://localhost:3000` by default, with hot module rel
 
 ### Available scripts
 
-| Command | Description |
-| --- | --- |
-| `bun run dev` | Start the Vite dev server |
-| `bun run build` | Build the production app into `.output/` |
-| `bun run build:dev` | Build in development mode (unminified, useful for debugging) |
-| `bun run preview` | Preview the production build locally |
-| `bun run lint` | Run ESLint over the project |
-| `bun run format` | Format the project with Prettier |
+| Command                | Description                                                  |
+| ---------------------- | ------------------------------------------------------------ |
+| `bun run dev`          | Start the Vite dev server                                    |
+| `bun run build`        | Build the production app into `.output/`                     |
+| `bun run build:dev`    | Build in development mode (unminified, useful for debugging) |
+| `bun run preview`      | Preview the production build locally                         |
+| `bun run lint`         | Run ESLint over the project                                  |
+| `bun run format`       | Format the project with Prettier                             |
+| `bun run format:check` | Check formatting with Prettier without writing changes       |
+| `bun run typecheck`    | Type-check the project with `tsc`                            |
 
 ### Running the production build
 

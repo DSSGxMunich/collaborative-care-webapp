@@ -88,7 +88,10 @@ export const PREFERENCES: { id: string; label: L }[] = [
   { id: "phone", label: ["Kontakt per Telefon oder Video", "Contact by telephone or video"] },
   {
     id: "selfManagement",
-    label: ["Selbst mit Materialien und Übungen arbeiten", "Working with materials and exercises myself"],
+    label: [
+      "Selbst mit Materialien und Übungen arbeiten",
+      "Working with materials and exercises myself",
+    ],
   },
   { id: "digital", label: ["Digitale Programme", "Digital programmes"] },
   { id: "activity", label: ["Bewegung & Aktivität", "Movement & activity"] },
@@ -106,7 +109,10 @@ export const CONSTRAINTS: { id: string; label: L }[] = [
   { id: "travel", label: ["Wege sind schwierig", "Travelling is difficult"] },
   { id: "noDigital", label: ["Kein oder schlechter Internetzugang", "No or poor internet access"] },
   { id: "costs", label: ["Kosten sind ein Problem", "Costs are a problem"] },
-  { id: "privacy", label: ["Möchte nicht in einer Gruppe sprechen", "Would rather not speak in a group"] },
+  {
+    id: "privacy",
+    label: ["Möchte nicht in einer Gruppe sprechen", "Would rather not speak in a group"],
+  },
 ];
 
 type Ctx = {
@@ -150,7 +156,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     [],
   );
   const updateSafety = useCallback(
-    (patch: Partial<SafetyAnswers>) => setSession((s) => ({ ...s, safety: { ...s.safety, ...patch } })),
+    (patch: Partial<SafetyAnswers>) =>
+      setSession((s) => ({ ...s, safety: { ...s.safety, ...patch } })),
     [],
   );
   const setPhq = useCallback(

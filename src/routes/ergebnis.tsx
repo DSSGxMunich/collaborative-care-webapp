@@ -133,7 +133,9 @@ function OutcomeCard({
           <dt className="text-xs text-muted-foreground">
             <Info label={tr(MEASURES.response.short)} hint={tr(MEASURES.response.hint)} />
           </dt>
-          <dd className="font-display text-xl font-semibold">{pct(scenario.responseProbability)}</dd>
+          <dd className="font-display text-xl font-semibold">
+            {pct(scenario.responseProbability)}
+          </dd>
           <dd className="text-xs text-muted-foreground">
             {tr(["Bereich", "Range"])} {rangePct(scenario.responseRange)}
           </dd>
@@ -168,7 +170,6 @@ function Results() {
   const [revealed, setRevealed] = useState(false);
 
   if (!p.hydrated) return <div className="mx-auto max-w-3xl px-4 py-16" />;
-
 
   if (!p.complete) {
     return (
@@ -429,7 +430,10 @@ function Results() {
                   <Info label={tr(MEASURES.endpoint.short)} hint={tr(MEASURES.endpoint.hint)} />
                 </th>
                 <th className="px-4 py-3 font-semibold">
-                  <Info label={tr(["≥ 50 % Rückgang", "≥ 50% reduction"])} hint={tr(MEASURES.response.hint)} />
+                  <Info
+                    label={tr(["≥ 50 % Rückgang", "≥ 50% reduction"])}
+                    hint={tr(MEASURES.response.hint)}
+                  />
                 </th>
                 <th className="px-4 py-3 font-semibold">
                   <Info label={tr(MEASURES.remission.short)} hint={tr(MEASURES.remission.hint)} />
@@ -493,13 +497,17 @@ function Results() {
                 <span
                   className={[
                     "rounded-full px-3 py-1 text-xs font-medium",
-                    row.available ? "bg-primary-soft text-foreground" : "bg-secondary text-muted-foreground",
+                    row.available
+                      ? "bg-primary-soft text-foreground"
+                      : "bg-secondary text-muted-foreground",
                   ].join(" ")}
                 >
                   {tr(row.value)}
                 </span>
               </div>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{tr(row.usedFor)}</p>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                {tr(row.usedFor)}
+              </p>
             </div>
           ))}
         </div>
@@ -571,7 +579,8 @@ function Results() {
               </li>
               <li>
                 <span className="font-semibold">{tr(MEASURES.response.short)}: </span>
-                {pct(p.usual.responseProbability)} → {pct(p.favourable.scenario.responseProbability)}
+                {pct(p.usual.responseProbability)} →{" "}
+                {pct(p.favourable.scenario.responseProbability)}
               </li>
               <li>
                 <span className="font-semibold">{tr(MEASURES.remission.short)}: </span>

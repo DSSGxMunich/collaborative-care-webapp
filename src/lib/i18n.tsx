@@ -37,10 +37,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     window.localStorage.setItem(STORAGE_KEY, l);
   }, []);
 
-  const value = useMemo<Ctx>(
-    () => ({ lang, setLang, tr: (v: L) => t(v, lang) }),
-    [lang, setLang],
-  );
+  const value = useMemo<Ctx>(() => ({ lang, setLang, tr: (v: L) => t(v, lang) }), [lang, setLang]);
 
   return <LangContext.Provider value={value}>{children}</LangContext.Provider>;
 }

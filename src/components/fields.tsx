@@ -106,12 +106,10 @@ export function YesNoField({
     <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3">
       <span className="max-w-md text-sm">{tr(label)}</span>
       <div className="flex gap-2">
-        {(
-          [
-            { v: "yes" as const, l: ["Ja", "Yes"] as L },
-            { v: "no" as const, l: ["Nein", "No"] as L },
-          ]
-        ).map((o) => (
+        {[
+          { v: "yes" as const, l: ["Ja", "Yes"] as L },
+          { v: "no" as const, l: ["Nein", "No"] as L },
+        ].map((o) => (
           <button
             key={o.v}
             type="button"
