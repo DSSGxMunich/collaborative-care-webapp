@@ -50,6 +50,13 @@ export type Session = {
   gad7: (number | null)[];
   /** True once the patient explicitly skipped the GAD-7 step. */
   gad7Skipped: boolean;
+  /**
+   * A GAD-7 total (0-21) entered directly instead of the 7 items, for
+   * patients who already know their score. Validated by parseGad7Score()
+   * before being written here — always either null or a valid score. Takes
+   * priority over both `gad7` and `gad7Skipped` wherever GAD-7 is used.
+   */
+  gad7KnownScore: number | null;
   safety: SafetyAnswers;
   profile: Profile;
   completedAt: string | null;
@@ -60,6 +67,7 @@ export const emptySession = (): Session => ({
   functioning: null,
   gad7: Array<number | null>(7).fill(null),
   gad7Skipped: false,
+  gad7KnownScore: null,
   safety: { plan: null, canStaySafe: null, pastAttempt: null },
   profile: {
     ageBand: null,

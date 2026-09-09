@@ -18,15 +18,24 @@ export function usePrediction() {
 
     // Step 2: independent 12-month trajectory model — see trajectoryModel.ts.
     // ageBand/sex are guaranteed non-null by the questionnaire's "basics" step
-    // once the session is complete; GAD-7 is optional (skippable).
+    // once the session is complete; GAD-7 is optional (skippable). A directly
+    // entered gad7KnownScore (already range/format-validated by
+    // parseGad7Score before being stored, see session.tsx) takes priority
+    // over the 7 item answers and over having skipped.
     const gad7Complete = session.gad7.every((v) => v !== null);
+    const gad7Value =
+      session.gad7KnownScore !== null
+        ? session.gad7KnownScore
+        : session.gad7Skipped || !gad7Complete
+          ? null
+          : gad7Total(session.gad7);
     const trajectory =
       complete && session.profile.ageBand !== null && session.profile.sex !== null
         ? predictTrajectory({
             ageBand: session.profile.ageBand,
             sex: session.profile.sex,
             baselinePhq9: baseline,
-            gad7Total: session.gad7Skipped || !gad7Complete ? null : gad7Total(session.gad7),
+            gad7Total: gad7Value,
           })
         : null;
 

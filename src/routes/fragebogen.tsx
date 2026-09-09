@@ -1,7 +1,15 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Choice, MultiChoice, YesNoField } from "@/components/fields";
-import { GAD7_INTRO, GAD7_ITEMS, GAD7_OPTIONS } from "@/lib/gad7";
+import {
+  GAD7_INTRO,
+  GAD7_ITEMS,
+  GAD7_MAX,
+  GAD7_MIN,
+  GAD7_OPTIONS,
+  GAD7_SCORE_ERROR,
+  parseGad7Score,
+} from "@/lib/gad7";
 import { useLang, ui, type L } from "@/lib/i18n";
 import {
   FUNCTION_OPTIONS,
@@ -65,6 +73,27 @@ function Questionnaire() {
   const navigate = useNavigate();
   const { session, setPhq, setGad7, update, updateProfile, updateSafety } = useSession();
   const [index, setIndex] = useState(0);
+  const [gad7ScoreInput, setGad7ScoreInput] = useState(
+    () => session.gad7KnownScore?.toString() ?? "",
+  );
+  const [gad7ScoreError, setGad7ScoreError] = useState<L | null>(null);
+
+  const handleGad7ScoreInput = (raw: string) => {
+    setGad7ScoreInput(raw);
+    if (raw.trim() === "") {
+      setGad7ScoreError(null);
+      update({ gad7KnownScore: null });
+      return;
+    }
+    const result = parseGad7Score(raw);
+    if (result.valid) {
+      setGad7ScoreError(null);
+      update({ gad7KnownScore: result.value, gad7Skipped: false });
+    } else {
+      setGad7ScoreError(GAD7_SCORE_ERROR[result.reason]);
+      update({ gad7KnownScore: null });
+    }
+  };
 
   const item9 = session.phq[8] ?? 0;
   const needsSafety = item9 >= 1;
@@ -93,7 +122,11 @@ function Questionnaire() {
       case "function":
         return session.functioning !== null;
       case "gad7":
-        return session.gad7Skipped || session.gad7.every((v) => v !== null);
+        return (
+          session.gad7KnownScore !== null ||
+          session.gad7Skipped ||
+          session.gad7.every((v) => v !== null)
+        );
       case "safety":
         return (
           session.safety.plan !== null &&
@@ -245,7 +278,56 @@ function Questionnaire() {
                 {tr(["Diesen Schritt überspringen", "Skip this step"])}
               </button>
             </div>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+
+            <div className="mt-3 rounded-xl border border-border bg-card p-4">
+              <label htmlFor="gad7-known-score" className="block text-sm font-semibold">
+                {tr([
+                  "Kennen Sie Ihren GAD-7-Gesamtwert bereits?",
+                  "Do you already know your GAD-7 total score?",
+                ])}
+              </label>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                {tr([
+                  `Falls ja, tragen Sie ihn hier ein (${GAD7_MIN}–${GAD7_MAX}) — dann können Sie die einzelnen Fragen unten überspringen.`,
+                  `If so, enter it here (${GAD7_MIN}–${GAD7_MAX}) — you can then skip the individual questions below.`,
+                ])}
+              </p>
+              <div className="mt-2 flex items-center gap-2">
+                <input
+                  id="gad7-known-score"
+                  type="number"
+                  inputMode="numeric"
+                  min={GAD7_MIN}
+                  max={GAD7_MAX}
+                  step={1}
+                  placeholder={`${GAD7_MIN}–${GAD7_MAX}`}
+                  value={gad7ScoreInput}
+                  onChange={(e) => handleGad7ScoreInput(e.target.value)}
+                  aria-invalid={gad7ScoreError !== null}
+                  aria-describedby="gad7-known-score-error"
+                  className={[
+                    "w-24 rounded-lg border bg-background px-3 py-1.5 text-sm",
+                    gad7ScoreError ? "border-destructive" : "border-border",
+                  ].join(" ")}
+                />
+                <span className="text-xs text-muted-foreground">{tr(["Punkte", "points"])}</span>
+              </div>
+              {gad7ScoreError && (
+                <p
+                  id="gad7-known-score-error"
+                  className="mt-1.5 text-xs font-medium text-destructive"
+                >
+                  {tr(gad7ScoreError)}
+                </p>
+              )}
+              {session.gad7KnownScore !== null && !gad7ScoreError && (
+                <p className="mt-1.5 text-xs text-muted-foreground">
+                  {tr(["Wird für die Schätzung verwendet.", "Will be used for the estimate."])}
+                </p>
+              )}
+            </div>
+
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
               {tr([
                 "Diese kurzen Zusatzfragen zu Anspannung und Sorgen (GAD-7) verbessern die Schätzung Ihres möglichen Verlaufs nach 12 Monaten. Sie können diesen Schritt auch überspringen.",
                 "These short additional questions about tension and worry (GAD-7) improve the estimate of your possible 12-month course. You can also skip this step.",
