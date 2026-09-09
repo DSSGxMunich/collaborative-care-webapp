@@ -277,7 +277,7 @@ function Clinician() {
                 </th>
                 <th className="px-4 py-3 font-semibold">{tr(["Datenlage", "Data support"])}</th>
                 <th className="px-4 py-3 font-semibold">
-                  {tr(["PHQ-9 6 Mo. (Bereich)", "PHQ-9 6 mo. (range)"])}
+                  {tr(["PHQ-9 6 Mo. (95%-KI)", "PHQ-9 6 mo. (95% CI)"])}
                 </th>
                 <th className="px-4 py-3 font-semibold">
                   {tr(["Response ≥ 50 %", "Response ≥ 50%"])}
@@ -319,8 +319,8 @@ function Clinician() {
         </div>
         <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
           {tr([
-            `${PROTOTYPE_NOTE[0]} Kombinierte Bausteine nutzen den im Modell direkt geschätzten Interaktionsterm, keine Summe der Einzeleffekte. Modellversion ${MODEL_META.version}. Keine Rangfolge, keine klinisch validierten Vorhersagen. Angaben verbleiben in der Browser-Sitzung des Patienten.`,
-            `${PROTOTYPE_NOTE[1]} Combined components use the interaction term directly estimated by the model, not a sum of the single effects. Model version ${MODEL_META.version}. No ranking, no clinically validated predictions. Data remain in the patient's browser session.`,
+            `${PROTOTYPE_NOTE[0]} Kombinierte Bausteine nutzen den im Modell direkt geschätzten Interaktionsterm, keine Summe der Einzeleffekte. Werte in Klammern sind ungefähre 95 %-Kredibilitätsintervalle. Modellversion ${MODEL_META.version}. Keine Rangfolge, keine klinisch validierten Vorhersagen. Angaben verbleiben in der Browser-Sitzung des Patienten.`,
+            `${PROTOTYPE_NOTE[1]} Combined components use the interaction term directly estimated by the model, not a sum of the single effects. Values in parentheses are approximate 95% credible intervals. Model version ${MODEL_META.version}. No ranking, no clinically validated predictions. Data remain in the patient's browser session.`,
           ])}
         </p>
       </section>
