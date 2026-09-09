@@ -1,6 +1,6 @@
 # Predict Care
 
-Predict Care is a web-based prediction tool for structured depression care. Built on patient-level and study-level data from an individual patient data (IPD) meta-analysis, it estimates how effective different care components — and combinations of them — are likely to be for a specific patient profile. It is designed to be introduced by a GP and completed by patients, either at the practice or independently at home, through an easy-to-navigate interface.
+Predict Care is a web-based prediction tool for structured depression care. Built on patient-level and study-level data from an individual patient data (IPD) meta-analysis, it estimates how effective different care components - and combinations of them - are likely to be for a specific patient profile. It is designed to be introduced by a GP and completed by patients, either at the practice or independently at home, through an easy-to-navigate interface.
 
 The tool is explicitly practice-oriented: its form and design are shaped in close contact with GP offices and patient feedback, aiming for clear practical value and real-world relevance that extends existing evidence towards patient-level prediction and everyday clinical use. It is built in layers to allow flexibility as development continues. The core feature is a questionnaire — including the PHQ-9 for depressive symptom severity plus basic clinical and demographic information — that is evaluated to produce an evidence-informed, patient-level prediction of probable depression outcomes under different treatments and potentially helpful components of structured depression care. The questionnaire also runs a safety algorithm that surfaces appropriate warning messages, crisis contacts, and guidance on urgent help-seeking whenever it detects indications of acute risk, including possible suicidal tendencies. The tool can additionally present aggregated data to the GP or other mental health providers to save time, and may include a page for patient-tailored social prescribing — pointing patients towards practical, low-threshold activities and services suited to their needs, ranging from general recommendations to geographically specific local offers (e.g. public insurance offerings in Germany, community activities, exercise groups, courses, or other publicly available support services).
 
@@ -51,7 +51,7 @@ node .output/server/index.mjs
 
 ### Project structure
 
-- `src/routes/` — file-based routes (see `src/routes/README.md` for the routing conventions)
-- `src/components/` — shared React components, including `src/components/ui/` (shadcn/ui primitives)
+- `src/routes/` - file-based routes (see `src/routes/README.md` for the routing conventions)
+- `src/components/` - shared React components, including `src/components/ui/` (shadcn/ui primitives)
 - `src/lib/` — domain logic: PHQ-9 scoring, prediction model, safety checks, i18n, session state
 - `src/server.ts` / `src/start.ts` — server entry and middleware (SSR error handling, CSRF)
