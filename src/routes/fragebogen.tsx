@@ -18,6 +18,7 @@ import {
   useSession,
   type AgeBand,
   type Duration,
+  type Sex,
 } from "@/lib/session";
 
 export const Route = createFileRoute("/fragebogen")({
@@ -45,6 +46,11 @@ const AGE_OPTIONS: { value: AgeBand; label: L }[] = [
   { value: "30-49", label: ["30–49 Jahre", "30–49 years"] },
   { value: "50-64", label: ["50–64 Jahre", "50–64 years"] },
   { value: "65+", label: ["65 Jahre und älter", "65 years and older"] },
+];
+
+const SEX_OPTIONS: { value: Sex; label: L }[] = [
+  { value: "female", label: ["Weiblich", "Female"] },
+  { value: "male", label: ["Männlich", "Male"] },
 ];
 
 const DURATION_OPTIONS: { value: Duration; label: L }[] = [
@@ -94,6 +100,7 @@ function Questionnaire() {
       case "basics":
         return (
           session.profile.ageBand !== null &&
+          session.profile.sex !== null &&
           session.profile.duration !== null &&
           session.profile.priorEpisodes !== null &&
           session.profile.priorTreatment.length > 0
@@ -280,6 +287,18 @@ function Questionnaire() {
               options={AGE_OPTIONS}
               value={session.profile.ageBand}
               onChange={(v) => updateProfile({ ageBand: v })}
+            />
+          </fieldset>
+          <fieldset className="surface-card p-5">
+            <legend className="mb-3 block text-base font-semibold">
+              {tr(["Welches Geschlecht haben Sie?", "What is your sex?"])}
+            </legend>
+            <Choice
+              name="sex"
+              columns={2}
+              options={SEX_OPTIONS}
+              value={session.profile.sex}
+              onChange={(v) => updateProfile({ sex: v })}
             />
           </fieldset>
           <fieldset className="surface-card p-5">

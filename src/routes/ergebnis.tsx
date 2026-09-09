@@ -56,6 +56,9 @@ function Info({ label, hint }: { label: string; hint: string }) {
 const pct = (x: number) => `${Math.round(x * 100)}%`;
 const rangePct = (r: Range) => `${Math.round(r[0] * 100)}–${Math.round(r[1] * 100)}%`;
 
+/** These ranges come from the fitted coefficients' credible intervals (see model.ts). */
+const CI_LABEL: L = ["ca. 95 %-Kredibilitätsintervall", "approx. 95% credible interval"];
+
 const MEASURES = {
   endpoint: {
     label: ["Geschätzter PHQ-9 nach 6 Monaten", "Estimated PHQ-9 at 6 months"] as L,
@@ -126,7 +129,7 @@ function OutcomeCard({
           </dt>
           <dd className="font-display text-xl font-semibold">{scenario.expectedEndpoint}</dd>
           <dd className="text-xs text-muted-foreground">
-            {tr(["Bereich", "Range"])} {scenario.endpointRange[0]}–{scenario.endpointRange[1]}
+            {tr(CI_LABEL)} {scenario.endpointRange[0]}–{scenario.endpointRange[1]}
           </dd>
         </div>
         <div>
@@ -137,7 +140,7 @@ function OutcomeCard({
             {pct(scenario.responseProbability)}
           </dd>
           <dd className="text-xs text-muted-foreground">
-            {tr(["Bereich", "Range"])} {rangePct(scenario.responseRange)}
+            {tr(CI_LABEL)} {rangePct(scenario.responseRange)}
           </dd>
         </div>
         <div>
@@ -148,7 +151,7 @@ function OutcomeCard({
             {pct(scenario.remissionProbability)}
           </dd>
           <dd className="text-xs text-muted-foreground">
-            {tr(["Bereich", "Range"])} {rangePct(scenario.remissionRange)}
+            {tr(CI_LABEL)} {rangePct(scenario.remissionRange)}
           </dd>
         </div>
       </dl>
@@ -414,8 +417,8 @@ function Results() {
         </h2>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           {tr([
-            "Gegenüberstellung ohne Rangfolge. Die angegebenen Bereiche zeigen die Unsicherheit der Schätzung; Unterschiede innerhalb dieser Bereiche sind nicht bedeutsam.",
-            "A side-by-side view without ranking. The ranges shown express the uncertainty of the estimate; differences within these ranges are not meaningful.",
+            "Gegenüberstellung ohne Rangfolge. Die angegebenen Bereiche sind ungefähre 95 %-Kredibilitätsintervalle des Modells; Unterschiede innerhalb dieser Bereiche sind nicht bedeutsam.",
+            "A side-by-side view without ranking. The ranges shown are approximate 95% credible intervals from the model; differences within these ranges are not meaningful.",
           ])}
         </p>
 
@@ -528,9 +531,10 @@ function Results() {
                     {s.estimate.activeModerators
                       .map(
                         (m) =>
-                          `${tr(m.label)} (${m.factor >= 1 ? "+" : ""}${Math.round(
-                            (m.factor - 1) * 100,
-                          )} %)`,
+                          `${tr(m.label)} (${m.delta >= 0 ? "+" : ""}${m.delta} ${tr([
+                            "Punkte",
+                            "points",
+                          ])})`,
                       )
                       .join(", ")}
                   </span>

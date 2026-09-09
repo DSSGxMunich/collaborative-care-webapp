@@ -12,9 +12,12 @@ import type { L } from "./i18n";
 export type AgeBand = "18-29" | "30-49" | "50-64" | "65+";
 export type Duration = "lt3m" | "3to12m" | "gt12m";
 export type YesNo = "yes" | "no";
+export type Sex = "female" | "male";
 
 export type Profile = {
   ageBand: AgeBand | null;
+  /** Used by the fitted outcome model (theta_sex, interaction terms). */
+  sex: Sex | null;
   duration: Duration | null;
   priorEpisodes: YesNo | null;
   priorTreatment: string[];
@@ -54,6 +57,7 @@ export const emptySession = (): Session => ({
   safety: { plan: null, canStaySafe: null, pastAttempt: null },
   profile: {
     ageBand: null,
+    sex: null,
     duration: null,
     priorEpisodes: null,
     priorTreatment: [],
