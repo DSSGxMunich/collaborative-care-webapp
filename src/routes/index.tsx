@@ -67,7 +67,7 @@ function Index() {
     <div>
       <section className="mx-auto max-w-5xl px-4 pb-4 pt-10 sm:pt-16">
         <div className="grid items-center gap-10 md:grid-cols-[1.15fr_1fr]">
-          <div>
+          <div className="min-w-0">
             <p className="inline-flex items-center gap-2 rounded-full bg-primary-soft px-3 py-1 text-xs font-semibold uppercase tracking-wide text-foreground">
               {tr(["Forschungsprototyp", "Research prototype"])}
             </p>
@@ -104,7 +104,7 @@ function Index() {
               ])}
             </p>
           </div>
-          <div className="overflow-hidden rounded-3xl border border-border shadow-lift">
+          <div className="min-w-0 overflow-hidden rounded-3xl border border-border shadow-lift">
             <img
               src={heroImage}
               alt={tr([
