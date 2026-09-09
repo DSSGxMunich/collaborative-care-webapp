@@ -2,15 +2,15 @@
  * Depression-care outcome model — fitted coefficients (Bayesian, az.summary()).
  * ----------------------------------------------------------------------------
  * FITTED_COEFFICIENTS below are the real posterior means (with 95% HDI /
- * credible intervals) from the fitted IPD meta-analysis model. One thing is
- * still a PLACEHOLDER, and everything downstream of it is a best-effort,
- * clearly flagged approximation until it's confirmed:
- *
- *   `STANDARDIZATION` — the mean/SD used to standardize baseline PHQ-9 and
- *   age when the model was fit, and `SEX_CODE` — which sex category the
- *   model treats as the 0/reference level. Using the wrong constants here
- *   silently shifts every prediction, so these must be confirmed before the
- *   numbers below are treated as clinically valid.
+ * credible intervals) from the fitted IPD meta-analysis model.
+ * `STANDARDIZATION` is now real too — the mean/SD of baseline PHQ-9 and age
+ * in the training data (analysis_df), used to standardize both before
+ * applying gamma_phq9 / theta_age / the delta_c*_age terms, exactly as the
+ * model was fit. One assumption remains unconfirmed: `SEX_CODE` — which sex
+ * category the model treats as the 0/reference level. Using the wrong
+ * coding here silently flips the sign of every sex-related adjustment, so
+ * this should be confirmed before the numbers below are treated as
+ * clinically valid.
  *
  * `alphaStudy` (the population-level intercept) is now real, but it is an
  * APPROXIMATION: az.summary() reported a separate posterior mean per trial
@@ -22,8 +22,9 @@
  * may differ, and between-study heterogeneity is substantial (trial
  * intercepts range from about -3.8 to -1.0).
  *
- * Model structure — linear predictor for the modelled PHQ-9 change
- * ("improvement"; c1 = "followUp" component present, c2 =
+ * Model structure — linear predictor for the modelled PHQ-9 change, defined
+ * as (endpoint - baseline), i.e. NEGATIVE = improvement / symptom
+ * reduction, POSITIVE = worsening (c1 = "followUp" component present, c2 =
  * "relapsePrevention" component present, both 0/1; ageZ / baselineZ =
  * standardized age / baseline PHQ-9; sex = 0/1 per SEX_CODE):
  *
@@ -39,7 +40,15 @@
  *          + delta_c1_sex     * c1 * sex
  *          + delta_c2_sex     * c2 * sex
  *
- *   endpoint = clamp(baseline - change, 0, 27)
+ *   endpoint = clamp(baseline + change, 0, 27)
+ *
+ * This sign convention (rather than change = baseline - endpoint) is
+ * inferred, not confirmed against the fitting script: alpha_study is
+ * consistently negative across all 12 reported trials (-3.8 to -1.0),
+ * which is only clinically plausible if negative alpha_study means usual
+ * care improves PHQ-9 on average — the alternative (positive = improvement)
+ * would mean usual-care patients got worse in nearly every included trial.
+ * If this turns out to be wrong, negate `change` everywhere it's used below.
  *
  * `sigma` (residual SD) models individual-level dispersion around that mean
  * and is used to derive response/remission probabilities as normal-tail
@@ -118,10 +127,14 @@ export const FITTED_COEFFICIENTS = {
   sigma: 4.886,
 };
 
-/** PLACEHOLDER — standardization constants used when the model was fit. */
+/**
+ * Standardization constants from the training data (analysis_df), used to
+ * standardize baseline PHQ-9 and age before applying gamma_phq9 / theta_age
+ * / the delta_c*_age terms — matches how the model was fit.
+ */
 export const STANDARDIZATION = {
-  phq9: { mean: 15, sd: 6 },
-  age: { mean: 45, sd: 15 },
+  phq9: { mean: 11.822582582582582, sd: 6.265154184273839 },
+  age: { mean: 49.85614969535585, sd: 15.878823152237644 },
 };
 
 /** PLACEHOLDER reference coding — confirm against the fitted model. */
@@ -137,7 +150,7 @@ const AGE_MIDPOINT: Record<NonNullable<Profile["ageBand"]>, number> = {
 
 export const MODEL_META = {
   followUpMonths: 6,
-  version: "0.4-fitted (pending standardization constants)",
+  version: "0.5-fitted (pending sex-coding confirmation)",
   remissionCutoff: 5,
   /** Response = >= 50% symptom reduction relative to baseline. */
   responseRatio: 0.5,
@@ -145,8 +158,8 @@ export const MODEL_META = {
 
 /** Shown wherever numbers appear. */
 export const PROTOTYPE_NOTE: L = [
-  "Alle Koeffizienten stammen aus dem gefitteten Modell der IPD-Metaanalyse, einschließlich des Achsenabschnitts (Mittelwert über die eingeschlossenen Studien). Die Standardisierungskonstanten für Alter und PHQ-9 sind noch vorläufige Platzhalter, bis die endgültigen Werte vorliegen — absolute Schätzungen können sich dadurch noch verschieben.",
-  "All coefficients come from the fitted IPD meta-analysis model, including the intercept (averaged across the included trials). The standardization constants for age and PHQ-9 are still provisional placeholders until final values are available — absolute estimates may still shift once they are.",
+  "Alle Koeffizienten sowie die Standardisierung von Alter und PHQ-9 stammen aus dem gefitteten Modell der IPD-Metaanalyse (einschließlich des Achsenabschnitts, gemittelt über die eingeschlossenen Studien). Offen ist noch, welche Kodierung des Geschlechts (0/1) dem Modellfit zugrunde liegt.",
+  "All coefficients and the age/PHQ-9 standardization come from the fitted IPD meta-analysis model (including the intercept, averaged across the included trials). Still open: which sex coding (0/1) the model fit actually used.",
 ];
 
 export const COMPONENT_NOTE: L = [
@@ -433,14 +446,17 @@ export function predictScenario(
   // no pooled hyperparameter) — add its point value only, see file header.
   const alpha = FITTED_COEFFICIENTS.alphaStudy;
 
-  const dropPoint = change.point + alpha;
-  const dropLow = change.low + alpha;
-  const dropHigh = change.high + alpha;
+  // Fitted outcome = (endpoint - baseline), negative = improvement. This
+  // matches alpha_study being consistently negative across every trial
+  // (average usual-care improvement), not consistently positive
+  // (which would mean usual care makes people worse in nearly every trial).
+  const rawChangePoint = change.point + alpha;
+  const rawChangeLow = change.low + alpha;
+  const rawChangeHigh = change.high + alpha;
 
-  const endpointPoint = clamp(input.baseline - dropPoint, 0, 27);
-  // A larger drop means a lower endpoint, so bounds swap here.
-  const endpointLow = clamp(input.baseline - dropHigh, 0, 27);
-  const endpointHigh = clamp(input.baseline - dropLow, 0, 27);
+  const endpointPoint = clamp(input.baseline + rawChangePoint, 0, 27);
+  const endpointLow = clamp(input.baseline + rawChangeLow, 0, 27);
+  const endpointHigh = clamp(input.baseline + rawChangeHigh, 0, 27);
 
   const { sigma } = FITTED_COEFFICIENTS;
   const responseThreshold = input.baseline * (1 - MODEL_META.responseRatio);
@@ -454,7 +470,8 @@ export function predictScenario(
   return {
     key: key ?? (components.join("+") || "usualCare"),
     components,
-    expectedDrop: round1(dropPoint),
+    // expectedDrop: positive = symptom reduction (opposite sign of rawChange).
+    expectedDrop: round1(-rawChangePoint),
     expectedEndpoint: round1(endpointPoint),
     endpointRange: [round1(endpointLow), round1(endpointHigh)],
     responseProbability: responseAt(endpointPoint),
