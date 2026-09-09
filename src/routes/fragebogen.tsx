@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Choice, MultiChoice, YesNoField } from "@/components/fields";
+import { GAD7_INTRO, GAD7_ITEMS, GAD7_OPTIONS } from "@/lib/gad7";
 import { useLang, ui, type L } from "@/lib/i18n";
 import {
   FUNCTION_OPTIONS,
@@ -62,7 +63,7 @@ const DURATION_OPTIONS: { value: Duration; label: L }[] = [
 function Questionnaire() {
   const { tr } = useLang();
   const navigate = useNavigate();
-  const { session, setPhq, update, updateProfile, updateSafety } = useSession();
+  const { session, setPhq, setGad7, update, updateProfile, updateSafety } = useSession();
   const [index, setIndex] = useState(0);
 
   const item9 = session.phq[8] ?? 0;
@@ -70,7 +71,7 @@ function Questionnaire() {
   const risk = assessRisk(session);
 
   const stepKeys = useMemo(() => {
-    const base = ["phqA", "phqB", "phqC", "function"];
+    const base = ["phqA", "phqB", "phqC", "function", "gad7"];
     if (needsSafety) base.push("safety");
     return [...base, "basics", "context", "preferences"];
   }, [needsSafety]);
@@ -91,6 +92,8 @@ function Questionnaire() {
         return answered(6, 9);
       case "function":
         return session.functioning !== null;
+      case "gad7":
+        return session.gad7Skipped || session.gad7.every((v) => v !== null);
       case "safety":
         return (
           session.safety.plan !== null &&
@@ -219,6 +222,49 @@ function Questionnaire() {
             onChange={(v) => update({ functioning: v })}
           />
         </fieldset>
+      )}
+
+      {key === "gad7" && (
+        <div className="space-y-6">
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            {tr([
+              "Diese kurzen Zusatzfragen zu Anspannung und Sorgen (GAD-7) verbessern die Schätzung Ihres möglichen Verlaufs nach 12 Monaten. Sie können diesen Schritt auch überspringen.",
+              "These short additional questions about tension and worry (GAD-7) improve the estimate of your possible 12-month course. You can also skip this step.",
+            ])}
+          </p>
+          <p className="text-sm leading-relaxed text-muted-foreground">{tr(GAD7_INTRO)}</p>
+          {GAD7_ITEMS.map((item, idx) => (
+            <fieldset key={idx} className="surface-card p-5">
+              <legend className="mb-3 block text-base font-semibold">
+                {idx + 1}. {tr(item)}
+              </legend>
+              <Choice
+                name={`gad7-${idx}`}
+                options={GAD7_OPTIONS}
+                value={session.gad7[idx] as 0 | 1 | 2 | 3 | null}
+                onChange={(v) => {
+                  setGad7(idx, v);
+                  if (session.gad7Skipped) update({ gad7Skipped: false });
+                }}
+              />
+            </fieldset>
+          ))}
+          <button
+            type="button"
+            onClick={() => update({ gad7Skipped: true })}
+            className="text-sm font-semibold text-muted-foreground underline underline-offset-2 hover:text-foreground"
+          >
+            {tr(["Diesen Schritt überspringen", "Skip this step"])}
+          </button>
+          {session.gad7Skipped && (
+            <p className="text-xs text-muted-foreground">
+              {tr([
+                "Übersprungen. Sie können jederzeit oben eine Frage beantworten, um dies rückgängig zu machen.",
+                "Skipped. You can answer a question above at any time to undo this.",
+              ])}
+            </p>
+          )}
+        </div>
       )}
 
       {key === "safety" && (

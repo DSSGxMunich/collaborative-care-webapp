@@ -46,6 +46,10 @@ export type SafetyAnswers = {
 export type Session = {
   phq: (number | null)[];
   functioning: number | null;
+  /** GAD-7 anxiety items — used only by the step-2 trajectory model. Optional: see gad7Skipped. */
+  gad7: (number | null)[];
+  /** True once the patient explicitly skipped the GAD-7 step. */
+  gad7Skipped: boolean;
   safety: SafetyAnswers;
   profile: Profile;
   completedAt: string | null;
@@ -54,6 +58,8 @@ export type Session = {
 export const emptySession = (): Session => ({
   phq: Array<number | null>(9).fill(null),
   functioning: null,
+  gad7: Array<number | null>(7).fill(null),
+  gad7Skipped: false,
   safety: { plan: null, canStaySafe: null, pastAttempt: null },
   profile: {
     ageBand: null,
@@ -125,6 +131,7 @@ type Ctx = {
   updateProfile: (patch: Partial<Profile>) => void;
   updateSafety: (patch: Partial<SafetyAnswers>) => void;
   setPhq: (index: number, value: number) => void;
+  setGad7: (index: number, value: number) => void;
   reset: () => void;
   hydrated: boolean;
 };
@@ -173,14 +180,23 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       }),
     [],
   );
+  const setGad7 = useCallback(
+    (index: number, value: number) =>
+      setSession((s) => {
+        const gad7 = [...s.gad7];
+        gad7[index] = value;
+        return { ...s, gad7 };
+      }),
+    [],
+  );
   const reset = useCallback(() => {
     setSession(emptySession());
     window.sessionStorage.removeItem(KEY);
   }, []);
 
   const value = useMemo<Ctx>(
-    () => ({ session, update, updateProfile, updateSafety, setPhq, reset, hydrated }),
-    [session, update, updateProfile, updateSafety, setPhq, reset, hydrated],
+    () => ({ session, update, updateProfile, updateSafety, setPhq, setGad7, reset, hydrated }),
+    [session, update, updateProfile, updateSafety, setPhq, setGad7, reset, hydrated],
   );
 
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;

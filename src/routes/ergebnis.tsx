@@ -380,6 +380,65 @@ function Results() {
         </div>
       </section>
 
+      {/* ---------------- Step 2: independent 12-month trajectory ---------------- */}
+      {p.trajectory && (
+        <section className="mt-12">
+          <h2 className="font-display text-2xl font-semibold">
+            {tr(["Schritt 2: Längerfristiger Verlauf", "Step 2: Longer-term trajectory"])}
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            {tr([
+              "Ein zweites, unabhängiges Modell schätzt aus Alter, Geschlecht, Ausgangswert-PHQ-9 und Angst (GAD-7) einen möglichen PHQ-9-Wert nach 12 Monaten. Es enthält keine Versorgungsbausteine und ist unabhängig von der oben gewählten Versorgungsform.",
+              "A second, independent model estimates a possible PHQ-9 value at 12 months from age, sex, baseline PHQ-9 and anxiety (GAD-7). It contains no care components and is independent of the form of care shown above.",
+            ])}
+          </p>
+
+          <div className="surface-card mt-4 p-5">
+            <dl className="grid gap-4 sm:grid-cols-3">
+              <div>
+                <dt className="text-xs text-muted-foreground">
+                  {tr(["Geschätzter PHQ-9 nach 12 Monaten", "Estimated PHQ-9 at 12 months"])}
+                </dt>
+                <dd className="font-display text-xl font-semibold">
+                  {p.trajectory.expectedPhq12mo}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-xs text-muted-foreground">
+                  {tr(["Chance auf Ansprechen (12 Monate)", "Chance of response (12 months)"])}
+                </dt>
+                <dd className="font-display text-xl font-semibold">
+                  {pct(p.trajectory.responseProbability12mo)}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-xs text-muted-foreground">
+                  {tr(["Chance auf Remission (12 Monate)", "Chance of remission (12 months)"])}
+                </dt>
+                <dd className="font-display text-xl font-semibold">
+                  {pct(p.trajectory.remissionProbability12mo)}
+                </dd>
+              </div>
+            </dl>
+
+            <p className="mt-3 text-xs text-muted-foreground">
+              {tr([
+                "Punktschätzung ohne Unsicherheitsbereich — die bereitgestellten Modelldaten enthalten keine Kovarianzmatrix. Die Trainingsdaten deckten PHQ-9-Werte von 0 bis 20 ab.",
+                "Point estimate with no uncertainty range — the supplied model artifact has no covariance matrix. The training data covered PHQ-9 values from 0 to 20.",
+              ])}
+            </p>
+            {p.trajectory.gad7Imputed && (
+              <p className="mt-2 text-xs font-medium text-warning">
+                {tr([
+                  "GAD-7 wurde nicht angegeben; diese Schätzung nimmt einen mittleren Angstwert an und ist entsprechend unsicherer.",
+                  "GAD-7 was not provided; this estimate assumes an average anxiety score and is correspondingly less certain.",
+                ])}
+              </p>
+            )}
+          </div>
+        </section>
+      )}
+
       {/* ---------------- Configurations ---------------- */}
       <section className="mt-12">
         <h2 className="font-display text-2xl font-semibold">
