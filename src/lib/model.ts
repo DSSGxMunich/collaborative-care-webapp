@@ -153,10 +153,16 @@ export const MODEL_META = {
   responseRatio: 0.5,
 };
 
-/** Shown wherever numbers appear. */
+/** Technical version — for the clinician summary, where the modelling detail is relevant. */
 export const PROTOTYPE_NOTE: L = [
   "Alle Koeffizienten sowie die Standardisierung von Alter und PHQ-9 stammen aus dem gefitteten Modell der IPD-Metaanalyse (einschließlich des Achsenabschnitts, gemittelt über die eingeschlossenen Studien).",
   "All coefficients and the age/PHQ-9 standardization come from the fitted IPD meta-analysis model (including the intercept, averaged across the included trials).",
+];
+
+/** Plain-language version — for the patient-facing results page. */
+export const PROTOTYPE_NOTE_PATIENT: L = [
+  "Diese Seite zeigt einen Forschungsprototyp. Die Zahlen sind grobe Schätzungen aus früheren Studien mit vielen unterschiedlichen Personen – keine Vorhersage für Ihren persönlichen Verlauf und kein Ersatz für ärztlichen Rat.",
+  "This page shows a research prototype. The numbers are rough estimates drawn from earlier studies of many different people — not a prediction of your personal course, and not a substitute for medical advice.",
 ];
 
 export const COMPONENT_NOTE: L = [
@@ -217,18 +223,26 @@ export type CareConfiguration = {
   dataNote: L;
 };
 
+/** Short badge text — pair with DATA_SUPPORT_LABEL as the hover explanation. */
+export const DATA_SUPPORT_SHORT: Record<DataSupport, L> = {
+  estimable: ["Gut belegt", "Well supported"],
+  partial: ["Teilweise belegt", "Partly supported"],
+  uncertain: ["Datenlage unsicher", "Preliminary"],
+};
+
+/** Hover/tooltip text explaining a DATA_SUPPORT_SHORT badge. */
 export const DATA_SUPPORT_LABEL: Record<DataSupport, L> = {
   estimable: [
-    "Direkt aus dem gefitteten Modell geschätzt",
-    "Directly estimated by the fitted model",
+    "Direkt aus dem gefitteten Modell geschätzt.",
+    "Directly estimated by the fitted model.",
   ],
   partial: [
-    "Nur teilweise durch Studiendaten abgedeckt",
-    "Only partly covered by the available trial data",
+    "Nur teilweise durch Studiendaten abgedeckt.",
+    "Only partly covered by the available trial data.",
   ],
   uncertain: [
-    "Datenlage für diese Konfiguration unsicher",
-    "Data support for this configuration uncertain",
+    "Datenlage für diese Konfiguration unsicher.",
+    "Data support for this configuration is uncertain.",
   ],
 };
 
@@ -494,8 +508,8 @@ export function describePredictors(input: PredictionInput): PredictorRow[] {
       label: ["Ausgangswert PHQ-9", "Baseline PHQ-9"],
       value: [`${input.baseline} von 27`, `${input.baseline} of 27`],
       usedFor: [
-        "Geht direkt in das gefittete Modell ein (gamma_phq9).",
-        "Enters the fitted model directly (gamma_phq9).",
+        "Ihr aktueller PHQ-9-Wert fließt direkt in die Schätzung ein.",
+        "Your current PHQ-9 score is used directly to personalize the estimate.",
       ],
       available: true,
     },
@@ -503,8 +517,8 @@ export function describePredictors(input: PredictionInput): PredictorRow[] {
       label: ["Alter", "Age"],
       value: p.ageBand ? [p.ageBand, p.ageBand] : dash,
       usedFor: [
-        "Geht direkt in das gefittete Modell ein (theta_age und Interaktionsterme).",
-        "Enters the fitted model directly (theta_age and the interaction terms).",
+        "Ihre Altersgruppe fließt direkt in die Schätzung ein.",
+        "Your age group is used directly to personalize the estimate.",
       ],
       available: p.ageBand !== null,
     },
@@ -512,13 +526,29 @@ export function describePredictors(input: PredictionInput): PredictorRow[] {
       label: ["Geschlecht", "Sex"],
       value: p.sex ? SEX_LABEL[p.sex] : dash,
       usedFor: [
-        "Geht direkt in das gefittete Modell ein (theta_sex und Interaktionsterme).",
-        "Enters the fitted model directly (theta_sex and the interaction terms).",
+        "Ihr Geschlecht fließt direkt in die Schätzung ein.",
+        "Your sex is used directly to personalize the estimate.",
       ],
       available: p.sex !== null,
     },
   ];
 }
+
+/** Hover-tooltip explanations for terms used in the results and clinician tables. */
+export const MEASURE_INFO = {
+  response: [
+    "Wahrscheinlichkeit, dass der PHQ-9-Wert gegenüber dem Ausgangswert um mindestens 50 % zurückgeht.",
+    "Probability that the PHQ-9 score falls by at least 50% compared with baseline.",
+  ] as L,
+  remission: [
+    `Wahrscheinlichkeit, nur noch minimale Beschwerden zu haben – hier definiert als PHQ-9 unter ${MODEL_META.remissionCutoff}.`,
+    `Probability of having only minimal symptoms — here defined as PHQ-9 below ${MODEL_META.remissionCutoff}.`,
+  ] as L,
+  credibleInterval: [
+    "Ungefähres 95 %-Unsicherheitsintervall des Modells: Der tatsächliche Wert liegt mit hoher Wahrscheinlichkeit in diesem Bereich.",
+    "The model's approximate 95% uncertainty interval — the actual value very likely falls within this range.",
+  ] as L,
+};
 
 export const PREDICTOR_NOTE: L = [
   "Nur diese Merkmale gehen in das gefittete Modell ein. Weitere im Fragebogen erhobene Angaben dienen ausschließlich der Angebots-Passung, nicht der Schätzung.",

@@ -1,20 +1,22 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useLang, ui, type L } from "@/lib/i18n";
-import { SEVERITY_LABEL, SEVERITY_RANGE } from "@/lib/phq9";
+import { SEVERITY_LABEL, SEVERITY_RANGE, PHQ9_INFO } from "@/lib/phq9";
 import { RISK_MESSAGE, RISK_TITLE } from "@/lib/safety";
 import {
   COMBINATION_NOTE,
   COMPONENT_NOTE,
   DATA_SUPPORT_LABEL,
+  DATA_SUPPORT_SHORT,
   MODEL_META,
   PREDICTOR_NOTE,
-  PROTOTYPE_NOTE,
+  PROTOTYPE_NOTE_PATIENT,
   type Range,
   type Scenario,
 } from "@/lib/model";
 import { usePrediction } from "@/lib/usePrediction";
 import { CONSTRAINTS, PREFERENCES } from "@/lib/session";
+import { Info } from "@/components/info";
 
 export const Route = createFileRoute("/ergebnis")({
   head: () => ({
@@ -36,28 +38,15 @@ export const Route = createFileRoute("/ergebnis")({
   component: Results,
 });
 
-/** Tooltip label: hover/focus text plus a screen-reader friendly explanation. */
-function Info({ label, hint }: { label: string; hint: string }) {
-  return (
-    <span className="inline-flex items-center gap-1">
-      <span>{label}</span>
-      <button
-        type="button"
-        title={hint}
-        aria-label={`${label}: ${hint}`}
-        className="flex h-4 w-4 shrink-0 cursor-help items-center justify-center rounded-full border border-border text-[9px] font-bold text-muted-foreground"
-      >
-        i
-      </button>
-    </span>
-  );
-}
-
 const pct = (x: number) => `${Math.round(x * 100)}%`;
 const rangePct = (r: Range) => `${Math.round(r[0] * 100)}–${Math.round(r[1] * 100)}%`;
 
-/** These ranges come from the fitted coefficients' credible intervals (see model.ts). */
-const CI_LABEL: L = ["ca. 95 %-Kredibilitätsintervall", "approx. 95% credible interval"];
+/** Short label + hover explanation for the uncertainty range shown under each number. */
+const CI_SHORT: L = ["Bandbreite", "Range"];
+const CI_HINT: L = [
+  "Ungefähres 95 %-Unsicherheitsintervall des Modells: Der tatsächliche Wert liegt mit hoher Wahrscheinlichkeit in diesem Bereich.",
+  "The model's approximate 95% uncertainty interval — the actual value very likely falls within this range.",
+];
 
 const MEASURES = {
   endpoint: {
@@ -98,7 +87,7 @@ function OutcomeCard({
   title: string;
   subtitle?: string;
   baseline: number;
-  badge?: string;
+  badge?: ReactNode;
   footnote?: string;
 }) {
   const { tr } = useLang();
@@ -129,7 +118,8 @@ function OutcomeCard({
           </dt>
           <dd className="font-display text-xl font-semibold">{scenario.expectedEndpoint}</dd>
           <dd className="text-xs text-muted-foreground">
-            {tr(CI_LABEL)} {scenario.endpointRange[0]}–{scenario.endpointRange[1]}
+            <Info label={tr(CI_SHORT)} hint={tr(CI_HINT)} /> {scenario.endpointRange[0]}–
+            {scenario.endpointRange[1]}
           </dd>
         </div>
         <div>
@@ -140,7 +130,7 @@ function OutcomeCard({
             {pct(scenario.responseProbability)}
           </dd>
           <dd className="text-xs text-muted-foreground">
-            {tr(CI_LABEL)} {rangePct(scenario.responseRange)}
+            <Info label={tr(CI_SHORT)} hint={tr(CI_HINT)} /> {rangePct(scenario.responseRange)}
           </dd>
         </div>
         <div>
@@ -151,18 +141,12 @@ function OutcomeCard({
             {pct(scenario.remissionProbability)}
           </dd>
           <dd className="text-xs text-muted-foreground">
-            {tr(CI_LABEL)} {rangePct(scenario.remissionRange)}
+            <Info label={tr(CI_SHORT)} hint={tr(CI_HINT)} /> {rangePct(scenario.remissionRange)}
           </dd>
         </div>
       </dl>
 
-      <p className="mt-3 text-xs text-muted-foreground">
-        {footnote ??
-          tr([
-            "Illustrative Platzhalterwerte zur Erprobung der Darstellung.",
-            "Illustrative placeholder values for testing the presentation.",
-          ])}
-      </p>
+      {footnote ? <p className="mt-3 text-xs text-muted-foreground">{footnote}</p> : null}
     </div>
   );
 }
@@ -288,7 +272,7 @@ function Results() {
 
       <div className="mt-4 rounded-2xl border border-warning/50 bg-accent-soft p-4">
         <p className="text-sm font-semibold">{tr(["Forschungsprototyp", "Research prototype"])}</p>
-        <p className="mt-1 text-sm leading-relaxed">{tr(PROTOTYPE_NOTE)}</p>
+        <p className="mt-1 text-sm leading-relaxed">{tr(PROTOTYPE_NOTE_PATIENT)}</p>
       </div>
 
       {p.risk !== "none" && (
@@ -314,7 +298,7 @@ function Results() {
       <section className="surface-card mt-6 flex flex-wrap items-center gap-6 p-6">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            PHQ-9
+            <Info label="PHQ-9" hint={tr(PHQ9_INFO)} />
           </p>
           <p className="font-display text-5xl font-semibold leading-none">{p.baseline}</p>
           <p className="mt-1 text-xs text-muted-foreground">
@@ -329,10 +313,10 @@ function Results() {
         </div>
       </section>
 
-      {/* ---------------- What can be expected ---------------- */}
+      {/* ---------------- Care options compared ---------------- */}
       <section className="mt-10">
         <h2 className="font-display text-2xl font-semibold">
-          {tr(["Was ist zu erwarten?", "What can be expected?"])}
+          {tr(["Versorgungsoptionen im Vergleich", "Care options compared"])}
         </h2>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           {tr([
@@ -353,40 +337,7 @@ function Results() {
         </dl>
 
         <p className="mt-4 rounded-xl bg-secondary p-4 text-xs leading-relaxed text-muted-foreground">
-          {tr(COMPONENT_NOTE)}
-        </p>
-
-        <div className="mt-6 grid gap-4">
-          <OutcomeCard
-            scenario={p.usual}
-            baseline={p.baseline}
-            title={tr(["Übliche hausärztliche Versorgung", "Usual GP care"])}
-            subtitle={tr([
-              "Behandlung wie bisher: Termine bei Bedarf, Beratung, Verlaufsbeobachtung.",
-              "Care as before: appointments as needed, advice and watchful monitoring.",
-            ])}
-            badge={tr(["Vergleichsgrundlage", "Reference"])}
-          />
-          {p.singles.map((s) => (
-            <OutcomeCard
-              key={s.component.id}
-              scenario={s.scenario}
-              baseline={p.baseline}
-              title={tr(s.component.label)}
-              subtitle={tr(s.component.description)}
-              badge={tr(["Beispiel-Baustein", "Example component"])}
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* ---------------- Configurations ---------------- */}
-      <section className="mt-12">
-        <h2 className="font-display text-2xl font-semibold">
-          {tr(["Versorgungskonfigurationen", "Care configurations"])}
-        </h2>
-        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          {tr(COMBINATION_NOTE)}
+          {tr(COMPONENT_NOTE)} {tr(COMBINATION_NOTE)}
         </p>
 
         <div className="mt-6 grid gap-4">
@@ -397,78 +348,18 @@ function Results() {
               baseline={p.baseline}
               title={tr(c.config.label)}
               subtitle={tr(c.config.description)}
-              badge={tr(DATA_SUPPORT_LABEL[c.config.dataSupport])}
-              footnote={`${tr(c.config.dataNote)} ${tr([
-                "Illustrative Platzhalterwerte.",
-                "Illustrative placeholder values.",
-              ])}`}
+              badge={
+                c.config.id === "usualCare" ? (
+                  tr(["Vergleichsgrundlage", "Reference"])
+                ) : (
+                  <Info
+                    label={tr(DATA_SUPPORT_SHORT[c.config.dataSupport])}
+                    hint={tr(DATA_SUPPORT_LABEL[c.config.dataSupport])}
+                  />
+                )
+              }
             />
           ))}
-        </div>
-      </section>
-
-      {/* ---------------- Side-by-side comparison ---------------- */}
-      <section className="mt-12">
-        <h2 className="font-display text-2xl font-semibold">
-          {tr([
-            "Was ist bei verschiedenen Versorgungsoptionen zu erwarten?",
-            "What can be expected with different care options?",
-          ])}
-        </h2>
-        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          {tr([
-            "Gegenüberstellung ohne Rangfolge. Die angegebenen Bereiche sind ungefähre 95 %-Kredibilitätsintervalle des Modells; Unterschiede innerhalb dieser Bereiche sind nicht bedeutsam.",
-            "A side-by-side view without ranking. The ranges shown are approximate 95% credible intervals from the model; differences within these ranges are not meaningful.",
-          ])}
-        </p>
-
-        <div className="surface-card mt-5 overflow-x-auto p-1">
-          <table className="w-full min-w-[36rem] text-sm">
-            <thead>
-              <tr className="text-left text-xs uppercase tracking-wide text-muted-foreground">
-                <th className="px-4 py-3 font-semibold">
-                  {tr(["Versorgungsoption", "Care option"])}
-                </th>
-                <th className="px-4 py-3 font-semibold">
-                  <Info label={tr(MEASURES.endpoint.short)} hint={tr(MEASURES.endpoint.hint)} />
-                </th>
-                <th className="px-4 py-3 font-semibold">
-                  <Info
-                    label={tr(["≥ 50 % Rückgang", "≥ 50% reduction"])}
-                    hint={tr(MEASURES.response.hint)}
-                  />
-                </th>
-                <th className="px-4 py-3 font-semibold">
-                  <Info label={tr(MEASURES.remission.short)} hint={tr(MEASURES.remission.hint)} />
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {p.configurations.map((c) => (
-                <tr key={c.config.id}>
-                  <td className="px-4 py-3 font-medium">{tr(c.config.label)}</td>
-                  <td className="px-4 py-3">
-                    {c.scenario.expectedEndpoint}
-                    <span className="block text-xs text-muted-foreground">
-                      {c.scenario.endpointRange[0]}–{c.scenario.endpointRange[1]}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    {pct(c.scenario.responseProbability)}
-                    <span className="block text-xs text-muted-foreground">
-                      {rangePct(c.scenario.responseRange)}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    {pct(c.scenario.remissionProbability)}
-                    <span className="block text-xs text-muted-foreground">
-                      {rangePct(c.scenario.remissionRange)}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </div>
 
         <p className="mt-4 text-sm leading-relaxed">
@@ -514,48 +405,6 @@ function Results() {
             </div>
           ))}
         </div>
-
-        <div className="surface-card mt-4 p-5">
-          <h3 className="font-display text-base font-semibold">
-            {tr([
-              "Profilmerkmale, die das Modell hier anpassen",
-              "Profile characteristics adjusting the model here",
-            ])}
-          </h3>
-          <ul className="mt-3 space-y-3 text-sm">
-            {p.singles.map((s) => (
-              <li key={s.component.id}>
-                <span className="font-semibold">{tr(s.component.short)}: </span>
-                {s.estimate.activeModerators.length > 0 ? (
-                  <span className="text-muted-foreground">
-                    {s.estimate.activeModerators
-                      .map(
-                        (m) =>
-                          `${tr(m.label)} (${m.delta >= 0 ? "+" : ""}${m.delta} ${tr([
-                            "Punkte",
-                            "points",
-                          ])})`,
-                      )
-                      .join(", ")}
-                  </span>
-                ) : (
-                  <span className="text-muted-foreground">
-                    {tr([
-                      "keine profilspezifische Anpassung – es gilt der mittlere Wert",
-                      "no profile-specific adjustment — the average value applies",
-                    ])}
-                  </span>
-                )}
-              </li>
-            ))}
-          </ul>
-          <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-            {tr([
-              "Diese Anpassungen sind statistische Zusammenhänge im Prototyp-Modell, keine Erklärung für Ursachen. Ihre Vorlieben und praktischen Möglichkeiten gehen hier bewusst nicht ein.",
-              "These adjustments are statistical associations in the prototype model, not causal explanations. Your preferences and practical circumstances are deliberately not part of them.",
-            ])}
-          </p>
-        </div>
       </section>
 
       {/* ---------------- Shared decision-making ---------------- */}
@@ -574,24 +423,12 @@ function Results() {
                 "Model-based estimates of clinical outcomes for people with a similar profile — currently illustrative placeholder values.",
               ])}
             </p>
-            <ul className="mt-3 space-y-2 text-sm">
-              <li>
-                <span className="font-semibold">{tr(MEASURES.endpoint.short)}: </span>
-                {p.usual.expectedEndpoint} {tr(["bei üblicher Versorgung", "with usual care"])} →{" "}
-                {p.favourable.scenario.expectedEndpoint} {tr(["bei", "with"])}{" "}
-                {tr(p.favourable.config.label)}
-              </li>
-              <li>
-                <span className="font-semibold">{tr(MEASURES.response.short)}: </span>
-                {pct(p.usual.responseProbability)} →{" "}
-                {pct(p.favourable.scenario.responseProbability)}
-              </li>
-              <li>
-                <span className="font-semibold">{tr(MEASURES.remission.short)}: </span>
-                {pct(p.usual.remissionProbability)} →{" "}
-                {pct(p.favourable.scenario.remissionProbability)}
-              </li>
-            </ul>
+            <p className="mt-3 text-sm leading-relaxed">
+              {tr([
+                `Die Übersicht oben zeigt, wie „${tr(p.favourable.config.label)}“ im Vergleich zur üblichen Versorgung abschneidet.`,
+                `The overview above shows how “${tr(p.favourable.config.label)}” compares with usual care.`,
+              ])}
+            </p>
           </div>
 
           <div className="surface-card p-5">
@@ -677,8 +514,8 @@ function Results() {
 
       <p className="mt-8 text-xs leading-relaxed text-muted-foreground">
         {tr([
-          `Modell ${MODEL_META.version}; Bezugszeitpunkt ${MODEL_META.followUpMonths} Monate. ${PROTOTYPE_NOTE[0]} Ihre Antworten bleiben ausschließlich in dieser Browser-Sitzung auf Ihrem Gerät.`,
-          `Model ${MODEL_META.version}; reference time point ${MODEL_META.followUpMonths} months. ${PROTOTYPE_NOTE[1]} Your answers stay solely in this browser session on your device.`,
+          `Bezugszeitpunkt der Schätzungen: ${MODEL_META.followUpMonths} Monate. Ihre Antworten bleiben ausschließlich in dieser Browser-Sitzung auf Ihrem Gerät.`,
+          `Estimates refer to a ${MODEL_META.followUpMonths}-month time point. Your answers stay solely in this browser session on your device.`,
         ])}
       </p>
     </div>

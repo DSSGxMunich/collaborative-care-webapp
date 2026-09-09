@@ -15,6 +15,12 @@ export const PHQ9_OPTIONS: { value: 0 | 1 | 2 | 3; label: L; hint: L }[] = [
   },
 ];
 
+/** Plain-language explanation of the PHQ-9, for hover/info tooltips. */
+export const PHQ9_INFO: L = [
+  "Fragebogen mit 9 Fragen zur Schwere depressiver Beschwerden in den letzten 2 Wochen. Punktwert von 0 (keine Beschwerden) bis 27 (sehr ausgeprägt).",
+  "A 9-question tool measuring the severity of depressive symptoms over the last 2 weeks. Scored from 0 (no symptoms) to 27 (very severe).",
+];
+
 export const PHQ9_INTRO: L = [
   "Wie oft haben Sie sich in den letzten zwei Wochen durch die folgenden Beschwerden beeinträchtigt gefühlt?",
   "Over the last two weeks, how often have you been bothered by any of the following problems?",

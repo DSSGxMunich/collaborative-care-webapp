@@ -1,10 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useLang, ui, type L } from "@/lib/i18n";
-import { PHQ9_ITEMS, SEVERITY_LABEL } from "@/lib/phq9";
+import { PHQ9_ITEMS, PHQ9_INFO, SEVERITY_LABEL } from "@/lib/phq9";
 import { assessRisk } from "@/lib/safety";
-import { DATA_SUPPORT_LABEL, MODEL_META, PROTOTYPE_NOTE } from "@/lib/model";
+import {
+  DATA_SUPPORT_LABEL,
+  DATA_SUPPORT_SHORT,
+  MODEL_META,
+  MEASURE_INFO,
+  PROTOTYPE_NOTE,
+} from "@/lib/model";
 import { usePrediction } from "@/lib/usePrediction";
 import { CONSTRAINTS, PREFERENCES, PRIOR_TREATMENTS } from "@/lib/session";
+import { Info } from "@/components/info";
 
 export const Route = createFileRoute("/praxis")({
   head: () => ({
@@ -69,101 +76,127 @@ function Clinician() {
     acute: ["AKUT – sofortiges Handeln", "ACUTE — act immediately"],
   };
 
-  const rows: { label: L; value: string }[] = [
-    { label: ["PHQ-9 Summenwert", "PHQ-9 total"], value: `${p.baseline}/27` },
-    { label: ["Schweregrad", "Severity"], value: tr(SEVERITY_LABEL[p.severity]) },
+  /** Grouped for scannability — a clinician skims one block at a time, not 24 flat rows. */
+  const groups: { title: L; rows: { label: L; value: string }[] }[] = [
     {
-      label: ["Funktionsbeeinträchtigung", "Functional impairment"],
-      value: `${p.session.functioning ?? "–"}/3`,
-    },
-    {
-      label: ["Suizidalität (Item 9)", "Suicidality (item 9)"],
-      value: `${p.session.phq[8] ?? 0}/3`,
-    },
-    {
-      label: ["Risikoeinschätzung", "Risk assessment"],
-      value: tr(riskFlag[risk] ?? riskFlag["none"]!),
-    },
-    {
-      label: ["Konkreter Plan / Vorbereitung", "Concrete plan / preparation"],
-      value: safety.plan ? tr(YES_NO[safety.plan]!) : "–",
-    },
-    {
-      label: ["Kann sich bis zum Kontakt schützen", "Able to stay safe until contact"],
-      value: safety.canStaySafe ? tr(YES_NO[safety.canStaySafe]!) : "–",
-    },
-    {
-      label: ["Selbstverletzung/Versuch < 12 Monate", "Self-harm/attempt < 12 months"],
-      value: safety.pastAttempt ? tr(YES_NO[safety.pastAttempt]!) : "–",
-    },
-    { label: ["Alter", "Age"], value: profile.ageBand ?? "–" },
-    {
-      label: ["Geschlecht", "Sex"],
-      value: profile.sex
-        ? tr(profile.sex === "female" ? ["weiblich", "Female"] : ["männlich", "Male"])
-        : "–",
-    },
-    {
-      label: ["Episodendauer", "Episode duration"],
-      value: profile.duration ? tr(DURATION_LABEL[profile.duration]!) : "–",
-    },
-    {
-      label: ["Frühere Episoden", "Previous episodes"],
-      value: profile.priorEpisodes ? tr(YES_NO[profile.priorEpisodes]!) : "–",
-    },
-    {
-      label: ["Vorbehandlungen", "Previous treatments"],
-      value:
-        profile.priorTreatment
-          .map((id) => tr(PRIOR_TREATMENTS.find((t) => t.id === id)?.label ?? (["–", "–"] as L)))
-          .join(", ") || "–",
-    },
-    {
-      label: ["Somatische Komorbidität", "Somatic comorbidity"],
-      value: profile.chronicIllness ? tr(YES_NO[profile.chronicIllness]!) : "–",
-    },
-    {
-      label: ["Lebt allein / geringe Unterstützung", "Lives alone / low support"],
-      value: `${profile.livingAlone ? tr(YES_NO[profile.livingAlone]!) : "–"} / ${
-        profile.lowSupport ? tr(YES_NO[profile.lowSupport]!) : "–"
-      }`,
-    },
-    {
-      label: [
-        "Psychosoziale Belastung (Arbeit/Geld/Wohnen)",
-        "Psychosocial strain (work/money/housing)",
+      title: ["Symptomatik & Risiko", "Symptoms & risk"],
+      rows: [
+        { label: ["PHQ-9 Summenwert", "PHQ-9 total"], value: `${p.baseline}/27` },
+        { label: ["Schweregrad", "Severity"], value: tr(SEVERITY_LABEL[p.severity]) },
+        {
+          label: ["Funktionsbeeinträchtigung", "Functional impairment"],
+          value: `${p.session.functioning ?? "–"}/3`,
+        },
+        {
+          label: ["Suizidalität (Item 9)", "Suicidality (item 9)"],
+          value: `${p.session.phq[8] ?? 0}/3`,
+        },
+        {
+          label: ["Risikoeinschätzung", "Risk assessment"],
+          value: tr(riskFlag[risk] ?? riskFlag["none"]!),
+        },
+        {
+          label: ["Konkreter Plan / Vorbereitung", "Concrete plan / preparation"],
+          value: safety.plan ? tr(YES_NO[safety.plan]!) : "–",
+        },
+        {
+          label: ["Kann sich bis zum Kontakt schützen", "Able to stay safe until contact"],
+          value: safety.canStaySafe ? tr(YES_NO[safety.canStaySafe]!) : "–",
+        },
+        {
+          label: ["Selbstverletzung/Versuch < 12 Monate", "Self-harm/attempt < 12 months"],
+          value: safety.pastAttempt ? tr(YES_NO[safety.pastAttempt]!) : "–",
+        },
       ],
-      value: profile.workStrain ? tr(YES_NO[profile.workStrain]!) : "–",
     },
     {
-      label: ["Riskanter Substanzkonsum", "Risky substance use"],
-      value: profile.substanceUse ? tr(YES_NO[profile.substanceUse]!) : "–",
+      title: ["Hintergrund & Verlauf", "Background & history"],
+      rows: [
+        { label: ["Alter", "Age"], value: profile.ageBand ?? "–" },
+        {
+          label: ["Geschlecht", "Sex"],
+          value: profile.sex
+            ? tr(profile.sex === "female" ? ["weiblich", "Female"] : ["männlich", "Male"])
+            : "–",
+        },
+        {
+          label: ["Episodendauer", "Episode duration"],
+          value: profile.duration ? tr(DURATION_LABEL[profile.duration]!) : "–",
+        },
+        {
+          label: ["Frühere Episoden", "Previous episodes"],
+          value: profile.priorEpisodes ? tr(YES_NO[profile.priorEpisodes]!) : "–",
+        },
+        {
+          label: ["Vorbehandlungen", "Previous treatments"],
+          value:
+            profile.priorTreatment
+              .map((id) =>
+                tr(PRIOR_TREATMENTS.find((t) => t.id === id)?.label ?? (["–", "–"] as L)),
+              )
+              .join(", ") || "–",
+        },
+        {
+          label: ["Somatische Komorbidität", "Somatic comorbidity"],
+          value: profile.chronicIllness ? tr(YES_NO[profile.chronicIllness]!) : "–",
+        },
+      ],
     },
     {
-      label: ["Mobilität eingeschränkt", "Mobility limited"],
-      value: profile.mobilityLimited ? tr(YES_NO[profile.mobilityLimited]!) : "–",
+      title: ["Psychosoziale Faktoren", "Psychosocial factors"],
+      rows: [
+        {
+          label: ["Lebt allein / geringe Unterstützung", "Lives alone / low support"],
+          value: `${profile.livingAlone ? tr(YES_NO[profile.livingAlone]!) : "–"} / ${
+            profile.lowSupport ? tr(YES_NO[profile.lowSupport]!) : "–"
+          }`,
+        },
+        {
+          label: [
+            "Psychosoziale Belastung (Arbeit/Geld/Wohnen)",
+            "Psychosocial strain (work/money/housing)",
+          ],
+          value: profile.workStrain ? tr(YES_NO[profile.workStrain]!) : "–",
+        },
+        {
+          label: ["Riskanter Substanzkonsum", "Risky substance use"],
+          value: profile.substanceUse ? tr(YES_NO[profile.substanceUse]!) : "–",
+        },
+        {
+          label: ["Mobilität eingeschränkt", "Mobility limited"],
+          value: profile.mobilityLimited ? tr(YES_NO[profile.mobilityLimited]!) : "–",
+        },
+        {
+          label: ["Körperliche Inaktivität", "Physical inactivity"],
+          value: profile.lowActivity ? tr(YES_NO[profile.lowActivity]!) : "–",
+        },
+        {
+          label: ["Pflege-/Sorgeverantwortung", "Caring responsibilities"],
+          value: profile.caregiving ? tr(YES_NO[profile.caregiving]!) : "–",
+        },
+      ],
     },
     {
-      label: ["Körperliche Inaktivität", "Physical inactivity"],
-      value: profile.lowActivity ? tr(YES_NO[profile.lowActivity]!) : "–",
-    },
-    {
-      label: ["Pflege-/Sorgeverantwortung", "Caring responsibilities"],
-      value: profile.caregiving ? tr(YES_NO[profile.caregiving]!) : "–",
-    },
-    {
-      label: ["Praktische Einschränkungen", "Practical constraints"],
-      value:
-        profile.constraints
-          .map((id) => tr(CONSTRAINTS.find((t) => t.id === id)?.label ?? (["–", "–"] as L)))
-          .join(", ") || "–",
-    },
-    {
-      label: ["Patientenpräferenzen (nicht im Modell)", "Patient preferences (not in the model)"],
-      value:
-        profile.preferences
-          .map((id) => tr(PREFERENCES.find((t) => t.id === id)?.label ?? (["–", "–"] as L)))
-          .join(", ") || "–",
+      title: ["Einschränkungen & Präferenzen", "Constraints & preferences"],
+      rows: [
+        {
+          label: ["Praktische Einschränkungen", "Practical constraints"],
+          value:
+            profile.constraints
+              .map((id) => tr(CONSTRAINTS.find((t) => t.id === id)?.label ?? (["–", "–"] as L)))
+              .join(", ") || "–",
+        },
+        {
+          label: [
+            "Patientenpräferenzen (nicht im Modell)",
+            "Patient preferences (not in the model)",
+          ],
+          value:
+            profile.preferences
+              .map((id) => tr(PREFERENCES.find((t) => t.id === id)?.label ?? (["–", "–"] as L)))
+              .join(", ") || "–",
+        },
+      ],
     },
   ];
 
@@ -171,11 +204,13 @@ function Clinician() {
     ...p.singles.map((x) => ({
       label: x.component.short,
       kind: ["Baustein", "Component"] as L,
+      kindHint: null as L | null,
       s: x.scenario,
     })),
     ...p.configurations.map((c) => ({
       label: c.config.label,
-      kind: DATA_SUPPORT_LABEL[c.config.dataSupport],
+      kind: DATA_SUPPORT_SHORT[c.config.dataSupport],
+      kindHint: DATA_SUPPORT_LABEL[c.config.dataSupport] as L | null,
       s: c.scenario,
     })),
   ];
@@ -222,19 +257,28 @@ function Clinician() {
           <h2 className="font-display text-lg font-semibold">
             {tr(["Zusammenfassung", "Summary"])}
           </h2>
-          <dl className="mt-4 divide-y divide-border text-sm">
-            {rows.map((r) => (
-              <div key={tr(r.label)} className="flex justify-between gap-4 py-2">
-                <dt className="text-muted-foreground">{tr(r.label)}</dt>
-                <dd className="text-right font-medium">{r.value}</dd>
+          <div className="mt-4 space-y-4">
+            {groups.map((g) => (
+              <div key={tr(g.title)}>
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  {tr(g.title)}
+                </p>
+                <dl className="mt-1 divide-y divide-border text-sm">
+                  {g.rows.map((r) => (
+                    <div key={tr(r.label)} className="flex justify-between gap-4 py-2">
+                      <dt className="text-muted-foreground">{tr(r.label)}</dt>
+                      <dd className="text-right font-medium">{r.value}</dd>
+                    </div>
+                  ))}
+                </dl>
               </div>
             ))}
-          </dl>
+          </div>
         </div>
 
         <div className="surface-card p-5">
           <h2 className="font-display text-lg font-semibold">
-            {tr(["PHQ-9 Itemprofil", "PHQ-9 item profile"])}
+            <Info label={tr(["PHQ-9 Itemprofil", "PHQ-9 item profile"])} hint={tr(PHQ9_INFO)} />
           </h2>
           <ul className="mt-4 space-y-2 text-sm">
             {PHQ9_ITEMS.map((item, i) => {
@@ -275,15 +319,32 @@ function Clinician() {
                 <th className="px-4 py-3 font-semibold">
                   {tr(["Versorgungsoption", "Care option"])}
                 </th>
-                <th className="px-4 py-3 font-semibold">{tr(["Datenlage", "Data support"])}</th>
                 <th className="px-4 py-3 font-semibold">
-                  {tr(["PHQ-9 6 Mo. (95%-KI)", "PHQ-9 6 mo. (95% CI)"])}
+                  <Info
+                    label={tr(["Datenlage", "Data support"])}
+                    hint={tr([
+                      "Wie direkt diese Option durch die eingeschlossenen Studien abgedeckt ist.",
+                      "How directly this option is covered by the included trials.",
+                    ])}
+                  />
                 </th>
                 <th className="px-4 py-3 font-semibold">
-                  {tr(["Response ≥ 50 %", "Response ≥ 50%"])}
+                  <Info
+                    label={tr(["PHQ-9 6 Mo. (95%-KI)", "PHQ-9 6 mo. (95% CI)"])}
+                    hint={`${tr(PHQ9_INFO)} ${tr(MEASURE_INFO.credibleInterval)}`}
+                  />
                 </th>
                 <th className="px-4 py-3 font-semibold">
-                  {tr(["Remission < 5", "Remission < 5"])}
+                  <Info
+                    label={tr(["Response ≥ 50 %", "Response ≥ 50%"])}
+                    hint={tr(MEASURE_INFO.response)}
+                  />
+                </th>
+                <th className="px-4 py-3 font-semibold">
+                  <Info
+                    label={tr(["Remission < 5", "Remission < 5"])}
+                    hint={tr(MEASURE_INFO.remission)}
+                  />
                 </th>
               </tr>
             </thead>
@@ -291,7 +352,13 @@ function Clinician() {
               {scenarios.map((row) => (
                 <tr key={row.s.key + tr(row.label)}>
                   <td className="px-4 py-3 font-medium">{tr(row.label)}</td>
-                  <td className="px-4 py-3 text-xs text-muted-foreground">{tr(row.kind)}</td>
+                  <td className="px-4 py-3 text-xs text-muted-foreground">
+                    {row.kindHint ? (
+                      <Info label={tr(row.kind)} hint={tr(row.kindHint)} />
+                    ) : (
+                      tr(row.kind)
+                    )}
+                  </td>
                   <td className="px-4 py-3">
                     {row.s.expectedEndpoint}{" "}
                     <span className="text-xs text-muted-foreground">
