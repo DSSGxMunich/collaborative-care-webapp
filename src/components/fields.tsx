@@ -1,4 +1,4 @@
-import { useLang, type L } from "@/lib/i18n";
+import { ui, useLang, type L } from "@/lib/i18n";
 
 export function Choice<T extends string | number>({
   options,
@@ -106,26 +106,63 @@ export function YesNoField({
     <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3">
       <span className="max-w-md text-sm">{tr(label)}</span>
       <div className="flex gap-2">
-        {[
-          { v: "yes" as const, l: ["Ja", "Yes"] as L },
-          { v: "no" as const, l: ["Nein", "No"] as L },
-        ].map((o) => (
+        {(["yes", "no"] as const).map((v) => (
           <button
-            key={o.v}
+            key={v}
             type="button"
-            aria-pressed={value === o.v}
-            onClick={() => onChange(o.v)}
+            aria-pressed={value === v}
+            onClick={() => onChange(v)}
             className={[
               "rounded-lg border px-4 py-1.5 text-sm font-medium transition-colors",
-              value === o.v
+              value === v
                 ? "border-primary bg-primary text-primary-foreground"
                 : "border-border bg-background hover:bg-secondary",
             ].join(" ")}
           >
-            {tr(o.l)}
+            {tr(v === "yes" ? ui.yes : ui.no)}
           </button>
         ))}
       </div>
+    </div>
+  );
+}
+
+export function NumberField({
+  label,
+  hint,
+  value,
+  onChange,
+  min = 0,
+  max,
+}: {
+  label: L;
+  hint?: L;
+  value: number | null;
+  onChange: (v: number | null) => void;
+  min?: number;
+  max: number;
+}) {
+  const { tr } = useLang();
+  return (
+    <div className="rounded-xl border border-border bg-card px-4 py-3">
+      <label className="block text-sm">
+        {tr(label)}
+        <input
+          type="number"
+          inputMode="numeric"
+          min={min}
+          max={max}
+          value={value ?? ""}
+          onChange={(e) => {
+            const raw = e.target.value;
+            if (raw === "") return onChange(null);
+            const n = Math.max(min, Math.min(max, Number(raw)));
+            onChange(Number.isNaN(n) ? null : n);
+          }}
+          className="mt-2 w-24 rounded-lg border border-input bg-background px-3 py-1.5 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-ring/30"
+        />
+      </label>
+      {hint ? <p className="mt-1.5 text-xs text-muted-foreground">{tr(hint)}</p> : null}
     </div>
   );
 }

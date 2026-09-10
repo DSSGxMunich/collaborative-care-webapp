@@ -1,0 +1,188 @@
+{
+  "thankYou": {
+    "title": { "de": "Danke für Ihre Antworten", "en": "Thank you for your answers" },
+    "body": {
+      "de": "Sie entscheiden selbst, ob Sie Ihre persönliche Auswertung jetzt sehen möchten. Manche Menschen finden Zahlen zu ihrer Situation hilfreich, andere empfinden sie als belastend. Beides ist in Ordnung — Sie können die Auswertung auch später oder gemeinsam mit Ihrer Ärztin oder Ihrem Arzt ansehen.",
+      "en": "You decide whether you want to see your personal results now. Some people find numbers about their situation helpful, others find them distressing. Both are fine — you can also look at the results later or together with your doctor."
+    },
+    "seeResults": { "de": "Ergebnis jetzt ansehen", "en": "See result now" },
+    "seeSupport": { "de": "Angebote vor Ort ansehen", "en": "See local support" },
+    "privacyNote": {
+      "de": "Ihre Antworten bleiben ausschließlich in diesem Browser gespeichert. Sie können die Auswertung jederzeit über diese Seite öffnen.",
+      "en": "Your answers stay only in this browser. You can open the results from this page at any time."
+    }
+  },
+  "title": { "de": "Ihre Auswertung", "en": "Your results" },
+  "prototypeNote": {
+    "de": "Alle Koeffizienten sowie die Standardisierung von Alter und PHQ-9 stammen aus einem gefitteten Netzwerk-Metaregressions-Modell (einschließlich des über die eingeschlossenen Studien gemittelten Achsenabschnitts). Es handelt sich um einen Forschungsprototyp, keine klinisch validierte Vorhersage.",
+    "en": "All coefficients and the age/PHQ-9 standardization come from a fitted network meta-regression model (including the intercept, averaged across the included trials). This is a research prototype, not a clinically validated prediction."
+  },
+  "phq9Label": "PHQ-9",
+  "of27": { "de": "von 27 Punkten", "en": "of 27 points" },
+  "range": { "de": "Bereich", "en": "Range" },
+  "measures": {
+    "endpoint": {
+      "label": { "de": "Geschätzter PHQ-9 nach 12 Monaten", "en": "Estimated PHQ-9 at 12 months" },
+      "short": { "de": "PHQ-9 nach 12 Monaten", "en": "PHQ-9 at 12 months" },
+      "hint": {
+        "de": "Voraussichtliche Schwere der depressiven Beschwerden nach 12 Monaten für Personen mit einem ähnlichen Profil, auf der PHQ-9-Skala von 0 bis 27.",
+        "en": "Likely severity of depressive symptoms after 12 months for people with a similar profile, on the PHQ-9 scale from 0 to 27."
+      }
+    },
+    "response": {
+      "label": { "de": "Chance auf Ansprechen", "en": "Chance of treatment response" },
+      "short": { "de": "Ansprechen", "en": "Response" },
+      "hint": {
+        "de": "Wahrscheinlichkeit, dass der PHQ-9-Wert gegenüber dem Ausgangswert um mindestens 50 % zurückgeht.",
+        "en": "Probability that the PHQ-9 score falls by at least 50% compared with baseline."
+      }
+    },
+    "remission": {
+      "label": { "de": "Chance auf Remission", "en": "Chance of remission" },
+      "short": { "de": "Remission", "en": "Remission" },
+      "hint": {
+        "de": "Wahrscheinlichkeit, nur noch minimale Beschwerden zu haben — vorläufig definiert als PHQ-9 unter 5.",
+        "en": "Probability of having only minimal symptoms — provisionally defined as PHQ-9 below 5."
+      }
+    }
+  },
+  "ciLabel": { "de": "ca. 95 %-Kredibilitätsintervall", "en": "approx. 95% credible interval" },
+  "rankLabel": { "de": "Rang", "en": "Rank" },
+  "rankOf": { "de": "von", "en": "of" },
+  "scenarios": {
+    "usualCare": {
+      "label": { "de": "Übliche hausärztliche Versorgung", "en": "Usual GP care" },
+      "description": {
+        "de": "Behandlung wie bisher: Termine bei Bedarf, Beratung, Verlaufsbeobachtung.",
+        "en": "Care as before: appointments as needed, advice and watchful monitoring."
+      },
+      "badge": { "de": "Vergleichsgrundlage", "en": "Reference" }
+    },
+    "followUp": {
+      "label": {
+        "de": "Übliche Versorgung + Nachverfolgung (2–4 Wochen)",
+        "en": "Usual care + follow-up (2–4 weeks)"
+      },
+      "description": {
+        "de": "Zusätzlich zur üblichen Versorgung: ein fest vereinbarter Nachverfolgungstermin 2 bis 4 Wochen nach der Erstvorstellung, auch telefonisch.",
+        "en": "In addition to usual care: a follow-up appointment or contact — in person or by telephone — firmly scheduled for 2 to 4 weeks after the initial visit."
+      },
+      "badge": { "de": "Baustein", "en": "Component" }
+    },
+    "relapsePrevention": {
+      "label": {
+        "de": "Übliche Versorgung + Rückfallpräventionsplan",
+        "en": "Usual care + relapse-prevention plan"
+      },
+      "description": {
+        "de": "Zusätzlich zur üblichen Versorgung: ein schriftlicher Plan, der festlegt, wie ein Wiederauftreten der Beschwerden früh erkannt und ihm vorgebeugt wird.",
+        "en": "In addition to usual care: a written plan setting out how a recurrence of symptoms is detected early and prevented."
+      },
+      "badge": { "de": "Baustein", "en": "Component" }
+    }
+  },
+  "scenariosIntro": {
+    "de": "Da aktuell zwei Versorgungsbausteine verfügbar sind, wird jeder einzeln zur üblichen Versorgung hinzugefügt — nicht die Summe beider zusammen.",
+    "en": "Since two care components are currently available, each is added to usual care on its own — not the two together."
+  },
+  "posterior": {
+    "sectionTitle": {
+      "de": "Unsicherheit im Detail: Posterior-Verteilung",
+      "en": "Uncertainty in detail: posterior distribution"
+    },
+    "show": { "de": "Verteilung anzeigen", "en": "Show distribution" },
+    "hide": { "de": "Verteilung ausblenden", "en": "Hide distribution" },
+    "explain": {
+      "de": "Zusätzlich zur Spanne oben zeigt dies die volle geschätzte Verteilung möglicher PHQ-9-Werte nach 12 Monaten, statt nur eines einzelnen Punktwerts.",
+      "en": "In addition to the range above, this shows the full estimated distribution of possible 12-month PHQ-9 values, rather than a single point value."
+    },
+    "placeholderNote": {
+      "de": "Platzhalter: Diese Verteilung wird aus dem oben angegebenen Kredibilitätsintervall angenähert. Sie wird durch die echten Posterior-Stichproben des Netzwerk-Metaregressions-Modells ersetzt, sobald diese vorliegen.",
+      "en": "Placeholder: this distribution is approximated from the credible interval shown above. It will be replaced by the real posterior draws from the network meta-regression model once available."
+    },
+    "axisLabel": { "de": "Geschätzter PHQ-9 nach 12 Monaten", "en": "Estimated PHQ-9 at 12 months" }
+  },
+  "crisis": {
+    "acute": {
+      "title": { "de": "Bitte holen Sie sich jetzt Hilfe", "en": "Please get help now" },
+      "message": {
+        "de": "Ihre Angaben weisen auf eine akute Gefährdung hin. Bitte holen Sie sich jetzt Hilfe: Rufen Sie 112 an, gehen Sie in die nächste psychiatrische Klinik oder wenden Sie sich an die Telefonseelsorge (0800 111 0 111). Bleiben Sie möglichst nicht allein und sagen Sie einer Person in Ihrer Nähe, wie es Ihnen geht.",
+        "en": "Your answers indicate acute risk. Please get help now: call 112, go to the nearest psychiatric emergency department, or call a crisis line (0800 111 0 111). If possible, do not stay alone and tell someone nearby how you are feeling."
+      }
+    },
+    "elevated": {
+      "title": {
+        "de": "Bitte holen Sie sich zeitnah Unterstützung",
+        "en": "Please seek support soon"
+      },
+      "message": {
+        "de": "Ihre Angaben deuten auf häufigere Gedanken an Selbstverletzung oder Tod hin. Bitte kontaktieren Sie heute oder morgen Ihre Praxis, den ärztlichen Bereitschaftsdienst (116 117) oder die Telefonseelsorge. Sie müssen damit nicht allein bleiben.",
+        "en": "Your answers suggest more frequent thoughts of self-harm or death. Please contact your practice, the out-of-hours service (116 117) or a crisis line today or tomorrow. You do not have to deal with this alone."
+      }
+    },
+    "low": {
+      "title": {
+        "de": "Bitte lesen: Hinweise zu belastenden Gedanken",
+        "en": "Please read: about distressing thoughts"
+      },
+      "message": {
+        "de": "Sie haben angegeben, dass Sie an einzelnen Tagen Gedanken hatten, lieber tot zu sein oder sich Leid zuzufügen. Solche Gedanken sind bei Depressionen häufig und behandelbar. Bitte sprechen Sie sie bei Ihrem nächsten Termin an — und melden Sie sich früher, wenn sie stärker werden.",
+        "en": "You reported that on some days you had thoughts of being better off dead or of hurting yourself. Such thoughts are common in depression and can be treated. Please mention them at your next appointment — and get in touch sooner if they get stronger."
+      }
+    },
+    "advisory": {
+      "title": { "de": "Ihre Beschwerden sind ausgeprägt", "en": "Your symptoms are pronounced" },
+      "message": {
+        "de": "Ihr PHQ-9-Wert liegt im mittelgradigen bis schweren Bereich. Das ist gut behandelbar. Bitte besprechen Sie zeitnah mit Ihrer Praxis, welche nächsten Schritte sinnvoll sind.",
+        "en": "Your PHQ-9 score is in the moderate-to-severe range. This is treatable. Please discuss suitable next steps with your practice soon."
+      }
+    },
+    "none": {
+      "title": { "de": "Keine Hinweise auf akute Gefährdung", "en": "No indication of acute risk" },
+      "message": {
+        "de": "Ihre Angaben enthalten keine Hinweise auf akute Selbstgefährdung. Sprechen Sie dennoch alles an, was Sie belastet.",
+        "en": "Your answers show no signs of acute risk to yourself. Still, do raise anything that is weighing on you."
+      }
+    }
+  },
+  "predictorsNote": {
+    "de": "Nur diese Merkmale gehen in das Modell ein: Ausgangswert PHQ-9, Alter und Geschlecht. Weitere im Fragebogen erhobene Angaben (Vorbehandlung, GAD-7) dienen ausschließlich der Einordnung, nicht der Schätzung.",
+    "en": "Only these characteristics enter the model: baseline PHQ-9, age and sex. Other information collected in the questionnaire (prior treatment, GAD-7) is for context only, not part of the estimate."
+  },
+  "predictors": {
+    "baseline": { "label": { "de": "Ausgangswert PHQ-9", "en": "Baseline PHQ-9" } },
+    "age": { "label": { "de": "Alter", "en": "Age" } },
+    "sex": { "label": { "de": "Geschlecht", "en": "Sex" } },
+    "notProvided": { "de": "keine Angabe", "en": "not provided" }
+  },
+  "whatCanBeExpected": { "de": "Was ist zu erwarten?", "en": "What can be expected?" },
+  "whatCanBeExpectedBody": {
+    "de": "Für jede Versorgungsform werden drei Größen zum Zeitpunkt 12 Monate dargestellt: der geschätzte PHQ-9-Wert, die Chance auf Ansprechen und die Chance auf Remission. Alle Zahlen sind Schätzungen für Gruppen von Personen mit einem ähnlichen Profil — keine Zusage für Ihren persönlichen Verlauf.",
+    "en": "For each form of care, three measures are shown at 12 months: the estimated PHQ-9 score, the chance of response, and the chance of remission. All numbers are estimates for groups of people with a similar profile — not a promise about your personal course."
+  },
+  "whatInfluences": {
+    "de": "Was beeinflusst diese Schätzungen?",
+    "en": "What influences these estimates?"
+  },
+  "context": {
+    "de": "Zur Einordnung (nicht Teil der Schätzung)",
+    "en": "For context (not part of the estimate)"
+  },
+  "priorTreatmentLabel": { "de": "Vorbehandlung", "en": "Prior treatment" },
+  "gad7Label": { "de": "GAD-7", "en": "GAD-7" },
+  "modelNote": {
+    "de": "Modell: Risikoscore (Sicherheitsfragen + PHQ-9-Schwere) für die Krisenmeldung, plus ein Netzwerk-Metaregressions-Modell für die 12-Monats-Schätzung.",
+    "en": "Model: a risk score (safety questions + PHQ-9 severity) drives the crisis message, plus a network meta-regression model drives the 12-month estimate."
+  },
+  "footer": {
+    "de": "Modellversion {version}; Bezugszeitpunkt 12 Monate. Forschungsprototyp — keine klinisch validierte Vorhersage. Ihre Antworten bleiben ausschließlich in dieser Browser-Sitzung auf Ihrem Gerät.",
+    "en": "Model version {version}; reference time point 12 months. Research prototype — not a clinically validated prediction. Your answers stay solely in this browser session on your device."
+  },
+  "actions": {
+    "clinicianSummary": {
+      "de": "Zusammenfassung für die Praxis",
+      "en": "Summary for the practice"
+    },
+    "localSupport": { "de": "Passende Angebote vor Ort", "en": "Suitable local offers" }
+  }
+}

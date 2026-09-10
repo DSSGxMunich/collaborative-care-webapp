@@ -136,16 +136,16 @@ function LanguageToggle() {
 function SiteHeader() {
   const { tr } = useLang();
   const navItems = [
-    { to: "/", label: ui.home },
-    { to: "/fragebogen", label: ui.start },
-    { to: "/ergebnis", label: ui.results },
-    { to: "/praxis", label: ui.clinician },
-    { to: "/angebote", label: ui.support },
-  ] as const;
+    { to: "/fragebogen" as const, label: ui.nav.questionnaire },
+    { to: "/ergebnis" as const, label: ui.nav.results },
+    { to: "/angebote" as const, label: ui.nav.support },
+    { to: "/praxis" as const, label: ui.nav.clinician },
+    { to: "/faq" as const, label: ui.nav.faq },
+  ];
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur">
-      <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3">
+      <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
         <Link to="/" className="flex items-center gap-2.5">
           <span
             aria-hidden
@@ -158,7 +158,7 @@ function SiteHeader() {
           </span>
         </Link>
         <nav className="order-3 flex w-full flex-wrap gap-1 text-sm sm:order-none sm:w-auto">
-          {navItems.slice(1).map((item) => (
+          {navItems.map((item) => (
             <Link
               key={item.to}
               to={item.to}
@@ -174,7 +174,7 @@ function SiteHeader() {
             to="/soforthilfe"
             className="rounded-lg bg-destructive-soft px-2.5 py-1.5 text-sm font-semibold text-destructive"
           >
-            {tr(ui.crisis)}
+            {tr(ui.nav.crisis)}
           </Link>
           <LanguageToggle />
         </div>
@@ -189,12 +189,6 @@ function SiteFooter() {
     <footer className="mt-16 border-t border-border/70 bg-secondary/60">
       <div className="mx-auto max-w-5xl px-4 py-8 text-xs leading-relaxed text-muted-foreground">
         <p className="max-w-3xl">{tr(ui.disclaimer)}</p>
-        <p className="mt-3">
-          {tr([
-            "Forschungsprototyp – Modellversion 0.1 (vorläufige Parameter).",
-            "Research prototype — model version 0.1 (provisional parameters).",
-          ])}
-        </p>
       </div>
     </footer>
   );

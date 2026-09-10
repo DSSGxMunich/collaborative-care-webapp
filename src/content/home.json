@@ -1,0 +1,19 @@
+{
+  "title": {
+    "de": "Welche Depressionsbehandlung passt zu mir?",
+    "en": "Which depression care is likely to help me?"
+  },
+  "body": {
+    "de": "Ein kurzer Fragebogen (PHQ-9, Sicherheitsfragen, wenige persönliche Angaben) und eine Schätzung, wie sich Ihre Beschwerden unter üblicher Versorgung und unter zwei zusätzlichen Versorgungsbausteinen bis in 12 Monaten entwickeln könnten.",
+    "en": "A short questionnaire (PHQ-9, safety questions, a few personal details) and an estimate of how your symptoms might develop over 12 months under usual care and two additional care components."
+  },
+  "crisisTitle": {
+    "de": "Wenn es Ihnen jetzt sehr schlecht geht",
+    "en": "If you are in crisis right now"
+  },
+  "crisisBody": {
+    "de": "Warten Sie nicht auf den Fragebogen. Rufen Sie 112 an, wenden Sie sich an den ärztlichen Bereitschaftsdienst unter 116 117 oder an die Telefonseelsorge unter 0800 111 0 111.",
+    "en": "Do not wait for the questionnaire. Call 112, contact the out-of-hours medical service on 116 117, or call a crisis line on 0800 111 0 111."
+  },
+  "crisisLink": { "de": "Alle Krisenkontakte", "en": "All crisis contacts" }
+}

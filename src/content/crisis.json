@@ -1,0 +1,49 @@
+{
+  "title": { "de": "Soforthilfe", "en": "Urgent help" },
+  "intro": {
+    "de": "Wenn Sie daran denken, sich das Leben zu nehmen, oder das Gefühl haben, sich nicht schützen zu können: Holen Sie sich jetzt Hilfe. Diese Stellen sind kostenlos, vertraulich und erfahren im Umgang mit solchen Situationen.",
+    "en": "If you are thinking about ending your life, or feel unable to keep yourself safe: get help now. These services are free, confidential and experienced with such situations."
+  },
+  "contacts": [
+    {
+      "name": { "de": "Notruf", "en": "Emergency services" },
+      "detail": "112",
+      "note": { "de": "Bei akuter Lebensgefahr", "en": "In acute danger to life" }
+    },
+    {
+      "name": { "de": "Telefonseelsorge", "en": "Telephone counselling" },
+      "detail": "0800 111 0 111 / 0800 111 0 222",
+      "note": { "de": "Kostenlos, rund um die Uhr, anonym", "en": "Free, 24/7, anonymous" }
+    },
+    {
+      "name": { "de": "Ärztlicher Bereitschaftsdienst", "en": "Out-of-hours medical service" },
+      "detail": "116 117",
+      "note": { "de": "Außerhalb der Praxiszeiten", "en": "Outside practice opening hours" }
+    },
+    {
+      "name": { "de": "Info-Telefon Depression", "en": "Depression information line" },
+      "detail": "0800 33 44 533",
+      "note": { "de": "Deutsche Depressionshilfe", "en": "German Depression Aid" }
+    }
+  ],
+  "helpNowTitle": { "de": "Was jetzt hilft", "en": "What helps right now" },
+  "helpNowItems": [
+    {
+      "de": "Bleiben Sie möglichst nicht allein — rufen Sie eine Person an, der Sie vertrauen.",
+      "en": "Try not to stay alone — call someone you trust."
+    },
+    {
+      "de": "Entfernen Sie Gegenstände, mit denen Sie sich verletzen könnten, aus Ihrer Reichweite.",
+      "en": "Move anything you could harm yourself with out of reach."
+    },
+    {
+      "de": "Vereinbaren Sie einen konkreten nächsten Schritt: Anruf, Fahrt zur Klinik, Termin morgen früh.",
+      "en": "Agree on one concrete next step: a phone call, a trip to hospital, an appointment tomorrow morning."
+    },
+    {
+      "de": "Sagen Sie Ihrer Hausarztpraxis beim nächsten Kontakt, wie es Ihnen wirklich geht.",
+      "en": "Tell your GP practice at your next contact how you are really doing."
+    }
+  ],
+  "backHome": { "de": "Zurück zur Startseite", "en": "Back to the start page" }
+}

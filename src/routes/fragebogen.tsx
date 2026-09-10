@@ -1,63 +1,32 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Choice, MultiChoice, YesNoField } from "@/components/fields";
-import { useLang, ui, type L } from "@/lib/i18n";
-import {
-  FUNCTION_OPTIONS,
-  PHQ9_FUNCTION_ITEM,
-  PHQ9_INTRO,
-  PHQ9_ITEMS,
-  PHQ9_OPTIONS,
-  phq9Total,
-} from "@/lib/phq9";
-import { assessRisk, RISK_MESSAGE, RISK_TITLE } from "@/lib/safety";
-import {
-  CONSTRAINTS,
-  PREFERENCES,
-  PRIOR_TREATMENTS,
-  useSession,
-  type AgeBand,
-  type Duration,
-  type Sex,
-} from "@/lib/session";
+import { Choice, MultiChoice, NumberField, YesNoField } from "@/components/fields";
+import { fill, ui, useLang } from "@/lib/i18n";
+import { PHQ9_INTRO, PHQ9_ITEMS, PHQ9_OPTIONS, phq9Total } from "@/lib/phq9";
+import { assessRisk } from "@/lib/safety";
+import { PRIOR_TREATMENTS, useSession, type AgeBand, type Sex } from "@/lib/session";
+import questionnaireContent from "@/content/questionnaire.json";
+import resultsContent from "@/content/results.json";
 
 export const Route = createFileRoute("/fragebogen")({
   head: () => ({
     meta: [
       { title: "Fragebogen – Depressions-Kompass" },
-      {
-        name: "description",
-        content:
-          "PHQ-9 und kurze Angaben zu Ihrer Situation. Mit Sicherheitsprüfung und anschließender patientenindividueller Vorhersage.",
-      },
-      { property: "og:title", content: "Fragebogen – Depressions-Kompass" },
-      {
-        property: "og:description",
-        content:
-          "PHQ-9, Beschwerdedauer, Lebenssituation und Behandlungsvorlieben in wenigen Minuten.",
-      },
+      { name: "description", content: questionnaireContent.phq9.intro.de },
     ],
   }),
   component: Questionnaire,
 });
 
-const AGE_OPTIONS: { value: AgeBand; label: L }[] = [
-  { value: "18-29", label: ["18–29 Jahre", "18–29 years"] },
-  { value: "30-49", label: ["30–49 Jahre", "30–49 years"] },
-  { value: "50-64", label: ["50–64 Jahre", "50–64 years"] },
-  { value: "65+", label: ["65 Jahre und älter", "65 years and older"] },
-];
+const q = questionnaireContent;
+const AGE_OPTIONS = q.profile.age.options as {
+  value: AgeBand;
+  label: { de: string; en: string };
+}[];
+const SEX_OPTIONS = q.profile.sex.options as { value: Sex; label: { de: string; en: string } }[];
 
-const SEX_OPTIONS: { value: Sex; label: L }[] = [
-  { value: "female", label: ["Weiblich", "Female"] },
-  { value: "male", label: ["Männlich", "Male"] },
-];
-
-const DURATION_OPTIONS: { value: Duration; label: L }[] = [
-  { value: "lt3m", label: ["Weniger als 3 Monate", "Less than 3 months"] },
-  { value: "3to12m", label: ["3 bis 12 Monate", "3 to 12 months"] },
-  { value: "gt12m", label: ["Länger als 12 Monate", "Longer than 12 months"] },
-];
+const STEP_KEYS = ["phqA", "phqB", "phqC", "safety", "profile"] as const;
+type StepKey = (typeof STEP_KEYS)[number];
 
 function Questionnaire() {
   const { tr } = useLang();
@@ -66,22 +35,15 @@ function Questionnaire() {
   const [index, setIndex] = useState(0);
 
   const item9 = session.phq[8] ?? 0;
-  const needsSafety = item9 >= 1;
   const risk = assessRisk(session);
 
-  const stepKeys = useMemo(() => {
-    const base = ["phqA", "phqB", "phqC", "function"];
-    if (needsSafety) base.push("safety");
-    return [...base, "basics", "context", "preferences"];
-  }, [needsSafety]);
-
-  const key = stepKeys[Math.min(index, stepKeys.length - 1)];
-  const total = stepKeys.length;
+  const key: StepKey = STEP_KEYS[Math.min(index, STEP_KEYS.length - 1)] ?? "phqA";
+  const total = STEP_KEYS.length;
 
   const answered = (from: number, to: number) =>
     session.phq.slice(from, to).every((v) => v !== null);
 
-  const canContinue = (() => {
+  const canContinue = useMemo(() => {
     switch (key) {
       case "phqA":
         return answered(0, 3);
@@ -89,39 +51,26 @@ function Questionnaire() {
         return answered(3, 6);
       case "phqC":
         return answered(6, 9);
-      case "function":
-        return session.functioning !== null;
       case "safety":
         return (
           session.safety.plan !== null &&
           session.safety.canStaySafe !== null &&
           session.safety.pastAttempt !== null
         );
-      case "basics":
+      case "profile":
         return (
           session.profile.ageBand !== null &&
           session.profile.sex !== null &&
-          session.profile.duration !== null &&
-          session.profile.priorEpisodes !== null &&
-          session.profile.priorTreatment.length > 0
+          session.profile.priorEpisode !== null &&
+          session.profile.priorTreatment.length > 0 &&
+          session.profile.gad7Known !== null &&
+          (session.profile.gad7Known === "no" || session.profile.gad7Score !== null)
         );
-      case "context":
-        return (
-          session.profile.chronicIllness !== null &&
-          session.profile.livingAlone !== null &&
-          session.profile.lowSupport !== null &&
-          session.profile.workStrain !== null &&
-          session.profile.substanceUse !== null &&
-          session.profile.mobilityLimited !== null &&
-          session.profile.lowActivity !== null &&
-          session.profile.caregiving !== null
-        );
-      case "preferences":
-        return session.profile.preferences.length > 0;
       default:
         return false;
     }
-  })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key, session]);
 
   const isLast = index === total - 1;
 
@@ -135,8 +84,19 @@ function Questionnaire() {
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const toggle = (list: string[], id: string) =>
-    list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
+  const toggleTreatment = (id: string) => {
+    const current = session.profile.priorTreatment;
+    if (id === "none") {
+      updateProfile({ priorTreatment: current.includes("none") ? [] : ["none"] });
+      return;
+    }
+    const withoutNone = current.filter((x) => x !== "none");
+    updateProfile({
+      priorTreatment: withoutNone.includes(id)
+        ? withoutNone.filter((x) => x !== id)
+        : [...withoutNone, id],
+    });
+  };
 
   const phqBlock = (from: number, to: number) => (
     <div className="space-y-6">
@@ -168,7 +128,7 @@ function Questionnaire() {
             {tr(ui.step)} {index + 1} {tr(ui.of)} {total}
           </span>
           <Link to="/soforthilfe" className="text-destructive">
-            {tr(ui.crisis)}
+            {tr(ui.nav.crisis)}
           </Link>
         </div>
         <div
@@ -193,93 +153,71 @@ function Questionnaire() {
           {item9 >= 1 && (
             <div className="rounded-2xl border border-destructive/40 bg-destructive-soft p-5">
               <h2 className="font-display text-base font-semibold text-destructive">
-                {tr(RISK_TITLE[item9 >= 2 ? "elevated" : "low"])}
+                {tr(resultsContent.crisis[item9 >= 2 ? "elevated" : "low"].title)}
               </h2>
               <p className="mt-2 text-sm leading-relaxed">
-                {tr(RISK_MESSAGE[item9 >= 2 ? "elevated" : "low"])}
+                {tr(resultsContent.crisis[item9 >= 2 ? "elevated" : "low"].message)}
               </p>
               <Link
                 to="/soforthilfe"
                 className="mt-3 inline-flex text-sm font-semibold text-destructive underline"
               >
-                {tr(["Krisenkontakte anzeigen", "Show crisis contacts"])}
+                {tr(q.showCrisisContacts)}
               </Link>
             </div>
           )}
         </div>
-      )}
-
-      {key === "function" && (
-        <fieldset className="surface-card p-5">
-          <legend className="mb-3 block text-base font-semibold">{tr(PHQ9_FUNCTION_ITEM)}</legend>
-          <Choice
-            name="functioning"
-            options={FUNCTION_OPTIONS}
-            value={session.functioning as 0 | 1 | 2 | 3 | null}
-            onChange={(v) => update({ functioning: v })}
-          />
-        </fieldset>
       )}
 
       {key === "safety" && (
         <div className="space-y-4">
           <div className="rounded-2xl border border-destructive/40 bg-destructive-soft p-5">
             <h2 className="font-display text-base font-semibold text-destructive">
-              {tr(["Kurze Sicherheitsfragen", "A few safety questions"])}
+              {tr(q.safety.intro)}
             </h2>
-            <p className="mt-2 text-sm leading-relaxed">
-              {tr([
-                "Diese Fragen helfen einzuschätzen, wie schnell Sie Unterstützung brauchen. Antworten Sie so offen, wie es Ihnen möglich ist.",
-                "These questions help judge how quickly you need support. Please answer as openly as you can.",
-              ])}
-            </p>
           </div>
           <YesNoField
-            label={[
-              "Haben Sie konkrete Pläne oder Vorbereitungen getroffen, sich das Leben zu nehmen oder sich zu verletzen?",
-              "Have you made concrete plans or preparations to end your life or to hurt yourself?",
-            ]}
+            label={q.safety.questions.plan}
             value={session.safety.plan}
             onChange={(v) => updateSafety({ plan: v })}
           />
           <YesNoField
-            label={[
-              "Trauen Sie sich zu, sich bis zum nächsten Kontakt mit Ihrer Praxis nicht zu schaden?",
-              "Do you feel able to keep yourself safe until your next contact with the practice?",
-            ]}
+            label={q.safety.questions.canStaySafe}
             value={session.safety.canStaySafe}
             onChange={(v) => updateSafety({ canStaySafe: v })}
           />
           <YesNoField
-            label={[
-              "Haben Sie sich in den letzten 12 Monaten selbst verletzt oder einen Suizidversuch unternommen?",
-              "In the past 12 months, have you harmed yourself or attempted suicide?",
-            ]}
+            label={q.safety.questions.pastAttempt}
             value={session.safety.pastAttempt}
             onChange={(v) => updateSafety({ pastAttempt: v })}
           />
           {(risk === "acute" || risk === "elevated") && (
             <div className="rounded-2xl border border-destructive bg-destructive-soft p-5">
               <h3 className="font-display text-base font-semibold text-destructive">
-                {tr(RISK_TITLE[risk])}
+                {tr(resultsContent.crisis[risk].title)}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed">{tr(RISK_MESSAGE[risk])}</p>
+              <p className="mt-2 text-sm leading-relaxed">
+                {tr(resultsContent.crisis[risk].message)}
+              </p>
               <Link
                 to="/soforthilfe"
                 className="mt-3 inline-flex rounded-xl bg-destructive px-4 py-2 text-sm font-semibold text-destructive-foreground"
               >
-                {tr(["Jetzt Hilfe finden", "Find help now"])}
+                {tr(q.showCrisisContacts)}
               </Link>
             </div>
           )}
         </div>
       )}
 
-      {key === "basics" && (
+      {key === "profile" && (
         <div className="space-y-6">
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            {tr(q.profile.sectionIntro)}
+          </p>
           <fieldset className="surface-card p-5">
             <legend className="mb-3 block text-base font-semibold">
-              {tr(["Wie alt sind Sie?", "How old are you?"])}
+              {tr(q.profile.age.question)}
             </legend>
             <Choice
               name="age"
@@ -291,7 +229,7 @@ function Questionnaire() {
           </fieldset>
           <fieldset className="surface-card p-5">
             <legend className="mb-3 block text-base font-semibold">
-              {tr(["Welches Geschlecht haben Sie?", "What is your sex?"])}
+              {tr(q.profile.sex.question)}
             </legend>
             <Choice
               name="sex"
@@ -301,172 +239,44 @@ function Questionnaire() {
               onChange={(v) => updateProfile({ sex: v })}
             />
           </fieldset>
-          <fieldset className="surface-card p-5">
-            <legend className="mb-3 block text-base font-semibold">
-              {tr([
-                "Wie lange bestehen die Beschwerden schon?",
-                "How long have the symptoms been present?",
-              ])}
-            </legend>
-            <Choice
-              name="duration"
-              options={DURATION_OPTIONS}
-              value={session.profile.duration}
-              onChange={(v) => updateProfile({ duration: v })}
-            />
-          </fieldset>
           <YesNoField
-            label={[
-              "Hatten Sie früher schon einmal eine depressive Phase?",
-              "Have you had a depressive episode before?",
-            ]}
-            value={session.profile.priorEpisodes}
-            onChange={(v) => updateProfile({ priorEpisodes: v })}
+            label={q.profile.priorEpisode.question}
+            value={session.profile.priorEpisode}
+            onChange={(v) => updateProfile({ priorEpisode: v })}
           />
           <fieldset className="surface-card p-5">
-            <legend className="mb-3 block text-base font-semibold">
-              {tr([
-                "Welche Behandlungen haben Sie bereits erhalten?",
-                "Which treatments have you already had?",
-              ])}
+            <legend className="mb-1 block text-base font-semibold">
+              {tr(q.profile.priorTreatment.question)}
             </legend>
+            <p className="mb-4 text-sm text-muted-foreground">
+              {tr(q.profile.priorTreatment.hint)}
+            </p>
             <MultiChoice
               options={PRIOR_TREATMENTS}
               values={session.profile.priorTreatment}
-              onToggle={(id) =>
-                updateProfile({
-                  priorTreatment:
-                    id === "none"
-                      ? session.profile.priorTreatment.includes("none")
-                        ? []
-                        : ["none"]
-                      : toggle(
-                          session.profile.priorTreatment.filter((x) => x !== "none"),
-                          id,
-                        ),
-                })
-              }
+              onToggle={toggleTreatment}
             />
           </fieldset>
-        </div>
-      )}
-
-      {key === "context" && (
-        <div className="space-y-3">
-          <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
-            {tr([
-              "Diese Angaben beeinflussen, welche Versorgungsbausteine erfahrungsgemäß besonders gut wirken.",
-              "These answers influence which care components tend to work particularly well.",
-            ])}
-          </p>
           <YesNoField
-            label={[
-              "Haben Sie eine dauerhafte körperliche Erkrankung (z. B. Diabetes, Herz, Schmerzen)?",
-              "Do you have a long-term physical illness (e.g. diabetes, heart condition, pain)?",
-            ]}
-            value={session.profile.chronicIllness}
-            onChange={(v) => updateProfile({ chronicIllness: v })}
+            label={q.profile.gad7.knownQuestion}
+            value={session.profile.gad7Known}
+            onChange={(v) =>
+              updateProfile({
+                gad7Known: v,
+                gad7Score: v === "no" ? null : session.profile.gad7Score,
+              })
+            }
           />
-          <YesNoField
-            label={["Leben Sie allein?", "Do you live alone?"]}
-            value={session.profile.livingAlone}
-            onChange={(v) => updateProfile({ livingAlone: v })}
-          />
-          <YesNoField
-            label={[
-              "Fehlt Ihnen jemand, mit dem Sie über Belastungen sprechen können?",
-              "Do you lack someone you can talk to about your worries?",
-            ]}
-            value={session.profile.lowSupport}
-            onChange={(v) => updateProfile({ lowSupport: v })}
-          />
-          <YesNoField
-            label={[
-              "Belasten Sie derzeit Arbeit, Geld oder Wohnsituation stark?",
-              "Are work, money or housing a major burden at the moment?",
-            ]}
-            value={session.profile.workStrain}
-            onChange={(v) => updateProfile({ workStrain: v })}
-          />
-          <YesNoField
-            label={[
-              "Trinken Sie Alkohol oder nehmen Sie Substanzen, um die Stimmung zu bewältigen?",
-              "Do you use alcohol or other substances to cope with your mood?",
-            ]}
-            value={session.profile.substanceUse}
-            onChange={(v) => updateProfile({ substanceUse: v })}
-          />
-          <YesNoField
-            label={[
-              "Ist Ihre Beweglichkeit eingeschränkt (Schmerzen, Gehhilfe, Belastungsgrenzen)?",
-              "Is your mobility limited (pain, walking aid, limited exertion)?",
-            ]}
-            value={session.profile.mobilityLimited}
-            onChange={(v) => updateProfile({ mobilityLimited: v })}
-          />
-          <YesNoField
-            label={[
-              "Bewegen Sie sich derzeit wenig (weniger als etwa 2 Stunden pro Woche)?",
-              "Are you currently physically inactive (less than about 2 hours per week)?",
-            ]}
-            value={session.profile.lowActivity}
-            onChange={(v) => updateProfile({ lowActivity: v })}
-          />
-          <YesNoField
-            label={[
-              "Pflegen oder betreuen Sie regelmäßig eine andere Person?",
-              "Do you regularly care for or look after another person?",
-            ]}
-            value={session.profile.caregiving}
-            onChange={(v) => updateProfile({ caregiving: v })}
-          />
-        </div>
-      )}
-
-      {key === "preferences" && (
-        <div className="space-y-6">
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            {tr([
-              "Diese Angaben gehen nicht in die Schätzungen ein. Sie zeigen im Ergebnis getrennt, was praktisch zu Ihnen passt.",
-              "These answers do not enter the estimates. They are shown separately in the results as what practically suits you.",
-            ])}
-          </p>
-          <fieldset className="surface-card p-5">
-            <legend className="mb-1 block text-base font-semibold">
-              {tr([
-                "Was können Sie sich für sich selbst am ehesten vorstellen?",
-                "What could you most imagine for yourself?",
-              ])}
-            </legend>
-            <p className="mb-4 text-sm text-muted-foreground">
-              {tr(["Mehrfachauswahl möglich.", "You can select more than one."])}
-            </p>
-            <MultiChoice
-              options={PREFERENCES}
-              values={session.profile.preferences}
-              onToggle={(id) =>
-                updateProfile({ preferences: toggle(session.profile.preferences, id) })
-              }
+          {session.profile.gad7Known === "yes" && (
+            <NumberField
+              label={q.profile.gad7.scoreQuestion}
+              hint={q.profile.gad7.scoreHint}
+              min={0}
+              max={21}
+              value={session.profile.gad7Score}
+              onChange={(v) => updateProfile({ gad7Score: v })}
             />
-          </fieldset>
-          <fieldset className="surface-card p-5">
-            <legend className="mb-1 block text-base font-semibold">
-              {tr([
-                "Was macht eine Behandlung für Sie praktisch schwierig?",
-                "What makes treatment practically difficult for you?",
-              ])}
-            </legend>
-            <p className="mb-4 text-sm text-muted-foreground">
-              {tr(["Mehrfachauswahl möglich, auch keine.", "Select any number, including none."])}
-            </p>
-            <MultiChoice
-              options={CONSTRAINTS}
-              values={session.profile.constraints}
-              onToggle={(id) =>
-                updateProfile({ constraints: toggle(session.profile.constraints, id) })
-              }
-            />
-          </fieldset>
+          )}
         </div>
       )}
 
@@ -477,13 +287,11 @@ function Questionnaire() {
           disabled={index === 0}
           className="rounded-xl border border-border bg-card px-5 py-2.5 text-sm font-semibold transition-colors hover:bg-secondary disabled:opacity-40"
         >
-          {tr(ui.back)}
+          {tr(ui.buttons.back)}
         </button>
         <div className="flex items-center gap-3">
           {!canContinue && (
-            <span className="text-xs text-muted-foreground">
-              {tr(["Bitte alle Fragen beantworten", "Please answer all questions"])}
-            </span>
+            <span className="text-xs text-muted-foreground">{tr(q.pleaseAnswerAll)}</span>
           )}
           <button
             type="button"
@@ -491,16 +299,13 @@ function Questionnaire() {
             disabled={!canContinue}
             className="rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-soft transition-transform enabled:hover:-translate-y-0.5 disabled:opacity-40"
           >
-            {isLast ? tr(ui.finish) : tr(ui.continue)}
+            {isLast ? tr(ui.buttons.finish) : tr(ui.buttons.continue)}
           </button>
         </div>
       </div>
 
       <p className="mt-6 text-xs text-muted-foreground">
-        {tr([
-          `Aktueller PHQ-9 Zwischenstand: ${phq9Total(session.phq)} von 27 Punkten.`,
-          `Current PHQ-9 running total: ${phq9Total(session.phq)} of 27 points.`,
-        ])}
+        {fill(tr(q.runningTotal), { score: phq9Total(session.phq) })}
       </p>
     </div>
   );

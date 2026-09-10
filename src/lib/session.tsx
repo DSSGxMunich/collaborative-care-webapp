@@ -7,10 +7,9 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { L } from "./i18n";
+import questionnaireContent from "@/content/questionnaire.json";
 
 export type AgeBand = "18-29" | "30-49" | "50-64" | "65+";
-export type Duration = "lt3m" | "3to12m" | "gt12m";
 export type YesNo = "yes" | "no";
 export type Sex = "female" | "male";
 
@@ -18,20 +17,11 @@ export type Profile = {
   ageBand: AgeBand | null;
   /** Used by the fitted outcome model (theta_sex, interaction terms). */
   sex: Sex | null;
-  duration: Duration | null;
-  priorEpisodes: YesNo | null;
+  priorEpisode: YesNo | null;
   priorTreatment: string[];
-  chronicIllness: YesNo | null;
-  livingAlone: YesNo | null;
-  lowSupport: YesNo | null;
-  workStrain: YesNo | null;
-  substanceUse: YesNo | null;
-  preferences: string[];
-  /** Practical constraints — used for fit, never for effect estimates. */
-  constraints: string[];
-  mobilityLimited: YesNo | null;
-  lowActivity: YesNo | null;
-  caregiving: YesNo | null;
+  /** Only asked if the patient already knows it; not part of the outcome model. */
+  gad7Known: YesNo | null;
+  gad7Score: number | null;
 };
 
 export type SafetyAnswers = {
@@ -45,7 +35,6 @@ export type SafetyAnswers = {
 
 export type Session = {
   phq: (number | null)[];
-  functioning: number | null;
   safety: SafetyAnswers;
   profile: Profile;
   completedAt: string | null;
@@ -53,71 +42,19 @@ export type Session = {
 
 export const emptySession = (): Session => ({
   phq: Array<number | null>(9).fill(null),
-  functioning: null,
   safety: { plan: null, canStaySafe: null, pastAttempt: null },
   profile: {
     ageBand: null,
     sex: null,
-    duration: null,
-    priorEpisodes: null,
+    priorEpisode: null,
     priorTreatment: [],
-    chronicIllness: null,
-    livingAlone: null,
-    lowSupport: null,
-    workStrain: null,
-    substanceUse: null,
-    preferences: [],
-    constraints: [],
-    mobilityLimited: null,
-    lowActivity: null,
-    caregiving: null,
+    gad7Known: null,
+    gad7Score: null,
   },
   completedAt: null,
 });
 
-export const PRIOR_TREATMENTS: { id: string; label: L }[] = [
-  { id: "antidepressant", label: ["Antidepressiva", "Antidepressant medication"] },
-  { id: "psychotherapy", label: ["Psychotherapie", "Psychotherapy"] },
-  { id: "inpatient", label: ["Klinikaufenthalt", "Inpatient treatment"] },
-  { id: "selfhelp", label: ["Selbsthilfe / Online-Programm", "Self-help or online programme"] },
-  { id: "none", label: ["Noch keine Behandlung", "No treatment so far"] },
-];
-
-/** What the patient could imagine — practical fit, kept apart from predicted effect. */
-export const PREFERENCES: { id: string; label: L }[] = [
-  {
-    id: "closeContact",
-    label: ["Regelmäßiger Kontakt mit der Praxis", "Regular contact with the practice"],
-  },
-  { id: "phone", label: ["Kontakt per Telefon oder Video", "Contact by telephone or video"] },
-  {
-    id: "selfManagement",
-    label: [
-      "Selbst mit Materialien und Übungen arbeiten",
-      "Working with materials and exercises myself",
-    ],
-  },
-  { id: "digital", label: ["Digitale Programme", "Digital programmes"] },
-  { id: "activity", label: ["Bewegung & Aktivität", "Movement & activity"] },
-  { id: "group", label: ["Gruppen- oder Gemeinschaftsangebote", "Group or community offers"] },
-  {
-    id: "specialist",
-    label: ["Mitbeurteilung durch Fachleute", "Input from specialist professionals"],
-  },
-];
-
-/** Practical constraints that shape what is feasible, not what works. */
-export const CONSTRAINTS: { id: string; label: L }[] = [
-  { id: "time", label: ["Wenig Zeit für Termine", "Little time for appointments"] },
-  { id: "fewAppointments", label: ["Möglichst wenige Termine", "As few appointments as possible"] },
-  { id: "travel", label: ["Wege sind schwierig", "Travelling is difficult"] },
-  { id: "noDigital", label: ["Kein oder schlechter Internetzugang", "No or poor internet access"] },
-  { id: "costs", label: ["Kosten sind ein Problem", "Costs are a problem"] },
-  {
-    id: "privacy",
-    label: ["Möchte nicht in einer Gruppe sprechen", "Would rather not speak in a group"],
-  },
-];
+export const PRIOR_TREATMENTS = questionnaireContent.profile.priorTreatment.options;
 
 type Ctx = {
   session: Session;
@@ -130,7 +67,7 @@ type Ctx = {
 };
 
 const SessionContext = createContext<Ctx | null>(null);
-const KEY = "sdc-session-v1";
+const KEY = "sdc-session-v2";
 
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session>(emptySession);
@@ -139,7 +76,15 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       const raw = window.sessionStorage.getItem(KEY);
-      if (raw) setSession({ ...emptySession(), ...(JSON.parse(raw) as Session) });
+      if (raw) {
+        const parsed = JSON.parse(raw) as Session;
+        setSession({
+          ...emptySession(),
+          ...parsed,
+          profile: { ...emptySession().profile, ...parsed.profile },
+          safety: { ...emptySession().safety, ...parsed.safety },
+        });
+      }
     } catch {
       /* ignore malformed storage */
     }
