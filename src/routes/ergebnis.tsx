@@ -156,13 +156,7 @@ function OutcomeCard({
         </div>
       </dl>
 
-      <p className="mt-3 text-xs text-muted-foreground">
-        {footnote ??
-          tr([
-            "Illustrative Platzhalterwerte zur Erprobung der Darstellung.",
-            "Illustrative placeholder values for testing the presentation.",
-          ])}
-      </p>
+      {footnote ? <p className="mt-3 text-xs text-muted-foreground">{footnote}</p> : null}
     </div>
   );
 }
@@ -329,10 +323,10 @@ function Results() {
         </div>
       </section>
 
-      {/* ---------------- What can be expected ---------------- */}
+      {/* ---------------- Care options compared ---------------- */}
       <section className="mt-10">
         <h2 className="font-display text-2xl font-semibold">
-          {tr(["Was ist zu erwarten?", "What can be expected?"])}
+          {tr(["Versorgungsoptionen im Vergleich", "Care options compared"])}
         </h2>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           {tr([
@@ -353,40 +347,7 @@ function Results() {
         </dl>
 
         <p className="mt-4 rounded-xl bg-secondary p-4 text-xs leading-relaxed text-muted-foreground">
-          {tr(COMPONENT_NOTE)}
-        </p>
-
-        <div className="mt-6 grid gap-4">
-          <OutcomeCard
-            scenario={p.usual}
-            baseline={p.baseline}
-            title={tr(["Übliche hausärztliche Versorgung", "Usual GP care"])}
-            subtitle={tr([
-              "Behandlung wie bisher: Termine bei Bedarf, Beratung, Verlaufsbeobachtung.",
-              "Care as before: appointments as needed, advice and watchful monitoring.",
-            ])}
-            badge={tr(["Vergleichsgrundlage", "Reference"])}
-          />
-          {p.singles.map((s) => (
-            <OutcomeCard
-              key={s.component.id}
-              scenario={s.scenario}
-              baseline={p.baseline}
-              title={tr(s.component.label)}
-              subtitle={tr(s.component.description)}
-              badge={tr(["Beispiel-Baustein", "Example component"])}
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* ---------------- Configurations ---------------- */}
-      <section className="mt-12">
-        <h2 className="font-display text-2xl font-semibold">
-          {tr(["Versorgungskonfigurationen", "Care configurations"])}
-        </h2>
-        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          {tr(COMBINATION_NOTE)}
+          {tr(COMPONENT_NOTE)} {tr(COMBINATION_NOTE)}
         </p>
 
         <div className="mt-6 grid gap-4">
@@ -397,78 +358,14 @@ function Results() {
               baseline={p.baseline}
               title={tr(c.config.label)}
               subtitle={tr(c.config.description)}
-              badge={tr(DATA_SUPPORT_LABEL[c.config.dataSupport])}
-              footnote={`${tr(c.config.dataNote)} ${tr([
-                "Illustrative Platzhalterwerte.",
-                "Illustrative placeholder values.",
-              ])}`}
+              badge={
+                c.config.id === "usualCare"
+                  ? tr(["Vergleichsgrundlage", "Reference"])
+                  : tr(DATA_SUPPORT_LABEL[c.config.dataSupport])
+              }
+              footnote={tr(c.config.dataNote)}
             />
           ))}
-        </div>
-      </section>
-
-      {/* ---------------- Side-by-side comparison ---------------- */}
-      <section className="mt-12">
-        <h2 className="font-display text-2xl font-semibold">
-          {tr([
-            "Was ist bei verschiedenen Versorgungsoptionen zu erwarten?",
-            "What can be expected with different care options?",
-          ])}
-        </h2>
-        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          {tr([
-            "Gegenüberstellung ohne Rangfolge. Die angegebenen Bereiche sind ungefähre 95 %-Kredibilitätsintervalle des Modells; Unterschiede innerhalb dieser Bereiche sind nicht bedeutsam.",
-            "A side-by-side view without ranking. The ranges shown are approximate 95% credible intervals from the model; differences within these ranges are not meaningful.",
-          ])}
-        </p>
-
-        <div className="surface-card mt-5 overflow-x-auto p-1">
-          <table className="w-full min-w-[36rem] text-sm">
-            <thead>
-              <tr className="text-left text-xs uppercase tracking-wide text-muted-foreground">
-                <th className="px-4 py-3 font-semibold">
-                  {tr(["Versorgungsoption", "Care option"])}
-                </th>
-                <th className="px-4 py-3 font-semibold">
-                  <Info label={tr(MEASURES.endpoint.short)} hint={tr(MEASURES.endpoint.hint)} />
-                </th>
-                <th className="px-4 py-3 font-semibold">
-                  <Info
-                    label={tr(["≥ 50 % Rückgang", "≥ 50% reduction"])}
-                    hint={tr(MEASURES.response.hint)}
-                  />
-                </th>
-                <th className="px-4 py-3 font-semibold">
-                  <Info label={tr(MEASURES.remission.short)} hint={tr(MEASURES.remission.hint)} />
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {p.configurations.map((c) => (
-                <tr key={c.config.id}>
-                  <td className="px-4 py-3 font-medium">{tr(c.config.label)}</td>
-                  <td className="px-4 py-3">
-                    {c.scenario.expectedEndpoint}
-                    <span className="block text-xs text-muted-foreground">
-                      {c.scenario.endpointRange[0]}–{c.scenario.endpointRange[1]}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    {pct(c.scenario.responseProbability)}
-                    <span className="block text-xs text-muted-foreground">
-                      {rangePct(c.scenario.responseRange)}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    {pct(c.scenario.remissionProbability)}
-                    <span className="block text-xs text-muted-foreground">
-                      {rangePct(c.scenario.remissionRange)}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </div>
 
         <p className="mt-4 text-sm leading-relaxed">
@@ -482,6 +379,63 @@ function Results() {
           ])}
         </p>
       </section>
+
+      {/* ---------------- Step 2: independent 12-month risk-score model ---------------- */}
+      {p.riskModel && (
+        <section className="mt-12">
+          <h2 className="font-display text-2xl font-semibold">
+            {tr(["Schritt 2: Risiko-Score für 12 Monate", "Step 2: 12-month risk score"])}
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            {tr([
+              "Ein zweites, unabhängiges Modell schätzt aus Alter, Geschlecht, Ausgangswert-PHQ-9 und Angst (GAD-7) einen Risiko-Score für den PHQ-9-Wert nach 12 Monaten. Es enthält keine Versorgungsbausteine und ist unabhängig von der oben gewählten Versorgungsform.",
+              "A second, independent model estimates a 12-month risk score for the PHQ-9 value from age, sex, baseline PHQ-9 and anxiety (GAD-7). It contains no care components and is independent of the form of care shown above.",
+            ])}
+          </p>
+
+          <div className="surface-card mt-4 p-5">
+            <dl className="grid gap-4 sm:grid-cols-3">
+              <div>
+                <dt className="text-xs text-muted-foreground">
+                  {tr(["Risiko-Score (PHQ-9 nach 12 Monaten)", "Risk score (PHQ-9 at 12 months)"])}
+                </dt>
+                <dd className="font-display text-xl font-semibold">{p.riskModel.riskScore}</dd>
+              </div>
+              <div>
+                <dt className="text-xs text-muted-foreground">
+                  {tr(["Chance auf Ansprechen (12 Monate)", "Chance of response (12 months)"])}
+                </dt>
+                <dd className="font-display text-xl font-semibold">
+                  {pct(p.riskModel.responseProbability12mo)}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-xs text-muted-foreground">
+                  {tr(["Chance auf Remission (12 Monate)", "Chance of remission (12 months)"])}
+                </dt>
+                <dd className="font-display text-xl font-semibold">
+                  {pct(p.riskModel.remissionProbability12mo)}
+                </dd>
+              </div>
+            </dl>
+
+            <p className="mt-3 text-xs text-muted-foreground">
+              {tr([
+                "Punktschätzung ohne Unsicherheitsbereich — das zugrunde liegende Modell enthält keine Kovarianzmatrix. Die Trainingsdaten deckten PHQ-9-Werte von 0 bis 20 ab.",
+                "Point estimate with no uncertainty range — the underlying model has no covariance matrix. The training data covered PHQ-9 values from 0 to 20.",
+              ])}
+            </p>
+            {p.riskModel.gad7Imputed && (
+              <p className="mt-2 text-xs font-medium text-warning">
+                {tr([
+                  "GAD-7 wurde nicht angegeben; diese Schätzung nimmt einen mittleren Angstwert an und ist entsprechend unsicherer.",
+                  "GAD-7 was not provided; this estimate assumes an average anxiety score and is correspondingly less certain.",
+                ])}
+              </p>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* ---------------- What influences the estimates ---------------- */}
       <section className="mt-12">
@@ -514,48 +468,6 @@ function Results() {
             </div>
           ))}
         </div>
-
-        <div className="surface-card mt-4 p-5">
-          <h3 className="font-display text-base font-semibold">
-            {tr([
-              "Profilmerkmale, die das Modell hier anpassen",
-              "Profile characteristics adjusting the model here",
-            ])}
-          </h3>
-          <ul className="mt-3 space-y-3 text-sm">
-            {p.singles.map((s) => (
-              <li key={s.component.id}>
-                <span className="font-semibold">{tr(s.component.short)}: </span>
-                {s.estimate.activeModerators.length > 0 ? (
-                  <span className="text-muted-foreground">
-                    {s.estimate.activeModerators
-                      .map(
-                        (m) =>
-                          `${tr(m.label)} (${m.delta >= 0 ? "+" : ""}${m.delta} ${tr([
-                            "Punkte",
-                            "points",
-                          ])})`,
-                      )
-                      .join(", ")}
-                  </span>
-                ) : (
-                  <span className="text-muted-foreground">
-                    {tr([
-                      "keine profilspezifische Anpassung – es gilt der mittlere Wert",
-                      "no profile-specific adjustment — the average value applies",
-                    ])}
-                  </span>
-                )}
-              </li>
-            ))}
-          </ul>
-          <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-            {tr([
-              "Diese Anpassungen sind statistische Zusammenhänge im Prototyp-Modell, keine Erklärung für Ursachen. Ihre Vorlieben und praktischen Möglichkeiten gehen hier bewusst nicht ein.",
-              "These adjustments are statistical associations in the prototype model, not causal explanations. Your preferences and practical circumstances are deliberately not part of them.",
-            ])}
-          </p>
-        </div>
       </section>
 
       {/* ---------------- Shared decision-making ---------------- */}
@@ -570,28 +482,16 @@ function Results() {
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
               {tr([
-                "Modellgestützte Schätzungen klinischer Ergebnisse für Personen mit einem ähnlichen Profil – aktuell illustrative Platzhalterwerte.",
-                "Model-based estimates of clinical outcomes for people with a similar profile — currently illustrative placeholder values.",
+                "Modellgestützte Schätzungen klinischer Ergebnisse für Personen mit einem ähnlichen Profil, auf Basis der gefitteten Modellkoeffizienten.",
+                "Model-based estimates of clinical outcomes for people with a similar profile, based on the fitted model coefficients.",
               ])}
             </p>
-            <ul className="mt-3 space-y-2 text-sm">
-              <li>
-                <span className="font-semibold">{tr(MEASURES.endpoint.short)}: </span>
-                {p.usual.expectedEndpoint} {tr(["bei üblicher Versorgung", "with usual care"])} →{" "}
-                {p.favourable.scenario.expectedEndpoint} {tr(["bei", "with"])}{" "}
-                {tr(p.favourable.config.label)}
-              </li>
-              <li>
-                <span className="font-semibold">{tr(MEASURES.response.short)}: </span>
-                {pct(p.usual.responseProbability)} →{" "}
-                {pct(p.favourable.scenario.responseProbability)}
-              </li>
-              <li>
-                <span className="font-semibold">{tr(MEASURES.remission.short)}: </span>
-                {pct(p.usual.remissionProbability)} →{" "}
-                {pct(p.favourable.scenario.remissionProbability)}
-              </li>
-            </ul>
+            <p className="mt-3 text-sm leading-relaxed">
+              {tr([
+                `Die Übersicht oben zeigt, wie „${tr(p.favourable.config.label)}“ im Vergleich zur üblichen Versorgung abschneidet.`,
+                `The overview above shows how “${tr(p.favourable.config.label)}” compares with usual care.`,
+              ])}
+            </p>
           </div>
 
           <div className="surface-card p-5">

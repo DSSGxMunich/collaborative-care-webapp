@@ -137,8 +137,8 @@ export const STANDARDIZATION = {
 // Sex: Male = 0, Female = 1
 export const SEX_CODE: Record<Sex, 0 | 1> = { male: 0, female: 1 };
 
-/** Representative age (years) used to standardize each age band. */
-const AGE_MIDPOINT: Record<NonNullable<Profile["ageBand"]>, number> = {
+/** Representative age (years) used to standardize each age band. Also reused by riskModel.ts. */
+export const AGE_MIDPOINT: Record<NonNullable<Profile["ageBand"]>, number> = {
   "18-29": 24,
   "30-49": 40,
   "50-64": 57,

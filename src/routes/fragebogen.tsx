@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Choice, MultiChoice, YesNoField } from "@/components/fields";
+import { GAD7_INTRO, GAD7_ITEMS, GAD7_OPTIONS } from "@/lib/gad7";
 import { useLang, ui, type L } from "@/lib/i18n";
 import {
   FUNCTION_OPTIONS,
@@ -62,7 +63,7 @@ const DURATION_OPTIONS: { value: Duration; label: L }[] = [
 function Questionnaire() {
   const { tr } = useLang();
   const navigate = useNavigate();
-  const { session, setPhq, update, updateProfile, updateSafety } = useSession();
+  const { session, setPhq, setGad7, update, updateProfile, updateSafety } = useSession();
   const [index, setIndex] = useState(0);
 
   const item9 = session.phq[8] ?? 0;
@@ -70,7 +71,7 @@ function Questionnaire() {
   const risk = assessRisk(session);
 
   const stepKeys = useMemo(() => {
-    const base = ["phqA", "phqB", "phqC", "function"];
+    const base = ["phqA", "phqB", "phqC", "function", "gad7"];
     if (needsSafety) base.push("safety");
     return [...base, "basics", "context", "preferences"];
   }, [needsSafety]);
@@ -91,6 +92,8 @@ function Questionnaire() {
         return answered(6, 9);
       case "function":
         return session.functioning !== null;
+      case "gad7":
+        return session.gad7Skipped || session.gad7.every((v) => v !== null);
       case "safety":
         return (
           session.safety.plan !== null &&
@@ -219,6 +222,59 @@ function Questionnaire() {
             onChange={(v) => update({ functioning: v })}
           />
         </fieldset>
+      )}
+
+      {key === "gad7" && (
+        <div className="space-y-6">
+          <div className="rounded-2xl border border-border bg-accent-soft p-5">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <h2 className="font-display text-base font-semibold">
+                {tr([
+                  "Zusatzfragen: Angst und Anspannung (GAD-7)",
+                  "Additional questions: anxiety and tension (GAD-7)",
+                ])}
+              </h2>
+              <button
+                type="button"
+                onClick={() => {
+                  update({ gad7Skipped: true });
+                  goNext();
+                }}
+                className="shrink-0 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-muted-foreground underline-offset-2 transition-colors hover:bg-secondary hover:text-foreground"
+              >
+                {tr(["Diesen Schritt überspringen", "Skip this step"])}
+              </button>
+            </div>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+              {tr([
+                "Diese kurzen Zusatzfragen zu Anspannung und Sorgen verbessern den geschätzten Risiko-Score für Ihren möglichen Verlauf nach 12 Monaten (Schritt 2 der Auswertung). Sie können diesen Schritt auch überspringen.",
+                "These short additional questions about tension and worry improve the risk score estimating your possible 12-month course (step 2 of the results). You can also skip this step.",
+              ])}
+            </p>
+            {session.gad7Skipped && (
+              <p className="mt-2 text-xs font-medium text-foreground">
+                {tr([
+                  "Übersprungen. Sie können jederzeit unten eine Frage beantworten, um dies rückgängig zu machen.",
+                  "Skipped. You can answer a question below at any time to undo this.",
+                ])}
+              </p>
+            )}
+          </div>
+          <p className="text-sm leading-relaxed text-muted-foreground">{tr(GAD7_INTRO)}</p>
+          {GAD7_ITEMS.map((item, idx) => (
+            <fieldset key={idx} className="surface-card p-5">
+              <legend className="mb-3 block text-base font-semibold">
+                {idx + 1}. {tr(item)}
+              </legend>
+              <Choice
+                name={`gad7-${idx}`}
+                options={GAD7_OPTIONS}
+                value={session.gad7[idx] as 0 | 1 | 2 | 3 | null}
+                onChange={(v) => setGad7(idx, v)}
+              />
+            </fieldset>
+          ))}
+        </div>
       )}
 
       {key === "safety" && (
