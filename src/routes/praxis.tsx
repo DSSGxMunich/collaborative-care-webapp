@@ -29,17 +29,15 @@ function Clinician() {
 
   if (!p.complete) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-16">
-        <div className="surface-card p-8 text-center">
-          <h1 className="font-display text-2xl font-semibold">{tr(ui.nav.clinician)}</h1>
-          <p className="mt-3 text-sm text-muted-foreground">{tr(ui.noData)}</p>
-          <Link
-            to="/fragebogen"
-            className="mt-6 inline-flex rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
-          >
-            {tr(ui.buttons.start)}
-          </Link>
-        </div>
+      <div className="mx-auto max-w-2xl px-4 py-16 text-center">
+        <h1 className="text-xl font-semibold">{tr(ui.nav.clinician)}</h1>
+        <p className="mt-3 text-sm text-muted-foreground">{tr(ui.noData)}</p>
+        <Link
+          to="/fragebogen"
+          className="mt-6 inline-flex rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+        >
+          {tr(ui.buttons.start)}
+        </Link>
       </div>
     );
   }
@@ -73,35 +71,39 @@ function Clinician() {
     },
   ];
 
+  const round1 = (x: number) => Number(x.toFixed(1));
+  const usualEndpoint =
+    p.scenarios.find((s) => s.id === "usualCare")?.expectedEndpoint ?? p.baseline;
+
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10">
+    <div className="mx-auto max-w-3xl px-4 py-10">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="font-display text-3xl font-semibold">{tr(c.title)}</h1>
-          <p className="mt-2 text-sm text-muted-foreground">{tr(c.subtitle)}</p>
+          <h1 className="text-2xl font-semibold">{tr(c.title)}</h1>
+          <p className="mt-1.5 text-sm text-muted-foreground">{tr(c.subtitle)}</p>
         </div>
         <button
           type="button"
           onClick={() => window.print()}
-          className="rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-semibold hover:bg-secondary"
+          className="rounded-md border border-border px-3.5 py-2 text-sm font-medium hover:bg-secondary"
         >
           {tr(c.print)}
         </button>
       </div>
 
       {(risk === "acute" || risk === "elevated") && (
-        <div className="mt-6 rounded-2xl border border-destructive bg-destructive-soft p-5">
-          <p className="font-display text-base font-semibold text-destructive">
+        <div className="mt-6 rounded-md border border-destructive bg-destructive-soft p-4">
+          <p className="text-sm font-semibold text-destructive">
             {tr(c.riskFlagLabel)}: {tr(c.riskFlag[risk])}
           </p>
-          <p className="mt-2 text-sm">{tr(c.riskAdvice)}</p>
+          <p className="mt-1.5 text-sm">{tr(c.riskAdvice)}</p>
         </div>
       )}
 
       <section className="mt-8 grid gap-6 md:grid-cols-2">
-        <div className="surface-card p-5">
-          <h2 className="font-display text-lg font-semibold">{tr(c.summary)}</h2>
-          <dl className="mt-4 divide-y divide-border text-sm">
+        <div>
+          <h2 className="text-base font-semibold">{tr(c.summary)}</h2>
+          <dl className="mt-3 divide-y divide-border text-sm">
             {rows.map((row) => (
               <div key={row.label} className="flex justify-between gap-4 py-2">
                 <dt className="text-muted-foreground">{row.label}</dt>
@@ -111,8 +113,8 @@ function Clinician() {
           </dl>
         </div>
 
-        <div className="surface-card p-5">
-          <h2 className="font-display text-lg font-semibold">{tr(c.phq9ItemProfile)}</h2>
+        <div>
+          <h2 className="text-base font-semibold">{tr(c.phq9ItemProfile)}</h2>
           <ul className="mt-4 space-y-2 text-sm">
             {PHQ9_ITEMS.map((item, i) => {
               const v = p.session.phq[i] ?? 0;
@@ -142,47 +144,36 @@ function Clinician() {
       </section>
 
       <section className="mt-8">
-        <h2 className="font-display text-lg font-semibold">{tr(c.modelEstimates)}</h2>
-        <div className="surface-card mt-4 overflow-x-auto p-1">
-          <table className="w-full min-w-[34rem] text-sm">
+        <h2 className="text-base font-semibold">{tr(c.modelEstimates)}</h2>
+        <div className="mt-3 overflow-x-auto rounded-md border border-border">
+          <table className="w-full min-w-[26rem] text-sm">
             <thead>
               <tr className="text-left text-xs uppercase tracking-wide text-muted-foreground">
-                <th className="px-4 py-3 font-semibold">{tr(c.table.careOption)}</th>
-                <th className="px-4 py-3 font-semibold">{tr(c.table.rank)}</th>
-                <th className="px-4 py-3 font-semibold">{tr(c.table.endpoint)}</th>
-                <th className="px-4 py-3 font-semibold">{tr(c.table.response)}</th>
-                <th className="px-4 py-3 font-semibold">{tr(c.table.remission)}</th>
+                <th className="px-4 py-2.5 font-medium">{tr(c.table.careOption)}</th>
+                <th className="px-4 py-2.5 font-medium">{tr(c.table.endpoint)}</th>
+                <th className="px-4 py-2.5 font-medium">{tr(c.table.delta)}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {p.ranked.map(({ id, scenario, rank }) => (
-                <tr key={id}>
-                  <td className="px-4 py-3 font-medium">{tr(r.scenarios[id].label)}</td>
-                  <td className="px-4 py-3">
-                    {rank}/{p.ranked.length}
-                  </td>
-                  <td className="px-4 py-3">
-                    {scenario.expectedEndpoint}{" "}
-                    <span className="text-xs text-muted-foreground">
-                      ({scenario.endpointRange[0]}–{scenario.endpointRange[1]})
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    {Math.round(scenario.responseProbability * 100)}%{" "}
-                    <span className="text-xs text-muted-foreground">
-                      ({Math.round(scenario.responseRange[0] * 100)}–
-                      {Math.round(scenario.responseRange[1] * 100)}%)
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    {Math.round(scenario.remissionProbability * 100)}%{" "}
-                    <span className="text-xs text-muted-foreground">
-                      ({Math.round(scenario.remissionRange[0] * 100)}–
-                      {Math.round(scenario.remissionRange[1] * 100)}%)
-                    </span>
-                  </td>
-                </tr>
-              ))}
+              {p.scenarios.map((scenario) => {
+                const delta = round1(usualEndpoint - scenario.expectedEndpoint);
+                return (
+                  <tr key={scenario.id}>
+                    <td className="px-4 py-2.5 font-medium">
+                      {tr(r.scenarios[scenario.id].label)}
+                    </td>
+                    <td className="px-4 py-2.5">
+                      {scenario.expectedEndpoint}{" "}
+                      <span className="text-xs text-muted-foreground">
+                        ({scenario.endpointRange[0]}–{scenario.endpointRange[1]})
+                      </span>
+                    </td>
+                    <td className="px-4 py-2.5">
+                      {scenario.id === "usualCare" ? "–" : delta > 0 ? `-${delta}` : `+${-delta}`}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

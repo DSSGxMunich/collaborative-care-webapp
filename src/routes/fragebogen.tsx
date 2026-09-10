@@ -132,14 +132,14 @@ function Questionnaire() {
           </Link>
         </div>
         <div
-          className="mt-2 h-2 w-full overflow-hidden rounded-full bg-secondary"
+          className="mt-2 h-1 w-full overflow-hidden rounded-sm bg-secondary"
           role="progressbar"
           aria-valuemin={1}
           aria-valuemax={total}
           aria-valuenow={index + 1}
         >
           <div
-            className="h-full rounded-full bg-primary transition-all duration-500"
+            className="h-full bg-primary transition-all duration-300"
             style={{ width: `${((index + 1) / total) * 100}%` }}
           />
         </div>
@@ -151,16 +151,16 @@ function Questionnaire() {
         <div className="space-y-6">
           {phqBlock(6, 9)}
           {item9 >= 1 && (
-            <div className="rounded-2xl border border-destructive/40 bg-destructive-soft p-5">
-              <h2 className="font-display text-base font-semibold text-destructive">
+            <div className="rounded-md border border-destructive/40 bg-destructive-soft p-4">
+              <h2 className="text-sm font-semibold text-destructive">
                 {tr(resultsContent.crisis[item9 >= 2 ? "elevated" : "low"].title)}
               </h2>
-              <p className="mt-2 text-sm leading-relaxed">
+              <p className="mt-1.5 text-sm leading-relaxed">
                 {tr(resultsContent.crisis[item9 >= 2 ? "elevated" : "low"].message)}
               </p>
               <Link
                 to="/soforthilfe"
-                className="mt-3 inline-flex text-sm font-semibold text-destructive underline"
+                className="mt-2 inline-flex text-sm font-medium text-destructive underline underline-offset-2"
               >
                 {tr(q.showCrisisContacts)}
               </Link>
@@ -170,11 +170,9 @@ function Questionnaire() {
       )}
 
       {key === "safety" && (
-        <div className="space-y-4">
-          <div className="rounded-2xl border border-destructive/40 bg-destructive-soft p-5">
-            <h2 className="font-display text-base font-semibold text-destructive">
-              {tr(q.safety.intro)}
-            </h2>
+        <div className="space-y-3">
+          <div className="rounded-md border border-destructive/40 bg-destructive-soft p-4">
+            <h2 className="text-sm font-semibold text-destructive">{tr(q.safety.intro)}</h2>
           </div>
           <YesNoField
             label={q.safety.questions.plan}
@@ -192,16 +190,16 @@ function Questionnaire() {
             onChange={(v) => updateSafety({ pastAttempt: v })}
           />
           {(risk === "acute" || risk === "elevated") && (
-            <div className="rounded-2xl border border-destructive bg-destructive-soft p-5">
-              <h3 className="font-display text-base font-semibold text-destructive">
+            <div className="rounded-md border border-destructive bg-destructive-soft p-4">
+              <h3 className="text-sm font-semibold text-destructive">
                 {tr(resultsContent.crisis[risk].title)}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed">
+              <p className="mt-1.5 text-sm leading-relaxed">
                 {tr(resultsContent.crisis[risk].message)}
               </p>
               <Link
                 to="/soforthilfe"
-                className="mt-3 inline-flex rounded-xl bg-destructive px-4 py-2 text-sm font-semibold text-destructive-foreground"
+                className="mt-2 inline-flex rounded-md bg-destructive px-3 py-1.5 text-sm font-medium text-destructive-foreground"
               >
                 {tr(q.showCrisisContacts)}
               </Link>
@@ -285,7 +283,7 @@ function Questionnaire() {
           type="button"
           onClick={() => setIndex((i) => Math.max(0, i - 1))}
           disabled={index === 0}
-          className="rounded-xl border border-border bg-card px-5 py-2.5 text-sm font-semibold transition-colors hover:bg-secondary disabled:opacity-40"
+          className="rounded-md border border-border px-3.5 py-2 text-sm font-medium hover:bg-secondary disabled:opacity-40"
         >
           {tr(ui.buttons.back)}
         </button>
@@ -297,7 +295,7 @@ function Questionnaire() {
             type="button"
             onClick={goNext}
             disabled={!canContinue}
-            className="rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-soft transition-transform enabled:hover:-translate-y-0.5 disabled:opacity-40"
+            className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-40"
           >
             {isLast ? tr(ui.buttons.finish) : tr(ui.buttons.continue)}
           </button>

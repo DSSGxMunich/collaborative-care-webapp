@@ -17,15 +17,15 @@ function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
+        <h1 className="text-6xl font-semibold text-foreground">404</h1>
+        <h2 className="mt-4 text-lg font-semibold text-foreground">Page not found</h2>
         <p className="mt-2 text-sm text-muted-foreground">
           The page you're looking for doesn't exist or has been moved.
         </p>
         <div className="mt-6">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
           >
             Go home
           </Link>
@@ -42,7 +42,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
+        <h1 className="text-lg font-semibold tracking-tight text-foreground">
           This page didn't load
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
@@ -54,13 +54,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
               router.invalidate();
               reset();
             }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
           >
             Try again
           </button>
           <a
             href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+            className="inline-flex items-center justify-center rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground"
           >
             Go home
           </a>
@@ -81,12 +81,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Figtree:wght@400;500;600&display=swap",
-      },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
@@ -113,18 +107,14 @@ function RootShell({ children }: { children: ReactNode }) {
 function LanguageToggle() {
   const { lang, setLang } = useLang();
   return (
-    <div className="flex items-center rounded-full border border-border bg-card p-0.5 text-xs font-semibold">
+    <div className="flex items-center gap-2 text-xs">
       {(["de", "en"] as const).map((l) => (
         <button
           key={l}
           type="button"
           onClick={() => setLang(l)}
           aria-pressed={lang === l}
-          className={
-            lang === l
-              ? "rounded-full bg-primary px-3 py-1 text-primary-foreground"
-              : "rounded-full px-3 py-1 text-muted-foreground transition-colors hover:text-foreground"
-          }
+          className={lang === l ? "font-semibold text-foreground" : "text-muted-foreground"}
         >
           {l.toUpperCase()}
         </button>
@@ -144,36 +134,25 @@ function SiteHeader() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur">
-      <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
-        <Link to="/" className="flex items-center gap-2.5">
-          <span
-            aria-hidden
-            className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-sm font-bold text-primary-foreground"
-          >
-            DK
-          </span>
-          <span className="font-display text-base font-semibold leading-none">
-            {tr(ui.appName)}
-          </span>
+    <header className="border-b border-border">
+      <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-x-5 gap-y-2 px-4 py-3">
+        <Link to="/" className="text-sm font-semibold">
+          {tr(ui.appName)}
         </Link>
-        <nav className="order-3 flex w-full flex-wrap gap-1 text-sm sm:order-none sm:w-auto">
+        <nav className="order-3 flex w-full flex-wrap gap-x-4 gap-y-1 text-sm sm:order-none sm:w-auto">
           {navItems.map((item) => (
             <Link
               key={item.to}
               to={item.to}
-              activeProps={{ className: "bg-primary-soft text-foreground" }}
-              className="rounded-lg px-2.5 py-1.5 text-muted-foreground transition-colors hover:text-foreground"
+              activeProps={{ className: "text-foreground font-medium" }}
+              className="text-muted-foreground hover:text-foreground"
             >
               {tr(item.label)}
             </Link>
           ))}
         </nav>
-        <div className="ml-auto flex items-center gap-2">
-          <Link
-            to="/soforthilfe"
-            className="rounded-lg bg-destructive-soft px-2.5 py-1.5 text-sm font-semibold text-destructive"
-          >
+        <div className="ml-auto flex items-center gap-4">
+          <Link to="/soforthilfe" className="text-sm font-medium text-destructive">
             {tr(ui.nav.crisis)}
           </Link>
           <LanguageToggle />
@@ -186,9 +165,9 @@ function SiteHeader() {
 function SiteFooter() {
   const { tr } = useLang();
   return (
-    <footer className="mt-16 border-t border-border/70 bg-secondary/60">
-      <div className="mx-auto max-w-5xl px-4 py-8 text-xs leading-relaxed text-muted-foreground">
-        <p className="max-w-3xl">{tr(ui.disclaimer)}</p>
+    <footer className="mt-16 border-t border-border">
+      <div className="mx-auto max-w-3xl px-4 py-6 text-xs leading-relaxed text-muted-foreground">
+        <p>{tr(ui.disclaimer)}</p>
       </div>
     </footer>
   );

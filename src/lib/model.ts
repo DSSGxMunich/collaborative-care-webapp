@@ -63,20 +63,21 @@
  * would mean usual-care patients got worse in nearly every included trial.
  * If this turns out to be wrong, negate `change` everywhere it's used below.
  *
- * `sigma` (residual SD) models individual-level dispersion around that mean
- * and is used to derive response/remission probabilities as normal-tail
- * probabilities: P(endpoint <= threshold) = Φ((threshold - endpoint) / sigma).
+ * `sigma` (residual SD, individual-level dispersion) is kept below as a real
+ * fitted parameter for transparency but is currently unused — the app only
+ * shows the estimated PHQ-9 score itself, not derived response/remission
+ * probabilities.
  *
- * The `range` shown for each scenario reflects *parameter* uncertainty
- * instead: each coefficient's 95% CI is converted to an approximate
- * standard error (CI half-width / 1.96), the SEs of the terms active in
- * that scenario are combined by root-sum-of-squares (i.e. treated as
- * independent — the actual posterior covariance is not available from a
- * summary table alone), and the resulting interval is propagated through
- * the same endpoint / response / remission transforms as the point
- * estimate. This is an approximation, not the model's true joint credible
- * interval — treat it as indicative, not exact. `alphaStudy`'s own
- * between-trial uncertainty is not folded into this range (see above).
+ * The `range` shown for each scenario reflects *parameter* uncertainty:
+ * each coefficient's 95% CI is converted to an approximate standard error
+ * (CI half-width / 1.96), the SEs of the terms active in that scenario are
+ * combined by root-sum-of-squares (i.e. treated as independent — the
+ * actual posterior covariance is not available from a summary table
+ * alone), and the resulting interval is propagated through the same
+ * endpoint transform as the point estimate. This is an approximation, not
+ * the model's true joint credible interval — treat it as indicative, not
+ * exact. `alphaStudy`'s own between-trial uncertainty is not folded into
+ * this range (see above).
  *
  * PLACEHOLDER — posterior draws: `posteriorEndpointDraws` below stands in
  * for the model's real posterior samples. It approximates a posterior by
@@ -172,9 +173,6 @@ const AGE_MIDPOINT: Record<NonNullable<Profile["ageBand"]>, number> = {
 export const MODEL_META = {
   followUpMonths: 12,
   version: "0.5-fitted",
-  remissionCutoff: 5,
-  /** Response = >= 50% symptom reduction relative to baseline. */
-  responseRatio: 0.5,
 };
 
 export const COMPONENT_BETA: Record<ComponentId, CoefCI> = {
@@ -188,28 +186,6 @@ export const SCENARIO_IDS: ScenarioId[] = ["usualCare", "followUp", "relapsePrev
 const clamp = (x: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, x));
 const round1 = (x: number) => Number(x.toFixed(1));
 const standardize = (x: number, mean: number, sd: number) => (sd > 0 ? (x - mean) / sd : 0);
-
-/** Abramowitz & Stegun 7.1.26 approximation of the error function. */
-function erf(x: number): number {
-  const sign = x < 0 ? -1 : 1;
-  const ax = Math.abs(x);
-  const a1 = 0.254829592;
-  const a2 = -0.284496736;
-  const a3 = 1.421413741;
-  const a4 = -1.453152027;
-  const a5 = 1.061405429;
-  const p = 0.3275911;
-  const term = 1 / (1 + p * ax);
-  const y =
-    1 - ((((a5 * term + a4) * term + a3) * term + a2) * term + a1) * term * Math.exp(-ax * ax);
-  return sign * y;
-}
-
-/** P(X <= x) for X ~ Normal(mean, sd). */
-function normalCdf(x: number, mean: number, sd: number): number {
-  if (sd <= 0) return x < mean ? 0 : 1;
-  return 0.5 * (1 + erf((x - mean) / (sd * Math.SQRT2)));
-}
 
 /** Standard-normal draw via Box–Muller. Used only by posteriorEndpointDraws (placeholder). */
 function randomStandardNormal(): number {
@@ -283,10 +259,6 @@ export type Scenario = {
   id: ScenarioId;
   expectedEndpoint: number;
   endpointRange: Range;
-  responseProbability: number;
-  responseRange: Range;
-  remissionProbability: number;
-  remissionRange: Range;
 };
 
 export function estimateComponents(input: PredictionInput): ComponentEstimate[] {
@@ -344,24 +316,10 @@ export function predictScenario(input: PredictionInput, id: ScenarioId): Scenari
   const endpointLow = clamp(input.baseline + rawChangeLow, 0, 27);
   const endpointHigh = clamp(input.baseline + rawChangeHigh, 0, 27);
 
-  const { sigma } = FITTED_COEFFICIENTS;
-  const responseThreshold = input.baseline * (1 - MODEL_META.responseRatio);
-  const remissionThreshold = MODEL_META.remissionCutoff;
-
-  const responseAt = (endpoint: number) =>
-    clamp(normalCdf(responseThreshold, endpoint, sigma), 0.01, 0.99);
-  const remissionAt = (endpoint: number) =>
-    clamp(normalCdf(remissionThreshold, endpoint, sigma), 0.01, 0.99);
-
   return {
     id,
     expectedEndpoint: round1(endpointPoint),
     endpointRange: [round1(endpointLow), round1(endpointHigh)],
-    responseProbability: responseAt(endpointPoint),
-    // Lower endpoint (more improvement) means higher response/remission probability.
-    responseRange: [responseAt(endpointHigh), responseAt(endpointLow)],
-    remissionProbability: remissionAt(endpointPoint),
-    remissionRange: [remissionAt(endpointHigh), remissionAt(endpointLow)],
   };
 }
 
@@ -377,19 +335,6 @@ export function posteriorEndpointDraws(scenario: Scenario, n = 400): number[] {
   return Array.from({ length: n }, () =>
     round1(clamp(scenario.expectedEndpoint + randomStandardNormal() * se, 0, 27)),
   );
-}
-
-export type RankedScenario = { id: ScenarioId; scenario: Scenario; rank: number };
-
-/** Ranks scenarios by estimated 12-month PHQ-9 endpoint, lower (fewer symptoms) = better = rank 1. */
-export function rankScenarios(scenarios: Scenario[]): RankedScenario[] {
-  const byRank = [...scenarios].sort((a, b) => a.expectedEndpoint - b.expectedEndpoint);
-  const rankOf = new Map(byRank.map((sc, i) => [sc.id, i + 1]));
-  return scenarios.map((scenario) => ({
-    id: scenario.id,
-    scenario,
-    rank: rankOf.get(scenario.id) ?? scenarios.length,
-  }));
 }
 
 /** Patient characteristics the fitted model actually uses. */
@@ -411,8 +356,7 @@ export function describePredictors(input: PredictionInput): PredictorRow[] {
 export function buildPredictions(input: PredictionInput) {
   const estimates = estimateComponents(input);
   const scenarios = SCENARIO_IDS.map((id) => predictScenario(input, id));
-  const ranked = rankScenarios(scenarios);
   const predictors = describePredictors(input);
 
-  return { estimates, scenarios, ranked, predictors };
+  return { estimates, scenarios, predictors };
 }

@@ -20,70 +20,51 @@
   "phq9Label": "PHQ-9",
   "of27": { "de": "von 27 Punkten", "en": "of 27 points" },
   "range": { "de": "Bereich", "en": "Range" },
-  "measures": {
-    "endpoint": {
-      "label": { "de": "Geschätzter PHQ-9 nach 12 Monaten", "en": "Estimated PHQ-9 at 12 months" },
-      "short": { "de": "PHQ-9 nach 12 Monaten", "en": "PHQ-9 at 12 months" },
-      "hint": {
-        "de": "Voraussichtliche Schwere der depressiven Beschwerden nach 12 Monaten für Personen mit einem ähnlichen Profil, auf der PHQ-9-Skala von 0 bis 27.",
-        "en": "Likely severity of depressive symptoms after 12 months for people with a similar profile, on the PHQ-9 scale from 0 to 27."
-      }
-    },
-    "response": {
-      "label": { "de": "Chance auf Ansprechen", "en": "Chance of treatment response" },
-      "short": { "de": "Ansprechen", "en": "Response" },
-      "hint": {
-        "de": "Wahrscheinlichkeit, dass der PHQ-9-Wert gegenüber dem Ausgangswert um mindestens 50 % zurückgeht.",
-        "en": "Probability that the PHQ-9 score falls by at least 50% compared with baseline."
-      }
-    },
-    "remission": {
-      "label": { "de": "Chance auf Remission", "en": "Chance of remission" },
-      "short": { "de": "Remission", "en": "Remission" },
-      "hint": {
-        "de": "Wahrscheinlichkeit, nur noch minimale Beschwerden zu haben — vorläufig definiert als PHQ-9 unter 5.",
-        "en": "Probability of having only minimal symptoms — provisionally defined as PHQ-9 below 5."
-      }
-    }
+  "endpointLabel": {
+    "de": "Geschätzter PHQ-9 nach 12 Monaten",
+    "en": "Estimated PHQ-9 at 12 months"
+  },
+  "endpointHint": {
+    "de": "Voraussichtliche Schwere der depressiven Beschwerden nach 12 Monaten für Personen mit einem ähnlichen Profil, auf der PHQ-9-Skala von 0 bis 27. Niedriger ist besser.",
+    "en": "Likely severity of depressive symptoms after 12 months for people with a similar profile, on the PHQ-9 scale from 0 to 27. Lower is better."
   },
   "ciLabel": { "de": "ca. 95 %-Kredibilitätsintervall", "en": "approx. 95% credible interval" },
-  "rankLabel": { "de": "Rang", "en": "Rank" },
-  "rankOf": { "de": "von", "en": "of" },
+  "todayLabel": { "de": "heute", "en": "today" },
   "scenarios": {
     "usualCare": {
       "label": { "de": "Übliche hausärztliche Versorgung", "en": "Usual GP care" },
+      "short": { "de": "Übliche Versorgung", "en": "Usual care" },
       "description": {
         "de": "Behandlung wie bisher: Termine bei Bedarf, Beratung, Verlaufsbeobachtung.",
         "en": "Care as before: appointments as needed, advice and watchful monitoring."
-      },
-      "badge": { "de": "Vergleichsgrundlage", "en": "Reference" }
+      }
     },
     "followUp": {
       "label": {
         "de": "Übliche Versorgung + Nachverfolgung (2–4 Wochen)",
         "en": "Usual care + follow-up (2–4 weeks)"
       },
+      "short": { "de": "+ Nachverfolgung", "en": "+ Follow-up" },
       "description": {
         "de": "Zusätzlich zur üblichen Versorgung: ein fest vereinbarter Nachverfolgungstermin 2 bis 4 Wochen nach der Erstvorstellung, auch telefonisch.",
         "en": "In addition to usual care: a follow-up appointment or contact — in person or by telephone — firmly scheduled for 2 to 4 weeks after the initial visit."
-      },
-      "badge": { "de": "Baustein", "en": "Component" }
+      }
     },
     "relapsePrevention": {
       "label": {
         "de": "Übliche Versorgung + Rückfallpräventionsplan",
         "en": "Usual care + relapse-prevention plan"
       },
+      "short": { "de": "+ Rückfallpräventionsplan", "en": "+ Relapse-prevention plan" },
       "description": {
         "de": "Zusätzlich zur üblichen Versorgung: ein schriftlicher Plan, der festlegt, wie ein Wiederauftreten der Beschwerden früh erkannt und ihm vorgebeugt wird.",
         "en": "In addition to usual care: a written plan setting out how a recurrence of symptoms is detected early and prevented."
-      },
-      "badge": { "de": "Baustein", "en": "Component" }
+      }
     }
   },
   "scenariosIntro": {
-    "de": "Da aktuell zwei Versorgungsbausteine verfügbar sind, wird jeder einzeln zur üblichen Versorgung hinzugefügt — nicht die Summe beider zusammen.",
-    "en": "Since two care components are currently available, each is added to usual care on its own — not the two together."
+    "de": "Da aktuell zwei Versorgungsbausteine verfügbar sind, wird jeder einzeln zur üblichen Versorgung hinzugefügt, nicht die Summe beider zusammen. Niedrigere Werte bedeuten weniger Beschwerden.",
+    "en": "Since two care components are currently available, each is added to usual care on its own, not the two together. Lower values mean fewer symptoms."
   },
   "posterior": {
     "sectionTitle": {
@@ -99,8 +80,7 @@
     "placeholderNote": {
       "de": "Platzhalter: Diese Verteilung wird aus dem oben angegebenen Kredibilitätsintervall angenähert. Sie wird durch die echten Posterior-Stichproben des Netzwerk-Metaregressions-Modells ersetzt, sobald diese vorliegen.",
       "en": "Placeholder: this distribution is approximated from the credible interval shown above. It will be replaced by the real posterior draws from the network meta-regression model once available."
-    },
-    "axisLabel": { "de": "Geschätzter PHQ-9 nach 12 Monaten", "en": "Estimated PHQ-9 at 12 months" }
+    }
   },
   "crisis": {
     "acute": {
@@ -155,14 +135,17 @@
     "sex": { "label": { "de": "Geschlecht", "en": "Sex" } },
     "notProvided": { "de": "keine Angabe", "en": "not provided" }
   },
-  "whatCanBeExpected": { "de": "Was ist zu erwarten?", "en": "What can be expected?" },
+  "whatCanBeExpected": {
+    "de": "Geschätzter PHQ-9 nach 12 Monaten",
+    "en": "Estimated PHQ-9 at 12 months"
+  },
   "whatCanBeExpectedBody": {
-    "de": "Für jede Versorgungsform werden drei Größen zum Zeitpunkt 12 Monate dargestellt: der geschätzte PHQ-9-Wert, die Chance auf Ansprechen und die Chance auf Remission. Alle Zahlen sind Schätzungen für Gruppen von Personen mit einem ähnlichen Profil — keine Zusage für Ihren persönlichen Verlauf.",
-    "en": "For each form of care, three measures are shown at 12 months: the estimated PHQ-9 score, the chance of response, and the chance of remission. All numbers are estimates for groups of people with a similar profile — not a promise about your personal course."
+    "de": "So könnte sich Ihr PHQ-9-Wert unter üblicher Versorgung und unter jedem der beiden verfügbaren Versorgungsbausteine bis in 12 Monaten entwickeln. Alle Zahlen sind Schätzungen für Gruppen von Personen mit einem ähnlichen Profil — keine Zusage für Ihren persönlichen Verlauf.",
+    "en": "How your PHQ-9 score might develop over 12 months under usual care and under each of the two available care components. All numbers are estimates for groups of people with a similar profile — not a promise about your personal course."
   },
   "whatInfluences": {
-    "de": "Was beeinflusst diese Schätzungen?",
-    "en": "What influences these estimates?"
+    "de": "Was beeinflusst diese Schätzung?",
+    "en": "What influences this estimate?"
   },
   "context": {
     "de": "Zur Einordnung (nicht Teil der Schätzung)",
@@ -170,10 +153,6 @@
   },
   "priorTreatmentLabel": { "de": "Vorbehandlung", "en": "Prior treatment" },
   "gad7Label": { "de": "GAD-7", "en": "GAD-7" },
-  "modelNote": {
-    "de": "Modell: Risikoscore (Sicherheitsfragen + PHQ-9-Schwere) für die Krisenmeldung, plus ein Netzwerk-Metaregressions-Modell für die 12-Monats-Schätzung.",
-    "en": "Model: a risk score (safety questions + PHQ-9 severity) drives the crisis message, plus a network meta-regression model drives the 12-month estimate."
-  },
   "footer": {
     "de": "Modellversion {version}; Bezugszeitpunkt 12 Monate. Forschungsprototyp — keine klinisch validierte Vorhersage. Ihre Antworten bleiben ausschließlich in dieser Browser-Sitzung auf Ihrem Gerät.",
     "en": "Model version {version}; reference time point 12 months. Research prototype — not a clinically validated prediction. Your answers stay solely in this browser session on your device."

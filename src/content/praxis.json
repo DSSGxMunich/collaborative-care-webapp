@@ -42,9 +42,7 @@
   "table": {
     "careOption": { "de": "Versorgungsoption", "en": "Care option" },
     "endpoint": { "de": "PHQ-9 12 Mo. (95%-KI)", "en": "PHQ-9 12 mo. (95% CI)" },
-    "response": { "de": "Response ≥ 50 %", "en": "Response ≥ 50%" },
-    "remission": { "de": "Remission < 5", "en": "Remission < 5" },
-    "rank": { "de": "Rang", "en": "Rank" }
+    "delta": { "de": "Δ vs. übliche Versorgung", "en": "Δ vs. usual care" }
   },
   "footer": {
     "de": "Netzwerk-Metaregressions-Modell, Forschungsprototyp, Modellversion {version}. Werte in Klammern sind ungefähre 95 %-Kredibilitätsintervalle. Keine klinisch validierten Vorhersagen. Angaben verbleiben in der Browser-Sitzung des Patienten.",
