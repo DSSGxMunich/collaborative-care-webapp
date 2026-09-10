@@ -96,7 +96,8 @@
         "de": "Haben Sie sich in den letzten 12 Monaten selbst verletzt oder einen Suizidversuch unternommen?",
         "en": "In the past 12 months, have you harmed yourself or attempted suicide?"
       }
-    }
+    },
+    "whyShown": { "de": "Warum wird das angezeigt?", "en": "Why is this shown?" }
   },
   "profile": {
     "sectionIntro": {

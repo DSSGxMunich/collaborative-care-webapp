@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { Choice, MultiChoice, NumberField, YesNoField } from "@/components/fields";
 import { fill, ui, useLang } from "@/lib/i18n";
 import { PHQ9_INTRO, PHQ9_ITEMS, PHQ9_OPTIONS, phq9Total } from "@/lib/phq9";
-import { assessRisk } from "@/lib/safety";
+import { assessRisk, riskReasons } from "@/lib/safety";
 import { PRIOR_TREATMENTS, useSession, type AgeBand, type Sex } from "@/lib/session";
 import questionnaireContent from "@/content/questionnaire.json";
 import resultsContent from "@/content/results.json";
@@ -36,6 +36,7 @@ function Questionnaire() {
 
   const item9 = session.phq[8] ?? 0;
   const risk = assessRisk(session);
+  const reasons = riskReasons(session);
 
   const key: StepKey = STEP_KEYS[Math.min(index, STEP_KEYS.length - 1)] ?? "phqA";
   const total = STEP_KEYS.length;
@@ -192,9 +193,19 @@ function Questionnaire() {
               <p className="mt-1.5 text-sm leading-relaxed">
                 {tr(resultsContent.crisis[risk].message)}
               </p>
+              {reasons.length > 0 && (
+                <div className="mt-2.5 border-t border-destructive/30 pt-2.5">
+                  <p className="text-xs font-medium text-destructive">{tr(q.safety.whyShown)}</p>
+                  <ul className="mt-1 space-y-0.5 text-xs text-destructive/90">
+                    {reasons.map((reason) => (
+                      <li key={tr(reason)}>· {tr(reason)}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               <Link
                 to="/soforthilfe"
-                className="mt-2 inline-flex rounded-md bg-destructive px-3 py-1.5 text-sm font-medium text-destructive-foreground"
+                className="mt-2.5 inline-flex rounded-md bg-destructive px-3 py-1.5 text-sm font-medium text-destructive-foreground"
               >
                 {tr(q.showCrisisContacts)}
               </Link>

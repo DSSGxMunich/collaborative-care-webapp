@@ -98,6 +98,27 @@ function PosteriorMini({ label, scenario }: { label: string; scenario: Scenario 
   );
 }
 
+/** Legend for ComparisonRow — each swatch reuses the exact classes drawn in the chart. */
+function ChartLegend({ baseline }: { baseline: number }) {
+  const { tr } = useLang();
+  return (
+    <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-muted-foreground">
+      <span className="inline-flex items-center gap-1.5">
+        <span className="h-2.5 w-2.5 shrink-0 rounded-full border-2 border-primary bg-card" />
+        {tr(r.legend.estimate)}
+      </span>
+      <span className="inline-flex items-center gap-1.5">
+        <span className="h-0.5 w-4 shrink-0 rounded-full bg-primary/35" />
+        {tr(r.legend.interval)}
+      </span>
+      <span className="inline-flex items-center gap-1.5">
+        <span className="h-2.5 w-0 shrink-0 border-l border-dashed border-muted-foreground/60" />
+        {fill(tr(r.legend.today), { baseline })}
+      </span>
+    </div>
+  );
+}
+
 function CrisisBanner({ level }: { level: keyof typeof r.crisis }) {
   const { tr } = useLang();
   if (level === "none") return null;
@@ -208,10 +229,8 @@ function Results() {
             />
           ))}
         </div>
-        <p className="mt-2 text-xs text-muted-foreground">
-          {tr(r.ciLabel)} · {fill(tr(r.todayCaption), { baseline: p.baseline })}
-        </p>
-        <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{tr(r.scenariosIntro)}</p>
+        <ChartLegend baseline={p.baseline} />
+        <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{tr(r.scenariosIntro)}</p>
 
         <button
           type="button"

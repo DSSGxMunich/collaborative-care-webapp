@@ -20,21 +20,13 @@
   "phq9Label": "PHQ-9",
   "of27": { "de": "von 27 Punkten", "en": "of 27 points" },
   "range": { "de": "Bereich", "en": "Range" },
-  "endpointLabel": {
-    "de": "Geschätzter PHQ-9 nach 12 Monaten",
-    "en": "Estimated PHQ-9 at 12 months"
-  },
-  "endpointHint": {
-    "de": "Voraussichtliche Schwere der depressiven Beschwerden nach 12 Monaten für Personen mit einem ähnlichen Profil, auf der PHQ-9-Skala von 0 bis 27. Niedriger ist besser.",
-    "en": "Likely severity of depressive symptoms after 12 months for people with a similar profile, on the PHQ-9 scale from 0 to 27. Lower is better."
-  },
-  "ciLabel": {
-    "de": "ca. 95 %-Kredibilitätsintervall (Balken)",
-    "en": "approx. 95% credible interval (bar)"
-  },
-  "todayCaption": {
-    "de": "Gestrichelte Linie: Ihr PHQ-9-Wert heute ({baseline})",
-    "en": "Dashed line: your PHQ-9 score today ({baseline})"
+  "legend": {
+    "estimate": {
+      "de": "Geschätzter PHQ-9 nach 12 Monaten",
+      "en": "Estimated PHQ-9 at 12 months"
+    },
+    "interval": { "de": "95 %-Kredibilitätsintervall", "en": "95% credible interval" },
+    "today": { "de": "Ihr PHQ-9 heute ({baseline})", "en": "Your PHQ-9 today ({baseline})" }
   },
   "scenarios": {
     "usualCare": {
@@ -51,8 +43,8 @@
         "en": "Usual care + follow-up (2–4 weeks)"
       },
       "short": {
-        "de": "+ Nachverfolgung, ohne Rückfallplan",
-        "en": "+ Follow-up, without relapse-prevention plan"
+        "de": "Übliche Versorgung + Nachverfolgung (ohne Rückfallplan)",
+        "en": "Usual care + follow-up (without relapse-prevention plan)"
       },
       "description": {
         "de": "Zusätzlich zur üblichen Versorgung: ein fest vereinbarter Nachverfolgungstermin 2 bis 4 Wochen nach der Erstvorstellung, auch telefonisch. Ohne Rückfallpräventionsplan.",
@@ -65,8 +57,8 @@
         "en": "Usual care + relapse-prevention plan"
       },
       "short": {
-        "de": "+ Rückfallpräventionsplan, ohne Nachverfolgung",
-        "en": "+ Relapse-prevention plan, without follow-up"
+        "de": "Übliche Versorgung + Rückfallpräventionsplan (ohne Nachverfolgung)",
+        "en": "Usual care + relapse-prevention plan (without follow-up)"
       },
       "description": {
         "de": "Zusätzlich zur üblichen Versorgung: ein schriftlicher Plan, der festlegt, wie ein Wiederauftreten der Beschwerden früh erkannt und ihm vorgebeugt wird. Ohne Nachverfolgungstermin.",
