@@ -20,8 +20,8 @@ export type YesNo = "yes" | "no";
 export type Sex = "female" | "male" | "other" | "intersex" | "unsure" | "preferNotToSay";
 
 export type Profile = {
-  /** Age in years, entered directly (not a band). */
-  age: number | null;
+  /** Date of birth, ISO "YYYY-MM-DD". Age is derived from this — see ageFromBirthDate. */
+  birthDate: string | null;
   /** Used by the fitted outcome model (theta_sex, interaction terms) when female/male. */
   sex: Sex | null;
   priorEpisode: YesNo | null;
@@ -51,7 +51,7 @@ export const emptySession = (): Session => ({
   phq: Array<number | null>(9).fill(null),
   safety: { plan: null, canStaySafe: null, pastAttempt: null },
   profile: {
-    age: null,
+    birthDate: null,
     sex: null,
     priorEpisode: null,
     priorTreatment: [],
@@ -66,6 +66,26 @@ export const SEX_OPTIONS = questionnaireContent.profile.sex.options as {
   value: Sex;
   label: { de: string; en: string };
 }[];
+
+const MS_PER_YEAR = 1000 * 60 * 60 * 24 * 365.25;
+
+/**
+ * Age in years as a float (e.g. 22.87), derived from a birth date so the
+ * outcome model gets a precise value rather than a rounded whole number.
+ */
+export function ageFromBirthDate(birthDateIso: string, at: Date = new Date()): number {
+  const birth = new Date(`${birthDateIso}T00:00:00`);
+  return (at.getTime() - birth.getTime()) / MS_PER_YEAR;
+}
+
+const toIsoDate = (d: Date) => d.toISOString().slice(0, 10);
+
+/** Reasonable bounds for a birth-date picker: today, and 110 years ago. */
+export function birthDateBounds(now: Date = new Date()) {
+  const min = new Date(now);
+  min.setFullYear(min.getFullYear() - 110);
+  return { min: toIsoDate(min), max: toIsoDate(now) };
+}
 
 type Ctx = {
   session: Session;

@@ -5,7 +5,7 @@ import { fill, ui, useLang } from "@/lib/i18n";
 import { SEVERITY_LABEL, SEVERITY_RANGE } from "@/lib/phq9";
 import { MODEL_META, posteriorEndpointDraws, type Scenario, type ScenarioId } from "@/lib/model";
 import { usePrediction } from "@/lib/usePrediction";
-import { SEX_OPTIONS } from "@/lib/session";
+import { ageFromBirthDate, SEX_OPTIONS } from "@/lib/session";
 import resultsContent from "@/content/results.json";
 
 export const Route = createFileRoute("/ergebnis")({
@@ -167,8 +167,6 @@ function Results() {
         <h1 className="text-2xl font-semibold">{tr(r.thankYou.title)}</h1>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{tr(r.thankYou.body)}</p>
 
-        <CrisisBanner level={p.crisis} />
-
         <div className="mt-6 space-y-2.5">
           <button
             type="button"
@@ -273,7 +271,11 @@ function Results() {
           </div>
           <div className="flex justify-between gap-4 py-2">
             <dt className="text-muted-foreground">{tr(r.predictors.age.label)}</dt>
-            <dd className="font-medium">{p.session.profile.age ?? tr(r.predictors.notProvided)}</dd>
+            <dd className="font-medium">
+              {p.session.profile.birthDate
+                ? ageFromBirthDate(p.session.profile.birthDate).toFixed(2)
+                : tr(r.predictors.notProvided)}
+            </dd>
           </div>
           <div className="flex justify-between gap-4 py-2">
             <dt className="text-muted-foreground">{tr(r.predictors.sex.label)}</dt>

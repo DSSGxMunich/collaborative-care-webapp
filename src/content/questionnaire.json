@@ -101,12 +101,15 @@
   },
   "profile": {
     "sectionIntro": {
-      "de": "Ein paar Angaben zu Ihrer Person. Nur Alter und Geschlecht gehen in die Schätzung ein — der Rest dient allein der Einordnung.",
-      "en": "A few questions about you. Only age and sex enter the estimate — the rest is for context only."
+      "de": "Fangen wir mit ein paar kurzen Angaben zu Ihnen an.",
+      "en": "Let's start with a few quick questions about you."
+    },
+    "historyIntro": {
+      "de": "Noch ein paar Fragen zu Ihrer Vorgeschichte.",
+      "en": "A few more questions about your history."
     },
     "age": {
-      "question": { "de": "Wie alt sind Sie?", "en": "How old are you?" },
-      "hint": { "de": "Ganzzahl in Jahren, 18–110.", "en": "Whole number in years, 18–110." }
+      "question": { "de": "Wann sind Sie geboren?", "en": "When were you born?" }
     },
     "sex": {
       "question": { "de": "Welches Geschlecht haben Sie?", "en": "What is your sex?" },

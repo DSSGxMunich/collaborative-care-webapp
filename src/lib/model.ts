@@ -88,7 +88,7 @@
  */
 
 import type { L } from "./i18n";
-import type { Profile, Sex } from "./session";
+import { ageFromBirthDate, type Profile, type Sex } from "./session";
 
 export type ComponentId = "followUp" | "relapsePrevention";
 export type ScenarioId = "usualCare" | ComponentId;
@@ -210,7 +210,7 @@ function combineTerms(terms: Term[]) {
 type Standardized = { ageZ: number | null; sexX: 0 | 1 | null; baselineZ: number };
 
 function standardizeInput(input: PredictionInput): Standardized {
-  const age = input.profile.age;
+  const age = input.profile.birthDate ? ageFromBirthDate(input.profile.birthDate) : null;
   return {
     ageZ: age === null ? null : standardize(age, STANDARDIZATION.age.mean, STANDARDIZATION.age.sd),
     // SEX_CODE only covers female/male; any other (or missing) sex resolves
@@ -343,9 +343,10 @@ export type PredictorRow = {
 
 export function describePredictors(input: PredictionInput): PredictorRow[] {
   const p = input.profile;
+  const age = p.birthDate ? ageFromBirthDate(p.birthDate) : null;
   return [
     { id: "baseline", value: `${input.baseline}/27`, available: true },
-    { id: "age", value: p.age !== null ? String(p.age) : "–", available: p.age !== null },
+    { id: "age", value: age !== null ? age.toFixed(2) : "–", available: age !== null },
     { id: "sex", value: p.sex ?? "–", available: p.sex !== null },
   ];
 }

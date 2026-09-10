@@ -1,10 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Choice, MultiChoice, NumberField, YesNoField } from "@/components/fields";
+import { Choice, DateField, MultiChoice, NumberField, YesNoField } from "@/components/fields";
 import { ui, useLang } from "@/lib/i18n";
 import { PHQ9_INTRO, PHQ9_ITEMS, PHQ9_OPTIONS } from "@/lib/phq9";
-import { assessRisk, riskReasons } from "@/lib/safety";
-import { PRIOR_TREATMENTS, SEX_OPTIONS, useSession } from "@/lib/session";
+import { birthDateBounds, PRIOR_TREATMENTS, SEX_OPTIONS, useSession } from "@/lib/session";
 import questionnaireContent from "@/content/questionnaire.json";
 import resultsContent from "@/content/results.json";
 
@@ -28,10 +27,9 @@ function Questionnaire() {
   const navigate = useNavigate();
   const { session, setPhq, update, updateProfile, updateSafety } = useSession();
   const [index, setIndex] = useState(0);
+  const dateBounds = useMemo(() => birthDateBounds(), []);
 
   const item9 = session.phq[8] ?? 0;
-  const risk = assessRisk(session);
-  const reasons = riskReasons(session);
 
   const key: StepKey = STEP_KEYS[Math.min(index, STEP_KEYS.length - 1)] ?? "basics";
   const total = STEP_KEYS.length;
@@ -39,7 +37,7 @@ function Questionnaire() {
   const canContinue = useMemo(() => {
     switch (key) {
       case "basics":
-        return session.profile.age !== null && session.profile.sex !== null;
+        return session.profile.birthDate !== null && session.profile.sex !== null;
       case "phq9":
         return session.phq.every((v) => v !== null);
       case "safety":
@@ -111,13 +109,12 @@ function Questionnaire() {
           <p className="text-sm leading-relaxed text-muted-foreground">
             {tr(q.profile.sectionIntro)}
           </p>
-          <NumberField
+          <DateField
             label={q.profile.age.question}
-            hint={q.profile.age.hint}
-            min={18}
-            max={110}
-            value={session.profile.age}
-            onChange={(v) => updateProfile({ age: v })}
+            min={dateBounds.min}
+            max={dateBounds.max}
+            value={session.profile.birthDate}
+            onChange={(v) => updateProfile({ birthDate: v })}
           />
           <fieldset className="surface-card p-5">
             <legend className="mb-3 block text-base font-semibold">
@@ -136,7 +133,7 @@ function Questionnaire() {
 
       {key === "phq9" && (
         <div className="space-y-6">
-          <p className="text-sm leading-relaxed text-muted-foreground">{tr(PHQ9_INTRO)}</p>
+          <h2 className="text-xl font-semibold leading-snug">{tr(PHQ9_INTRO)}</h2>
           {PHQ9_ITEMS.map((item, idx) => (
             <fieldset key={idx} className="surface-card p-5">
               <legend className="mb-3 block text-base font-semibold">
@@ -171,9 +168,7 @@ function Questionnaire() {
 
       {key === "safety" && (
         <div className="space-y-3">
-          <div className="rounded-md border border-destructive/40 bg-destructive-soft p-4">
-            <h2 className="text-sm font-semibold text-destructive">{tr(q.safety.intro)}</h2>
-          </div>
+          <p className="text-sm leading-relaxed text-muted-foreground">{tr(q.safety.intro)}</p>
           <YesNoField
             label={q.safety.questions.plan}
             value={session.safety.plan}
@@ -189,37 +184,14 @@ function Questionnaire() {
             value={session.safety.pastAttempt}
             onChange={(v) => updateSafety({ pastAttempt: v })}
           />
-          {(risk === "acute" || risk === "elevated") && (
-            <div className="rounded-md border border-destructive bg-destructive-soft p-4">
-              <h3 className="text-sm font-semibold text-destructive">
-                {tr(resultsContent.crisis[risk].title)}
-              </h3>
-              <p className="mt-1.5 text-sm leading-relaxed">
-                {tr(resultsContent.crisis[risk].message)}
-              </p>
-              {reasons.length > 0 && (
-                <div className="mt-2.5 border-t border-destructive/30 pt-2.5">
-                  <p className="text-xs font-medium text-destructive">{tr(q.safety.whyShown)}</p>
-                  <ul className="mt-1 space-y-0.5 text-xs text-destructive/90">
-                    {reasons.map((reason) => (
-                      <li key={tr(reason)}>· {tr(reason)}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              <Link
-                to="/soforthilfe"
-                className="mt-2.5 inline-flex rounded-md bg-destructive px-3 py-1.5 text-sm font-medium text-destructive-foreground"
-              >
-                {tr(q.showCrisisContacts)}
-              </Link>
-            </div>
-          )}
         </div>
       )}
 
       {key === "history" && (
         <div className="space-y-6">
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            {tr(q.profile.historyIntro)}
+          </p>
           <YesNoField
             label={q.profile.priorEpisode.question}
             value={session.profile.priorEpisode}
