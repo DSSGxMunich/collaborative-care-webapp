@@ -123,14 +123,9 @@ function Questionnaire() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
       <div className="mb-8">
-        <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          <span>
-            {tr(ui.step)} {index + 1} {tr(ui.of)} {total}
-          </span>
-          <Link to="/soforthilfe" className="text-destructive">
-            {tr(ui.nav.crisis)}
-          </Link>
-        </div>
+        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          {tr(ui.step)} {index + 1} {tr(ui.of)} {total}
+        </p>
         <div
           className="mt-2 h-1 w-full overflow-hidden rounded-sm bg-secondary"
           role="progressbar"
