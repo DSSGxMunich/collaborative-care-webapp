@@ -7,7 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { LanguageProvider, useLang, ui } from "../lib/i18n";
@@ -173,21 +173,111 @@ function SiteFooter() {
   );
 }
 
+/**
+ * Device preview: lets anyone see the app's phone/tablet layout without
+ * needing browser DevTools. It works by loading the app itself inside an
+ * <iframe> of a fixed pixel width — an iframe has its own layout viewport,
+ * so the same responsive CSS that reacts to a real phone's width reacts to
+ * it here too (a plain scaled-down <div> would not: Tailwind's `sm:`
+ * breakpoints match the browser window's width, not a container's width).
+ */
+type PreviewMode = "desktop" | "tablet" | "mobile";
+
+const DEVICE_SIZE: Record<Exclude<PreviewMode, "desktop">, { width: number; height: number }> = {
+  tablet: { width: 820, height: 1180 },
+  mobile: { width: 390, height: 844 },
+};
+
+function ViewToggle({ mode, onChange }: { mode: PreviewMode; onChange: (m: PreviewMode) => void }) {
+  const labels: Record<PreviewMode, string> = {
+    desktop: "Desktop",
+    tablet: "Tablet",
+    mobile: "Mobile",
+  };
+  return (
+    <div className="flex items-center gap-3 text-xs">
+      <span className="text-muted-foreground">View:</span>
+      {(["desktop", "tablet", "mobile"] as const).map((m) => (
+        <button
+          key={m}
+          type="button"
+          onClick={() => onChange(m)}
+          aria-pressed={mode === m}
+          className={mode === m ? "font-semibold text-foreground" : "text-muted-foreground"}
+        >
+          {labels[m]}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function DevicePreviewFrame({ mode, src }: { mode: Exclude<PreviewMode, "desktop">; src: string }) {
+  const { width, height } = DEVICE_SIZE[mode];
+  return (
+    <div className="flex flex-col items-center gap-2 bg-secondary px-4 py-8">
+      <div
+        className="overflow-hidden rounded-2xl border-4 border-foreground/70 bg-background"
+        style={{ width, height }}
+      >
+        {src ? (
+          <iframe
+            title={`${mode} preview`}
+            src={src}
+            style={{ width: "100%", height: "100%", border: "none", display: "block" }}
+          />
+        ) : null}
+      </div>
+      <p className="text-xs text-muted-foreground">{width}px wide</p>
+    </div>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const [mode, setMode] = useState<PreviewMode>("desktop");
+  const [frameSrc, setFrameSrc] = useState("");
+  const [mounted, setMounted] = useState(false);
+  const [framed, setFramed] = useState(false);
+
+  // Client-only: detect whether this page is itself running inside the
+  // preview iframe below, so that document never tries to nest itself.
+  useEffect(() => {
+    setMounted(true);
+    setFramed(window.self !== window.top);
+  }, []);
+
+  const changeMode = (m: PreviewMode) => {
+    setMode(m);
+    if (m !== "desktop") setFrameSrc(window.location.href);
+  };
+
+  const previewDevice = mode === "desktop" ? null : mode;
+  const showFrame = mounted && !framed && previewDevice !== null;
 
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
         <SessionProvider>
-          <div className="flex min-h-screen flex-col">
-            <SiteHeader />
-            <main className="flex-1">
-              {/* Required: nested routes render here. */}
-              <Outlet />
-            </main>
-            <SiteFooter />
-          </div>
+          {!framed && (
+            <div className="border-b border-border bg-secondary/60 px-4 py-1.5">
+              <div className="mx-auto flex max-w-3xl justify-end">
+                <ViewToggle mode={mode} onChange={changeMode} />
+              </div>
+            </div>
+          )}
+          {showFrame && previewDevice ? (
+            <DevicePreviewFrame mode={previewDevice} src={frameSrc} />
+          ) : (
+            <div className="flex min-h-screen flex-col">
+              <SiteHeader />
+              <main className="flex-1">
+                {/* Required: nested routes render here. */}
+                <Outlet />
+              </main>
+              <SiteFooter />
+            </div>
+          )}
         </SessionProvider>
       </LanguageProvider>
     </QueryClientProvider>
