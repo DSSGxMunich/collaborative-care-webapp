@@ -9,13 +9,20 @@ import {
 } from "react";
 import questionnaireContent from "@/content/questionnaire.json";
 
-export type AgeBand = "18-29" | "30-49" | "50-64" | "65+";
 export type YesNo = "yes" | "no";
-export type Sex = "female" | "male";
+/**
+ * "female" and "male" feed the fitted outcome model (theta_sex, interaction
+ * terms) via SEX_CODE in model.ts. The other options are offered so nobody
+ * is forced into a binary answer, but there isn't enough trial data to fit
+ * a coefficient for them — the model falls back to the sex-unadjusted
+ * (average-across-all) estimate for those, same as leaving sex unanswered.
+ */
+export type Sex = "female" | "male" | "other" | "intersex" | "unsure" | "preferNotToSay";
 
 export type Profile = {
-  ageBand: AgeBand | null;
-  /** Used by the fitted outcome model (theta_sex, interaction terms). */
+  /** Age in years, entered directly (not a band). */
+  age: number | null;
+  /** Used by the fitted outcome model (theta_sex, interaction terms) when female/male. */
   sex: Sex | null;
   priorEpisode: YesNo | null;
   priorTreatment: string[];
@@ -44,7 +51,7 @@ export const emptySession = (): Session => ({
   phq: Array<number | null>(9).fill(null),
   safety: { plan: null, canStaySafe: null, pastAttempt: null },
   profile: {
-    ageBand: null,
+    age: null,
     sex: null,
     priorEpisode: null,
     priorTreatment: [],
@@ -55,6 +62,10 @@ export const emptySession = (): Session => ({
 });
 
 export const PRIOR_TREATMENTS = questionnaireContent.profile.priorTreatment.options;
+export const SEX_OPTIONS = questionnaireContent.profile.sex.options as {
+  value: Sex;
+  label: { de: string; en: string };
+}[];
 
 type Ctx = {
   session: Session;

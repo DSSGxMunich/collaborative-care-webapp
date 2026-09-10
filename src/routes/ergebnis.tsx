@@ -5,6 +5,7 @@ import { fill, ui, useLang } from "@/lib/i18n";
 import { SEVERITY_LABEL, SEVERITY_RANGE } from "@/lib/phq9";
 import { MODEL_META, posteriorEndpointDraws, type Scenario, type ScenarioId } from "@/lib/model";
 import { usePrediction } from "@/lib/usePrediction";
+import { SEX_OPTIONS } from "@/lib/session";
 import resultsContent from "@/content/results.json";
 
 export const Route = createFileRoute("/ergebnis")({
@@ -272,13 +273,20 @@ function Results() {
           </div>
           <div className="flex justify-between gap-4 py-2">
             <dt className="text-muted-foreground">{tr(r.predictors.age.label)}</dt>
-            <dd className="font-medium">
-              {p.session.profile.ageBand ?? tr(r.predictors.notProvided)}
-            </dd>
+            <dd className="font-medium">{p.session.profile.age ?? tr(r.predictors.notProvided)}</dd>
           </div>
           <div className="flex justify-between gap-4 py-2">
             <dt className="text-muted-foreground">{tr(r.predictors.sex.label)}</dt>
-            <dd className="font-medium">{p.session.profile.sex ?? tr(r.predictors.notProvided)}</dd>
+            <dd className="font-medium">
+              {p.session.profile.sex
+                ? tr(
+                    SEX_OPTIONS.find((o) => o.value === p.session.profile.sex)?.label ?? {
+                      de: "–",
+                      en: "–",
+                    },
+                  )
+                : tr(r.predictors.notProvided)}
+            </dd>
           </div>
         </dl>
       </section>

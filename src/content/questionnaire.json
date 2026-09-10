@@ -106,18 +106,17 @@
     },
     "age": {
       "question": { "de": "Wie alt sind Sie?", "en": "How old are you?" },
-      "options": [
-        { "value": "18-29", "label": { "de": "18–29 Jahre", "en": "18–29 years" } },
-        { "value": "30-49", "label": { "de": "30–49 Jahre", "en": "30–49 years" } },
-        { "value": "50-64", "label": { "de": "50–64 Jahre", "en": "50–64 years" } },
-        { "value": "65+", "label": { "de": "65 Jahre und älter", "en": "65 years and older" } }
-      ]
+      "hint": { "de": "Ganzzahl in Jahren, 18–110.", "en": "Whole number in years, 18–110." }
     },
     "sex": {
       "question": { "de": "Welches Geschlecht haben Sie?", "en": "What is your sex?" },
       "options": [
         { "value": "female", "label": { "de": "Weiblich", "en": "Female" } },
-        { "value": "male", "label": { "de": "Männlich", "en": "Male" } }
+        { "value": "male", "label": { "de": "Männlich", "en": "Male" } },
+        { "value": "other", "label": { "de": "Divers", "en": "Other" } },
+        { "value": "intersex", "label": { "de": "Intergeschlechtlich", "en": "Intersex" } },
+        { "value": "unsure", "label": { "de": "Weiß nicht", "en": "Don't know" } },
+        { "value": "preferNotToSay", "label": { "de": "Keine Angabe", "en": "Prefer not to say" } }
       ]
     },
     "priorEpisode": {
@@ -154,10 +153,6 @@
       "scoreQuestion": { "de": "Wie hoch ist Ihr GAD-7-Wert?", "en": "What is your GAD-7 score?" },
       "scoreHint": { "de": "Ganzzahl von 0 bis 21.", "en": "Whole number from 0 to 21." }
     }
-  },
-  "runningTotal": {
-    "de": "Aktueller PHQ-9 Zwischenstand: {score} von 27 Punkten.",
-    "en": "Current PHQ-9 running total: {score} of 27 points."
   },
   "pleaseAnswerAll": { "de": "Bitte alle Fragen beantworten", "en": "Please answer all questions" },
   "showCrisisContacts": { "de": "Krisenkontakte anzeigen", "en": "Show crisis contacts" }
