@@ -1,0 +1,164 @@
+{
+  "phq9": {
+    "intro": {
+      "de": "Wie oft haben Sie sich in den letzten zwei Wochen durch die folgenden Beschwerden beeinträchtigt gefühlt?",
+      "en": "Over the last two weeks, how often have you been bothered by any of the following problems?"
+    },
+    "items": [
+      {
+        "de": "Wenig Interesse oder Freude an Ihren Tätigkeiten",
+        "en": "Little interest or pleasure in doing things"
+      },
+      {
+        "de": "Niedergeschlagenheit, Melancholie oder Hoffnungslosigkeit",
+        "en": "Feeling down, depressed, or hopeless"
+      },
+      {
+        "de": "Schwierigkeiten ein- oder durchzuschlafen oder vermehrter Schlaf",
+        "en": "Trouble falling or staying asleep, or sleeping too much"
+      },
+      {
+        "de": "Müdigkeit oder Gefühl, keine Energie zu haben",
+        "en": "Feeling tired or having little energy"
+      },
+      { "de": "Verminderter Appetit oder übermäßiges Essen", "en": "Poor appetite or overeating" },
+      {
+        "de": "Schlechte Meinung von sich selbst; Gefühl, ein Versager zu sein oder die Familie enttäuscht zu haben",
+        "en": "Feeling bad about yourself, or that you are a failure or have let yourself or your family down"
+      },
+      {
+        "de": "Schwierigkeiten, sich auf etwas zu konzentrieren, z. B. beim Lesen",
+        "en": "Trouble concentrating on things, such as reading"
+      },
+      {
+        "de": "Waren Ihre Bewegungen oder Ihre Sprache verlangsamt? Oder waren Sie unruhig und zappelig?",
+        "en": "Moving or speaking slowly, or being so restless that you have been moving a lot more than usual"
+      },
+      {
+        "de": "Gedanken, dass Sie lieber tot wären oder sich Leid zufügen möchten",
+        "en": "Thoughts that you would be better off dead or of hurting yourself in some way"
+      }
+    ],
+    "options": [
+      {
+        "value": 0,
+        "label": { "de": "Überhaupt nicht", "en": "Not at all" },
+        "hint": { "de": "0 Tage", "en": "0 days" }
+      },
+      {
+        "value": 1,
+        "label": { "de": "An einzelnen Tagen", "en": "Several days" },
+        "hint": { "de": "1–6 Tage", "en": "1–6 days" }
+      },
+      {
+        "value": 2,
+        "label": { "de": "An mehr als der Hälfte der Tage", "en": "More than half the days" },
+        "hint": { "de": "7–11 Tage", "en": "7–11 days" }
+      },
+      {
+        "value": 3,
+        "label": { "de": "Beinahe jeden Tag", "en": "Nearly every day" },
+        "hint": { "de": "12–14 Tage", "en": "12–14 days" }
+      }
+    ],
+    "severity": {
+      "minimal": {
+        "label": { "de": "Minimale Symptome", "en": "Minimal symptoms" },
+        "range": "0–4"
+      },
+      "mild": { "label": { "de": "Leichte Symptome", "en": "Mild symptoms" }, "range": "5–9" },
+      "moderate": {
+        "label": { "de": "Mittelgradige Symptome", "en": "Moderate symptoms" },
+        "range": "10–14"
+      },
+      "moderatelySevere": {
+        "label": { "de": "Mittelgradig bis schwere Symptome", "en": "Moderately severe symptoms" },
+        "range": "15–19"
+      },
+      "severe": { "label": { "de": "Schwere Symptome", "en": "Severe symptoms" }, "range": "20–27" }
+    }
+  },
+  "safety": {
+    "intro": {
+      "de": "Diese drei Fragen helfen einzuschätzen, wie schnell Sie Unterstützung brauchen. Antworten Sie so offen, wie es Ihnen möglich ist.",
+      "en": "These three questions help judge how quickly you need support. Please answer as openly as you can."
+    },
+    "questions": {
+      "plan": {
+        "de": "Haben Sie konkrete Pläne oder Vorbereitungen getroffen, sich das Leben zu nehmen oder sich zu verletzen?",
+        "en": "Have you made concrete plans or preparations to end your life or to hurt yourself?"
+      },
+      "canStaySafe": {
+        "de": "Trauen Sie sich zu, sich bis zum nächsten Kontakt mit Ihrer Praxis nicht zu schaden?",
+        "en": "Do you feel able to keep yourself safe until your next contact with the practice?"
+      },
+      "pastAttempt": {
+        "de": "Haben Sie sich in den letzten 12 Monaten selbst verletzt oder einen Suizidversuch unternommen?",
+        "en": "In the past 12 months, have you harmed yourself or attempted suicide?"
+      }
+    },
+    "whyShown": { "de": "Warum wird das angezeigt?", "en": "Why is this shown?" }
+  },
+  "profile": {
+    "sectionIntro": {
+      "de": "Ein paar Angaben zu Ihrer Person. Nur Alter und Geschlecht gehen in die Schätzung ein — der Rest dient allein der Einordnung.",
+      "en": "A few questions about you. Only age and sex enter the estimate — the rest is for context only."
+    },
+    "age": {
+      "question": { "de": "Wie alt sind Sie?", "en": "How old are you?" },
+      "options": [
+        { "value": "18-29", "label": { "de": "18–29 Jahre", "en": "18–29 years" } },
+        { "value": "30-49", "label": { "de": "30–49 Jahre", "en": "30–49 years" } },
+        { "value": "50-64", "label": { "de": "50–64 Jahre", "en": "50–64 years" } },
+        { "value": "65+", "label": { "de": "65 Jahre und älter", "en": "65 years and older" } }
+      ]
+    },
+    "sex": {
+      "question": { "de": "Welches Geschlecht haben Sie?", "en": "What is your sex?" },
+      "options": [
+        { "value": "female", "label": { "de": "Weiblich", "en": "Female" } },
+        { "value": "male", "label": { "de": "Männlich", "en": "Male" } }
+      ]
+    },
+    "priorEpisode": {
+      "question": {
+        "de": "Hatten Sie früher schon einmal eine depressive Phase?",
+        "en": "Have you had a depressive episode before?"
+      }
+    },
+    "priorTreatment": {
+      "question": {
+        "de": "Welche Behandlungen haben Sie bereits erhalten?",
+        "en": "Which treatments have you already had?"
+      },
+      "hint": { "de": "Mehrfachauswahl möglich.", "en": "You can select more than one." },
+      "options": [
+        {
+          "id": "antidepressant",
+          "label": { "de": "Antidepressiva", "en": "Antidepressant medication" }
+        },
+        { "id": "psychotherapy", "label": { "de": "Psychotherapie", "en": "Psychotherapy" } },
+        { "id": "inpatient", "label": { "de": "Klinikaufenthalt", "en": "Inpatient treatment" } },
+        {
+          "id": "selfhelp",
+          "label": { "de": "Selbsthilfe / Online-Programm", "en": "Self-help or online programme" }
+        },
+        { "id": "none", "label": { "de": "Noch keine Behandlung", "en": "No treatment so far" } }
+      ]
+    },
+    "gad7": {
+      "knownQuestion": {
+        "de": "Kennen Sie Ihren aktuellen GAD-7-Wert (Angstsymptome)?",
+        "en": "Do you know your current GAD-7 score (anxiety symptoms)?"
+      },
+      "scoreQuestion": { "de": "Wie hoch ist Ihr GAD-7-Wert?", "en": "What is your GAD-7 score?" },
+      "scoreHint": { "de": "Ganzzahl von 0 bis 21.", "en": "Whole number from 0 to 21." }
+    }
+  },
+  "runningTotal": {
+    "de": "Aktueller PHQ-9 Zwischenstand: {score} von 27 Punkten.",
+    "en": "Current PHQ-9 running total: {score} of 27 points."
+  },
+  "pleaseAnswerAll": { "de": "Bitte alle Fragen beantworten", "en": "Please answer all questions" },
+  "showCrisisContacts": { "de": "Krisenkontakte anzeigen", "en": "Show crisis contacts" }
+}

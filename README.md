@@ -53,5 +53,13 @@ node .output/server/index.mjs
 
 - `src/routes/` - file-based routes (see `src/routes/README.md` for the routing conventions)
 - `src/components/` - shared React components, including `src/components/ui/` (shadcn/ui primitives)
-- `src/lib/` — domain logic: PHQ-9 scoring, prediction model, safety checks, i18n, session state
+- `src/content/` — all bilingual (German/English) user-facing copy, as JSON (`{ "de": ..., "en": ... }` per string), one file per page/topic. Edit these to change wording without touching component code.
+- `src/lib/` — domain logic: PHQ-9 scoring, the risk score + network meta-regression outcome model (`model.ts`, `safety.ts`), i18n, session state
 - `src/server.ts` / `src/start.ts` — server entry and middleware (SSR error handling, CSRF)
+
+### Model
+
+Predictions come from two independent parts, both prototype/provisional:
+
+1. **Risk score** (`src/lib/safety.ts`) — from the three safety questions plus PHQ-9 severity. Drives the crisis message only.
+2. **Network meta-regression outcome model** (`src/lib/model.ts`) — fitted coefficients (posterior means + 95% credible intervals) from an individual-patient-data meta-analysis, estimating the 12-month PHQ-9 score under usual care and under each of the two available care components added to usual care. The posterior-distribution chart on the results page is currently a documented placeholder (`posteriorEndpointDraws`) approximated from the credible interval, pending the model's real posterior draws.

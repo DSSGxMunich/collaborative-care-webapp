@@ -1,0 +1,165 @@
+{
+  "thankYou": {
+    "title": { "de": "Danke für Ihre Antworten", "en": "Thank you for your answers" },
+    "body": {
+      "de": "Sie entscheiden selbst, ob Sie Ihre persönliche Auswertung jetzt sehen möchten. Manche Menschen finden Zahlen zu ihrer Situation hilfreich, andere empfinden sie als belastend. Beides ist in Ordnung — Sie können die Auswertung auch später oder gemeinsam mit Ihrer Ärztin oder Ihrem Arzt ansehen.",
+      "en": "You decide whether you want to see your personal results now. Some people find numbers about their situation helpful, others find them distressing. Both are fine — you can also look at the results later or together with your doctor."
+    },
+    "seeResults": { "de": "Ergebnis jetzt ansehen", "en": "See result now" },
+    "seeSupport": { "de": "Angebote vor Ort ansehen", "en": "See local support" },
+    "privacyNote": {
+      "de": "Ihre Antworten bleiben ausschließlich in diesem Browser gespeichert. Sie können die Auswertung jederzeit über diese Seite öffnen.",
+      "en": "Your answers stay only in this browser. You can open the results from this page at any time."
+    }
+  },
+  "title": { "de": "Ihre Auswertung", "en": "Your results" },
+  "prototypeNote": {
+    "de": "Alle Koeffizienten sowie die Standardisierung von Alter und PHQ-9 stammen aus einem gefitteten Netzwerk-Metaregressions-Modell (einschließlich des über die eingeschlossenen Studien gemittelten Achsenabschnitts). Es handelt sich um einen Forschungsprototyp, keine klinisch validierte Vorhersage.",
+    "en": "All coefficients and the age/PHQ-9 standardization come from a fitted network meta-regression model (including the intercept, averaged across the included trials). This is a research prototype, not a clinically validated prediction."
+  },
+  "phq9Label": "PHQ-9",
+  "of27": { "de": "von 27 Punkten", "en": "of 27 points" },
+  "range": { "de": "Bereich", "en": "Range" },
+  "legend": {
+    "estimate": {
+      "de": "Geschätzter PHQ-9 nach 12 Monaten",
+      "en": "Estimated PHQ-9 at 12 months"
+    },
+    "interval": { "de": "95 %-Kredibilitätsintervall", "en": "95% credible interval" },
+    "today": { "de": "Ihr PHQ-9 heute ({baseline})", "en": "Your PHQ-9 today ({baseline})" }
+  },
+  "scenarios": {
+    "usualCare": {
+      "label": { "de": "Übliche hausärztliche Versorgung", "en": "Usual GP care" },
+      "short": { "de": "Übliche Versorgung (Referenz)", "en": "Usual care (reference)" },
+      "description": {
+        "de": "Behandlung wie bisher: Termine bei Bedarf, Beratung, Verlaufsbeobachtung.",
+        "en": "Care as before: appointments as needed, advice and watchful monitoring."
+      }
+    },
+    "followUp": {
+      "label": {
+        "de": "Übliche Versorgung + Nachverfolgung (2–4 Wochen)",
+        "en": "Usual care + follow-up (2–4 weeks)"
+      },
+      "short": {
+        "de": "Übliche Versorgung + Nachverfolgung (ohne Rückfallplan)",
+        "en": "Usual care + follow-up (without relapse-prevention plan)"
+      },
+      "description": {
+        "de": "Zusätzlich zur üblichen Versorgung: ein fest vereinbarter Nachverfolgungstermin 2 bis 4 Wochen nach der Erstvorstellung, auch telefonisch. Ohne Rückfallpräventionsplan.",
+        "en": "In addition to usual care: a follow-up appointment or contact — in person or by telephone — firmly scheduled for 2 to 4 weeks after the initial visit. Without the relapse-prevention plan."
+      }
+    },
+    "relapsePrevention": {
+      "label": {
+        "de": "Übliche Versorgung + Rückfallpräventionsplan",
+        "en": "Usual care + relapse-prevention plan"
+      },
+      "short": {
+        "de": "Übliche Versorgung + Rückfallpräventionsplan (ohne Nachverfolgung)",
+        "en": "Usual care + relapse-prevention plan (without follow-up)"
+      },
+      "description": {
+        "de": "Zusätzlich zur üblichen Versorgung: ein schriftlicher Plan, der festlegt, wie ein Wiederauftreten der Beschwerden früh erkannt und ihm vorgebeugt wird. Ohne Nachverfolgungstermin.",
+        "en": "In addition to usual care: a written plan setting out how a recurrence of symptoms is detected early and prevented. Without the follow-up appointment."
+      }
+    }
+  },
+  "scenariosIntro": {
+    "de": "Niedrigere Werte bedeuten weniger Beschwerden.",
+    "en": "Lower values mean fewer symptoms."
+  },
+  "posterior": {
+    "sectionTitle": {
+      "de": "Unsicherheit im Detail: Posterior-Verteilung",
+      "en": "Uncertainty in detail: posterior distribution"
+    },
+    "show": { "de": "Verteilung anzeigen", "en": "Show distribution" },
+    "hide": { "de": "Verteilung ausblenden", "en": "Hide distribution" },
+    "explain": {
+      "de": "Zusätzlich zur Spanne oben zeigt dies die volle geschätzte Verteilung möglicher PHQ-9-Werte nach 12 Monaten, statt nur eines einzelnen Punktwerts.",
+      "en": "In addition to the range above, this shows the full estimated distribution of possible 12-month PHQ-9 values, rather than a single point value."
+    },
+    "placeholderNote": {
+      "de": "Platzhalter: Diese Verteilung wird aus dem oben angegebenen Kredibilitätsintervall angenähert. Sie wird durch die echten Posterior-Stichproben des Netzwerk-Metaregressions-Modells ersetzt, sobald diese vorliegen.",
+      "en": "Placeholder: this distribution is approximated from the credible interval shown above. It will be replaced by the real posterior draws from the network meta-regression model once available."
+    }
+  },
+  "crisis": {
+    "acute": {
+      "title": { "de": "Bitte holen Sie sich jetzt Hilfe", "en": "Please get help now" },
+      "message": {
+        "de": "Ihre Angaben weisen auf eine akute Gefährdung hin. Bitte holen Sie sich jetzt Hilfe: Rufen Sie 112 an, gehen Sie in die nächste psychiatrische Klinik oder wenden Sie sich an die Telefonseelsorge (0800 111 0 111). Bleiben Sie möglichst nicht allein und sagen Sie einer Person in Ihrer Nähe, wie es Ihnen geht.",
+        "en": "Your answers indicate acute risk. Please get help now: call 112, go to the nearest psychiatric emergency department, or call a crisis line (0800 111 0 111). If possible, do not stay alone and tell someone nearby how you are feeling."
+      }
+    },
+    "elevated": {
+      "title": {
+        "de": "Bitte holen Sie sich zeitnah Unterstützung",
+        "en": "Please seek support soon"
+      },
+      "message": {
+        "de": "Ihre Angaben deuten auf häufigere Gedanken an Selbstverletzung oder Tod hin. Bitte kontaktieren Sie heute oder morgen Ihre Praxis, den ärztlichen Bereitschaftsdienst (116 117) oder die Telefonseelsorge. Sie müssen damit nicht allein bleiben.",
+        "en": "Your answers suggest more frequent thoughts of self-harm or death. Please contact your practice, the out-of-hours service (116 117) or a crisis line today or tomorrow. You do not have to deal with this alone."
+      }
+    },
+    "low": {
+      "title": {
+        "de": "Bitte lesen: Hinweise zu belastenden Gedanken",
+        "en": "Please read: about distressing thoughts"
+      },
+      "message": {
+        "de": "Sie haben angegeben, dass Sie an einzelnen Tagen Gedanken hatten, lieber tot zu sein oder sich Leid zuzufügen. Solche Gedanken sind bei Depressionen häufig und behandelbar. Bitte sprechen Sie sie bei Ihrem nächsten Termin an — und melden Sie sich früher, wenn sie stärker werden.",
+        "en": "You reported that on some days you had thoughts of being better off dead or of hurting yourself. Such thoughts are common in depression and can be treated. Please mention them at your next appointment — and get in touch sooner if they get stronger."
+      }
+    },
+    "advisory": {
+      "title": { "de": "Ihre Beschwerden sind ausgeprägt", "en": "Your symptoms are pronounced" },
+      "message": {
+        "de": "Ihr PHQ-9-Wert liegt im mittelgradigen bis schweren Bereich. Das ist gut behandelbar. Bitte besprechen Sie zeitnah mit Ihrer Praxis, welche nächsten Schritte sinnvoll sind.",
+        "en": "Your PHQ-9 score is in the moderate-to-severe range. This is treatable. Please discuss suitable next steps with your practice soon."
+      }
+    },
+    "none": {
+      "title": { "de": "Keine Hinweise auf akute Gefährdung", "en": "No indication of acute risk" },
+      "message": {
+        "de": "Ihre Angaben enthalten keine Hinweise auf akute Selbstgefährdung. Sprechen Sie dennoch alles an, was Sie belastet.",
+        "en": "Your answers show no signs of acute risk to yourself. Still, do raise anything that is weighing on you."
+      }
+    }
+  },
+  "predictorsNote": {
+    "de": "Nur diese drei Merkmale gehen in das Modell ein — Ihre übrigen Angaben (Vorbehandlung, GAD-7) sehen Sie in der Zusammenfassung für die Praxis, sie verändern die Schätzung aber nicht.",
+    "en": "Only these three characteristics enter the model — your other answers (prior treatment, GAD-7) appear in the practice summary but do not change the estimate."
+  },
+  "predictors": {
+    "baseline": { "label": { "de": "Ausgangswert PHQ-9", "en": "Baseline PHQ-9" } },
+    "age": { "label": { "de": "Alter", "en": "Age" } },
+    "sex": { "label": { "de": "Geschlecht", "en": "Sex" } },
+    "notProvided": { "de": "keine Angabe", "en": "not provided" }
+  },
+  "whatCanBeExpected": {
+    "de": "Geschätzter PHQ-9 nach 12 Monaten",
+    "en": "Estimated PHQ-9 at 12 months"
+  },
+  "whatCanBeExpectedBody": {
+    "de": "Drei mögliche Wege ab heute: übliche Versorgung allein, übliche Versorgung plus Nachverfolgung, oder übliche Versorgung plus Rückfallpräventionsplan. Die beiden Bausteine werden nie gemeinsam gezeigt, immer nur einzeln zur üblichen Versorgung hinzugefügt. Alle Zahlen sind Schätzungen für Gruppen von Personen mit einem ähnlichen Profil — keine Zusage für Ihren persönlichen Verlauf.",
+    "en": "Three possible paths from today: usual care alone, usual care plus follow-up, or usual care plus a relapse-prevention plan. The two components are never shown together — only added individually to usual care. All numbers are estimates for groups of people with a similar profile — not a promise about your personal course."
+  },
+  "whatInfluences": {
+    "de": "Was beeinflusst diese Schätzung?",
+    "en": "What influences this estimate?"
+  },
+  "footer": {
+    "de": "Modellversion {version}; Bezugszeitpunkt 12 Monate. Ihre Antworten bleiben ausschließlich in dieser Browser-Sitzung auf Ihrem Gerät.",
+    "en": "Model version {version}; reference time point 12 months. Your answers stay solely in this browser session on your device."
+  },
+  "actions": {
+    "clinicianSummary": {
+      "de": "Zusammenfassung für die Praxis",
+      "en": "Summary for the practice"
+    },
+    "localSupport": { "de": "Passende Angebote vor Ort", "en": "Suitable local offers" }
+  }
+}

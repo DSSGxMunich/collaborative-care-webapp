@@ -7,13 +7,14 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import uiContent from "@/content/ui.json";
 
 export type Lang = "de" | "en";
 
-/** Bilingual string: [German, English]. */
-export type L = readonly [string, string];
+/** Bilingual string, as stored in every file under src/content/. */
+export type L = { de: string; en: string };
 
-export const t = (v: L, lang: Lang) => (lang === "de" ? v[0] : v[1]);
+export const t = (v: L, lang: Lang) => v[lang];
 
 type Ctx = {
   lang: Lang;
@@ -48,29 +49,22 @@ export function useLang() {
   return ctx;
 }
 
-export const ui = {
-  appName: ["Depressions-Kompass", "Depression Compass"] as L,
-  appTagline: [
-    "Entscheidungshilfe für strukturierte Depressionsversorgung",
-    "Decision aid for structured depression care",
-  ] as L,
-  start: ["Fragebogen starten", "Start questionnaire"] as L,
-  continue: ["Weiter", "Continue"] as L,
-  back: ["Zurück", "Back"] as L,
-  finish: ["Auswertung anzeigen", "Show my results"] as L,
-  home: ["Start", "Home"] as L,
-  results: ["Ergebnis", "Results"] as L,
-  clinician: ["Für die Praxis", "For the practice"] as L,
-  support: ["Angebote vor Ort", "Local support"] as L,
-  crisis: ["Soforthilfe", "Urgent help"] as L,
-  step: ["Schritt", "Step"] as L,
-  of: ["von", "of"] as L,
-  noData: [
-    "Es liegen noch keine Antworten vor. Bitte füllen Sie zuerst den Fragebogen aus.",
-    "No answers yet. Please complete the questionnaire first.",
-  ] as L,
-  disclaimer: [
-    "Dieses Werkzeug ersetzt keine ärztliche Diagnose oder Behandlung. Die Vorhersagen beruhen auf gemittelten Studienergebnissen und sind Schätzungen für Gruppen von Menschen mit ähnlichem Profil.",
-    "This tool does not replace medical diagnosis or treatment. Predictions are based on averaged study results and are estimates for groups of people with a similar profile.",
-  ] as L,
+/** Common, cross-page UI strings — everything page-specific lives in its own content file. */
+export const ui = uiContent as {
+  appName: L;
+  appTagline: L;
+  nav: Record<"home" | "questionnaire" | "results" | "clinician" | "support" | "faq" | "crisis", L>;
+  buttons: Record<"start" | "continue" | "back" | "finish", L>;
+  step: L;
+  of: L;
+  yes: L;
+  no: L;
+  noData: L;
+  disclaimer: L;
+  researchPrototype: L;
+  noAnswersLeaveDevice: L;
 };
+
+/** Fills `{placeholder}` tokens in a translated string, e.g. tr(x, { version: "1.0" }). */
+export const fill = (s: string, vars: Record<string, string | number>) =>
+  Object.entries(vars).reduce<string>((acc, [k, v]) => acc.replaceAll(`{${k}}`, String(v)), s);

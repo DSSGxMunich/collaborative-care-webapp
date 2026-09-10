@@ -1,4 +1,4 @@
-import { useLang, type L } from "@/lib/i18n";
+import { ui, useLang, type L } from "@/lib/i18n";
 
 export function Choice<T extends string | number>({
   options,
@@ -30,15 +30,22 @@ export function Choice<T extends string | number>({
             aria-checked={selected}
             onClick={() => onChange(o.value)}
             className={[
-              "flex items-center justify-between gap-3 rounded-xl border px-4 py-3 text-left text-sm transition-all",
+              "flex items-center justify-between gap-3 rounded-md border px-3.5 py-2.5 text-left text-sm",
               selected
-                ? "border-primary bg-primary-soft font-semibold text-foreground shadow-soft"
-                : "border-border bg-card text-foreground hover:border-primary/50 hover:bg-secondary",
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border bg-card text-foreground hover:border-foreground/30",
             ].join(" ")}
           >
             <span>{tr(o.label)}</span>
             {o.hint ? (
-              <span className="shrink-0 text-xs text-muted-foreground">{tr(o.hint)}</span>
+              <span
+                className={[
+                  "shrink-0 text-xs",
+                  selected ? "text-primary-foreground/70" : "text-muted-foreground",
+                ].join(" ")}
+              >
+                {tr(o.hint)}
+              </span>
             ) : null}
           </button>
         );
@@ -69,17 +76,17 @@ export function MultiChoice({
             aria-checked={selected}
             onClick={() => onToggle(o.id)}
             className={[
-              "flex items-center gap-3 rounded-xl border px-4 py-3 text-left text-sm transition-all",
+              "flex items-center gap-3 rounded-md border px-3.5 py-2.5 text-left text-sm",
               selected
-                ? "border-primary bg-primary-soft font-semibold shadow-soft"
-                : "border-border bg-card hover:border-primary/50 hover:bg-secondary",
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border bg-card hover:border-foreground/30",
             ].join(" ")}
           >
             <span
               aria-hidden
               className={[
-                "flex h-5 w-5 shrink-0 items-center justify-center rounded-md border text-xs",
-                selected ? "border-primary bg-primary text-primary-foreground" : "border-input",
+                "flex h-4 w-4 shrink-0 items-center justify-center rounded-sm border text-[10px]",
+                selected ? "border-primary-foreground text-primary-foreground" : "border-input",
               ].join(" ")}
             >
               {selected ? "✓" : ""}
@@ -103,29 +110,66 @@ export function YesNoField({
 }) {
   const { tr } = useLang();
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3">
+    <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-border px-3.5 py-2.5">
       <span className="max-w-md text-sm">{tr(label)}</span>
-      <div className="flex gap-2">
-        {[
-          { v: "yes" as const, l: ["Ja", "Yes"] as L },
-          { v: "no" as const, l: ["Nein", "No"] as L },
-        ].map((o) => (
+      <div className="flex gap-1.5">
+        {(["yes", "no"] as const).map((v) => (
           <button
-            key={o.v}
+            key={v}
             type="button"
-            aria-pressed={value === o.v}
-            onClick={() => onChange(o.v)}
+            aria-pressed={value === v}
+            onClick={() => onChange(v)}
             className={[
-              "rounded-lg border px-4 py-1.5 text-sm font-medium transition-colors",
-              value === o.v
+              "rounded-md border px-3 py-1 text-sm",
+              value === v
                 ? "border-primary bg-primary text-primary-foreground"
-                : "border-border bg-background hover:bg-secondary",
+                : "border-border bg-card hover:border-foreground/30",
             ].join(" ")}
           >
-            {tr(o.l)}
+            {tr(v === "yes" ? ui.yes : ui.no)}
           </button>
         ))}
       </div>
+    </div>
+  );
+}
+
+export function NumberField({
+  label,
+  hint,
+  value,
+  onChange,
+  min = 0,
+  max,
+}: {
+  label: L;
+  hint?: L;
+  value: number | null;
+  onChange: (v: number | null) => void;
+  min?: number;
+  max: number;
+}) {
+  const { tr } = useLang();
+  return (
+    <div className="rounded-md border border-border px-3.5 py-2.5">
+      <label className="block text-sm">
+        {tr(label)}
+        <input
+          type="number"
+          inputMode="numeric"
+          min={min}
+          max={max}
+          value={value ?? ""}
+          onChange={(e) => {
+            const raw = e.target.value;
+            if (raw === "") return onChange(null);
+            const n = Math.max(min, Math.min(max, Number(raw)));
+            onChange(Number.isNaN(n) ? null : n);
+          }}
+          className="mt-2 w-20 rounded-md border border-input bg-background px-2.5 py-1 text-sm outline-none focus:border-primary"
+        />
+      </label>
+      {hint ? <p className="mt-1.5 text-xs text-muted-foreground">{tr(hint)}</p> : null}
     </div>
   );
 }

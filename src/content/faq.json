@@ -1,0 +1,77 @@
+{
+  "title": { "de": "Häufige Fragen", "en": "Frequently asked questions" },
+  "intro": {
+    "de": "Kurze Antworten auf Fragen, die in der Praxis häufig gestellt werden.",
+    "en": "Short answers to questions that come up often in the practice."
+  },
+  "items": [
+    {
+      "id": "phq9",
+      "question": { "de": "Was ist der PHQ-9?", "en": "What is the PHQ-9?" },
+      "answer": {
+        "de": "Der PHQ-9 (Patient Health Questionnaire-9) ist ein weit verbreiteter, validierter Selbstauskunfts-Fragebogen mit 9 Fragen zu depressiven Beschwerden in den letzten zwei Wochen. Der Summenwert reicht von 0 bis 27 und wird in fünf Schweregrade eingeteilt: minimal (0–4), leicht (5–9), mittelgradig (10–14), mittelgradig bis schwer (15–19) und schwer (20–27).",
+        "en": "The PHQ-9 (Patient Health Questionnaire-9) is a widely used, validated self-report questionnaire with 9 questions about depressive symptoms over the past two weeks. The total score ranges from 0 to 27 and is grouped into five severity bands: minimal (0–4), mild (5–9), moderate (10–14), moderately severe (15–19) and severe (20–27)."
+      }
+    },
+    {
+      "id": "followup12",
+      "question": {
+        "de": "Was bedeutet die 12-Monats-Nachverfolgung?",
+        "en": "What does the 12-month follow-up mean?"
+      },
+      "answer": {
+        "de": "Das Ergebnismodell schätzt, wie hoch der PHQ-9-Wert eines Patienten oder einer Patientin voraussichtlich 12 Monate nach der Erstvorstellung sein wird — nicht sofort und nicht in wenigen Wochen. Es ist eine Schätzung für Gruppen von Personen mit ähnlichem Profil (Ausgangswert, Alter, Geschlecht), keine Zusage für den individuellen Verlauf.",
+        "en": "The outcome model estimates how high a patient's PHQ-9 score is likely to be 12 months after the initial visit — not immediately and not after a few weeks. It is an estimate for groups of people with a similar profile (baseline score, age, sex), not a guarantee for any one person's course."
+      }
+    },
+    {
+      "id": "gad7",
+      "question": { "de": "Was ist der GAD-7?", "en": "What is the GAD-7?" },
+      "answer": {
+        "de": "Der GAD-7 (Generalized Anxiety Disorder-7) ist ein validierter 7-Fragen-Bogen für Angstsymptome, Werte von 0 bis 21. Er wird hier nur abgefragt, wenn er bereits bekannt ist, und dient der Einordnung — er geht nicht in die PHQ-9-Vorhersage ein.",
+        "en": "The GAD-7 (Generalized Anxiety Disorder-7) is a validated 7-item questionnaire for anxiety symptoms, scored 0 to 21. It is only asked for here if already known, and is for context — it does not enter the PHQ-9 prediction."
+      }
+    },
+    {
+      "id": "usualCare",
+      "question": {
+        "de": "Was heißt \"übliche Versorgung\"?",
+        "en": "What does \"usual care\" mean?"
+      },
+      "answer": {
+        "de": "Übliche Versorgung ist die Behandlung, die ohnehin in der Hausarztpraxis stattfindet: Termine bei Bedarf, Beratung, Verlaufsbeobachtung — ohne die zusätzlichen strukturierten Bausteine (Nachverfolgungstermin, Rückfallpräventionsplan). Sie ist die Vergleichsgrundlage für alle Schätzungen.",
+        "en": "Usual care is the treatment that already happens in the GP practice: appointments as needed, advice and watchful monitoring — without the additional structured components (follow-up appointment, relapse-prevention plan). It is the reference point for every estimate shown."
+      }
+    },
+    {
+      "id": "wherefrom",
+      "question": {
+        "de": "Woher kommen die Schätzungen?",
+        "en": "Where do the estimates come from?"
+      },
+      "answer": {
+        "de": "Zwei Teile: (1) ein Risikoscore aus den drei Sicherheitsfragen und dem PHQ-9-Schweregrad, der die Krisenmeldung steuert, und (2) ein Netzwerk-Metaregressions-Modell, das aus individuellen Patientendaten mehrerer Studien gefittet wurde und den 12-Monats-PHQ-9 je Versorgungsbaustein schätzt. Beides ist ein Forschungsprototyp mit vorläufigen Parametern.",
+        "en": "Two parts: (1) a risk score from the three safety questions and PHQ-9 severity, which drives the crisis message, and (2) a network meta-regression model, fitted on individual patient data from several trials, which estimates the 12-month PHQ-9 for each care component. Both are a research prototype with provisional parameters."
+      }
+    },
+    {
+      "id": "range",
+      "question": {
+        "de": "Warum wird eine Spanne statt einer einzelnen Zahl gezeigt?",
+        "en": "Why is a range shown instead of a single number?"
+      },
+      "answer": {
+        "de": "Jede Schätzung hat Unsicherheit. Die Spanne ist ein ungefähres 95 %-Kredibilitätsintervall aus dem Modell; die Posterior-Verteilung auf der Ergebnisseite zeigt dieselbe Unsicherheit als volle Verteilung statt nur als Spanne.",
+        "en": "Every estimate has uncertainty. The range is an approximate 95% credible interval from the model; the posterior distribution on the results page shows the same uncertainty as a full distribution rather than just a range."
+      }
+    },
+    {
+      "id": "dataStorage",
+      "question": { "de": "Werden meine Angaben gespeichert?", "en": "Is my data stored?" },
+      "answer": {
+        "de": "Nein. Alle Antworten bleiben ausschließlich im Browser dieses Geräts (Sitzungsspeicher) und werden nicht an einen Server übertragen. Beim Schließen des Tabs oder Browsers gehen sie verloren.",
+        "en": "No. All answers stay only in this device's browser (session storage) and are never sent to a server. They are lost when the tab or browser is closed."
+      }
+    }
+  ]
+}

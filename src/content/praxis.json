@@ -1,0 +1,51 @@
+{
+  "title": { "de": "Kurzbefund für die Praxis", "en": "Short report for the practice" },
+  "subtitle": {
+    "de": "Vom Patienten selbst ausgefüllt. Alle Angaben sind Selbstauskunft und ersetzen keine Diagnostik.",
+    "en": "Completed by the patient. All entries are self-report and do not replace clinical assessment."
+  },
+  "print": { "de": "Drucken / als PDF speichern", "en": "Print / save as PDF" },
+  "riskFlagLabel": { "de": "Risikoflag", "en": "Risk flag" },
+  "riskFlag": {
+    "none": { "de": "kein Hinweis", "en": "no indication" },
+    "low": { "de": "Item 9 positiv (einzelne Tage)", "en": "item 9 positive (several days)" },
+    "elevated": { "de": "erhöht — zeitnahe Abklärung", "en": "elevated — timely review" },
+    "acute": { "de": "AKUT — sofortiges Handeln", "en": "ACUTE — act immediately" }
+  },
+  "riskAdvice": {
+    "de": "Suizidalität explizit ansprechen, Sicherheitsplan und Erreichbarkeit klären, ggf. fachpsychiatrische Mitbeurteilung veranlassen.",
+    "en": "Address suicidality explicitly, agree a safety plan and availability, consider psychiatric co-assessment."
+  },
+  "summary": { "de": "Zusammenfassung", "en": "Summary" },
+  "phq9ItemProfile": { "de": "PHQ-9 Itemprofil", "en": "PHQ-9 item profile" },
+  "modelEstimates": { "de": "Modellschätzungen", "en": "Model estimates" },
+  "rows": {
+    "phq9Total": { "de": "PHQ-9 Summenwert", "en": "PHQ-9 total" },
+    "severity": { "de": "Schweregrad", "en": "Severity" },
+    "suicidality": { "de": "Suizidalität (Item 9)", "en": "Suicidality (item 9)" },
+    "riskAssessment": { "de": "Risikoeinschätzung", "en": "Risk assessment" },
+    "planPrep": { "de": "Konkreter Plan / Vorbereitung", "en": "Concrete plan / preparation" },
+    "canStaySafe": {
+      "de": "Kann sich bis zum Kontakt schützen",
+      "en": "Able to stay safe until contact"
+    },
+    "pastAttempt": {
+      "de": "Selbstverletzung/Versuch < 12 Monate",
+      "en": "Self-harm/attempt < 12 months"
+    },
+    "age": { "de": "Alter", "en": "Age" },
+    "sex": { "de": "Geschlecht", "en": "Sex" },
+    "priorEpisode": { "de": "Frühere depressive Episode", "en": "Previous depressive episode" },
+    "priorTreatment": { "de": "Vorbehandlungen", "en": "Previous treatments" },
+    "gad7": { "de": "GAD-7 (falls bekannt)", "en": "GAD-7 (if known)" }
+  },
+  "table": {
+    "careOption": { "de": "Versorgungsoption", "en": "Care option" },
+    "endpoint": { "de": "PHQ-9 12 Mo. (95%-KI)", "en": "PHQ-9 12 mo. (95% CI)" },
+    "delta": { "de": "Δ vs. übliche Versorgung", "en": "Δ vs. usual care" }
+  },
+  "footer": {
+    "de": "Netzwerk-Metaregressions-Modell, Forschungsprototyp, Modellversion {version}. Werte in Klammern sind ungefähre 95 %-Kredibilitätsintervalle. Keine klinisch validierten Vorhersagen. Angaben verbleiben in der Browser-Sitzung des Patienten.",
+    "en": "Network meta-regression model, research prototype, model version {version}. Values in parentheses are approximate 95% credible intervals. Not clinically validated predictions. Data remain in the patient's browser session."
+  }
+}

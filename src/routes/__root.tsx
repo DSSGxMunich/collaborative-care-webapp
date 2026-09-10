@@ -7,7 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { LanguageProvider, useLang, ui } from "../lib/i18n";
@@ -17,15 +17,15 @@ function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
+        <h1 className="text-6xl font-semibold text-foreground">404</h1>
+        <h2 className="mt-4 text-lg font-semibold text-foreground">Page not found</h2>
         <p className="mt-2 text-sm text-muted-foreground">
           The page you're looking for doesn't exist or has been moved.
         </p>
         <div className="mt-6">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
           >
             Go home
           </Link>
@@ -42,7 +42,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
+        <h1 className="text-lg font-semibold tracking-tight text-foreground">
           This page didn't load
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
@@ -54,13 +54,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
               router.invalidate();
               reset();
             }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
           >
             Try again
           </button>
           <a
             href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+            className="inline-flex items-center justify-center rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground"
           >
             Go home
           </a>
@@ -81,12 +81,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Figtree:wght@400;500;600&display=swap",
-      },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
@@ -113,18 +107,14 @@ function RootShell({ children }: { children: ReactNode }) {
 function LanguageToggle() {
   const { lang, setLang } = useLang();
   return (
-    <div className="flex items-center rounded-full border border-border bg-card p-0.5 text-xs font-semibold">
+    <div className="flex items-center gap-2 text-xs">
       {(["de", "en"] as const).map((l) => (
         <button
           key={l}
           type="button"
           onClick={() => setLang(l)}
           aria-pressed={lang === l}
-          className={
-            lang === l
-              ? "rounded-full bg-primary px-3 py-1 text-primary-foreground"
-              : "rounded-full px-3 py-1 text-muted-foreground transition-colors hover:text-foreground"
-          }
+          className={lang === l ? "font-semibold text-foreground" : "text-muted-foreground"}
         >
           {l.toUpperCase()}
         </button>
@@ -136,45 +126,34 @@ function LanguageToggle() {
 function SiteHeader() {
   const { tr } = useLang();
   const navItems = [
-    { to: "/", label: ui.home },
-    { to: "/fragebogen", label: ui.start },
-    { to: "/ergebnis", label: ui.results },
-    { to: "/praxis", label: ui.clinician },
-    { to: "/angebote", label: ui.support },
-  ] as const;
+    { to: "/fragebogen" as const, label: ui.nav.questionnaire },
+    { to: "/ergebnis" as const, label: ui.nav.results },
+    { to: "/angebote" as const, label: ui.nav.support },
+    { to: "/praxis" as const, label: ui.nav.clinician },
+    { to: "/faq" as const, label: ui.nav.faq },
+  ];
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur">
-      <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3">
-        <Link to="/" className="flex items-center gap-2.5">
-          <span
-            aria-hidden
-            className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-sm font-bold text-primary-foreground"
-          >
-            DK
-          </span>
-          <span className="font-display text-base font-semibold leading-none">
-            {tr(ui.appName)}
-          </span>
+    <header className="border-b border-border">
+      <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-x-5 gap-y-2 px-4 py-3">
+        <Link to="/" className="text-sm font-semibold">
+          {tr(ui.appName)}
         </Link>
-        <nav className="order-3 flex w-full flex-wrap gap-1 text-sm sm:order-none sm:w-auto">
-          {navItems.slice(1).map((item) => (
+        <nav className="order-3 flex w-full flex-wrap gap-x-4 gap-y-1 text-sm sm:order-none sm:w-auto">
+          {navItems.map((item) => (
             <Link
               key={item.to}
               to={item.to}
-              activeProps={{ className: "bg-primary-soft text-foreground" }}
-              className="rounded-lg px-2.5 py-1.5 text-muted-foreground transition-colors hover:text-foreground"
+              activeProps={{ className: "text-foreground font-medium" }}
+              className="text-muted-foreground hover:text-foreground"
             >
               {tr(item.label)}
             </Link>
           ))}
         </nav>
-        <div className="ml-auto flex items-center gap-2">
-          <Link
-            to="/soforthilfe"
-            className="rounded-lg bg-destructive-soft px-2.5 py-1.5 text-sm font-semibold text-destructive"
-          >
-            {tr(ui.crisis)}
+        <div className="ml-auto flex items-center gap-4">
+          <Link to="/soforthilfe" className="text-sm font-medium text-destructive">
+            {tr(ui.nav.crisis)}
           </Link>
           <LanguageToggle />
         </div>
@@ -186,35 +165,119 @@ function SiteHeader() {
 function SiteFooter() {
   const { tr } = useLang();
   return (
-    <footer className="mt-16 border-t border-border/70 bg-secondary/60">
-      <div className="mx-auto max-w-5xl px-4 py-8 text-xs leading-relaxed text-muted-foreground">
-        <p className="max-w-3xl">{tr(ui.disclaimer)}</p>
-        <p className="mt-3">
-          {tr([
-            "Forschungsprototyp – Modellversion 0.1 (vorläufige Parameter).",
-            "Research prototype — model version 0.1 (provisional parameters).",
-          ])}
-        </p>
+    <footer className="mt-16 border-t border-border">
+      <div className="mx-auto max-w-3xl px-4 py-6 text-xs leading-relaxed text-muted-foreground">
+        <p>{tr(ui.disclaimer)}</p>
       </div>
     </footer>
   );
 }
 
+/**
+ * Device preview: lets anyone see the app's phone/tablet layout without
+ * needing browser DevTools. It works by loading the app itself inside an
+ * <iframe> of a fixed pixel width — an iframe has its own layout viewport,
+ * so the same responsive CSS that reacts to a real phone's width reacts to
+ * it here too (a plain scaled-down <div> would not: Tailwind's `sm:`
+ * breakpoints match the browser window's width, not a container's width).
+ */
+type PreviewMode = "desktop" | "tablet" | "mobile";
+
+const DEVICE_SIZE: Record<Exclude<PreviewMode, "desktop">, { width: number; height: number }> = {
+  tablet: { width: 820, height: 1180 },
+  mobile: { width: 390, height: 844 },
+};
+
+function ViewToggle({ mode, onChange }: { mode: PreviewMode; onChange: (m: PreviewMode) => void }) {
+  const labels: Record<PreviewMode, string> = {
+    desktop: "Desktop",
+    tablet: "Tablet",
+    mobile: "Mobile",
+  };
+  return (
+    <div className="flex items-center gap-3 text-xs">
+      <span className="text-muted-foreground">View:</span>
+      {(["desktop", "tablet", "mobile"] as const).map((m) => (
+        <button
+          key={m}
+          type="button"
+          onClick={() => onChange(m)}
+          aria-pressed={mode === m}
+          className={mode === m ? "font-semibold text-foreground" : "text-muted-foreground"}
+        >
+          {labels[m]}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function DevicePreviewFrame({ mode, src }: { mode: Exclude<PreviewMode, "desktop">; src: string }) {
+  const { width, height } = DEVICE_SIZE[mode];
+  return (
+    <div className="flex flex-col items-center gap-2 bg-secondary px-4 py-8">
+      <div
+        className="overflow-hidden rounded-2xl border-4 border-foreground/70 bg-background"
+        style={{ width, height }}
+      >
+        {src ? (
+          <iframe
+            title={`${mode} preview`}
+            src={src}
+            style={{ width: "100%", height: "100%", border: "none", display: "block" }}
+          />
+        ) : null}
+      </div>
+      <p className="text-xs text-muted-foreground">{width}px wide</p>
+    </div>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const [mode, setMode] = useState<PreviewMode>("desktop");
+  const [frameSrc, setFrameSrc] = useState("");
+  const [mounted, setMounted] = useState(false);
+  const [framed, setFramed] = useState(false);
+
+  // Client-only: detect whether this page is itself running inside the
+  // preview iframe below, so that document never tries to nest itself.
+  useEffect(() => {
+    setMounted(true);
+    setFramed(window.self !== window.top);
+  }, []);
+
+  const changeMode = (m: PreviewMode) => {
+    setMode(m);
+    if (m !== "desktop") setFrameSrc(window.location.href);
+  };
+
+  const previewDevice = mode === "desktop" ? null : mode;
+  const showFrame = mounted && !framed && previewDevice !== null;
 
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
         <SessionProvider>
-          <div className="flex min-h-screen flex-col">
-            <SiteHeader />
-            <main className="flex-1">
-              {/* Required: nested routes render here. */}
-              <Outlet />
-            </main>
-            <SiteFooter />
-          </div>
+          {!framed && (
+            <div className="border-b border-border bg-secondary/60 px-4 py-1.5">
+              <div className="mx-auto flex max-w-3xl justify-end">
+                <ViewToggle mode={mode} onChange={changeMode} />
+              </div>
+            </div>
+          )}
+          {showFrame && previewDevice ? (
+            <DevicePreviewFrame mode={previewDevice} src={frameSrc} />
+          ) : (
+            <div className="flex min-h-screen flex-col">
+              <SiteHeader />
+              <main className="flex-1">
+                {/* Required: nested routes render here. */}
+                <Outlet />
+              </main>
+              <SiteFooter />
+            </div>
+          )}
         </SessionProvider>
       </LanguageProvider>
     </QueryClientProvider>
