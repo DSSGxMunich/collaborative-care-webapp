@@ -5,7 +5,6 @@ import { fill, ui, useLang } from "@/lib/i18n";
 import { SEVERITY_LABEL, SEVERITY_RANGE } from "@/lib/phq9";
 import { MODEL_META, posteriorEndpointDraws, type Scenario, type ScenarioId } from "@/lib/model";
 import { usePrediction } from "@/lib/usePrediction";
-import { PRIOR_TREATMENTS } from "@/lib/session";
 import resultsContent from "@/content/results.json";
 
 export const Route = createFileRoute("/ergebnis")({
@@ -168,9 +167,6 @@ function Results() {
     );
   }
 
-  const chosenTreatments = PRIOR_TREATMENTS.filter((x) =>
-    p.session.profile.priorTreatment.includes(x.id),
-  );
   const scenarioLabel = (id: ScenarioId) => tr(r.scenarios[id].short);
 
   return (
@@ -213,7 +209,7 @@ function Results() {
           ))}
         </div>
         <p className="mt-2 text-xs text-muted-foreground">
-          {tr(r.ciLabel)} · {tr(r.todayLabel)}: {p.baseline}
+          {tr(r.ciLabel)} · {fill(tr(r.todayCaption), { baseline: p.baseline })}
         </p>
         <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{tr(r.scenariosIntro)}</p>
 
@@ -264,28 +260,6 @@ function Results() {
           <div className="flex justify-between gap-4 py-2">
             <dt className="text-muted-foreground">{tr(r.predictors.sex.label)}</dt>
             <dd className="font-medium">{p.session.profile.sex ?? tr(r.predictors.notProvided)}</dd>
-          </div>
-        </dl>
-
-        <p className="mt-4 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-          {tr(r.context)}
-        </p>
-        <dl className="mt-2 space-y-1.5 text-sm">
-          <div className="flex justify-between gap-4">
-            <dt className="text-muted-foreground">{tr(r.priorTreatmentLabel)}</dt>
-            <dd className="text-right">
-              {chosenTreatments.length > 0
-                ? chosenTreatments.map((t) => tr(t.label)).join(", ")
-                : tr(r.predictors.notProvided)}
-            </dd>
-          </div>
-          <div className="flex justify-between gap-4">
-            <dt className="text-muted-foreground">{tr(r.gad7Label)}</dt>
-            <dd className="text-right">
-              {p.session.profile.gad7Known === "yes" && p.session.profile.gad7Score !== null
-                ? `${p.session.profile.gad7Score}/21`
-                : tr(r.predictors.notProvided)}
-            </dd>
           </div>
         </dl>
       </section>
