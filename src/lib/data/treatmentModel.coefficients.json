@@ -1,0 +1,36 @@
+{
+  "sourceNote": "Bayesian IPD (individual patient data) meta-analysis model — posterior means and 95% credible intervals (HDI) from az.summary(). See src/lib/model.ts for the full linear-predictor equation, sign-convention reasoning, and caveats. This file carries no documentation of its own by design: regenerate it with scripts/export-model-coefficients.py against the real fit output rather than hand-editing the numbers.",
+  "modelVersion": "0.5-fitted",
+  "alphaStudyByTrial": {
+    "02_Aragones_2012": -3.561,
+    "04_Bekelman_2018": -1.995,
+    "08_Coventry_2015": -1.479,
+    "10_Fletcher_2021a": -1.928,
+    "11_Fletcher_2021b": -1.459,
+    "12_Gensichen_2009": -2.241,
+    "13_Hölzel_2018": -0.989,
+    "21_Richards_2008": -3.829,
+    "22_Richards_2013": -2.555,
+    "24_Rollman_2016": -1.32,
+    "30_Srinivasan_2022": -3.353,
+    "33_Zimmerman_2016": -3.254
+  },
+  "coefficients": {
+    "betaFollowUp": { "estimate": -0.39, "ci": [-0.902, 0.112] },
+    "betaRelapse": { "estimate": -1.62, "ci": [-2.584, -0.691] },
+    "betaInteraction": { "estimate": 0.765, "ci": [-0.168, 1.725] },
+    "gammaPhq9": { "estimate": -2.755, "ci": [-2.892, -2.62] },
+    "thetaAge": { "estimate": -0.105, "ci": [-0.274, 0.07] },
+    "thetaSex": { "estimate": -0.029, "ci": [-0.341, 0.273] },
+    "deltaC1Age": { "estimate": 0.199, "ci": [-0.089, 0.507] },
+    "deltaC2Age": { "estimate": 0.12, "ci": [-0.276, 0.493] },
+    "deltaC1Sex": { "estimate": 0.242, "ci": [-0.327, 0.803] },
+    "deltaC2Sex": { "estimate": -0.432, "ci": [-1.076, 0.237] },
+    "sigma": 4.886
+  },
+  "standardization": {
+    "phq9": { "mean": 11.822582582582582, "sd": 6.265154184273839 },
+    "age": { "mean": 49.85614969535585, "sd": 15.878823152237644 }
+  },
+  "sexCode": { "male": 0, "female": 1 }
+}

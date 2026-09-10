@@ -1,6 +1,11 @@
 /**
  * Step-2 risk-score model — 12-month PHQ-9 trajectory from patient characteristics.
  * ----------------------------------------------------------------------------
+ * The fitted numbers themselves (knots, slopes, cutpoint intercepts) live in
+ * ./data/riskModel.coefficients.json, not in this file — see that file's
+ * `sourceNote` for provenance and scripts/export-model-coefficients.py for
+ * how to regenerate it. This file is the model *structure*.
+ *
  * Source artifact: an `orm` object (package `rms`, Harrell) — a semiparametric
  * proportional-odds *ordinal* logistic regression predicting `phq9_12mo` from
  * `age`, `sex`, `baseline_phq9` and `gad7_total`, fit as:
@@ -18,13 +23,14 @@
  *
  *   logit( P(phq9_12mo >= j) ) = alpha_j + Xβ,   j = 1..20
  *
- * where alpha_j are RISK_INTERCEPTS (one per cutpoint — the ordinal outcome
- * has 21 observed categories, 0..20, hence 20 cutpoints) and Xβ is the *same*
- * linear combination for every cutpoint (the proportional-odds assumption),
- * built from restricted cubic spline (rcs, 4 knots each) terms for age,
- * baseline_phq9 and gad7_total, plus a sex=Male dummy (reference = Female).
- * See rcsBasis4() for the spline formula, and coefficient names below — each
- * rcs term contributes 3 columns to `coefficients`, named `x`, `x'`, `x''`.
+ * where alpha_j are the fitted cutpoint intercepts (one per cutpoint — the
+ * ordinal outcome has 21 observed categories, 0..20, hence 20 cutpoints) and
+ * Xβ is the *same* linear combination for every cutpoint (the
+ * proportional-odds assumption), built from restricted cubic spline (rcs, 4
+ * knots each) terms for age, baseline_phq9 and gad7_total, plus a sex=Male
+ * dummy (reference = Female). See rcsBasis4() in stats.ts for the spline
+ * formula, and coefficient names in the data file — each rcs term
+ * contributes 3 columns, named `x`, `x'`, `x''`.
  *
  * Feeding this step's parameters into "the next step": this is a *different*,
  * independent fitted model from the one in model.ts (the "step 1" treatment
@@ -52,67 +58,24 @@
  *   `gad7Imputed` to the user.
  */
 
+import riskCoefficients from "./data/riskModel.coefficients.json";
 import { AGE_MIDPOINT, MODEL_META } from "./model";
 import type { Profile, Sex } from "./session";
+import { plogis, rcsBasis4 } from "./stats";
 
-/** Four-knot locations per rcs() predictor, taken from Design$parms in the fitted model. */
-const RISK_KNOTS = {
-  age: [23, 45, 60, 73.33826294] as const,
-  baselinePhq9: [2, 7, 11, 22] as const,
-  gad7: [1, 5, 9, 19] as const,
+const KNOTS = riskCoefficients.knots as {
+  age: [number, number, number, number];
+  baselinePhq9: [number, number, number, number];
+  gad7: [number, number, number, number];
 };
+const SLOPES = riskCoefficients.slopes;
+const INTERCEPTS: readonly number[] = riskCoefficients.intercepts;
 
 /** Placeholder used only when GAD-7 was skipped — the middle interior knot (no sample mean available). */
-export const GAD7_FALLBACK = RISK_KNOTS.gad7[1];
-
-/** Slope coefficients (fitted point estimates), as supplied in `coefficients`. */
-const SLOPES = {
-  age: -0.035801363234228764,
-  ageP: 0.038068551261718625,
-  agePP: -0.07149492368167593,
-  sexMale: 0.0005297401375515413,
-  baselinePhq9: 0.23346784584327981,
-  baselinePhq9P: -0.3533799014908819,
-  baselinePhq9PP: 0.9981938253129752,
-  gad7: 0.08667619132034193,
-  gad7P: -0.20862581473991257,
-  gad7PP: 0.4075475432880072,
-};
-
-/** Cumulative-logit intercepts alpha_j for P(phq9_12mo >= j), j = 1..20 (index 0 = "y>=1"). */
-const RISK_INTERCEPTS: readonly number[] = [
-  2.2660700028071985, 1.6259137340549574, 0.7956255691925868, 0.19877471442757505,
-  -0.3240883189957678, -0.8050329434499239, -1.2307495117843854, -1.6047730161724143,
-  -1.9722840310498178, -2.288912648885565, -2.5488193565092843, -2.7834754063501546,
-  -3.0128715280694114, -3.2869257254159217, -3.5046365065890823, -3.7134102184442463,
-  -3.9716275248674955, -4.268855460107572, -4.500158994607922, -4.759150827528097,
-];
+export const GAD7_FALLBACK = KNOTS.gad7[1];
 
 /** Highest ordinal category the fitted model can produce (training data only observed 0..20). */
-export const RISK_MAX_Y = RISK_INTERCEPTS.length;
-
-/**
- * Restricted cubic spline basis for a 4-knot rcs() term (Harrell's rms::rcs,
- * default norm=2: raw truncated-cubic terms divided by the squared outer-knot
- * span). Returns [x, term1, term2] matching the "x", "x'", "x''" columns rms
- * produces for a 4-knot spline.
- */
-function rcsBasis4(
-  x: number,
-  knots: readonly [number, number, number, number],
-): [number, number, number] {
-  const [t1, t2, t3, t4] = knots;
-  const cube = (u: number) => (u > 0 ? u * u * u : 0);
-  const span2 = (t4 - t1) ** 2;
-  const term = (tj: number) =>
-    (cube(x - tj) -
-      (cube(x - t3) * (t4 - tj)) / (t4 - t3) +
-      (cube(x - t4) * (t3 - tj)) / (t4 - t3)) /
-    span2;
-  return [x, term(t1), term(t2)];
-}
-
-const plogis = (x: number) => 1 / (1 + Math.exp(-x));
+export const RISK_MAX_Y = INTERCEPTS.length;
 
 export type RiskModelInput = {
   ageBand: NonNullable<Profile["ageBand"]>;
@@ -127,9 +90,9 @@ export type RiskModelInput = {
 function linearPredictor(input: RiskModelInput): number {
   const age = AGE_MIDPOINT[input.ageBand];
   const gad7 = input.gad7Total ?? GAD7_FALLBACK;
-  const [a, aP, aPP] = rcsBasis4(age, RISK_KNOTS.age);
-  const [b, bP, bPP] = rcsBasis4(input.baselinePhq9, RISK_KNOTS.baselinePhq9);
-  const [g, gP, gPP] = rcsBasis4(gad7, RISK_KNOTS.gad7);
+  const [a, aP, aPP] = rcsBasis4(age, KNOTS.age);
+  const [b, bP, bPP] = rcsBasis4(input.baselinePhq9, KNOTS.baselinePhq9);
+  const [g, gP, gPP] = rcsBasis4(gad7, KNOTS.gad7);
   const sexMale = input.sex === "male" ? 1 : 0;
   return (
     SLOPES.age * a +
@@ -164,7 +127,7 @@ export function predictRiskModel(input: RiskModelInput): RiskModelPrediction {
 
   // cumGE[j] = P(Y >= j) for j = 0..(RISK_MAX_Y + 1); P(Y>=0)=1 and
   // P(Y > RISK_MAX_Y)=0 by construction (the fitted model has no mass beyond it).
-  const cumGE = [1, ...RISK_INTERCEPTS.map((alpha) => plogis(alpha + xbeta)), 0];
+  const cumGE = [1, ...INTERCEPTS.map((alpha) => plogis(alpha + xbeta)), 0];
   const cumGEAt = (j: number): number => cumGE[j] ?? 0;
 
   const categoryProbabilities = Array.from(

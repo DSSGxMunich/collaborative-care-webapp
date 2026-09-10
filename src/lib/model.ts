@@ -1,15 +1,20 @@
 /**
  * Depression-care outcome model — fitted coefficients (Bayesian, az.summary()).
  * ----------------------------------------------------------------------------
- * FITTED_COEFFICIENTS below are the real posterior means (with 95% HDI /
- * credible intervals) from the fitted IPD meta-analysis model.
- * `STANDARDIZATION` is now real too — the mean/SD of baseline PHQ-9 and age
- * in the training data (analysis_df), used to standardize both before
- * applying gamma_phq9 / theta_age / the delta_c*_age terms, exactly as the
- * model was fit. `SEX_CODE` — which sex category the model treats as the
- * 0/reference level — is now confirmed: Male = 0, Female = 1.
+ * The fitted numbers themselves (posterior means, 95% credible intervals,
+ * standardization constants, sex coding, per-trial intercepts) live in
+ * ./data/treatmentModel.coefficients.json, not in this file — see that file's
+ * `sourceNote` for provenance and scripts/export-model-coefficients.py for
+ * how to regenerate it. This file is the model *structure*: how those
+ * numbers combine into a prediction, plus the app-facing types and copy.
  *
- * `alphaStudy` (the population-level intercept) is now real, but it is an
+ * `STANDARDIZATION` is the mean/SD of baseline PHQ-9 and age in the training
+ * data (analysis_df), used to standardize both before applying gamma_phq9 /
+ * theta_age / the delta_c*_age terms, exactly as the model was fit.
+ * `SEX_CODE` — which sex category the model treats as the 0/reference level
+ * — is confirmed: Male = 0, Female = 1.
+ *
+ * `alphaStudy` (the population-level intercept) is real, but it is an
  * APPROXIMATION: az.summary() reported a separate posterior mean per trial
  * (`alpha_study[...]`, see ALPHA_STUDY_BY_TRIAL below) rather than a single
  * pooled hyperparameter (e.g. a `mu_alpha`) for a new/typical practice.
@@ -63,8 +68,10 @@
  * between-trial uncertainty is not folded into this range (see above).
  */
 
+import treatmentCoefficients from "./data/treatmentModel.coefficients.json";
 import type { L } from "./i18n";
 import type { Profile, Sex } from "./session";
+import { clamp, normalCdf, round1, standardize } from "./stats";
 
 export type ComponentId = "followUp" | "relapsePrevention";
 
@@ -77,51 +84,45 @@ export type PredictionInput = {
 /** A fitted coefficient with its 95% credible interval. */
 export type CoefCI = { estimate: number; ci: readonly [number, number] };
 
+const toCoefCI = (raw: { estimate: number; ci: number[] }): CoefCI => ({
+  estimate: raw.estimate,
+  ci: [raw.ci[0]!, raw.ci[1]!],
+});
+
 /**
  * Per-trial posterior mean intercept (alpha_study[<trial>]) from az.summary().
  * Kept for transparency; ALPHA_STUDY_MEAN below (an unweighted average of
  * these) is what the model actually uses — see the file header for caveats.
  */
-export const ALPHA_STUDY_BY_TRIAL: Record<string, number> = {
-  "02_Aragones_2012": -3.561,
-  "04_Bekelman_2018": -1.995,
-  "08_Coventry_2015": -1.479,
-  "10_Fletcher_2021a": -1.928,
-  "11_Fletcher_2021b": -1.459,
-  "12_Gensichen_2009": -2.241,
-  "13_Hölzel_2018": -0.989,
-  "21_Richards_2008": -3.829,
-  "22_Richards_2013": -2.555,
-  "24_Rollman_2016": -1.32,
-  "30_Srinivasan_2022": -3.353,
-  "33_Zimmerman_2016": -3.254,
-};
+export const ALPHA_STUDY_BY_TRIAL: Record<string, number> = treatmentCoefficients.alphaStudyByTrial;
 
 const trialAlphas = Object.values(ALPHA_STUDY_BY_TRIAL);
 /** Unweighted mean of ALPHA_STUDY_BY_TRIAL — see file header for caveats. */
 export const ALPHA_STUDY_MEAN = trialAlphas.reduce((a, b) => a + b, 0) / trialAlphas.length;
+
+const C = treatmentCoefficients.coefficients;
 
 /** Real fitted coefficients, as supplied (az.summary() posterior means + 95% HDI). */
 export const FITTED_COEFFICIENTS = {
   /** Approximated population-level intercept — see file header. */
   alphaStudy: ALPHA_STUDY_MEAN,
 
-  betaFollowUp: { estimate: -0.39, ci: [-0.902, 0.112] } as CoefCI,
-  betaRelapse: { estimate: -1.62, ci: [-2.584, -0.691] } as CoefCI,
-  betaInteraction: { estimate: 0.765, ci: [-0.168, 1.725] } as CoefCI,
+  betaFollowUp: toCoefCI(C.betaFollowUp),
+  betaRelapse: toCoefCI(C.betaRelapse),
+  betaInteraction: toCoefCI(C.betaInteraction),
 
-  gammaPhq9: { estimate: -2.755, ci: [-2.892, -2.62] } as CoefCI,
+  gammaPhq9: toCoefCI(C.gammaPhq9),
 
-  thetaAge: { estimate: -0.105, ci: [-0.274, 0.07] } as CoefCI,
-  thetaSex: { estimate: -0.029, ci: [-0.341, 0.273] } as CoefCI,
+  thetaAge: toCoefCI(C.thetaAge),
+  thetaSex: toCoefCI(C.thetaSex),
 
-  deltaC1Age: { estimate: 0.199, ci: [-0.089, 0.507] } as CoefCI,
-  deltaC2Age: { estimate: 0.12, ci: [-0.276, 0.493] } as CoefCI,
-  deltaC1Sex: { estimate: 0.242, ci: [-0.327, 0.803] } as CoefCI,
-  deltaC2Sex: { estimate: -0.432, ci: [-1.076, 0.237] } as CoefCI,
+  deltaC1Age: toCoefCI(C.deltaC1Age),
+  deltaC2Age: toCoefCI(C.deltaC2Age),
+  deltaC1Sex: toCoefCI(C.deltaC1Sex),
+  deltaC2Sex: toCoefCI(C.deltaC2Sex),
 
   /** Residual noise (SD); posterior SD 0.040, 95% HDI [4.807, 4.963]. */
-  sigma: 4.886,
+  sigma: C.sigma,
 };
 
 /**
@@ -129,13 +130,10 @@ export const FITTED_COEFFICIENTS = {
  * standardize baseline PHQ-9 and age before applying gamma_phq9 / theta_age
  * / the delta_c*_age terms — matches how the model was fit.
  */
-export const STANDARDIZATION = {
-  phq9: { mean: 11.822582582582582, sd: 6.265154184273839 },
-  age: { mean: 49.85614969535585, sd: 15.878823152237644 },
-};
+export const STANDARDIZATION = treatmentCoefficients.standardization;
 
 // Sex: Male = 0, Female = 1
-export const SEX_CODE: Record<Sex, 0 | 1> = { male: 0, female: 1 };
+export const SEX_CODE: Record<Sex, 0 | 1> = treatmentCoefficients.sexCode as Record<Sex, 0 | 1>;
 
 /** Representative age (years) used to standardize each age band. Also reused by riskModel.ts. */
 export const AGE_MIDPOINT: Record<NonNullable<Profile["ageBand"]>, number> = {
@@ -147,7 +145,7 @@ export const AGE_MIDPOINT: Record<NonNullable<Profile["ageBand"]>, number> = {
 
 export const MODEL_META = {
   followUpMonths: 6,
-  version: "0.5-fitted",
+  version: treatmentCoefficients.modelVersion,
   remissionCutoff: 5,
   /** Response = >= 50% symptom reduction relative to baseline. */
   responseRatio: 0.5,
@@ -298,31 +296,6 @@ export const COMBINATION_NOTE: L = [
   "Die Kombination beider Bausteine wird nicht als Summe der Einzeleffekte berechnet, sondern nutzt den im Modell direkt geschätzten Interaktionsterm.",
   "The combination of both components is not computed as the sum of the single effects — it uses the interaction term directly estimated by the model.",
 ];
-
-const clamp = (x: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, x));
-const round1 = (x: number) => Number(x.toFixed(1));
-const standardize = (x: number, mean: number, sd: number) => (sd > 0 ? (x - mean) / sd : 0);
-
-/** Abramowitz & Stegun 7.1.26 approximation of the error function. */
-function erf(x: number): number {
-  const sign = x < 0 ? -1 : 1;
-  const ax = Math.abs(x);
-  const a1 = 0.254829592;
-  const a2 = -0.284496736;
-  const a3 = 1.421413741;
-  const a4 = -1.453152027;
-  const a5 = 1.061405429;
-  const p = 0.3275911;
-  const t = 1 / (1 + p * ax);
-  const y = 1 - ((((a5 * t + a4) * t + a3) * t + a2) * t + a1) * t * Math.exp(-ax * ax);
-  return sign * y;
-}
-
-/** P(X <= x) for X ~ Normal(mean, sd). */
-function normalCdf(x: number, mean: number, sd: number): number {
-  if (sd <= 0) return x < mean ? 0 : 1;
-  return 0.5 * (1 + erf((x - mean) / (sd * Math.SQRT2)));
-}
 
 /** ~95% CI half-width converted to an approximate standard error. */
 const seFromCi = (coef: CoefCI) => (coef.ci[1] - coef.ci[0]) / (2 * 1.96);

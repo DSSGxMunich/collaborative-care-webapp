@@ -1,0 +1,27 @@
+{
+  "sourceNote": "rms::orm proportional-odds ordinal regression (orm_fit.rds) predicting phq9_12mo from age, sex, baseline_phq9 and gad7_total — each numeric predictor as a 4-knot restricted cubic spline. Coefficients were parsed offline in Python (the `rdata` package) since no R runtime was available; see src/lib/riskModel.ts for the full equation and caveats. Regenerate with scripts/export-model-coefficients.py against the real .rds file rather than hand-editing the numbers.",
+  "knots": {
+    "age": [23, 45, 60, 73.33826294],
+    "baselinePhq9": [2, 7, 11, 22],
+    "gad7": [1, 5, 9, 19]
+  },
+  "slopes": {
+    "age": -0.035801363234228764,
+    "ageP": 0.038068551261718625,
+    "agePP": -0.07149492368167593,
+    "sexMale": 0.0005297401375515413,
+    "baselinePhq9": 0.23346784584327981,
+    "baselinePhq9P": -0.3533799014908819,
+    "baselinePhq9PP": 0.9981938253129752,
+    "gad7": 0.08667619132034193,
+    "gad7P": -0.20862581473991257,
+    "gad7PP": 0.4075475432880072
+  },
+  "intercepts": [
+    2.2660700028071985, 1.6259137340549574, 0.7956255691925868, 0.19877471442757505,
+    -0.3240883189957678, -0.8050329434499239, -1.2307495117843854, -1.6047730161724143,
+    -1.9722840310498178, -2.288912648885565, -2.5488193565092843, -2.7834754063501546,
+    -3.0128715280694114, -3.2869257254159217, -3.5046365065890823, -3.7134102184442463,
+    -3.9716275248674955, -4.268855460107572, -4.500158994607922, -4.759150827528097
+  ]
+}
