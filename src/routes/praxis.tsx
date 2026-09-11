@@ -4,7 +4,7 @@ import { PHQ9_ITEMS, SEVERITY_LABEL } from "@/lib/phq9";
 import { assessRisk } from "@/lib/safety";
 import { MODEL_META } from "@/lib/model";
 import { usePrediction } from "@/lib/usePrediction";
-import { PRIOR_TREATMENTS } from "@/lib/session";
+import { ageFromBirthDate, PRIOR_TREATMENTS, SEX_OPTIONS } from "@/lib/session";
 import praxisContent from "@/content/praxis.json";
 import resultsContent from "@/content/results.json";
 
@@ -54,8 +54,16 @@ function Clinician() {
     { label: tr(c.rows.planPrep), value: yesNo(safety.plan) },
     { label: tr(c.rows.canStaySafe), value: yesNo(safety.canStaySafe) },
     { label: tr(c.rows.pastAttempt), value: yesNo(safety.pastAttempt) },
-    { label: tr(c.rows.age), value: profile.ageBand ?? "–" },
-    { label: tr(c.rows.sex), value: profile.sex ?? "–" },
+    {
+      label: tr(c.rows.age),
+      value: profile.birthDate ? ageFromBirthDate(profile.birthDate).toFixed(2) : "–",
+    },
+    {
+      label: tr(c.rows.sex),
+      value: profile.sex
+        ? tr(SEX_OPTIONS.find((o) => o.value === profile.sex)?.label ?? { de: "–", en: "–" })
+        : "–",
+    },
     { label: tr(c.rows.priorEpisode), value: yesNo(profile.priorEpisode) },
     {
       label: tr(c.rows.priorTreatment),

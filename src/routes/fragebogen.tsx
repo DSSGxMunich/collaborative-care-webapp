@@ -1,10 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Choice, MultiChoice, NumberField, YesNoField } from "@/components/fields";
-import { fill, ui, useLang } from "@/lib/i18n";
-import { PHQ9_INTRO, PHQ9_ITEMS, PHQ9_OPTIONS, phq9Total } from "@/lib/phq9";
-import { assessRisk, riskReasons } from "@/lib/safety";
-import { PRIOR_TREATMENTS, useSession, type AgeBand, type Sex } from "@/lib/session";
+import { Choice, DateField, MultiChoice, NumberField, YesNoField } from "@/components/fields";
+import { ui, useLang } from "@/lib/i18n";
+import { PHQ9_INTRO, PHQ9_ITEMS, PHQ9_OPTIONS } from "@/lib/phq9";
+import { birthDateBounds, PRIOR_TREATMENTS, SEX_OPTIONS, useSession } from "@/lib/session";
 import questionnaireContent from "@/content/questionnaire.json";
 import resultsContent from "@/content/results.json";
 
@@ -19,13 +18,8 @@ export const Route = createFileRoute("/fragebogen")({
 });
 
 const q = questionnaireContent;
-const AGE_OPTIONS = q.profile.age.options as {
-  value: AgeBand;
-  label: { de: string; en: string };
-}[];
-const SEX_OPTIONS = q.profile.sex.options as { value: Sex; label: { de: string; en: string } }[];
 
-const STEP_KEYS = ["phqA", "phqB", "phqC", "safety", "profile"] as const;
+const STEP_KEYS = ["basics", "phq9", "safety", "history"] as const;
 type StepKey = (typeof STEP_KEYS)[number];
 
 function Questionnaire() {
@@ -33,35 +27,27 @@ function Questionnaire() {
   const navigate = useNavigate();
   const { session, setPhq, update, updateProfile, updateSafety } = useSession();
   const [index, setIndex] = useState(0);
+  const dateBounds = useMemo(() => birthDateBounds(), []);
 
   const item9 = session.phq[8] ?? 0;
-  const risk = assessRisk(session);
-  const reasons = riskReasons(session);
 
-  const key: StepKey = STEP_KEYS[Math.min(index, STEP_KEYS.length - 1)] ?? "phqA";
+  const key: StepKey = STEP_KEYS[Math.min(index, STEP_KEYS.length - 1)] ?? "basics";
   const total = STEP_KEYS.length;
-
-  const answered = (from: number, to: number) =>
-    session.phq.slice(from, to).every((v) => v !== null);
 
   const canContinue = useMemo(() => {
     switch (key) {
-      case "phqA":
-        return answered(0, 3);
-      case "phqB":
-        return answered(3, 6);
-      case "phqC":
-        return answered(6, 9);
+      case "basics":
+        return session.profile.birthDate !== null && session.profile.sex !== null;
+      case "phq9":
+        return session.phq.every((v) => v !== null);
       case "safety":
         return (
           session.safety.plan !== null &&
           session.safety.canStaySafe !== null &&
           session.safety.pastAttempt !== null
         );
-      case "profile":
+      case "history":
         return (
-          session.profile.ageBand !== null &&
-          session.profile.sex !== null &&
           session.profile.priorEpisode !== null &&
           session.profile.priorTreatment.length > 0 &&
           session.profile.gad7Known !== null &&
@@ -70,7 +56,6 @@ function Questionnaire() {
       default:
         return false;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key, session]);
 
   const isLast = index === total - 1;
@@ -99,28 +84,6 @@ function Questionnaire() {
     });
   };
 
-  const phqBlock = (from: number, to: number) => (
-    <div className="space-y-6">
-      <p className="text-sm leading-relaxed text-muted-foreground">{tr(PHQ9_INTRO)}</p>
-      {PHQ9_ITEMS.slice(from, to).map((item, i) => {
-        const idx = from + i;
-        return (
-          <fieldset key={idx} className="surface-card p-5">
-            <legend className="mb-3 block text-base font-semibold">
-              {idx + 1}. {tr(item)}
-            </legend>
-            <Choice
-              name={`phq-${idx}`}
-              options={PHQ9_OPTIONS}
-              value={session.phq[idx] as 0 | 1 | 2 | 3 | null}
-              onChange={(v) => setPhq(idx, v)}
-            />
-          </fieldset>
-        );
-      })}
-    </div>
-  );
-
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
       <div className="mb-8">
@@ -141,11 +104,49 @@ function Questionnaire() {
         </div>
       </div>
 
-      {key === "phqA" && phqBlock(0, 3)}
-      {key === "phqB" && phqBlock(3, 6)}
-      {key === "phqC" && (
+      {key === "basics" && (
         <div className="space-y-6">
-          {phqBlock(6, 9)}
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            {tr(q.profile.sectionIntro)}
+          </p>
+          <DateField
+            label={q.profile.age.question}
+            min={dateBounds.min}
+            max={dateBounds.max}
+            value={session.profile.birthDate}
+            onChange={(v) => updateProfile({ birthDate: v })}
+          />
+          <fieldset className="surface-card p-5">
+            <legend className="mb-3 block text-base font-semibold">
+              {tr(q.profile.sex.question)}
+            </legend>
+            <Choice
+              name="sex"
+              columns={2}
+              options={SEX_OPTIONS}
+              value={session.profile.sex}
+              onChange={(v) => updateProfile({ sex: v })}
+            />
+          </fieldset>
+        </div>
+      )}
+
+      {key === "phq9" && (
+        <div className="space-y-6">
+          <h2 className="text-xl font-semibold leading-snug">{tr(PHQ9_INTRO)}</h2>
+          {PHQ9_ITEMS.map((item, idx) => (
+            <fieldset key={idx} className="surface-card p-5">
+              <legend className="mb-3 block text-base font-semibold">
+                {idx + 1}. {tr(item)}
+              </legend>
+              <Choice
+                name={`phq-${idx}`}
+                options={PHQ9_OPTIONS}
+                value={session.phq[idx] as 0 | 1 | 2 | 3 | null}
+                onChange={(v) => setPhq(idx, v)}
+              />
+            </fieldset>
+          ))}
           {item9 >= 1 && (
             <div className="rounded-md border border-destructive/40 bg-destructive-soft p-4">
               <h2 className="text-sm font-semibold text-destructive">
@@ -167,9 +168,7 @@ function Questionnaire() {
 
       {key === "safety" && (
         <div className="space-y-3">
-          <div className="rounded-md border border-destructive/40 bg-destructive-soft p-4">
-            <h2 className="text-sm font-semibold text-destructive">{tr(q.safety.intro)}</h2>
-          </div>
+          <p className="text-sm leading-relaxed text-muted-foreground">{tr(q.safety.intro)}</p>
           <YesNoField
             label={q.safety.questions.plan}
             value={session.safety.plan}
@@ -185,64 +184,14 @@ function Questionnaire() {
             value={session.safety.pastAttempt}
             onChange={(v) => updateSafety({ pastAttempt: v })}
           />
-          {(risk === "acute" || risk === "elevated") && (
-            <div className="rounded-md border border-destructive bg-destructive-soft p-4">
-              <h3 className="text-sm font-semibold text-destructive">
-                {tr(resultsContent.crisis[risk].title)}
-              </h3>
-              <p className="mt-1.5 text-sm leading-relaxed">
-                {tr(resultsContent.crisis[risk].message)}
-              </p>
-              {reasons.length > 0 && (
-                <div className="mt-2.5 border-t border-destructive/30 pt-2.5">
-                  <p className="text-xs font-medium text-destructive">{tr(q.safety.whyShown)}</p>
-                  <ul className="mt-1 space-y-0.5 text-xs text-destructive/90">
-                    {reasons.map((reason) => (
-                      <li key={tr(reason)}>· {tr(reason)}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              <Link
-                to="/soforthilfe"
-                className="mt-2.5 inline-flex rounded-md bg-destructive px-3 py-1.5 text-sm font-medium text-destructive-foreground"
-              >
-                {tr(q.showCrisisContacts)}
-              </Link>
-            </div>
-          )}
         </div>
       )}
 
-      {key === "profile" && (
+      {key === "history" && (
         <div className="space-y-6">
           <p className="text-sm leading-relaxed text-muted-foreground">
-            {tr(q.profile.sectionIntro)}
+            {tr(q.profile.historyIntro)}
           </p>
-          <fieldset className="surface-card p-5">
-            <legend className="mb-3 block text-base font-semibold">
-              {tr(q.profile.age.question)}
-            </legend>
-            <Choice
-              name="age"
-              columns={2}
-              options={AGE_OPTIONS}
-              value={session.profile.ageBand}
-              onChange={(v) => updateProfile({ ageBand: v })}
-            />
-          </fieldset>
-          <fieldset className="surface-card p-5">
-            <legend className="mb-3 block text-base font-semibold">
-              {tr(q.profile.sex.question)}
-            </legend>
-            <Choice
-              name="sex"
-              columns={2}
-              options={SEX_OPTIONS}
-              value={session.profile.sex}
-              onChange={(v) => updateProfile({ sex: v })}
-            />
-          </fieldset>
           <YesNoField
             label={q.profile.priorEpisode.question}
             value={session.profile.priorEpisode}
@@ -307,10 +256,6 @@ function Questionnaire() {
           </button>
         </div>
       </div>
-
-      <p className="mt-6 text-xs text-muted-foreground">
-        {fill(tr(q.runningTotal), { score: phq9Total(session.phq) })}
-      </p>
     </div>
   );
 }

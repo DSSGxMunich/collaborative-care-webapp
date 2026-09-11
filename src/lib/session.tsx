@@ -9,13 +9,20 @@ import {
 } from "react";
 import questionnaireContent from "@/content/questionnaire.json";
 
-export type AgeBand = "18-29" | "30-49" | "50-64" | "65+";
 export type YesNo = "yes" | "no";
-export type Sex = "female" | "male";
+/**
+ * "female" and "male" feed the fitted outcome model (theta_sex, interaction
+ * terms) via SEX_CODE in model.ts. The other options are offered so nobody
+ * is forced into a binary answer, but there isn't enough trial data to fit
+ * a coefficient for them — the model falls back to the sex-unadjusted
+ * (average-across-all) estimate for those, same as leaving sex unanswered.
+ */
+export type Sex = "female" | "male" | "other" | "intersex" | "unsure" | "preferNotToSay";
 
 export type Profile = {
-  ageBand: AgeBand | null;
-  /** Used by the fitted outcome model (theta_sex, interaction terms). */
+  /** Date of birth, ISO "YYYY-MM-DD". Age is derived from this — see ageFromBirthDate. */
+  birthDate: string | null;
+  /** Used by the fitted outcome model (theta_sex, interaction terms) when female/male. */
   sex: Sex | null;
   priorEpisode: YesNo | null;
   priorTreatment: string[];
@@ -44,7 +51,7 @@ export const emptySession = (): Session => ({
   phq: Array<number | null>(9).fill(null),
   safety: { plan: null, canStaySafe: null, pastAttempt: null },
   profile: {
-    ageBand: null,
+    birthDate: null,
     sex: null,
     priorEpisode: null,
     priorTreatment: [],
@@ -55,6 +62,30 @@ export const emptySession = (): Session => ({
 });
 
 export const PRIOR_TREATMENTS = questionnaireContent.profile.priorTreatment.options;
+export const SEX_OPTIONS = questionnaireContent.profile.sex.options as {
+  value: Sex;
+  label: { de: string; en: string };
+}[];
+
+const MS_PER_YEAR = 1000 * 60 * 60 * 24 * 365.25;
+
+/**
+ * Age in years as a float (e.g. 22.87), derived from a birth date so the
+ * outcome model gets a precise value rather than a rounded whole number.
+ */
+export function ageFromBirthDate(birthDateIso: string, at: Date = new Date()): number {
+  const birth = new Date(`${birthDateIso}T00:00:00`);
+  return (at.getTime() - birth.getTime()) / MS_PER_YEAR;
+}
+
+const toIsoDate = (d: Date) => d.toISOString().slice(0, 10);
+
+/** Reasonable bounds for a birth-date picker: today, and 110 years ago. */
+export function birthDateBounds(now: Date = new Date()) {
+  const min = new Date(now);
+  min.setFullYear(min.getFullYear() - 110);
+  return { min: toIsoDate(min), max: toIsoDate(now) };
+}
 
 type Ctx = {
   session: Session;

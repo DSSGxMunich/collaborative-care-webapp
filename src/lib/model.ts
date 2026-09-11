@@ -88,7 +88,7 @@
  */
 
 import type { L } from "./i18n";
-import type { Profile, Sex } from "./session";
+import { ageFromBirthDate, type Profile, type Sex } from "./session";
 
 export type ComponentId = "followUp" | "relapsePrevention";
 export type ScenarioId = "usualCare" | ComponentId;
@@ -159,16 +159,14 @@ export const STANDARDIZATION = {
   age: { mean: 49.85614969535585, sd: 15.878823152237644 },
 };
 
-// Sex: Male = 0, Female = 1
-export const SEX_CODE: Record<Sex, 0 | 1> = { male: 0, female: 1 };
-
-/** Representative age (years) used to standardize each age band. */
-const AGE_MIDPOINT: Record<NonNullable<Profile["ageBand"]>, number> = {
-  "18-29": 24,
-  "30-49": 40,
-  "50-64": 57,
-  "65+": 72,
-};
+/**
+ * Sex: Male = 0, Female = 1. Only these two categories were represented in
+ * the fitted trials — any other Sex value has no coefficient and is
+ * treated as unknown (see standardizeInput), which drops the sex terms
+ * from the linear predictor entirely, i.e. the sex-unadjusted, averaged
+ * estimate.
+ */
+export const SEX_CODE: Partial<Record<Sex, 0 | 1>> = { male: 0, female: 1 };
 
 export const MODEL_META = {
   followUpMonths: 12,
@@ -212,13 +210,12 @@ function combineTerms(terms: Term[]) {
 type Standardized = { ageZ: number | null; sexX: 0 | 1 | null; baselineZ: number };
 
 function standardizeInput(input: PredictionInput): Standardized {
-  const ageMid = input.profile.ageBand ? AGE_MIDPOINT[input.profile.ageBand] : null;
+  const age = input.profile.birthDate ? ageFromBirthDate(input.profile.birthDate) : null;
   return {
-    ageZ:
-      ageMid === null
-        ? null
-        : standardize(ageMid, STANDARDIZATION.age.mean, STANDARDIZATION.age.sd),
-    sexX: input.profile.sex ? SEX_CODE[input.profile.sex] : null,
+    ageZ: age === null ? null : standardize(age, STANDARDIZATION.age.mean, STANDARDIZATION.age.sd),
+    // SEX_CODE only covers female/male; any other (or missing) sex resolves
+    // to null here, which drops the sex terms below (average-across-all).
+    sexX: input.profile.sex ? (SEX_CODE[input.profile.sex] ?? null) : null,
     baselineZ: standardize(input.baseline, STANDARDIZATION.phq9.mean, STANDARDIZATION.phq9.sd),
   };
 }
@@ -346,9 +343,10 @@ export type PredictorRow = {
 
 export function describePredictors(input: PredictionInput): PredictorRow[] {
   const p = input.profile;
+  const age = p.birthDate ? ageFromBirthDate(p.birthDate) : null;
   return [
     { id: "baseline", value: `${input.baseline}/27`, available: true },
-    { id: "age", value: p.ageBand ?? "–", available: p.ageBand !== null },
+    { id: "age", value: age !== null ? age.toFixed(2) : "–", available: age !== null },
     { id: "sex", value: p.sex ?? "–", available: p.sex !== null },
   ];
 }
