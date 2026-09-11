@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { fill, ui, useLang } from "@/lib/i18n";
 import { PHQ9_ITEMS, SEVERITY_LABEL } from "@/lib/phq9";
 import { assessRisk } from "@/lib/safety";
@@ -21,9 +22,12 @@ export const Route = createFileRoute("/praxis")({
 const c = praxisContent;
 const r = resultsContent;
 
+type ScenarioTab = "single" | "combo";
+
 function Clinician() {
   const { tr } = useLang();
   const p = usePrediction();
+  const [tab, setTab] = useState<ScenarioTab>("single");
 
   if (!p.hydrated) return <div className="mx-auto max-w-3xl px-4 py-16" />;
 
@@ -111,15 +115,6 @@ function Clinician() {
         </button>
       </div>
 
-      {(risk === "acute" || risk === "elevated") && (
-        <div className="mt-6 rounded-md border border-destructive bg-destructive-soft p-4">
-          <p className="text-sm font-semibold text-destructive">
-            {tr(c.riskFlagLabel)}: {tr(c.riskFlag[risk])}
-          </p>
-          <p className="mt-1.5 text-sm">{tr(c.riskAdvice)}</p>
-        </div>
-      )}
-
       <section className="mt-8 grid gap-6 md:grid-cols-2">
         <div>
           <h2 className="text-base font-semibold">{tr(c.summary)}</h2>
@@ -165,6 +160,26 @@ function Clinician() {
 
       <section className="mt-8">
         <h2 className="text-base font-semibold">{tr(c.modelEstimates)}</h2>
+
+        <div className="mt-3 inline-flex rounded-md border border-border p-0.5 text-sm">
+          {(["single", "combo"] as const).map((t) => (
+            <button
+              key={t}
+              type="button"
+              onClick={() => setTab(t)}
+              aria-pressed={tab === t}
+              className={[
+                "rounded-[5px] px-3 py-1.5 font-medium transition-colors",
+                tab === t
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:text-foreground",
+              ].join(" ")}
+            >
+              {tr(r.scenarioTabs[t])}
+            </button>
+          ))}
+        </div>
+
         <div className="mt-3 overflow-x-auto rounded-md border border-border">
           <table className="w-full min-w-[26rem] text-sm">
             <thead>
@@ -175,7 +190,7 @@ function Clinician() {
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {p.scenarios.map((scenario) => {
+              {(tab === "single" ? p.singleScenarios : p.scenarios).map((scenario) => {
                 const delta = round1(usualEndpoint - scenario.expectedEndpoint);
                 return (
                   <tr key={scenario.id}>

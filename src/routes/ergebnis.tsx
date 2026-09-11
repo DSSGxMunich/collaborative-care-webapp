@@ -150,7 +150,7 @@ function Results() {
   const p = usePrediction();
   const [revealed, setRevealed] = useState(false);
   const [showDistributions, setShowDistributions] = useState(false);
-  const [tab, setTab] = useState<ScenarioTab>("combo");
+  const [tab, setTab] = useState<ScenarioTab>("single");
 
   if (!p.hydrated) return <div className="mx-auto max-w-2xl px-4 py-16" />;
 
@@ -232,7 +232,7 @@ function Results() {
         </p>
 
         <div className="mt-4 inline-flex rounded-md border border-border p-0.5 text-sm">
-          {(["combo", "single"] as const).map((t) => (
+          {(["single", "combo"] as const).map((t) => (
             <button
               key={t}
               type="button"
