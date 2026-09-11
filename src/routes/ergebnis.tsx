@@ -3,7 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { fill, ui, useLang } from "@/lib/i18n";
 import { SEVERITY_LABEL, SEVERITY_RANGE } from "@/lib/phq9";
-import { MODEL_META, posteriorEndpointDraws, type Scenario, type ScenarioId } from "@/lib/model";
+import { MODEL_META, posteriorEndpointDraws, type Scenario } from "@/lib/model";
 import { usePrediction } from "@/lib/usePrediction";
 import { ageFromBirthDate, SEX_OPTIONS } from "@/lib/session";
 import resultsContent from "@/content/results.json";
@@ -187,7 +187,11 @@ function Results() {
     );
   }
 
-  const scenarioLabel = (id: ScenarioId) => tr(r.scenarios[id].short);
+  /** Usual care keeps its own short label; a package's label is its active components joined together. */
+  const scenarioLabel = (scenario: Scenario) =>
+    scenario.id === "usualCare"
+      ? tr(r.scenarios.usualCare.short)
+      : scenario.components.map((id) => tr(r.components[id].short)).join(" + ");
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
@@ -222,7 +226,7 @@ function Results() {
           {p.scenarios.map((scenario) => (
             <ComparisonRow
               key={scenario.id}
-              label={scenarioLabel(scenario.id)}
+              label={scenarioLabel(scenario)}
               scenario={scenario}
               baseline={p.baseline}
             />
@@ -241,11 +245,11 @@ function Results() {
         {showDistributions && (
           <div className="mt-3 rounded-md bg-secondary p-4">
             <p className="text-xs text-muted-foreground">{tr(r.posterior.explain)}</p>
-            <div className="mt-3 grid grid-cols-3 gap-3">
+            <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
               {p.scenarios.map((scenario) => (
                 <PosteriorMini
                   key={scenario.id}
-                  label={scenarioLabel(scenario.id)}
+                  label={scenarioLabel(scenario)}
                   scenario={scenario}
                 />
               ))}
@@ -288,6 +292,20 @@ function Results() {
                     },
                   )
                 : tr(r.predictors.notProvided)}
+            </dd>
+          </div>
+          <div className="flex justify-between gap-4 py-2">
+            <dt className="text-muted-foreground">{tr(r.predictors.gad7.label)}</dt>
+            <dd className="font-medium">
+              {p.session.profile.gad7Known === "yes" && p.session.profile.gad7Score !== null
+                ? `${p.session.profile.gad7Score}/21`
+                : tr(r.predictors.notProvided)}
+            </dd>
+          </div>
+          <div className="flex justify-between gap-4 py-2">
+            <dt className="text-muted-foreground">{tr(r.predictors.riskScore.label)}</dt>
+            <dd className="font-medium">
+              {p.predictors.find((row) => row.id === "riskScore")?.value ?? "–"}
             </dd>
           </div>
         </dl>
