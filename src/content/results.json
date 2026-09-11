@@ -26,12 +26,14 @@
       "en": "Estimated PHQ-9 at 12 months"
     },
     "interval": { "de": "95 %-Kredibilitätsintervall", "en": "95% credible interval" },
-    "today": { "de": "Ihr PHQ-9 heute ({baseline})", "en": "Your PHQ-9 today ({baseline})" }
+    "today": { "de": "Ihr PHQ-9 heute ({baseline})", "en": "Your PHQ-9 today ({baseline})" },
+    "todayLine": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" },
+    "scale": { "de": "Skala 0–27", "en": "scale 0–27" }
   },
   "scenarios": {
     "usualCare": {
       "label": { "de": "Übliche hausärztliche Versorgung", "en": "Usual GP care" },
-      "short": { "de": "Übliche Versorgung (Referenz)", "en": "Usual care (reference)" },
+      "short": { "de": "Übliche Versorgung", "en": "Usual care" },
       "description": {
         "de": "Behandlung wie bisher: Termine bei Bedarf, Beratung, Verlaufsbeobachtung.",
         "en": "Care as before: appointments as needed, advice and watchful monitoring."
