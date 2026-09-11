@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Choice, DateField, MultiChoice, NumberField, YesNoField } from "@/components/fields";
 import { ui, useLang } from "@/lib/i18n";
@@ -11,7 +11,6 @@ import {
   useSession,
 } from "@/lib/session";
 import questionnaireContent from "@/content/questionnaire.json";
-import resultsContent from "@/content/results.json";
 
 export const Route = createFileRoute("/fragebogen")({
   head: () => ({
@@ -34,8 +33,6 @@ function Questionnaire() {
   const { session, setPhq, update, updateProfile, updateSafety } = useSession();
   const [index, setIndex] = useState(0);
   const dateBounds = useMemo(() => birthDateBounds(), []);
-
-  const item9 = session.phq[8] ?? 0;
 
   const key: StepKey = STEP_KEYS[Math.min(index, STEP_KEYS.length - 1)] ?? "basics";
   const total = STEP_KEYS.length;
@@ -159,22 +156,6 @@ function Questionnaire() {
               />
             </fieldset>
           ))}
-          {item9 >= 1 && (
-            <div className="rounded-md border border-destructive/40 bg-destructive-soft p-4">
-              <h2 className="text-sm font-semibold text-destructive">
-                {tr(resultsContent.crisis[item9 >= 2 ? "elevated" : "low"].title)}
-              </h2>
-              <p className="mt-1.5 text-sm leading-relaxed">
-                {tr(resultsContent.crisis[item9 >= 2 ? "elevated" : "low"].message)}
-              </p>
-              <Link
-                to="/soforthilfe"
-                className="mt-2 inline-flex text-sm font-medium text-destructive underline underline-offset-2"
-              >
-                {tr(q.showCrisisContacts)}
-              </Link>
-            </div>
-          )}
         </div>
       )}
 
