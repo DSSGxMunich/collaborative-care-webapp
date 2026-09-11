@@ -35,5 +35,10 @@
   "noAnswersLeaveDevice": {
     "de": "Ihre Antworten bleiben auf diesem Gerät und werden nicht übertragen.",
     "en": "Your answers stay on this device and are not transmitted."
+  },
+  "dateField": {
+    "day": { "de": "Tag", "en": "Day" },
+    "month": { "de": "Monat", "en": "Month" },
+    "year": { "de": "Jahr", "en": "Year" }
   }
 }
