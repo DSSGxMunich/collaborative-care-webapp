@@ -53,9 +53,16 @@
  * additivity assumption — and per instruction, no component x component
  * interaction term is added beyond what's in the formula above — a
  * package's effect is simply the sum of its active components' own effects.
- * The app only ever predicts for these 7 packages (PACKAGES below); it
- * does not offer arbitrary/untested component combinations, since the
- * model gives no information about combinations outside this set.
+ *
+ * The app renders two separate scenario sets (two tabs on the results
+ * page), deliberately not merged into one list:
+ *   - COMBO_SCENARIO_IDS: usual care + the 6 packages actually trialled
+ *     (PACKAGES below) — real, trial-observed treatment arms.
+ *   - SINGLE_SCENARIO_IDS: usual care + each of the 6 components ADDED
+ *     ALONE. These are not trial-observed; they're the additive formula
+ *     applied to a single component, shown on their own tab specifically
+ *     so patients don't read "combination has more components" as "more
+ *     components is always better" — the two are different questions.
  *
  * `sigma` (residual SD) is kept in the data file for transparency but is
  * currently unused, same as before — the app shows the estimated PHQ-9
@@ -86,7 +93,9 @@ export const COMPONENT_ORDER: ComponentId[] = [
 
 export type PackageId =
   "usualCare" | "packageA" | "packageB" | "packageC" | "packageD" | "packageE" | "packageF";
-export type ScenarioId = PackageId;
+/** A single component added alone to usual care — not a trial-observed package, see SINGLE_SCENARIO_IDS. */
+export type SingleId = `single_${ComponentId}`;
+export type ScenarioId = PackageId | SingleId;
 
 export type Package = { id: PackageId; components: ComponentId[] };
 
@@ -105,14 +114,34 @@ function buildPackages(): Package[] {
   return packages;
 }
 
-/** Every trial-observed treatment combination (usual care excluded — see SCENARIO_IDS). */
+/** Every trial-observed treatment combination (usual care excluded — see COMBO_SCENARIO_IDS). */
 export const PACKAGES: Package[] = buildPackages();
 
-/** Which scenario ids (in display order) the app renders: usual care, then each trialled package. */
-export const SCENARIO_IDS: ScenarioId[] = ["usualCare", ...PACKAGES.map((p) => p.id)];
+/**
+ * Combination tab: usual care, then each trial-observed package (real arms
+ * from the 7 included trials — see file header on allowed packages).
+ */
+export const COMBO_SCENARIO_IDS: ScenarioId[] = ["usualCare", ...PACKAGES.map((p) => p.id)];
+
+/**
+ * Single-component tab: usual care, then each of the 6 components added
+ * ALONE. None of these were tested in isolation by any trial — they're the
+ * model's additive decomposition (component[k] * (beta_k + delta_k *
+ * risk_score)) applied to just one component, shown separately from
+ * COMBO_SCENARIO_IDS so a lower combo number never reads as "more
+ * components is automatically better than one well-matched component".
+ */
+export const SINGLE_SCENARIO_IDS: ScenarioId[] = [
+  "usualCare",
+  ...COMPONENT_ORDER.map((c): SingleId => `single_${c}`),
+];
 
 function componentsFor(id: ScenarioId): ComponentId[] {
   if (id === "usualCare") return [];
+  if (id.startsWith("single_")) {
+    const componentId = id.slice("single_".length) as ComponentId;
+    return [componentId];
+  }
   return PACKAGES.find((p) => p.id === id)?.components ?? [];
 }
 
@@ -262,8 +291,9 @@ export { RISK_SCORE_TRAINING };
 
 export function buildPredictions(input: PredictionInput) {
   const estimates = estimateComponents(input);
-  const scenarios = SCENARIO_IDS.map((id) => predictScenario(input, id));
+  const scenarios = COMBO_SCENARIO_IDS.map((id) => predictScenario(input, id));
+  const singleScenarios = SINGLE_SCENARIO_IDS.map((id) => predictScenario(input, id));
   const predictors = describePredictors(input);
 
-  return { estimates, scenarios, predictors };
+  return { estimates, scenarios, singleScenarios, predictors };
 }

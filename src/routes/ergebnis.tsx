@@ -25,7 +25,7 @@ const pct = (x: number) => (x / PHQ9_MAX) * 100;
 /**
  * One row of the 12-month comparison: a forest-plot-style dot (point
  * estimate) with a whisker (credible interval), on a shared 0–27 axis, plus
- * a dashed reference line at the patient's baseline ("today"). Position and
+ * a solid reference line at the patient's baseline ("today"). Position and
  * distance from "today" carry the comparison — no separate rank badge.
  */
 function ComparisonRow({
@@ -52,7 +52,7 @@ function ComparisonRow({
       <div className="relative mt-2.5 h-4">
         <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-border" />
         <div
-          className="absolute top-0 bottom-0 border-l-2 border-dashed border-foreground/70"
+          className="absolute top-0 bottom-0 border-l-2 border-foreground/70"
           style={{ left: `${pct(baseline)}%` }}
         />
         <div
@@ -113,9 +113,19 @@ function ChartLegend() {
         {tr(r.legend.interval)}
       </span>
       <span className="inline-flex items-center gap-1.5">
-        <span className="h-2.5 w-0 shrink-0 border-l-2 border-dashed border-foreground/70" />
-        {tr(r.legend.todayLine)} · {tr(r.legend.scale)}
+        <span className="h-2.5 w-0 shrink-0 border-l-2 border-foreground/70" />
+        {tr(r.legend.todayLine)}
       </span>
+    </div>
+  );
+}
+
+/** The shared 0–27 PHQ-9 scale, marked at both ends instead of spelled out as text — aligns with the bars above via the same px-4 gutter. */
+function AxisEndLabels() {
+  return (
+    <div className="flex justify-between px-4 pt-1 text-[11px] tabular-nums text-muted-foreground">
+      <span>0</span>
+      <span>{PHQ9_MAX}</span>
     </div>
   );
 }
@@ -143,11 +153,14 @@ function BaselinePointer({ baseline }: { baseline: number }) {
   );
 }
 
+type ScenarioTab = "combo" | "single";
+
 function Results() {
   const { tr } = useLang();
   const p = usePrediction();
   const [revealed, setRevealed] = useState(false);
   const [showDistributions, setShowDistributions] = useState(false);
+  const [tab, setTab] = useState<ScenarioTab>("combo");
 
   if (!p.hydrated) return <div className="mx-auto max-w-2xl px-4 py-16" />;
 
@@ -192,11 +205,14 @@ function Results() {
     );
   }
 
-  /** Usual care keeps its own short label; a package's label is its active components joined together. */
+  /** Usual care keeps its own short label; a package's (or single component's) label is its active components joined together. */
   const scenarioLabel = (scenario: Scenario) =>
     scenario.id === "usualCare"
       ? tr(r.scenarios.usualCare.short)
       : scenario.components.map((id) => tr(r.components[id].short)).join(" + ");
+
+  const activeScenarios = tab === "combo" ? p.scenarios : p.singleScenarios;
+  const activeIntro = tab === "combo" ? r.scenariosIntro : r.singleScenariosIntro;
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
@@ -225,9 +241,28 @@ function Results() {
           {tr(r.whatCanBeExpectedBody)}
         </p>
 
+        <div className="mt-4 inline-flex rounded-md border border-border p-0.5 text-sm">
+          {(["combo", "single"] as const).map((t) => (
+            <button
+              key={t}
+              type="button"
+              onClick={() => setTab(t)}
+              aria-pressed={tab === t}
+              className={[
+                "rounded-[5px] px-3 py-1.5 font-medium transition-colors",
+                tab === t
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:text-foreground",
+              ].join(" ")}
+            >
+              {tr(r.scenarioTabs[t])}
+            </button>
+          ))}
+        </div>
+
         <BaselinePointer baseline={p.baseline} />
         <div className="divide-y divide-border rounded-md border border-border px-4">
-          {p.scenarios.map((scenario) => (
+          {activeScenarios.map((scenario) => (
             <ComparisonRow
               key={scenario.id}
               label={scenarioLabel(scenario)}
@@ -236,8 +271,9 @@ function Results() {
             />
           ))}
         </div>
+        <AxisEndLabels />
         <ChartLegend />
-        <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{tr(r.scenariosIntro)}</p>
+        <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{tr(activeIntro)}</p>
 
         <button
           type="button"
@@ -250,7 +286,7 @@ function Results() {
           <div className="mt-3 rounded-md bg-secondary p-4">
             <p className="text-xs text-muted-foreground">{tr(r.posterior.explain)}</p>
             <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {p.scenarios.map((scenario) => (
+              {activeScenarios.map((scenario) => (
                 <PosteriorMini
                   key={scenario.id}
                   label={scenarioLabel(scenario)}

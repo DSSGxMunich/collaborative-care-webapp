@@ -27,8 +27,7 @@
     },
     "interval": { "de": "95 %-Kredibilitätsintervall", "en": "95% credible interval" },
     "today": { "de": "Ihr PHQ-9 heute ({baseline})", "en": "Your PHQ-9 today ({baseline})" },
-    "todayLine": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" },
-    "scale": { "de": "Skala 0–27", "en": "scale 0–27" }
+    "todayLine": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" }
   },
   "scenarios": {
     "usualCare": {
@@ -78,9 +77,17 @@
       "short": { "de": "Familie/Freunde einbezogen", "en": "Family/friends involved" }
     }
   },
+  "scenarioTabs": {
+    "combo": { "de": "Kombinationen aus den Studien", "en": "Combinations from the trials" },
+    "single": { "de": "Einzelne Bausteine", "en": "Single components" }
+  },
   "scenariosIntro": {
     "de": "Niedrigere Werte bedeuten weniger Beschwerden. Jede Zeile außer der Referenz ist eine tatsächlich in einer der 7 eingeschlossenen Studien untersuchte Kombination von Bausteinen — keine frei wählbare Zusammenstellung.",
     "en": "Lower values mean fewer symptoms. Every row besides the reference is a combination of components actually tested in one of the 7 included trials — not a freely chosen combination."
+  },
+  "singleScenariosIntro": {
+    "de": "Niedrigere Werte bedeuten weniger Beschwerden. Diese Ansicht zeigt jeden Baustein einzeln zur üblichen Versorgung hinzugefügt — keiner davon wurde allein in einer Studie getestet, keine Studie hat je nur einen Baustein eingesetzt. Mehr Bausteine gleichzeitig bedeutet nicht automatisch ein besseres Ergebnis; welche Kombinationen tatsächlich untersucht wurden, zeigt die andere Ansicht.",
+    "en": "Lower values mean fewer symptoms. This view shows each component added on its own to usual care — none of them was tested alone in any trial. Using more components at once is not automatically better; which combinations were actually tested is shown in the other view."
   },
   "posterior": {
     "sectionTitle": {
@@ -160,8 +167,8 @@
     "en": "Estimated PHQ-9 at 12 months"
   },
   "whatCanBeExpectedBody": {
-    "de": "Übliche Versorgung als Referenz, plus jede der Behandlungskombinationen, die tatsächlich in den eingeschlossenen Studien untersucht wurden — jede besteht aus mehreren gleichzeitig eingesetzten Bausteinen. Alle Zahlen sind Schätzungen für Gruppen von Personen mit einem ähnlichen Profil — keine Zusage für Ihren persönlichen Verlauf.",
-    "en": "Usual care as the reference, plus every treatment combination actually tested in the included trials — each made up of several components used together. All numbers are estimates for groups of people with a similar profile — not a promise about your personal course."
+    "de": "Übliche Versorgung als Referenz, dazu zwei Ansichten: die Behandlungskombinationen, die tatsächlich in den eingeschlossenen Studien untersucht wurden, und — separat — jeder einzelne Baustein für sich. Alle Zahlen sind Schätzungen für Gruppen von Personen mit einem ähnlichen Profil — keine Zusage für Ihren persönlichen Verlauf.",
+    "en": "Usual care as the reference, plus two views: the treatment combinations actually tested in the included trials, and — separately — each single component on its own. All numbers are estimates for groups of people with a similar profile — not a promise about your personal course."
   },
   "whatInfluences": {
     "de": "Was beeinflusst diese Schätzung?",
