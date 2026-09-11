@@ -52,7 +52,7 @@ function ComparisonRow({
       <div className="relative mt-2.5 h-4">
         <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-border" />
         <div
-          className="absolute top-0 bottom-0 border-l border-dashed border-muted-foreground/40"
+          className="absolute top-0 bottom-0 border-l-2 border-dashed border-foreground/70"
           style={{ left: `${pct(baseline)}%` }}
         />
         <div
@@ -100,7 +100,7 @@ function PosteriorMini({ label, scenario }: { label: string; scenario: Scenario 
 }
 
 /** Legend for ComparisonRow — each swatch reuses the exact classes drawn in the chart. */
-function ChartLegend({ baseline }: { baseline: number }) {
+function ChartLegend() {
   const { tr } = useLang();
   return (
     <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-muted-foreground">
@@ -113,9 +113,32 @@ function ChartLegend({ baseline }: { baseline: number }) {
         {tr(r.legend.interval)}
       </span>
       <span className="inline-flex items-center gap-1.5">
-        <span className="h-2.5 w-0 shrink-0 border-l border-dashed border-muted-foreground/60" />
-        {fill(tr(r.legend.today), { baseline })}
+        <span className="h-2.5 w-0 shrink-0 border-l-2 border-dashed border-foreground/70" />
+        {tr(r.legend.todayLine)} · {tr(r.legend.scale)}
       </span>
+    </div>
+  );
+}
+
+/**
+ * Points to the baseline ("today") position on the shared 0–27 axis, sitting
+ * directly above the comparison rows so the reader sees where "today" falls
+ * among the results, rather than only reading it out of the legend below.
+ */
+function BaselinePointer({ baseline }: { baseline: number }) {
+  const { tr } = useLang();
+  const left = Math.min(94, Math.max(6, pct(baseline)));
+  return (
+    <div className="relative mt-5 h-9 px-4">
+      <div
+        className="absolute bottom-0 flex -translate-x-1/2 flex-col items-center gap-1"
+        style={{ left: `${left}%` }}
+      >
+        <span className="whitespace-nowrap text-xs font-bold text-foreground">
+          {fill(tr(r.legend.today), { baseline })}
+        </span>
+        <span className="h-2.5 w-0.5 shrink-0 bg-foreground/70" />
+      </div>
     </div>
   );
 }
@@ -218,7 +241,8 @@ function Results() {
           {tr(r.whatCanBeExpectedBody)}
         </p>
 
-        <div className="mt-5 divide-y divide-border rounded-md border border-border px-4">
+        <BaselinePointer baseline={p.baseline} />
+        <div className="divide-y divide-border rounded-md border border-border px-4">
           {p.scenarios.map((scenario) => (
             <ComparisonRow
               key={scenario.id}
@@ -228,7 +252,7 @@ function Results() {
             />
           ))}
         </div>
-        <ChartLegend baseline={p.baseline} />
+        <ChartLegend />
         <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{tr(r.scenariosIntro)}</p>
 
         <button
