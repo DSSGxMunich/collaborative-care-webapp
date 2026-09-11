@@ -3,7 +3,13 @@ import { useMemo, useState } from "react";
 import { Choice, DateField, MultiChoice, NumberField, YesNoField } from "@/components/fields";
 import { ui, useLang } from "@/lib/i18n";
 import { PHQ9_INTRO, PHQ9_ITEMS, PHQ9_OPTIONS } from "@/lib/phq9";
-import { birthDateBounds, PRIOR_TREATMENTS, SEX_OPTIONS, useSession } from "@/lib/session";
+import {
+  ageFromBirthDate,
+  birthDateBounds,
+  PRIOR_TREATMENTS,
+  SEX_OPTIONS,
+  useSession,
+} from "@/lib/session";
 import questionnaireContent from "@/content/questionnaire.json";
 import resultsContent from "@/content/results.json";
 
@@ -34,10 +40,15 @@ function Questionnaire() {
   const key: StepKey = STEP_KEYS[Math.min(index, STEP_KEYS.length - 1)] ?? "basics";
   const total = STEP_KEYS.length;
 
+  const isUnderage = useMemo(() => {
+    if (!session.profile.birthDate) return false;
+    return ageFromBirthDate(session.profile.birthDate) < 18;
+  }, [session.profile.birthDate]);
+
   const canContinue = useMemo(() => {
     switch (key) {
       case "basics":
-        return session.profile.birthDate !== null && session.profile.sex !== null;
+        return session.profile.birthDate !== null && session.profile.sex !== null && !isUnderage;
       case "phq9":
         return session.phq.every((v) => v !== null);
       case "safety":
@@ -56,7 +67,7 @@ function Questionnaire() {
       default:
         return false;
     }
-  }, [key, session]);
+  }, [key, session, isUnderage]);
 
   const isLast = index === total - 1;
 
@@ -115,6 +126,7 @@ function Questionnaire() {
             max={dateBounds.max}
             value={session.profile.birthDate}
             onChange={(v) => updateProfile({ birthDate: v })}
+            {...(isUnderage ? { error: q.profile.age.underageWarning } : {})}
           />
           <fieldset className="surface-card p-5">
             <legend className="mb-3 block text-base font-semibold">

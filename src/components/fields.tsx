@@ -180,12 +180,14 @@ export function DateField({
   onChange,
   min,
   max,
+  error,
 }: {
   label: L;
   value: string | null;
   onChange: (v: string | null) => void;
   min?: string;
   max?: string;
+  error?: L;
 }) {
   const { tr } = useLang();
   return (
@@ -199,6 +201,7 @@ export function DateField({
         onChange={(e) => onChange(e.target.value || null)}
         className="w-full max-w-[240px] rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:border-primary"
       />
+      {error ? <p className="mt-1.5 text-xs text-destructive">{tr(error)}</p> : null}
     </fieldset>
   );
 }
