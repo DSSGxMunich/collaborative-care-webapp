@@ -26,12 +26,14 @@
       "en": "Estimated PHQ-9 at 12 months"
     },
     "interval": { "de": "95 %-Kredibilitätsintervall", "en": "95% credible interval" },
-    "today": { "de": "Ihr PHQ-9 heute ({baseline})", "en": "Your PHQ-9 today ({baseline})" }
+    "today": { "de": "Ihr PHQ-9 heute ({baseline})", "en": "Your PHQ-9 today ({baseline})" },
+    "todayLine": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" },
+    "scale": { "de": "Skala 0–27", "en": "scale 0–27" }
   },
   "scenarios": {
     "usualCare": {
       "label": { "de": "Übliche hausärztliche Versorgung", "en": "Usual GP care" },
-      "short": { "de": "Übliche Versorgung (Referenz)", "en": "Usual care (reference)" },
+      "short": { "de": "Übliche Versorgung", "en": "Usual care" },
       "description": {
         "de": "Behandlung wie bisher: Termine bei Bedarf, Beratung, Verlaufsbeobachtung.",
         "en": "Care as before: appointments as needed, advice and watchful monitoring."
@@ -43,8 +45,8 @@
         "en": "Usual care + follow-up (2–4 weeks)"
       },
       "short": {
-        "de": "Übliche Versorgung + Nachverfolgung (ohne Rückfallplan)",
-        "en": "Usual care + follow-up (without relapse-prevention plan)"
+        "de": "Übliche Versorgung + Nachverfolgung",
+        "en": "Usual care + follow-up"
       },
       "description": {
         "de": "Zusätzlich zur üblichen Versorgung: ein fest vereinbarter Nachverfolgungstermin 2 bis 4 Wochen nach der Erstvorstellung, auch telefonisch. Ohne Rückfallpräventionsplan.",
@@ -57,8 +59,8 @@
         "en": "Usual care + relapse-prevention plan"
       },
       "short": {
-        "de": "Übliche Versorgung + Rückfallpräventionsplan (ohne Nachverfolgung)",
-        "en": "Usual care + relapse-prevention plan (without follow-up)"
+        "de": "Übliche Versorgung + Rückfallpräventionsplan",
+        "en": "Usual care + relapse-prevention plan"
       },
       "description": {
         "de": "Zusätzlich zur üblichen Versorgung: ein schriftlicher Plan, der festlegt, wie ein Wiederauftreten der Beschwerden früh erkannt und ihm vorgebeugt wird. Ohne Nachverfolgungstermin.",
@@ -130,8 +132,8 @@
     }
   },
   "predictorsNote": {
-    "de": "Nur diese drei Merkmale gehen in das Modell ein — Ihre übrigen Angaben (Vorbehandlung, GAD-7) sehen Sie in der Zusammenfassung für die Praxis, sie verändern die Schätzung aber nicht.",
-    "en": "Only these three characteristics enter the model — your other answers (prior treatment, GAD-7) appear in the practice summary but do not change the estimate."
+    "de": "Das zugrunde liegende Modell wurde nur mit diesen drei Merkmalen angepasst. Vorbehandlung und GAD-7 waren in den einbezogenen Studien nicht erfasst und fließen deshalb nicht in die Schätzung ein — Sie finden sie stattdessen in der Zusammenfassung für die Praxis.",
+    "en": "The underlying model was fitted using only these three characteristics. Prior treatment and GAD-7 weren't recorded in the included trials, so they don't factor into the estimate — you'll find them instead in the practice summary."
   },
   "predictors": {
     "baseline": { "label": { "de": "Ausgangswert PHQ-9", "en": "Baseline PHQ-9" } },
@@ -144,8 +146,8 @@
     "en": "Estimated PHQ-9 at 12 months"
   },
   "whatCanBeExpectedBody": {
-    "de": "Drei mögliche Wege ab heute: übliche Versorgung allein, übliche Versorgung plus Nachverfolgung, oder übliche Versorgung plus Rückfallpräventionsplan. Die beiden Bausteine werden nie gemeinsam gezeigt, immer nur einzeln zur üblichen Versorgung hinzugefügt. Alle Zahlen sind Schätzungen für Gruppen von Personen mit einem ähnlichen Profil — keine Zusage für Ihren persönlichen Verlauf.",
-    "en": "Three possible paths from today: usual care alone, usual care plus follow-up, or usual care plus a relapse-prevention plan. The two components are never shown together — only added individually to usual care. All numbers are estimates for groups of people with a similar profile — not a promise about your personal course."
+    "de": "Schätzungen für Gruppen mit ähnlichem Profil, keine Zusage für Ihren persönlichen Verlauf. Die beiden Bausteine werden nie gemeinsam gezeigt, sondern immer einzeln zur üblichen Versorgung hinzugefügt.",
+    "en": "Estimates for groups with a similar profile, not a promise about your personal course. The two components are never shown together — only added individually to usual care."
   },
   "whatInfluences": {
     "de": "Was beeinflusst diese Schätzung?",
