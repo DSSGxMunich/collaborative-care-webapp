@@ -14,8 +14,8 @@
   },
   "title": { "de": "Ihre Auswertung", "en": "Your results" },
   "prototypeNote": {
-    "de": "Diese Schätzungen stammen aus einer gefitteten Komponenten-Netzwerk-Metaanalyse (6 Behandlungsbausteine, 7 Studien) mit einem vorgeschalteten Risikoscore-Modell für Alter, Geschlecht, Ausgangs-PHQ-9 und GAD-7. Alle Bandbreiten sind echte Posterior-Kredibilitätsintervalle. Es handelt sich um einen Forschungsprototyp, keine klinisch validierte Vorhersage.",
-    "en": "These estimates come from a fitted component network meta-analysis (6 treatment components, 7 trials) with an upstream risk-score model for age, sex, baseline PHQ-9 and GAD-7. All ranges are real posterior credible intervals. This is a research prototype, not a clinically validated prediction."
+    "de": "Diese Schätzungen stammen aus einer gefitteten Komponenten-Netzwerk-Metaanalyse (6 Behandlungsbausteine, 7 Studien) mit einem vorgeschalteten Schritt-1-Modell für Alter, Geschlecht, Ausgangs-PHQ-9 und GAD-7. Alle Bandbreiten sind echte Posterior-Kredibilitätsintervalle. Es handelt sich um einen Forschungsprototyp, keine klinisch validierte Vorhersage.",
+    "en": "These estimates come from a fitted component network meta-analysis (6 treatment components, 7 trials) with an upstream Step 1 model for age, sex, baseline PHQ-9 and GAD-7. All ranges are real posterior credible intervals. This is a research prototype, not a clinically validated prediction."
   },
   "phq9Label": "PHQ-9",
   "of27": { "de": "von 27 Punkten", "en": "of 27 points" },
@@ -27,7 +27,8 @@
     },
     "interval": { "de": "95 %-Kredibilitätsintervall", "en": "95% credible interval" },
     "today": { "de": "Ihr PHQ-9 heute ({baseline})", "en": "Your PHQ-9 today ({baseline})" },
-    "todayLine": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" }
+    "todayLine": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" },
+    "scale": { "de": "Skala 0–27", "en": "scale 0–27" }
   },
   "scenarios": {
     "usualCare": {
@@ -149,8 +150,8 @@
     }
   },
   "predictorsNote": {
-    "de": "Ausgangswert PHQ-9, Alter, Geschlecht und GAD-7 (falls bekannt) fließen über ein vorgeschaltetes Risikoscore-Modell in die Schätzung ein — ist der GAD-7 nicht bekannt, wird dafür ein typischer Bevölkerungswert angenommen. Ihre übrige Vorgeschichte (z. B. Vorbehandlung) sehen Sie in der Zusammenfassung für die Praxis, sie verändert die Schätzung aber nicht.",
-    "en": "Baseline PHQ-9, age, sex and GAD-7 (if known) all feed into the estimate via an upstream risk-score model — if GAD-7 isn't known, a population-typical value is assumed for it. Your other history (e.g. prior treatment) appears in the practice summary but does not change the estimate."
+    "de": "Ausgangswert PHQ-9, Alter, Geschlecht und GAD-7 (falls bekannt) fließen über ein vorgeschaltetes Schritt-1-Modell in die Schätzung ein — ist der GAD-7 nicht bekannt, wird dafür ein typischer Bevölkerungswert angenommen. Ihre übrige Vorgeschichte (z. B. Vorbehandlung) sehen Sie in der Zusammenfassung für die Praxis, sie verändert die Schätzung aber nicht.",
+    "en": "Baseline PHQ-9, age, sex and GAD-7 (if known) all feed into the estimate via an upstream Step 1 model — if GAD-7 isn't known, a population-typical value is assumed for it. Your other history (e.g. prior treatment) appears in the practice summary but does not change the estimate."
   },
   "predictors": {
     "baseline": { "label": { "de": "Ausgangswert PHQ-9", "en": "Baseline PHQ-9" } },
@@ -158,7 +159,7 @@
     "sex": { "label": { "de": "Geschlecht", "en": "Sex" } },
     "gad7": { "label": { "de": "GAD-7", "en": "GAD-7" } },
     "riskScore": {
-      "label": { "de": "Risikoscore (Schritt-1-Modell)", "en": "Risk score (Step-1 model)" }
+      "label": { "de": "Schritt-1-Schätzung", "en": "Step 1 estimate" }
     },
     "notProvided": { "de": "keine Angabe", "en": "not provided" }
   },

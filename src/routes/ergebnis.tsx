@@ -114,18 +114,8 @@ function ChartLegend() {
       </span>
       <span className="inline-flex items-center gap-1.5">
         <span className="h-2.5 w-0 shrink-0 border-l-2 border-foreground/70" />
-        {tr(r.legend.todayLine)}
+        {tr(r.legend.todayLine)} · {tr(r.legend.scale)}
       </span>
-    </div>
-  );
-}
-
-/** The shared 0–27 PHQ-9 scale, marked at both ends instead of spelled out as text — aligns with the bars above via the same px-4 gutter. */
-function AxisEndLabels() {
-  return (
-    <div className="flex justify-between px-4 pt-1 text-[11px] tabular-nums text-muted-foreground">
-      <span>0</span>
-      <span>{PHQ9_MAX}</span>
     </div>
   );
 }
@@ -271,7 +261,6 @@ function Results() {
             />
           ))}
         </div>
-        <AxisEndLabels />
         <ChartLegend />
         <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{tr(activeIntro)}</p>
 

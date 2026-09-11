@@ -42,7 +42,7 @@
       "de": "unbekannt (Bevölkerungswert angenommen)",
       "en": "unknown (population value assumed)"
     },
-    "riskScore": { "de": "Risikoscore (Schritt-1-Modell)", "en": "Risk score (Step-1 model)" }
+    "riskScore": { "de": "Schritt-1-Schätzung", "en": "Step 1 estimate" }
   },
   "table": {
     "careOption": { "de": "Versorgungsoption", "en": "Care option" },
