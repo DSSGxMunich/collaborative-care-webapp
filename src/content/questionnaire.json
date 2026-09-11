@@ -109,7 +109,11 @@
       "en": "A few more questions about your history."
     },
     "age": {
-      "question": { "de": "Wann sind Sie geboren?", "en": "When were you born?" }
+      "question": { "de": "Wann sind Sie geboren?", "en": "When were you born?" },
+      "underageWarning": {
+        "de": "Leider können wir für Personen unter 18 Jahren keine Vorhersagen anbieten.",
+        "en": "Unfortunately, we can't provide predictions for people under the age of 18."
+      }
     },
     "sex": {
       "question": { "de": "Welches Geschlecht haben Sie?", "en": "What is your sex?" },

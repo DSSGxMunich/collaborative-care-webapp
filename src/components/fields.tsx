@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ui, useLang, type L } from "@/lib/i18n";
 
 export function Choice<T extends string | number>({
@@ -174,31 +175,111 @@ export function NumberField({
   );
 }
 
+const daysInMonth = (year: number, month: number) => new Date(year, month, 0).getDate();
+const pad2 = (n: number) => String(n).padStart(2, "0");
+const selectClass =
+  "rounded-md border border-input bg-background px-2.5 py-2 text-sm outline-none focus:border-primary";
+
+/**
+ * A birth-date picker built from three plain <select> dropdowns instead of a
+ * single native `<input type="date">`. The native date input's keyboard entry
+ * is unreliable across browsers (typing a date can silently fail to commit a
+ * value, unlike opening its calendar dropdown), which blocked users from
+ * continuing. Dropdowns are keyboard- and click-friendly and always produce a
+ * valid, complete date.
+ */
 export function DateField({
   label,
   value,
   onChange,
   min,
   max,
+  error,
 }: {
   label: L;
   value: string | null;
   onChange: (v: string | null) => void;
   min?: string;
   max?: string;
+  error?: L;
 }) {
   const { tr } = useLang();
+
+  // Selections accumulate here (day, then month, then year — in any order)
+  // until all three are picked; only then is a complete date reported
+  // upward. Deriving these straight from `value` instead would forget the
+  // first two picks whenever the third is still missing, since `value` only
+  // ever holds a *complete* date (or null while one is still missing).
+  const [[year, month, day], setParts] = useState<[number | null, number | null, number | null]>(
+    () => (value ? (value.split("-").map(Number) as [number, number, number]) : [null, null, null]),
+  );
+
+  const maxYear = max ? Number(max.slice(0, 4)) : new Date().getFullYear();
+  const minYear = min ? Number(min.slice(0, 4)) : maxYear - 110;
+  const years = Array.from({ length: maxYear - minYear + 1 }, (_, i) => maxYear - i);
+  const dayCount = year && month ? daysInMonth(year, month) : 31;
+
+  const commit = (y: number | null, m: number | null, d: number | null) => {
+    setParts([y, m, d]);
+    if (y === null || m === null || d === null) {
+      onChange(null);
+      return;
+    }
+    const clampedDay = Math.min(d, daysInMonth(y, m));
+    let iso = `${y}-${pad2(m)}-${pad2(clampedDay)}`;
+    if (min && iso < min) iso = min;
+    if (max && iso > max) iso = max;
+    onChange(iso);
+  };
+
   return (
     <fieldset className="surface-card p-5">
       <legend className="mb-3 block text-base font-semibold">{tr(label)}</legend>
-      <input
-        type="date"
-        min={min}
-        max={max}
-        value={value ?? ""}
-        onChange={(e) => onChange(e.target.value || null)}
-        className="w-full max-w-[240px] rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:border-primary"
-      />
+      <div className="flex flex-wrap gap-2">
+        <select
+          aria-label={tr(ui.dateField.day)}
+          value={day ?? ""}
+          onChange={(e) => commit(year, month, e.target.value ? Number(e.target.value) : null)}
+          className={selectClass}
+        >
+          <option value="">{tr(ui.dateField.day)}</option>
+          {Array.from({ length: dayCount }, (_, i) => i + 1).map((d) => (
+            <option key={d} value={d}>
+              {pad2(d)}
+            </option>
+          ))}
+        </select>
+        <select
+          aria-label={tr(ui.dateField.month)}
+          value={month ?? ""}
+          onChange={(e) => {
+            const m = e.target.value ? Number(e.target.value) : null;
+            commit(year, m, m && year ? Math.min(day ?? 1, daysInMonth(year, m)) : day);
+          }}
+          className={selectClass}
+        >
+          <option value="">{tr(ui.dateField.month)}</option>
+          {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
+            <option key={m} value={m}>
+              {pad2(m)}
+            </option>
+          ))}
+        </select>
+        <select
+          aria-label={tr(ui.dateField.year)}
+          value={year ?? ""}
+          onChange={(e) => commit(e.target.value ? Number(e.target.value) : null, month, day)}
+          className={selectClass}
+        >
+          <option value="">{tr(ui.dateField.year)}</option>
+          {years.map((y) => (
+            <option key={y} value={y}>
+              {y}
+            </option>
+          ))}
+        </select>
+      </div>
+      {error ? <p className="mt-1.5 text-xs text-destructive">{tr(error)}</p> : null}
     </fieldset>
   );
 }

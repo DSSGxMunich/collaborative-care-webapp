@@ -63,6 +63,7 @@ export const ui = uiContent as {
   disclaimer: L;
   researchPrototype: L;
   noAnswersLeaveDevice: L;
+  dateField: Record<"day" | "month" | "year", L>;
 };
 
 /** Fills `{placeholder}` tokens in a translated string, e.g. tr(x, { version: "1.0" }). */
