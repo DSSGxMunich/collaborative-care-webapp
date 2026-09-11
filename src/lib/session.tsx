@@ -11,22 +11,26 @@ import questionnaireContent from "@/content/questionnaire.json";
 
 export type YesNo = "yes" | "no";
 /**
- * "female" and "male" feed the fitted outcome model (theta_sex, interaction
- * terms) via SEX_CODE in model.ts. The other options are offered so nobody
- * is forced into a binary answer, but there isn't enough trial data to fit
- * a coefficient for them — the model falls back to the sex-unadjusted
- * (average-across-all) estimate for those, same as leaving sex unanswered.
+ * "female" and "male" feed the Step-1 risk-score model (src/lib/riskScore.ts,
+ * the sex=Male dummy). The other options are offered so nobody is forced
+ * into a binary answer, but there isn't enough trial data to fit a
+ * coefficient for them — the risk score falls back to the Female (reference
+ * level) estimate for those, same as leaving sex unanswered.
  */
 export type Sex = "female" | "male" | "other" | "intersex" | "unsure" | "preferNotToSay";
 
 export type Profile = {
   /** Date of birth, ISO "YYYY-MM-DD". Age is derived from this — see ageFromBirthDate. */
   birthDate: string | null;
-  /** Used by the fitted outcome model (theta_sex, interaction terms) when female/male. */
+  /** Used by the Step-1 risk-score model (src/lib/riskScore.ts) when female/male. */
   sex: Sex | null;
   priorEpisode: YesNo | null;
   priorTreatment: string[];
-  /** Only asked if the patient already knows it; not part of the outcome model. */
+  /**
+   * Only asked if the patient already knows it. Feeds the Step-1 risk-score
+   * model (src/lib/riskScore.ts) when known; otherwise a documented
+   * population-typical default is used (see DEFAULT_GAD7_TOTAL there).
+   */
   gad7Known: YesNo | null;
   gad7Score: number | null;
 };

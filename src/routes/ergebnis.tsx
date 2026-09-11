@@ -3,7 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { fill, ui, useLang } from "@/lib/i18n";
 import { SEVERITY_LABEL, SEVERITY_RANGE } from "@/lib/phq9";
-import { MODEL_META, posteriorEndpointDraws, type Scenario, type ScenarioId } from "@/lib/model";
+import { MODEL_META, posteriorEndpointDraws, type Scenario } from "@/lib/model";
 import { usePrediction } from "@/lib/usePrediction";
 import { ageFromBirthDate, SEX_OPTIONS } from "@/lib/session";
 import resultsContent from "@/content/results.json";
@@ -25,7 +25,7 @@ const pct = (x: number) => (x / PHQ9_MAX) * 100;
 /**
  * One row of the 12-month comparison: a forest-plot-style dot (point
  * estimate) with a whisker (credible interval), on a shared 0–27 axis, plus
- * a dashed reference line at the patient's baseline ("today"). Position and
+ * a solid reference line at the patient's baseline ("today"). Position and
  * distance from "today" carry the comparison — no separate rank badge.
  */
 function ComparisonRow({
@@ -52,7 +52,7 @@ function ComparisonRow({
       <div className="relative mt-2.5 h-4">
         <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-border" />
         <div
-          className="absolute top-0 bottom-0 border-l-2 border-dashed border-foreground/70"
+          className="absolute top-0 bottom-0 border-l-2 border-foreground/70"
           style={{ left: `${pct(baseline)}%` }}
         />
         <div
@@ -113,7 +113,7 @@ function ChartLegend() {
         {tr(r.legend.interval)}
       </span>
       <span className="inline-flex items-center gap-1.5">
-        <span className="h-2.5 w-0 shrink-0 border-l-2 border-dashed border-foreground/70" />
+        <span className="h-2.5 w-0 shrink-0 border-l-2 border-foreground/70" />
         {tr(r.legend.todayLine)} · {tr(r.legend.scale)}
       </span>
     </div>
@@ -143,29 +143,14 @@ function BaselinePointer({ baseline }: { baseline: number }) {
   );
 }
 
-function CrisisBanner({ level }: { level: keyof typeof r.crisis }) {
-  const { tr } = useLang();
-  if (level === "none") return null;
-  const c = r.crisis[level];
-  return (
-    <div className="mt-6 rounded-md border border-destructive bg-destructive-soft p-4">
-      <h2 className="text-sm font-semibold text-destructive">{tr(c.title)}</h2>
-      <p className="mt-1.5 text-sm leading-relaxed">{tr(c.message)}</p>
-      <Link
-        to="/soforthilfe"
-        className="mt-2 inline-flex text-sm font-medium text-destructive underline underline-offset-2"
-      >
-        {tr(ui.nav.crisis)}
-      </Link>
-    </div>
-  );
-}
+type ScenarioTab = "combo" | "single";
 
 function Results() {
   const { tr } = useLang();
   const p = usePrediction();
   const [revealed, setRevealed] = useState(false);
   const [showDistributions, setShowDistributions] = useState(false);
+  const [tab, setTab] = useState<ScenarioTab>("combo");
 
   if (!p.hydrated) return <div className="mx-auto max-w-2xl px-4 py-16" />;
 
@@ -210,7 +195,14 @@ function Results() {
     );
   }
 
-  const scenarioLabel = (id: ScenarioId) => tr(r.scenarios[id].short);
+  /** Usual care keeps its own short label; a package's (or single component's) label is its active components joined together. */
+  const scenarioLabel = (scenario: Scenario) =>
+    scenario.id === "usualCare"
+      ? tr(r.scenarios.usualCare.short)
+      : scenario.components.map((id) => tr(r.components[id].short)).join(" + ");
+
+  const activeScenarios = tab === "combo" ? p.scenarios : p.singleScenarios;
+  const activeIntro = tab === "combo" ? r.scenariosIntro : r.singleScenariosIntro;
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
@@ -219,8 +211,6 @@ function Results() {
       <p className="mt-3 rounded-md border border-warning/40 bg-warning-soft p-3 text-sm leading-relaxed">
         {tr(r.prototypeNote)}
       </p>
-
-      <CrisisBanner level={p.crisis} />
 
       <div className="mt-6 flex items-baseline gap-3 border-b border-border pb-4">
         <span className="text-4xl font-semibold tabular-nums leading-none">{p.baseline}</span>
@@ -241,19 +231,38 @@ function Results() {
           {tr(r.whatCanBeExpectedBody)}
         </p>
 
+        <div className="mt-4 inline-flex rounded-md border border-border p-0.5 text-sm">
+          {(["combo", "single"] as const).map((t) => (
+            <button
+              key={t}
+              type="button"
+              onClick={() => setTab(t)}
+              aria-pressed={tab === t}
+              className={[
+                "rounded-[5px] px-3 py-1.5 font-medium transition-colors",
+                tab === t
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:text-foreground",
+              ].join(" ")}
+            >
+              {tr(r.scenarioTabs[t])}
+            </button>
+          ))}
+        </div>
+
         <BaselinePointer baseline={p.baseline} />
         <div className="divide-y divide-border rounded-md border border-border px-4">
-          {p.scenarios.map((scenario) => (
+          {activeScenarios.map((scenario) => (
             <ComparisonRow
               key={scenario.id}
-              label={scenarioLabel(scenario.id)}
+              label={scenarioLabel(scenario)}
               scenario={scenario}
               baseline={p.baseline}
             />
           ))}
         </div>
         <ChartLegend />
-        <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{tr(r.scenariosIntro)}</p>
+        <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{tr(activeIntro)}</p>
 
         <button
           type="button"
@@ -265,11 +274,11 @@ function Results() {
         {showDistributions && (
           <div className="mt-3 rounded-md bg-secondary p-4">
             <p className="text-xs text-muted-foreground">{tr(r.posterior.explain)}</p>
-            <div className="mt-3 grid grid-cols-3 gap-3">
-              {p.scenarios.map((scenario) => (
+            <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {activeScenarios.map((scenario) => (
                 <PosteriorMini
                   key={scenario.id}
-                  label={scenarioLabel(scenario.id)}
+                  label={scenarioLabel(scenario)}
                   scenario={scenario}
                 />
               ))}
@@ -312,6 +321,20 @@ function Results() {
                     },
                   )
                 : tr(r.predictors.notProvided)}
+            </dd>
+          </div>
+          <div className="flex justify-between gap-4 py-2">
+            <dt className="text-muted-foreground">{tr(r.predictors.gad7.label)}</dt>
+            <dd className="font-medium">
+              {p.session.profile.gad7Known === "yes" && p.session.profile.gad7Score !== null
+                ? `${p.session.profile.gad7Score}/21`
+                : tr(r.predictors.notProvided)}
+            </dd>
+          </div>
+          <div className="flex justify-between gap-4 py-2">
+            <dt className="text-muted-foreground">{tr(r.predictors.riskScore.label)}</dt>
+            <dd className="font-medium">
+              {p.predictors.find((row) => row.id === "riskScore")?.value ?? "–"}
             </dd>
           </div>
         </dl>

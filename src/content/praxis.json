@@ -37,7 +37,12 @@
     "sex": { "de": "Geschlecht", "en": "Sex" },
     "priorEpisode": { "de": "Frühere depressive Episode", "en": "Previous depressive episode" },
     "priorTreatment": { "de": "Vorbehandlungen", "en": "Previous treatments" },
-    "gad7": { "de": "GAD-7 (falls bekannt)", "en": "GAD-7 (if known)" }
+    "gad7": { "de": "GAD-7 (falls bekannt)", "en": "GAD-7 (if known)" },
+    "gad7Assumed": {
+      "de": "unbekannt (Bevölkerungswert angenommen)",
+      "en": "unknown (population value assumed)"
+    },
+    "riskScore": { "de": "Schritt-1-Schätzung", "en": "Step 1 estimate" }
   },
   "table": {
     "careOption": { "de": "Versorgungsoption", "en": "Care option" },
@@ -45,7 +50,7 @@
     "delta": { "de": "Δ vs. übliche Versorgung", "en": "Δ vs. usual care" }
   },
   "footer": {
-    "de": "Netzwerk-Metaregressions-Modell, Forschungsprototyp, Modellversion {version}. Werte in Klammern sind ungefähre 95 %-Kredibilitätsintervalle. Keine klinisch validierten Vorhersagen. Angaben verbleiben in der Browser-Sitzung des Patienten.",
-    "en": "Network meta-regression model, research prototype, model version {version}. Values in parentheses are approximate 95% credible intervals. Not clinically validated predictions. Data remain in the patient's browser session."
+    "de": "Komponenten-Netzwerk-Metaanalyse (6 Bausteine, 7 Studien), Forschungsprototyp, Modellversion {version}. Werte in Klammern sind 95 %-Posterior-Kredibilitätsintervalle. Keine klinisch validierten Vorhersagen. Angaben verbleiben in der Browser-Sitzung des Patienten.",
+    "en": "Component network meta-analysis (6 components, 7 trials), research prototype, model version {version}. Values in parentheses are 95% posterior credible intervals. Not clinically validated predictions. Data remain in the patient's browser session."
   }
 }

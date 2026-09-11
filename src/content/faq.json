@@ -20,16 +20,16 @@
         "en": "What does the 12-month follow-up mean?"
       },
       "answer": {
-        "de": "Das Ergebnismodell schätzt, wie hoch der PHQ-9-Wert eines Patienten oder einer Patientin voraussichtlich 12 Monate nach der Erstvorstellung sein wird — nicht sofort und nicht in wenigen Wochen. Es ist eine Schätzung für Gruppen von Personen mit ähnlichem Profil (Ausgangswert, Alter, Geschlecht), keine Zusage für den individuellen Verlauf.",
-        "en": "The outcome model estimates how high a patient's PHQ-9 score is likely to be 12 months after the initial visit — not immediately and not after a few weeks. It is an estimate for groups of people with a similar profile (baseline score, age, sex), not a guarantee for any one person's course."
+        "de": "Das Ergebnismodell schätzt, wie hoch der PHQ-9-Wert eines Patienten oder einer Patientin voraussichtlich 12 Monate nach der Erstvorstellung sein wird — nicht sofort und nicht in wenigen Wochen. Es ist eine Schätzung für Gruppen von Personen mit ähnlichem Profil (Ausgangswert, Alter, Geschlecht, GAD-7), keine Zusage für den individuellen Verlauf.",
+        "en": "The outcome model estimates how high a patient's PHQ-9 score is likely to be 12 months after the initial visit — not immediately and not after a few weeks. It is an estimate for groups of people with a similar profile (baseline score, age, sex, GAD-7), not a guarantee for any one person's course."
       }
     },
     {
       "id": "gad7",
       "question": { "de": "Was ist der GAD-7?", "en": "What is the GAD-7?" },
       "answer": {
-        "de": "Der GAD-7 (Generalized Anxiety Disorder-7) ist ein validierter 7-Fragen-Bogen für Angstsymptome, Werte von 0 bis 21. Er wird hier nur abgefragt, wenn er bereits bekannt ist, und dient der Einordnung — er geht nicht in die PHQ-9-Vorhersage ein.",
-        "en": "The GAD-7 (Generalized Anxiety Disorder-7) is a validated 7-item questionnaire for anxiety symptoms, scored 0 to 21. It is only asked for here if already known, and is for context — it does not enter the PHQ-9 prediction."
+        "de": "Der GAD-7 (Generalized Anxiety Disorder-7) ist ein validierter 7-Fragen-Bogen für Angstsymptome, Werte von 0 bis 21. Er wird hier nur abgefragt, wenn er bereits bekannt ist. Ist er bekannt, fließt er in die PHQ-9-Vorhersage ein (über das vorgeschaltete Schritt-1-Modell); ist er nicht bekannt, wird dafür ein typischer Bevölkerungswert angenommen.",
+        "en": "The GAD-7 (Generalized Anxiety Disorder-7) is a validated 7-item questionnaire for anxiety symptoms, scored 0 to 21. It is only asked for here if already known. When known, it enters the PHQ-9 prediction (via the upstream Step 1 model); when not, a population-typical value is assumed for it."
       }
     },
     {

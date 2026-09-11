@@ -75,13 +75,25 @@ function Clinician() {
     {
       label: tr(c.rows.gad7),
       value:
-        profile.gad7Known === "yes" && profile.gad7Score !== null ? `${profile.gad7Score}/21` : "–",
+        profile.gad7Known === "yes" && profile.gad7Score !== null
+          ? `${profile.gad7Score}/21`
+          : `${tr(c.rows.gad7Assumed)}`,
+    },
+    {
+      label: tr(c.rows.riskScore),
+      value: p.predictors.find((row) => row.id === "riskScore")?.value ?? "–",
     },
   ];
 
   const round1 = (x: number) => Number(x.toFixed(1));
   const usualEndpoint =
     p.scenarios.find((s) => s.id === "usualCare")?.expectedEndpoint ?? p.baseline;
+
+  /** Usual care keeps its own label; a package's label is its active components joined together. */
+  const careOptionLabel = (scenario: (typeof p.scenarios)[number]) =>
+    scenario.id === "usualCare"
+      ? tr(r.scenarios.usualCare.label)
+      : scenario.components.map((id) => tr(r.components[id].short)).join(" + ");
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
@@ -167,9 +179,7 @@ function Clinician() {
                 const delta = round1(usualEndpoint - scenario.expectedEndpoint);
                 return (
                   <tr key={scenario.id}>
-                    <td className="px-4 py-2.5 font-medium">
-                      {tr(r.scenarios[scenario.id].label)}
-                    </td>
+                    <td className="px-4 py-2.5 font-medium">{careOptionLabel(scenario)}</td>
                     <td className="px-4 py-2.5">
                       {scenario.expectedEndpoint}{" "}
                       <span className="text-xs text-muted-foreground">

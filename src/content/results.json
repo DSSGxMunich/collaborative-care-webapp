@@ -14,8 +14,8 @@
   },
   "title": { "de": "Ihre Auswertung", "en": "Your results" },
   "prototypeNote": {
-    "de": "Alle Koeffizienten sowie die Standardisierung von Alter und PHQ-9 stammen aus einem gefitteten Netzwerk-Metaregressions-Modell (einschließlich des über die eingeschlossenen Studien gemittelten Achsenabschnitts). Es handelt sich um einen Forschungsprototyp, keine klinisch validierte Vorhersage.",
-    "en": "All coefficients and the age/PHQ-9 standardization come from a fitted network meta-regression model (including the intercept, averaged across the included trials). This is a research prototype, not a clinically validated prediction."
+    "de": "Diese Schätzungen stammen aus einer gefitteten Komponenten-Netzwerk-Metaanalyse (6 Behandlungsbausteine, 7 Studien) mit einem vorgeschalteten Schritt-1-Modell für Alter, Geschlecht, Ausgangs-PHQ-9 und GAD-7. Alle Bandbreiten sind echte Posterior-Kredibilitätsintervalle. Es handelt sich um einen Forschungsprototyp, keine klinisch validierte Vorhersage.",
+    "en": "These estimates come from a fitted component network meta-analysis (6 treatment components, 7 trials) with an upstream Step 1 model for age, sex, baseline PHQ-9 and GAD-7. All ranges are real posterior credible intervals. This is a research prototype, not a clinically validated prediction."
   },
   "phq9Label": "PHQ-9",
   "of27": { "de": "von 27 Punkten", "en": "of 27 points" },
@@ -38,39 +38,57 @@
         "de": "Behandlung wie bisher: Termine bei Bedarf, Beratung, Verlaufsbeobachtung.",
         "en": "Care as before: appointments as needed, advice and watchful monitoring."
       }
-    },
-    "followUp": {
-      "label": {
-        "de": "Übliche Versorgung + Nachverfolgung (2–4 Wochen)",
-        "en": "Usual care + follow-up (2–4 weeks)"
-      },
-      "short": {
-        "de": "Übliche Versorgung + Nachverfolgung",
-        "en": "Usual care + follow-up"
-      },
-      "description": {
-        "de": "Zusätzlich zur üblichen Versorgung: ein fest vereinbarter Nachverfolgungstermin 2 bis 4 Wochen nach der Erstvorstellung, auch telefonisch. Ohne Rückfallpräventionsplan.",
-        "en": "In addition to usual care: a follow-up appointment or contact — in person or by telephone — firmly scheduled for 2 to 4 weeks after the initial visit. Without the relapse-prevention plan."
-      }
-    },
-    "relapsePrevention": {
-      "label": {
-        "de": "Übliche Versorgung + Rückfallpräventionsplan",
-        "en": "Usual care + relapse-prevention plan"
-      },
-      "short": {
-        "de": "Übliche Versorgung + Rückfallpräventionsplan",
-        "en": "Usual care + relapse-prevention plan"
-      },
-      "description": {
-        "de": "Zusätzlich zur üblichen Versorgung: ein schriftlicher Plan, der festlegt, wie ein Wiederauftreten der Beschwerden früh erkannt und ihm vorgebeugt wird. Ohne Nachverfolgungstermin.",
-        "en": "In addition to usual care: a written plan setting out how a recurrence of symptoms is detected early and prevented. Without the follow-up appointment."
-      }
     }
   },
+  "components": {
+    "counseling": {
+      "label": {
+        "de": "Beratung zusätzlich zur Medikation (≤ 8 Sitzungen)",
+        "en": "Counseling in addition to medication (≤ 8 sessions)"
+      },
+      "short": { "de": "Beratung (≤ 8 Sitzungen)", "en": "Counseling (≤ 8 sessions)" }
+    },
+    "manualTherapy": {
+      "label": { "de": "Manualisierte Psychotherapie", "en": "Manual-based psychotherapy" },
+      "short": { "de": "Manualisierte Psychotherapie", "en": "Manual-based psychotherapy" }
+    },
+    "patientPreference": {
+      "label": {
+        "de": "Patientenpräferenz bei der Behandlungsentscheidung berücksichtigt",
+        "en": "Patient preference considered in treatment decisions"
+      },
+      "short": { "de": "Patientenpräferenz berücksichtigt", "en": "Patient preference considered" }
+    },
+    "automatedFollowUp": {
+      "label": {
+        "de": "Automatisierter Nachverfolgungsprozess",
+        "en": "Automated follow-up process"
+      },
+      "short": { "de": "Automatisierte Nachverfolgung", "en": "Automated follow-up" }
+    },
+    "relapsePrevention": {
+      "label": { "de": "Rückfallpräventionsplan", "en": "Relapse-prevention plan" },
+      "short": { "de": "Rückfallpräventionsplan", "en": "Relapse-prevention plan" }
+    },
+    "familyInvolvement": {
+      "label": {
+        "de": "Familie und Freunde wurden einbezogen",
+        "en": "Family and friends were involved"
+      },
+      "short": { "de": "Familie/Freunde einbezogen", "en": "Family/friends involved" }
+    }
+  },
+  "scenarioTabs": {
+    "combo": { "de": "Kombinationen aus den Studien", "en": "Combinations from the trials" },
+    "single": { "de": "Einzelne Bausteine", "en": "Single components" }
+  },
   "scenariosIntro": {
-    "de": "Niedrigere Werte bedeuten weniger Beschwerden.",
-    "en": "Lower values mean fewer symptoms."
+    "de": "Niedrigere Werte bedeuten weniger Beschwerden. Jede Zeile außer der Referenz ist eine tatsächlich in einer der 7 eingeschlossenen Studien untersuchte Kombination von Bausteinen — keine frei wählbare Zusammenstellung.",
+    "en": "Lower values mean fewer symptoms. Every row besides the reference is a combination of components actually tested in one of the 7 included trials — not a freely chosen combination."
+  },
+  "singleScenariosIntro": {
+    "de": "Niedrigere Werte bedeuten weniger Beschwerden. Diese Ansicht zeigt jeden Baustein einzeln zur üblichen Versorgung hinzugefügt — keiner davon wurde allein in einer Studie getestet, keine Studie hat je nur einen Baustein eingesetzt. Mehr Bausteine gleichzeitig bedeutet nicht automatisch ein besseres Ergebnis; welche Kombinationen tatsächlich untersucht wurden, zeigt die andere Ansicht.",
+    "en": "Lower values mean fewer symptoms. This view shows each component added on its own to usual care — none of them was tested alone in any trial. Using more components at once is not automatically better; which combinations were actually tested is shown in the other view."
   },
   "posterior": {
     "sectionTitle": {
@@ -84,8 +102,8 @@
       "en": "In addition to the range above, this shows the full estimated distribution of possible 12-month PHQ-9 values, rather than a single point value."
     },
     "placeholderNote": {
-      "de": "Platzhalter: Diese Verteilung wird aus dem oben angegebenen Kredibilitätsintervall angenähert. Sie wird durch die echten Posterior-Stichproben des Netzwerk-Metaregressions-Modells ersetzt, sobald diese vorliegen.",
-      "en": "Placeholder: this distribution is approximated from the credible interval shown above. It will be replaced by the real posterior draws from the network meta-regression model once available."
+      "de": "Diese Verteilung besteht aus den echten Posterior-Stichproben des gefitteten Modells (2 000 Ziehungen aus 4 Ketten), nicht aus einer Näherung.",
+      "en": "This distribution is made up of the fitted model's real posterior draws (2,000 draws across 4 chains), not an approximation."
     }
   },
   "crisis": {
@@ -132,13 +150,17 @@
     }
   },
   "predictorsNote": {
-    "de": "Das zugrunde liegende Modell wurde nur mit diesen drei Merkmalen angepasst. Vorbehandlung und GAD-7 waren in den einbezogenen Studien nicht erfasst und fließen deshalb nicht in die Schätzung ein — Sie finden sie stattdessen in der Zusammenfassung für die Praxis.",
-    "en": "The underlying model was fitted using only these three characteristics. Prior treatment and GAD-7 weren't recorded in the included trials, so they don't factor into the estimate — you'll find them instead in the practice summary."
+    "de": "Ausgangswert PHQ-9, Alter, Geschlecht und GAD-7 (falls bekannt) fließen über ein vorgeschaltetes Schritt-1-Modell in die Schätzung ein — ist der GAD-7 nicht bekannt, wird dafür ein typischer Bevölkerungswert angenommen. Ihre übrige Vorgeschichte (z. B. Vorbehandlung) sehen Sie in der Zusammenfassung für die Praxis, sie verändert die Schätzung aber nicht.",
+    "en": "Baseline PHQ-9, age, sex and GAD-7 (if known) all feed into the estimate via an upstream Step 1 model — if GAD-7 isn't known, a population-typical value is assumed for it. Your other history (e.g. prior treatment) appears in the practice summary but does not change the estimate."
   },
   "predictors": {
     "baseline": { "label": { "de": "Ausgangswert PHQ-9", "en": "Baseline PHQ-9" } },
     "age": { "label": { "de": "Alter", "en": "Age" } },
     "sex": { "label": { "de": "Geschlecht", "en": "Sex" } },
+    "gad7": { "label": { "de": "GAD-7", "en": "GAD-7" } },
+    "riskScore": {
+      "label": { "de": "Schritt-1-Schätzung", "en": "Step 1 estimate" }
+    },
     "notProvided": { "de": "keine Angabe", "en": "not provided" }
   },
   "whatCanBeExpected": {
@@ -146,8 +168,8 @@
     "en": "Estimated PHQ-9 at 12 months"
   },
   "whatCanBeExpectedBody": {
-    "de": "Schätzungen für Gruppen mit ähnlichem Profil, keine Zusage für Ihren persönlichen Verlauf. Die beiden Bausteine werden nie gemeinsam gezeigt, sondern immer einzeln zur üblichen Versorgung hinzugefügt.",
-    "en": "Estimates for groups with a similar profile, not a promise about your personal course. The two components are never shown together — only added individually to usual care."
+    "de": "Übliche Versorgung als Referenz, dazu zwei Ansichten: die Behandlungskombinationen, die tatsächlich in den eingeschlossenen Studien untersucht wurden, und — separat — jeder einzelne Baustein für sich. Alle Zahlen sind Schätzungen für Gruppen von Personen mit einem ähnlichen Profil — keine Zusage für Ihren persönlichen Verlauf.",
+    "en": "Usual care as the reference, plus two views: the treatment combinations actually tested in the included trials, and — separately — each single component on its own. All numbers are estimates for groups of people with a similar profile — not a promise about your personal course."
   },
   "whatInfluences": {
     "de": "Was beeinflusst diese Schätzung?",
