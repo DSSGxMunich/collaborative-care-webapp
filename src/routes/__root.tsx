@@ -79,7 +79,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "stylesheet", href: appCss }],
+    links: [
+      { rel: "stylesheet", href: appCss },
+      // Explicit no-op icon: without this, browsers fall back to requesting
+      // /favicon.ico at the domain root (outside our base path) whenever no
+      // <link rel="icon"> is present, which can flash a stale/unrelated
+      // cached icon before resolving to nothing.
+      { rel: "icon", href: "data:," },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
