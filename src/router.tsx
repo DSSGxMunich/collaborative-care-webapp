@@ -10,6 +10,9 @@ export const getRouter = () => {
     context: { queryClient },
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
+    // Matches the `base` in vite.config.ts so routes/links resolve correctly
+    // when served from a subpath (e.g. GitHub Pages project sites).
+    basepath: import.meta.env.BASE_URL,
   });
 
   return router;

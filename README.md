@@ -49,6 +49,19 @@ bun run build
 node .output/server/index.mjs
 ```
 
+### Deployment
+
+Every push to `main` builds the app as a fully static site (all routes have no
+dynamic segments, so they're prerendered to HTML) and publishes it to
+**GitHub Pages** via `.github/workflows/deploy-pages.yml`. Enable it once
+under repo Settings → Pages → Source: "GitHub Actions".
+
+The build is prefixed with `/collaborative-care-webapp/` (via `GITHUB_PAGES_BASE`,
+matching the repo name) so assets and links resolve correctly at
+`https://dssgxmunich.github.io/collaborative-care-webapp/`. Running `bun run build`
+locally without that env var builds for a root path instead, e.g. for a
+custom domain.
+
 ### Project structure
 
 - `src/routes/` - file-based routes (see `src/routes/README.md` for the routing conventions)
