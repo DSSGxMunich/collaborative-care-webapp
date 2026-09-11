@@ -120,24 +120,6 @@ function ChartLegend({ baseline }: { baseline: number }) {
   );
 }
 
-function CrisisBanner({ level }: { level: keyof typeof r.crisis }) {
-  const { tr } = useLang();
-  if (level === "none") return null;
-  const c = r.crisis[level];
-  return (
-    <div className="mt-6 rounded-md border border-destructive bg-destructive-soft p-4">
-      <h2 className="text-sm font-semibold text-destructive">{tr(c.title)}</h2>
-      <p className="mt-1.5 text-sm leading-relaxed">{tr(c.message)}</p>
-      <Link
-        to="/soforthilfe"
-        className="mt-2 inline-flex text-sm font-medium text-destructive underline underline-offset-2"
-      >
-        {tr(ui.nav.crisis)}
-      </Link>
-    </div>
-  );
-}
-
 function Results() {
   const { tr } = useLang();
   const p = usePrediction();
@@ -200,8 +182,6 @@ function Results() {
       <p className="mt-3 rounded-md border border-warning/40 bg-warning-soft p-3 text-sm leading-relaxed">
         {tr(r.prototypeNote)}
       </p>
-
-      <CrisisBanner level={p.crisis} />
 
       <div className="mt-6 flex items-baseline gap-3 border-b border-border pb-4">
         <span className="text-4xl font-semibold tabular-nums leading-none">{p.baseline}</span>
