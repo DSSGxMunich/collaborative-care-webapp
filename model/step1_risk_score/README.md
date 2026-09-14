@@ -56,7 +56,7 @@ committed JSON to within that same rounding.
 ## Step 1 / Step 2 coupling — read before refitting
 
 `src/lib/model.ts` (Step 2, the CNMA) was fit using `risk_score` values
-that came out of *this* Step 1 model. If you refit Step 1 with new data or
+that came out of _this_ Step 1 model. If you refit Step 1 with new data or
 a different formula, the `risk_score` distribution it produces shifts, and
 Step 2's `lambda_risk` / `delta_component_risk` — calibrated against the
 old distribution — become stale. There's no automated check for this
