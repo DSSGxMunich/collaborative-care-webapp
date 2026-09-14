@@ -70,6 +70,7 @@
  */
 
 import nmaData from "./data/nma-posterior.json";
+import { effectiveGad7Score } from "./gad7";
 import { computeRiskScore, RISK_SCORE_TRAINING } from "./riskScore";
 import { ageFromBirthDate, type Profile } from "./session";
 
@@ -259,7 +260,7 @@ export type PredictionInput = {
 
 function riskScoreFor(input: PredictionInput): number {
   const age = input.profile.birthDate ? ageFromBirthDate(input.profile.birthDate) : null;
-  const gad7Total = input.profile.gad7Known === "yes" ? input.profile.gad7Score : null;
+  const gad7Total = effectiveGad7Score(input.profile);
   return computeRiskScore({ age, sex: input.profile.sex, baselinePhq9: input.baseline, gad7Total });
 }
 
@@ -273,12 +274,16 @@ export type PredictorRow = {
 export function describePredictors(input: PredictionInput): PredictorRow[] {
   const p = input.profile;
   const age = p.birthDate ? ageFromBirthDate(p.birthDate) : null;
-  const gad7Available = p.gad7Known === "yes" && p.gad7Score !== null;
+  const gad7Value = effectiveGad7Score(p);
   return [
     { id: "baseline", value: `${input.baseline}/27`, available: true },
     { id: "age", value: age !== null ? age.toFixed(2) : "–", available: age !== null },
     { id: "sex", value: p.sex ?? "–", available: p.sex !== null },
-    { id: "gad7", value: gad7Available ? `${p.gad7Score}/21` : "–", available: gad7Available },
+    {
+      id: "gad7",
+      value: gad7Value !== null ? `${gad7Value}/21` : "–",
+      available: gad7Value !== null,
+    },
     {
       id: "riskScore",
       value: round1(riskScoreFor(input)).toString(),

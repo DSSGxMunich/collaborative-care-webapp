@@ -175,10 +175,6 @@
     "de": "Was beeinflusst diese Schätzung?",
     "en": "What influences this estimate?"
   },
-  "footer": {
-    "de": "Modellversion {version}; Bezugszeitpunkt 12 Monate. Ihre Antworten bleiben ausschließlich in dieser Browser-Sitzung auf Ihrem Gerät.",
-    "en": "Model version {version}; reference time point 12 months. Your answers stay solely in this browser session on your device."
-  },
   "actions": {
     "clinicianSummary": {
       "de": "Zusammenfassung für die Praxis",

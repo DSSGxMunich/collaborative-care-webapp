@@ -28,11 +28,16 @@ export type Profile = {
   priorTreatment: string[];
   /**
    * Only asked if the patient already knows it. Feeds the Step-1 risk-score
-   * model (src/lib/riskScore.ts) when known; otherwise a documented
+   * model (src/lib/riskScore.ts) when known, or via the in-app
+   * mini-questionnaire below when not; otherwise a documented
    * population-typical default is used (see DEFAULT_GAD7_TOTAL there).
    */
   gad7Known: YesNo | null;
   gad7Score: number | null;
+  /** Whether the patient opted to fill in the GAD-7 mini-questionnaire after saying they don't know their score. */
+  gad7FillNow: boolean;
+  /** Answers to the in-app GAD-7 mini-questionnaire (7 items, 0-3 each) — see effectiveGad7Score in lib/gad7.ts. */
+  gad7Answers: (number | null)[];
 };
 
 export type SafetyAnswers = {
@@ -61,6 +66,8 @@ export const emptySession = (): Session => ({
     priorTreatment: [],
     gad7Known: null,
     gad7Score: null,
+    gad7FillNow: false,
+    gad7Answers: Array<number | null>(7).fill(null),
   },
   completedAt: null,
 });

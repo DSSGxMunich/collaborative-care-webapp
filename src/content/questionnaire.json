@@ -78,6 +78,39 @@
       "severe": { "label": { "de": "Schwere Symptome", "en": "Severe symptoms" }, "range": "20–27" }
     }
   },
+  "gad7": {
+    "intro": {
+      "de": "Wie oft haben Sie sich in den letzten zwei Wochen durch die folgenden Beschwerden beeinträchtigt gefühlt?",
+      "en": "Over the last two weeks, how often have you been bothered by any of the following problems?"
+    },
+    "items": [
+      {
+        "de": "Nervosität, Ängstlichkeit oder Anspannung",
+        "en": "Feeling nervous, anxious, or on edge"
+      },
+      {
+        "de": "Nicht in der Lage sein, Sorgen zu stoppen oder zu kontrollieren",
+        "en": "Not being able to stop or control worrying"
+      },
+      {
+        "de": "Übermäßige Sorgen bezüglich verschiedener Angelegenheiten",
+        "en": "Worrying too much about different things"
+      },
+      { "de": "Schwierigkeiten sich zu entspannen", "en": "Trouble relaxing" },
+      {
+        "de": "Rastlosigkeit, so dass Stillsitzen schwer fällt",
+        "en": "Being so restless that it's hard to sit still"
+      },
+      {
+        "de": "Schnelle Verärgerung oder Reizbarkeit",
+        "en": "Becoming easily annoyed or irritable"
+      },
+      {
+        "de": "Gefühl der Angst, als könnte etwas Schlimmes passieren",
+        "en": "Feeling afraid, as if something awful might happen"
+      }
+    ]
+  },
   "safety": {
     "intro": {
       "de": "Diese drei Fragen helfen einzuschätzen, wie schnell Sie Unterstützung brauchen. Antworten Sie so offen, wie es Ihnen möglich ist.",
@@ -158,7 +191,11 @@
         "en": "Do you know your current GAD-7 score (anxiety symptoms)?"
       },
       "scoreQuestion": { "de": "Wie hoch ist Ihr GAD-7-Wert?", "en": "What is your GAD-7 score?" },
-      "scoreHint": { "de": "Ganzzahl von 0 bis 21.", "en": "Whole number from 0 to 21." }
+      "scoreHint": { "de": "Ganzzahl von 0 bis 21.", "en": "Whole number from 0 to 21." },
+      "fillNowQuestion": {
+        "de": "Möchten Sie den Fragebogen jetzt ausfüllen?",
+        "en": "Do you want to fill in the questionnaire now?"
+      }
     }
   },
   "pleaseAnswerAll": { "de": "Bitte alle Fragen beantworten", "en": "Please answer all questions" },
