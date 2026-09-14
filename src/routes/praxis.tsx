@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { effectiveGad7Score } from "@/lib/gad7";
 import { fill, ui, useLang } from "@/lib/i18n";
 import { PHQ9_ITEMS, SEVERITY_LABEL } from "@/lib/phq9";
 import { assessRisk } from "@/lib/safety";
@@ -78,10 +79,10 @@ function Clinician() {
     },
     {
       label: tr(c.rows.gad7),
-      value:
-        profile.gad7Known === "yes" && profile.gad7Score !== null
-          ? `${profile.gad7Score}/21`
-          : `${tr(c.rows.gad7Assumed)}`,
+      value: (() => {
+        const score = effectiveGad7Score(profile);
+        return score !== null ? `${score}/21` : tr(c.rows.gad7Assumed);
+      })(),
     },
     {
       label: tr(c.rows.riskScore),

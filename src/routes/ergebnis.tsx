@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { effectiveGad7Score } from "@/lib/gad7";
 import { fill, ui, useLang } from "@/lib/i18n";
 import { SEVERITY_LABEL, SEVERITY_RANGE } from "@/lib/phq9";
 import { posteriorEndpointDraws, type Scenario } from "@/lib/model";
@@ -326,9 +327,10 @@ function Results() {
           <div className="flex justify-between gap-4 py-2">
             <dt className="text-muted-foreground">{tr(r.predictors.gad7.label)}</dt>
             <dd className="font-medium">
-              {p.session.profile.gad7Known === "yes" && p.session.profile.gad7Score !== null
-                ? `${p.session.profile.gad7Score}/21`
-                : tr(r.predictors.notProvided)}
+              {(() => {
+                const score = effectiveGad7Score(p.session.profile);
+                return score !== null ? `${score}/21` : tr(r.predictors.notProvided);
+              })()}
             </dd>
           </div>
           <div className="flex justify-between gap-4 py-2">
