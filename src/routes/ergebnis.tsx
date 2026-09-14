@@ -3,7 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { fill, ui, useLang } from "@/lib/i18n";
 import { SEVERITY_LABEL, SEVERITY_RANGE } from "@/lib/phq9";
-import { MODEL_META, posteriorEndpointDraws, type Scenario } from "@/lib/model";
+import { posteriorEndpointDraws, type Scenario } from "@/lib/model";
 import { usePrediction } from "@/lib/usePrediction";
 import { ageFromBirthDate, SEX_OPTIONS } from "@/lib/session";
 import resultsContent from "@/content/results.json";
@@ -354,10 +354,6 @@ function Results() {
           {tr(r.actions.localSupport)}
         </Link>
       </div>
-
-      <p className="mt-8 text-xs leading-relaxed text-muted-foreground">
-        {fill(tr(r.footer), { version: MODEL_META.version })}
-      </p>
     </div>
   );
 }
