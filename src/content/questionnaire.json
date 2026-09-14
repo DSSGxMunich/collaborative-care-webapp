@@ -84,7 +84,10 @@
       "en": "Over the last two weeks, how often have you been bothered by any of the following problems?"
     },
     "items": [
-      { "de": "Nervosität, Ängstlichkeit oder Anspannung", "en": "Feeling nervous, anxious, or on edge" },
+      {
+        "de": "Nervosität, Ängstlichkeit oder Anspannung",
+        "en": "Feeling nervous, anxious, or on edge"
+      },
       {
         "de": "Nicht in der Lage sein, Sorgen zu stoppen oder zu kontrollieren",
         "en": "Not being able to stop or control worrying"
@@ -98,7 +101,10 @@
         "de": "Rastlosigkeit, so dass Stillsitzen schwer fällt",
         "en": "Being so restless that it's hard to sit still"
       },
-      { "de": "Schnelle Verärgerung oder Reizbarkeit", "en": "Becoming easily annoyed or irritable" },
+      {
+        "de": "Schnelle Verärgerung oder Reizbarkeit",
+        "en": "Becoming easily annoyed or irritable"
+      },
       {
         "de": "Gefühl der Angst, als könnte etwas Schlimmes passieren",
         "en": "Feeling afraid, as if something awful might happen"
