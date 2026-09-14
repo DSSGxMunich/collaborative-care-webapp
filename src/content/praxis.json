@@ -50,7 +50,7 @@
     "delta": { "de": "Δ vs. übliche Versorgung", "en": "Δ vs. usual care" }
   },
   "footer": {
-    "de": "Komponenten-Netzwerk-Metaanalyse (6 Bausteine, 7 Studien), Forschungsprototyp, Modellversion {version}. Werte in Klammern sind 95 %-Posterior-Kredibilitätsintervalle. Keine klinisch validierten Vorhersagen. Angaben verbleiben in der Browser-Sitzung des Patienten.",
-    "en": "Component network meta-analysis (6 components, 7 trials), research prototype, model version {version}. Values in parentheses are 95% posterior credible intervals. Not clinically validated predictions. Data remain in the patient's browser session."
+    "de": "Dieser Kurzbefund stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (6 Bausteine, 7 Studien) beruht. Die Werte in Klammern sind 95 %-Posterior-Kredibilitätsintervalle. Die Vorhersagen sind nicht klinisch validiert. Alle Angaben bleiben in der Browser-Sitzung des Patienten.",
+    "en": "This report comes from a research prototype built on a component network meta-analysis (6 components, 7 trials). The numbers in parentheses are 95% posterior credible intervals, and these predictions haven't been clinically validated. Everything entered stays in the patient's browser session."
   }
 }
