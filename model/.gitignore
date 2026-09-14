@@ -1,0 +1,8 @@
+# Fitted model artifacts (.rds, .pkl, .nc, ...) can embed real per-patient
+# training data (see step1_risk_score/README.md) and must never be
+# committed. Only the exported coefficient/posterior JSON under
+# src/lib/data/ is checked in.
+*.rds
+*.RDS
+*.pkl
+*.nc
