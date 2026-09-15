@@ -1,6 +1,14 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+  type TooltipProps,
+} from "recharts";
 import { effectiveGad7Score } from "@/lib/gad7";
 import { fill, ui, useLang } from "@/lib/i18n";
 import { SEVERITY_LABEL, SEVERITY_RANGE } from "@/lib/phq9";
@@ -69,29 +77,106 @@ function ComparisonRow({
   );
 }
 
-/** Bins posterior draws into a small histogram, sharing the 0–27 axis with the rows above. */
-function histogram(draws: number[], binCount = 14) {
-  const width = PHQ9_MAX / binCount;
-  const bins = Array.from({ length: binCount }, (_, i) => ({ x0: i * width, count: 0 }));
+type HistogramBin = { label: string; range: string; count: number };
+
+/**
+ * A shared x-domain (with a little padding), computed once across every
+ * scenario currently shown, so every mini histogram below bins over the
+ * same range and stays comparable to its neighbors. Deliberately NOT the
+ * full 0–27 clinical scale: posteriorEndpointDraws() only carries
+ * uncertainty in the model's estimate of the *mean* outcome (see
+ * src/lib/model.ts — sigma/residual variance isn't included), which is
+ * typically a narrow band. Binning that over the full 0–27 range left
+ * most bins empty — usually only 2–3 of 14 populated — regardless of how
+ * many real draws (2000) backed the chart.
+ */
+function posteriorDomain(scenarios: Scenario[]): [number, number] {
+  let min = Infinity;
+  let max = -Infinity;
+  for (const scenario of scenarios) {
+    for (const d of posteriorEndpointDraws(scenario)) {
+      if (d < min) min = d;
+      if (d > max) max = d;
+    }
+  }
+  if (!Number.isFinite(min) || !Number.isFinite(max)) return [0, PHQ9_MAX];
+  if (min === max) return [Math.max(0, min - 1), Math.min(PHQ9_MAX, max + 1)];
+  const pad = (max - min) * 0.08;
+  return [Math.max(0, min - pad), Math.min(PHQ9_MAX, max + pad)];
+}
+
+/** Bins posterior draws into a small histogram over the given shared domain (see posteriorDomain). */
+function histogram(draws: number[], domain: [number, number], binCount = 16): HistogramBin[] {
+  const [lo, hi] = domain;
+  const width = (hi - lo) / binCount || 1;
+  const bins = Array.from({ length: binCount }, (_, i) => ({
+    x0: lo + i * width,
+    x1: lo + (i + 1) * width,
+    count: 0,
+  }));
   for (const d of draws) {
-    const i = Math.min(binCount - 1, Math.max(0, Math.floor(d / width)));
+    const i = Math.min(binCount - 1, Math.max(0, Math.floor((d - lo) / width)));
     const bin = bins[i];
     if (bin) bin.count += 1;
   }
-  return bins.map((b) => ({ label: `${b.x0.toFixed(0)}`, count: b.count }));
+  return bins.map((b) => ({
+    label: b.x0.toFixed(1),
+    range: `${b.x0.toFixed(1)}–${b.x1.toFixed(1)}`,
+    count: b.count,
+  }));
 }
 
-function PosteriorMini({ label, scenario }: { label: string; scenario: Scenario }) {
+/** Per-bar hover: the bin's PHQ-9 range and its share of the 2000 draws — the histogram has no other way to show exact values, since axis labels are sparse by design. */
+function PosteriorTooltip({
+  active,
+  payload,
+  total,
+}: TooltipProps<number, string> & { total: number }) {
+  const { tr } = useLang();
+  const bin = payload?.[0]?.payload as HistogramBin | undefined;
+  if (!active || !bin) return null;
+  return (
+    <div className="rounded-md border border-border bg-card px-2 py-1.5 text-xs shadow-sm">
+      <p className="font-medium tabular-nums">
+        {r.phq9Label} {bin.range}
+      </p>
+      <p className="text-muted-foreground">
+        {fill(tr(r.posterior.tooltipDraws), { count: bin.count, total })}
+      </p>
+    </div>
+  );
+}
+
+function PosteriorMini({
+  label,
+  scenario,
+  domain,
+}: {
+  label: string;
+  scenario: Scenario;
+  domain: [number, number];
+}) {
   const draws = useMemo(() => posteriorEndpointDraws(scenario), [scenario]);
-  const data = useMemo(() => histogram(draws), [draws]);
+  const data = useMemo(() => histogram(draws, domain), [draws, domain]);
   return (
     <div>
       <p className="text-xs text-muted-foreground">{label}</p>
       <div className="mt-1 h-16 w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
-            <XAxis dataKey="label" hide />
+          <BarChart data={data} margin={{ top: 0, right: 2, bottom: 0, left: 2 }}>
+            <XAxis
+              dataKey="label"
+              tick={{ fontSize: 9, fill: "var(--color-muted-foreground)" }}
+              tickLine={false}
+              axisLine={{ stroke: "var(--color-border)" }}
+              interval="preserveStartEnd"
+              tickFormatter={(v: string) => Number(v).toFixed(0)}
+            />
             <YAxis hide />
+            <Tooltip
+              cursor={{ fill: "var(--color-border)", opacity: 0.4 }}
+              content={<PosteriorTooltip total={draws.length} />}
+            />
             <Bar dataKey="count" fill="var(--color-primary)" radius={[1, 1, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
@@ -153,6 +238,19 @@ function Results() {
   const [showDistributions, setShowDistributions] = useState(false);
   const [tab, setTab] = useState<ScenarioTab>("single");
 
+  // buildPredictions() (inside usePrediction) always returns scenarios/
+  // singleScenarios, even before hydration/completion, so this is safe to
+  // compute here — it must be, since hooks can't follow the early returns
+  // below. Only actually binned while the panel is open (the common case
+  // is collapsed) — see posteriorDomain()'s own comment for why the
+  // domain isn't just 0–27.
+  const activeScenarios = tab === "combo" ? p.scenarios : p.singleScenarios;
+  const distributionsDomain = useMemo(
+    () =>
+      showDistributions ? posteriorDomain(activeScenarios) : ([0, PHQ9_MAX] as [number, number]),
+    [showDistributions, activeScenarios],
+  );
+
   if (!p.hydrated) return <div className="mx-auto max-w-2xl px-4 py-16" />;
 
   if (!p.complete) {
@@ -202,7 +300,6 @@ function Results() {
       ? tr(r.scenarios.usualCare.short)
       : scenario.components.map((id) => tr(r.components[id].short)).join(" + ");
 
-  const activeScenarios = tab === "combo" ? p.scenarios : p.singleScenarios;
   const activeIntro = tab === "combo" ? r.scenariosIntro : r.singleScenariosIntro;
 
   return (
@@ -281,6 +378,7 @@ function Results() {
                   key={scenario.id}
                   label={scenarioLabel(scenario)}
                   scenario={scenario}
+                  domain={distributionsDomain}
                 />
               ))}
             </div>
