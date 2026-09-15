@@ -303,38 +303,55 @@ def cmd_export(args: argparse.Namespace) -> None:
     }
 
     with open(args.output, "w", encoding="utf-8") as f:
-        # ensure_ascii=True (json.dump's own default -- left explicit here
-        # so it isn't "fixed" back to False later): matches the \uXXXX
-        # escaping style already in the committed file (e.g. "Hölzel",
-        # "≤"), rather than writing literal non-ASCII characters,
-        # which is valid but a pure diff-noise change on every re-export.
-        json.dump(output, f, indent=2, ensure_ascii=True)
-        f.write("\n")
+        # Minified on purpose (no indent, no spaces) -- NOT a readable
+        # final format, just handed to Prettier immediately below. This
+        # matters, not just for tidiness: Prettier's object/array printer
+        # preserves whether something was ALREADY written expanded
+        # (one entry per line) in whatever source it's given, regardless
+        # of whether it would fit on one line -- the same rule that keeps
+        # a hand-written `{ a: 1 }` inline and a hand-written multi-line
+        # object expanded in ordinary JS/TS. json.dump(indent=2) writes
+        # every nested object/array pre-expanded, so Prettier would then
+        # faithfully preserve that expansion instead of ever collapsing
+        # small objects like {"mean": ..., "ci": [...]} onto one line --
+        # verified empirically (see the commit message this landed in).
+        # Starting from minified input gives Prettier a blank slate to
+        # make that fit/expand decision itself, which is what actually
+        # reproduces the committed file's style.
+        #
+        # ensure_ascii=True (json.dump's own default -- kept explicit so
+        # it isn't "fixed" back to False later) matches the \uXXXX
+        # escaping already in the committed file (e.g. "Hölzel", "≤")
+        # rather than literal non-ASCII characters -- same content
+        # either way, but the escaping style was previously diff noise.
+        json.dump(output, f, separators=(",", ":"), ensure_ascii=True)
 
     print(f"Wrote {n_draws} thinned draws ({chains} chains x {draws_per_chain} draws, "
-          f"thinning={thinning}) -> {args.output}")
+          f"thinning={thinning}) -> {args.output} (minified -- formatting next)")
 
     _prettify(args.output)
 
 
 def _prettify(output_path: str) -> None:
-    """Re-formats the just-written JSON with this repo's own Prettier
-    config (printWidth 100 etc.), via `bunx prettier`. Python's json.dump
-    always breaks every nested array one-element-per-line regardless of
-    `indent`; Prettier collapses short arrays/objects onto one line where
-    they fit, which is the style already committed in nma-posterior.json.
-    Skipping this step doesn't corrupt anything (the raw json.dump output
-    is valid, equivalent JSON) but produces a needlessly 8x-larger file
-    and an unreviewable diff — so this always runs, not just on request."""
+    """Formats the just-written (minified) JSON with this repo's own
+    Prettier config (printWidth 100 etc.) via `bunx prettier`, which is
+    what actually produces the committed file's style (collapsing short
+    objects/arrays onto one line where they fit) -- see the comment above
+    the json.dump call this follows for why the input must be minified
+    for that to happen. Without this step the file is unreadable (one
+    giant line), not just verbose -- so this always runs, not on request,
+    and a missing `bun` is a hard problem for the file's usability, loudly
+    flagged rather than left as a silent minified blob."""
     import shutil
     import subprocess
 
     if shutil.which("bun") is None:
         print(
-            f"NOTE: `bun` not found on PATH, so {output_path} was NOT reformatted with "
-            f"Prettier -- it's valid JSON but will look like a huge, unreviewable diff "
-            f"(every array element on its own line). Run `bun run format -- {output_path}` "
-            f"(or `bunx prettier --write {output_path}`) before committing.",
+            f"WARNING: `bun` not found on PATH -- {output_path} was written MINIFIED "
+            f"(one giant line) and left that way. It's valid JSON but effectively "
+            f"unreadable and undiffable until formatted. Install bun (this repo's own "
+            f"toolchain already needs it) or run "
+            f"`npx --yes prettier@3.9.6 --write {output_path}` before committing.",
             file=sys.stderr,
         )
         return
@@ -343,8 +360,9 @@ def _prettify(output_path: str) -> None:
     )
     if result.returncode != 0:
         print(
-            f"NOTE: `bunx prettier --write {output_path}` failed, so the file was left in "
-            f"json.dump's raw (valid but unreviewably verbose) format:\n{result.stderr}",
+            f"WARNING: `bunx prettier --write {output_path}` failed, so the file was left "
+            f"MINIFIED (valid JSON, one giant line, effectively unreadable/undiffable) "
+            f"until you run it manually:\n{result.stderr}",
             file=sys.stderr,
         )
         return

@@ -65,15 +65,19 @@ python3 model/step2_cnma/export_nma_posterior_json.py export \
   model/step2_cnma/source/manifest.json
 ```
 
-This overwrites `src/lib/data/nma-posterior.json` and then, if `bun` is on
-your `PATH`, runs `bunx prettier --write` on it automatically — Python's
-`json.dump` always breaks every nested array one-element-per-line
-regardless of `indent`, which is valid JSON but produces an ~8x larger,
-unreviewable diff; Prettier collapses short arrays/objects onto one line
-the same way the committed file already looks. If `bun` isn't found, the
-script prints a reminder to run `bun run format -- src/lib/data/nma-posterior.json`
-yourself before committing — the file is still correct either way, just
-harder to review unformatted.
+This overwrites `src/lib/data/nma-posterior.json`, writing it **minified**
+first and then, if `bun` is on your `PATH`, running `bunx prettier --write`
+on it to produce the actual final formatting — the committed file's style
+(short objects/arrays like `{"mean": ..., "ci": [...]}` collapsed onto one
+line where they fit) is Prettier's own fit-based decision, and Prettier
+only makes that decision fresh when the input it's given is minified;
+handed already-multi-line input (e.g. from `json.dump(indent=2)`), it
+preserves that expansion instead of ever collapsing it, no matter how
+short the object is. If `bun` isn't found, the file is left minified (one
+giant line, valid but effectively unreadable) — the script prints a loud
+warning rather than leaving that silent; format it yourself with
+`npx --yes prettier@3.9.6 --write src/lib/data/nma-posterior.json` before
+committing.
 
 Diff it before committing — see "What a good diff looks like" below.
 
