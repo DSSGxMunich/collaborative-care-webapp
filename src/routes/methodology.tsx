@@ -1,4 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import katex from "katex";
+import "katex/dist/katex.css";
 import { useLang } from "@/lib/i18n";
 import methodologyContent from "@/content/methodology.json";
 
@@ -14,6 +16,16 @@ export const Route = createFileRoute("/methodology")({
 
 const m = methodologyContent;
 
+function LatexBlock({ tex }: { tex: string }) {
+  const html = katex.renderToString(tex, { throwOnError: false, displayMode: true });
+  return (
+    <div
+      className="overflow-x-auto rounded-md border border-border bg-muted/50 p-4"
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
+}
+
 function Methodology() {
   const { tr } = useLang();
   return (
@@ -27,13 +39,15 @@ function Methodology() {
             <h2 className="text-lg font-semibold">{tr(section.heading)}</h2>
             <div className="mt-2 space-y-3">
               {section.body.map((paragraph, i) =>
-                "mono" in paragraph && paragraph.mono ? (
-                  <pre
+                "latex" in paragraph && paragraph.latex ? (
+                  <LatexBlock key={i} tex={tr(paragraph)} />
+                ) : "placeholder" in paragraph && paragraph.placeholder ? (
+                  <p
                     key={i}
-                    className="overflow-x-auto rounded-md border border-border bg-muted/50 p-3 text-xs"
+                    className="rounded-md border border-dashed border-border p-3 text-sm italic text-muted-foreground"
                   >
-                    <code>{tr(paragraph)}</code>
-                  </pre>
+                    {tr(paragraph)}
+                  </p>
                 ) : (
                   <p key={i} className="text-sm leading-relaxed text-muted-foreground">
                     {tr(paragraph)}
