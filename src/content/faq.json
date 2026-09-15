@@ -20,8 +20,8 @@
         "en": "What does the 12-month follow-up mean?"
       },
       "answer": {
-        "de": "Das Ergebnismodell schätzt, wie hoch der PHQ-9-Wert einer Patientin oder eines Patienten voraussichtlich 12 Monate nach der Erstvorstellung ist, nicht sofort und nicht nach wenigen Wochen. Es ist eine Schätzung für eine Gruppe von Personen mit ähnlichem Profil (Ausgangswert, Alter, Geschlecht, GAD-7), keine Zusage für den Verlauf bei einer einzelnen Person.",
-        "en": "The outcome model estimates a patient's PHQ-9 score 12 months after the initial visit, not right away and not after a few weeks. It's an estimate for a group of people with a similar profile (baseline score, age, sex, GAD-7), not a guarantee for how any one person will actually do."
+        "de": "In klinischen Studien werden Patient:innen nach Behandlungsbeginn über einen festgelegten Zeitraum beobachtet. Unser Modell schätzt den voraussichtlichen PHQ-9-Wert einer Patientin oder eines Patienten 12 Monate nach der Erstuntersuchung. Dazu nutzt es Daten vieler Patient:innen mit einem ähnlichen Profil (gleicher Ausgangswert, Alter, Geschlecht, Angstniveau), um einzuschätzen, wo Ihr Wert nach einem Jahr voraussichtlich liegen wird. Dies ist ein statistischer Durchschnittswert für Ihr Profil. Ihr individueller Verlauf kann davon abweichen.",
+        "en": "In clinical trials, patients are tracked for a set period after starting treatment. Our model predicts a patient's likely PHQ-9 score 12 months from the first assessment. It uses data from many patients with a similar profile (same baseline severity, age, sex, anxiety level) to estimate where your score is likely to be after one year. This is a statistical average for your profile and your individual outcome may differ."
       }
     },
     {
