@@ -53,7 +53,17 @@ export function useLang() {
 export const ui = uiContent as {
   appName: L;
   appTagline: L;
-  nav: Record<"home" | "questionnaire" | "results" | "clinician" | "support" | "faq" | "crisis", L>;
+  nav: Record<
+    | "home"
+    | "questionnaire"
+    | "results"
+    | "clinician"
+    | "support"
+    | "faq"
+    | "methodology"
+    | "crisis",
+    L
+  >;
   buttons: Record<"start" | "continue" | "back" | "finish", L>;
   step: L;
   of: L;
