@@ -98,12 +98,16 @@
     "show": { "de": "Verteilung anzeigen", "en": "Show distribution" },
     "hide": { "de": "Verteilung ausblenden", "en": "Hide distribution" },
     "explain": {
-      "de": "Zusätzlich zur Spanne oben zeigt dies die volle geschätzte Verteilung möglicher PHQ-9-Werte nach 12 Monaten, statt nur eines einzelnen Punktwerts.",
-      "en": "In addition to the range above, this shows the full estimated distribution of possible 12-month PHQ-9 values, rather than a single point value."
+      "de": "Dies zeigt, wie sicher sich das Modell bei der Schätzung des durchschnittlichen PHQ-9-Werts nach 12 Monaten für Personen mit Ihrem Profil ist — nicht, wie stark die tatsächlichen Werte einzelner Personen streuen. Eine schmale Verteilung bedeutet also eine präzise Schätzung des Durchschnitts, nicht, dass alle Personen nahe diesem Wert landen.",
+      "en": "This shows how confident the model is in its estimate of the average 12-month PHQ-9 for people with your profile — not how much individual people's actual outcomes vary. A narrow distribution means a precise estimate of the average, not that everyone ends up close to this value."
     },
     "placeholderNote": {
       "de": "Diese Verteilung besteht aus den echten Posterior-Stichproben des gefitteten Modells (2 000 Ziehungen aus 4 Ketten), nicht aus einer Näherung.",
       "en": "This distribution is made up of the fitted model's real posterior draws (2,000 draws across 4 chains), not an approximation."
+    },
+    "tooltipDraws": {
+      "de": "{count} von {total} Ziehungen",
+      "en": "{count} of {total} draws"
     }
   },
   "crisis": {
