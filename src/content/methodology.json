@@ -8,17 +8,13 @@
     {
       "id": "overview",
       "heading": {
-        "de": "Überblick: zwei unabhängige Teile",
-        "en": "Overview: two independent parts"
+        "de": "Überblick: zwei Schritte",
+        "en": "Overview: two steps"
       },
       "body": [
         {
-          "de": "Vorhersagen in dieser App kommen aus zwei völlig getrennten Berechnungen. Der Sicherheits-Score, aus den drei Sicherheitsfragen und dem PHQ-9-Schweregrad, steuert ausschließlich, ob eine Krisenmeldung angezeigt wird. Er fließt in keine der unten gezeigten PHQ-9-Zahlen ein.",
-          "en": "Predictions in this app come from two entirely separate computations. The safety score, based on the three safety questions and PHQ-9 severity, only controls whether a crisis message is shown. It never feeds into any of the PHQ-9 numbers described below."
-        },
-        {
-          "de": "Diese Seite behandelt das eigentliche Ergebnismodell, das zweistufig aufgebaut ist. Schritt 1 schätzt, wie sich der PHQ-9 einer Person voraussichtlich unter üblicher Versorgung entwickelt. Schritt 2 schätzt, wie sich diese Schätzung verändert, wenn strukturierte Versorgungsbausteine hinzukommen.",
-          "en": "This page covers the outcome model itself, which works in two steps. Step 1 estimates how a person's PHQ-9 is likely to evolve under usual care. Step 2 estimates how that changes when structured-care components are added."
+          "de": "Die Schätzungen auf dieser Seite kommen aus einem zweistufigen statistischen Modell. Schritt 1 schätzt, wie sich der PHQ-9 einer Person voraussichtlich unter üblicher Versorgung entwickelt. Schritt 2 schätzt, wie sich diese Schätzung verändert, wenn strukturierte Versorgungsbausteine hinzukommen.",
+          "en": "The estimates on this page come from a two-step statistical model. Step 1 estimates how a person's PHQ-9 is likely to evolve under usual care. Step 2 estimates how that changes when structured-care components are added."
         }
       ]
     },
