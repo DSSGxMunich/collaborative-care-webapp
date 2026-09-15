@@ -109,6 +109,15 @@ function posteriorDomain(scenarios: Scenario[]): [number, number] {
 function histogram(draws: number[], domain: [number, number], binCount = 16): HistogramBin[] {
   const [lo, hi] = domain;
   const width = (hi - lo) / binCount || 1;
+  // A fixed 1 decimal place isn't always enough to tell bins apart: when the
+  // shared domain is narrow (e.g. a tightly estimated set of scenarios),
+  // bin width can drop well under 0.1, so several distinct bins' edges all
+  // round to the same displayed value (e.g. every bin from x0=1.02 to
+  // x0=1.28 rounding to "1.1" or "1.2") -- different bins, different draw
+  // counts, but an identical label/range shown on hover. Scale the decimal
+  // count to the bin width so adjacent edges can't collide; clamp to
+  // [1, 3] to keep the usual case at one decimal and avoid absurd precision.
+  const decimals = Math.min(3, Math.max(1, Math.ceil(-Math.log10(width))));
   const bins = Array.from({ length: binCount }, (_, i) => ({
     x0: lo + i * width,
     x1: lo + (i + 1) * width,
@@ -120,8 +129,8 @@ function histogram(draws: number[], domain: [number, number], binCount = 16): Hi
     if (bin) bin.count += 1;
   }
   return bins.map((b) => ({
-    label: b.x0.toFixed(1),
-    range: `${b.x0.toFixed(1)}–${b.x1.toFixed(1)}`,
+    label: b.x0.toFixed(decimals),
+    range: `${b.x0.toFixed(decimals)}–${b.x1.toFixed(decimals)}`,
     count: b.count,
   }));
 }
