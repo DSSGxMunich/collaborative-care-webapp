@@ -1,8 +1,15 @@
-# Fitted model artifacts (.rds, .pkl, .nc, ...) can embed real per-patient
-# training data (see step1_risk_score/README.md) and must never be
-# committed. Only the exported coefficient/posterior JSON under
-# src/lib/data/ is checked in.
+# Fitted model artifacts (.rds, .pkl, .nc, manifest.json, ...) can embed or
+# describe real per-patient training data (see step1_risk_score/README.md
+# and step2_cnma/README.md) and must never be committed. Only the exported
+# coefficient/posterior JSON under src/lib/data/ is checked in.
+#
+# Extension-based backstop:
 *.rds
 *.RDS
 *.pkl
 *.nc
+# Folder-based primary rule: anything dropped in a step's source/
+# subfolder is ignored wholesale, regardless of file type — this is what
+# actually matters for files like manifest.json that have no
+# distinguishing extension of their own.
+**/source/
