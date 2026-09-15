@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useLang } from "@/lib/i18n";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useLang, type L } from "@/lib/i18n";
 import faqContent from "@/content/faq.json";
 
 export const Route = createFileRoute("/faq")({
@@ -12,7 +12,15 @@ export const Route = createFileRoute("/faq")({
   component: Faq,
 });
 
-const f = faqContent;
+type FaqItem = {
+  id: string;
+  question: L;
+  answer: L;
+  link?: { to: string; label: L };
+  linkSuffix?: L;
+};
+
+const f = faqContent as { title: L; intro: L; items: FaqItem[] };
 
 function Faq() {
   const { tr } = useLang();
@@ -27,6 +35,15 @@ function Faq() {
             <dt className="text-sm font-semibold">{tr(item.question)}</dt>
             <dd className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
               {tr(item.answer)}
+              {item.link && (
+                <>
+                  {" "}
+                  <Link to={item.link.to} className="text-primary underline underline-offset-2">
+                    {tr(item.link.label)}
+                  </Link>
+                  {item.linkSuffix && <> {tr(item.linkSuffix)}</>}
+                </>
+              )}
             </dd>
           </div>
         ))}

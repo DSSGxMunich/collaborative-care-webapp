@@ -135,6 +135,7 @@ function SiteHeader() {
     { to: "/angebote" as const, label: ui.nav.support },
     { to: "/praxis" as const, label: ui.nav.clinician },
     { to: "/faq" as const, label: ui.nav.faq },
+    { to: "/methodology" as const, label: ui.nav.methodology },
   ];
 
   return (
