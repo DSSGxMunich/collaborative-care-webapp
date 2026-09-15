@@ -44,6 +44,17 @@
       }
     },
     {
+      "id": "usualCareImproves",
+      "question": {
+        "de": "Warum sagt schon die übliche Versorgung allein eine Verbesserung voraus?",
+        "en": "Why does usual care alone still predict improvement?"
+      },
+      "answer": {
+        "de": "Das Modell nimmt nicht an, dass \"alle von selbst besser werden\". Es bildet ab, wie sich der PHQ-9 über 12 Monate typischerweise entwickelt — bei Personen mit ähnlichem Ausgangswert, Alter, Geschlecht und Angst-Score —, ein Muster, das aus denselben Studiendaten gelernt wurde wie der Rest des Modells. Dazu gehört, dass ein anfangs hoher Wert im Mittel etwas Richtung des für die Person typischeren Niveaus zurückgeht. Es ist auch kein fester Betrag: Ein höherer Ausgangswert sagt einen größeren Rückgang voraus, ein niedrigerer einen kleineren. Das ist ein Muster auf Gruppenebene, keine Zusage für eine einzelne Person — und es ist die Vergleichsgrundlage, an der jeder Versorgungsbaustein gemessen wird, nicht die Aussage, dass zusätzliche Bausteine nichts bringen. Die genaue Formel steht auf der Seite Methodik.",
+        "en": "The model doesn't assume \"everyone gets better on their own.\" It reflects how PHQ-9 typically evolves over 12 months for people with a similar baseline score, age, sex and anxiety score — a pattern learned from the same trial data as the rest of the model. That includes an initially high score settling somewhat toward a person's more typical level on average. It's not a fixed amount either: a higher baseline predicts a bigger drop, a lower one a smaller drop. This is a group-level pattern, not a guarantee for any one person — and it's the baseline every structured-care component is measured against, not a claim that added components don't help. The exact formula is on the Methodology page."
+      }
+    },
+    {
       "id": "wherefrom",
       "question": {
         "de": "Woher kommen die Schätzungen?",
