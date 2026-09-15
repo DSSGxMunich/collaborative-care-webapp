@@ -158,6 +158,28 @@ function PosteriorMini({
 }) {
   const draws = useMemo(() => posteriorEndpointDraws(scenario), [scenario]);
   const data = useMemo(() => histogram(draws, domain), [draws, domain]);
+  // Bin width is usually well under 1 PHQ-9 point, so several adjacent bins
+  // round to the same displayed integer (e.g. bins at x0=4.7 and x0=5.2
+  // both round to "5"). recharts' own interval="preserveStartEnd" only
+  // skips ticks that would visually overlap in pixel space, which a
+  // narrow 9px-font label often doesn't -- so it was rendering nearly
+  // every bin's rounded label, producing runs like "5 5 6 6 7 7 8 8"
+  // instead of one tick per distinct value. Deduplicating explicitly by
+  // rounded value (not by rendered pixel width) fixes that; passing this
+  // as XAxis's `ticks` prop overrides its automatic interval logic
+  // entirely, so `interval` is dropped rather than left to conflict.
+  const xTicks = useMemo(() => {
+    const seen = new Set<string>();
+    const ticks: string[] = [];
+    for (const bin of data) {
+      const rounded = Math.round(Number(bin.label)).toString();
+      if (!seen.has(rounded)) {
+        seen.add(rounded);
+        ticks.push(bin.label);
+      }
+    }
+    return ticks;
+  }, [data]);
   return (
     <div>
       <p className="text-xs text-muted-foreground">{label}</p>
@@ -169,7 +191,7 @@ function PosteriorMini({
               tick={{ fontSize: 9, fill: "var(--color-muted-foreground)" }}
               tickLine={false}
               axisLine={{ stroke: "var(--color-border)" }}
-              interval="preserveStartEnd"
+              ticks={xTicks}
               tickFormatter={(v: string) => Number(v).toFixed(0)}
             />
             <YAxis hide />
