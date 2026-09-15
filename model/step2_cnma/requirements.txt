@@ -1,0 +1,14 @@
+# Dev-time tooling only (not part of this repo's own JS/build toolchain —
+# see README.md). Install into a dedicated virtualenv, not your system/
+# global Python, to avoid exactly the kind of broken-numpy state a shared
+# site-packages can end up in:
+#
+#   python3 -m venv .venv
+#   source .venv/bin/activate        # Windows: .venv\Scripts\activate
+#   pip install -r model/step2_cnma/requirements.txt
+#
+# Versions below are floors, matching what this script was tested against.
+arviz>=0.23
+xarray>=2026.7
+netCDF4>=1.7
+numpy>=2.4
