@@ -21,6 +21,23 @@ training range, and the thinning factor to apply).
   the `thinning` factor (a design choice — e.g. 8 — not something derived
   from the data itself).
 
+## Setup
+
+Requires `arviz`, `xarray`, `netCDF4`, `numpy` (not part of this repo's own
+JS toolchain — this is dev-time tooling, run locally, the same way
+`export_risk_model_json.R` needs a local R + `rms`). **Use a dedicated
+virtualenv, not your system/global Python** — a global `numpy` shared with
+other projects is a common source of broken installs (mixed pip/conda
+installs, architecture mismatches on Apple Silicon, etc.) that have
+nothing to do with this script but will crash it with a confusing
+C-extension import error:
+
+```sh
+python3 -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+pip install -r model/step2_cnma/requirements.txt
+```
+
 ## Regenerating `nma-posterior.json`
 
 ```sh
@@ -37,11 +54,6 @@ python3 model/step2_cnma/export_nma_posterior_json.py export \
 
 This overwrites `src/lib/data/nma-posterior.json`. Diff it before
 committing — see "What a good diff looks like" below.
-
-Requires a local Python environment with `arviz`, `xarray`, `netCDF4`,
-`numpy` (not part of this repo's own JS toolchain — this is dev-time
-tooling, run locally, the same way `export_risk_model_json.R` needs a
-local R + `rms`).
 
 ## ⚠️ Data safety — read before touching this directory
 

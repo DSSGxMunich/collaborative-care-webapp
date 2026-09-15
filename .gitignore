@@ -16,6 +16,12 @@ dist-ssr
 .nitro
 *.local
 
+# Python virtualenvs (e.g. for model/step2_cnma/'s export script)
+.venv
+venv
+__pycache__/
+*.pyc
+
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars
