@@ -303,11 +303,52 @@ def cmd_export(args: argparse.Namespace) -> None:
     }
 
     with open(args.output, "w", encoding="utf-8") as f:
-        json.dump(output, f, indent=2, ensure_ascii=False)
+        # ensure_ascii=True (json.dump's own default -- left explicit here
+        # so it isn't "fixed" back to False later): matches the \uXXXX
+        # escaping style already in the committed file (e.g. "Hölzel",
+        # "≤"), rather than writing literal non-ASCII characters,
+        # which is valid but a pure diff-noise change on every re-export.
+        json.dump(output, f, indent=2, ensure_ascii=True)
         f.write("\n")
 
     print(f"Wrote {n_draws} thinned draws ({chains} chains x {draws_per_chain} draws, "
           f"thinning={thinning}) -> {args.output}")
+
+    _prettify(args.output)
+
+
+def _prettify(output_path: str) -> None:
+    """Re-formats the just-written JSON with this repo's own Prettier
+    config (printWidth 100 etc.), via `bunx prettier`. Python's json.dump
+    always breaks every nested array one-element-per-line regardless of
+    `indent`; Prettier collapses short arrays/objects onto one line where
+    they fit, which is the style already committed in nma-posterior.json.
+    Skipping this step doesn't corrupt anything (the raw json.dump output
+    is valid, equivalent JSON) but produces a needlessly 8x-larger file
+    and an unreviewable diff — so this always runs, not just on request."""
+    import shutil
+    import subprocess
+
+    if shutil.which("bun") is None:
+        print(
+            f"NOTE: `bun` not found on PATH, so {output_path} was NOT reformatted with "
+            f"Prettier -- it's valid JSON but will look like a huge, unreviewable diff "
+            f"(every array element on its own line). Run `bun run format -- {output_path}` "
+            f"(or `bunx prettier --write {output_path}`) before committing.",
+            file=sys.stderr,
+        )
+        return
+    result = subprocess.run(
+        ["bunx", "prettier", "--write", output_path], capture_output=True, text=True
+    )
+    if result.returncode != 0:
+        print(
+            f"NOTE: `bunx prettier --write {output_path}` failed, so the file was left in "
+            f"json.dump's raw (valid but unreviewably verbose) format:\n{result.stderr}",
+            file=sys.stderr,
+        )
+        return
+    print(f"Reformatted {output_path} with Prettier.")
 
 
 def main() -> None:

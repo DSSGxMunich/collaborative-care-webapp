@@ -65,8 +65,17 @@ python3 model/step2_cnma/export_nma_posterior_json.py export \
   model/step2_cnma/source/manifest.json
 ```
 
-This overwrites `src/lib/data/nma-posterior.json`. Diff it before
-committing — see "What a good diff looks like" below.
+This overwrites `src/lib/data/nma-posterior.json` and then, if `bun` is on
+your `PATH`, runs `bunx prettier --write` on it automatically — Python's
+`json.dump` always breaks every nested array one-element-per-line
+regardless of `indent`, which is valid JSON but produces an ~8x larger,
+unreviewable diff; Prettier collapses short arrays/objects onto one line
+the same way the committed file already looks. If `bun` isn't found, the
+script prints a reminder to run `bun run format -- src/lib/data/nma-posterior.json`
+yourself before committing — the file is still correct either way, just
+harder to review unformatted.
+
+Diff it before committing — see "What a good diff looks like" below.
 
 ## ⚠️ Data safety — read before touching this directory
 
