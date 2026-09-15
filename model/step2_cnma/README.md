@@ -5,7 +5,7 @@ reads at runtime (see that file's header comment for the math). The fit is a
 PyMC model, its posterior saved via ArviZ as a `.nc` (NetCDF) file, plus a
 companion `manifest.json` carrying the structural metadata (model name,
 study/component order, allowed component packages, the Step‑1 risk‑score
-training range, and the thinning factor to apply).
+training range).
 
 ## Files you should have from whoever ran the fit
 
@@ -14,12 +14,25 @@ training range, and the thinning factor to apply).
   (per study), `lambda_risk`, `beta_component` (per component),
   `delta_component_risk` (per component), `sigma` — 4 chains × 4000 draws
   each, per the file already committed.
-- **`*_manifest.json`** — structural metadata that isn't a statistic: model
-  name/version, `outcome` name, `studyOrder`, `componentOrder`,
-  `allowedComponentPackages` (which of the 6 components were actually
-  combined in each trial arm), the Step‑1 `riskScore` training range, and
-  the `thinning` factor (a design choice — e.g. 8 — not something derived
-  from the data itself).
+- **`*_manifest.json`** — structural metadata that isn't a statistic, using
+  these exact snake_case keys (verified against a real manifest 2026-09-15
+  — see `MANIFEST_REQUIRED_FIELDS` in the script for the source of truth
+  if this ever drifts):
+  - `model_name`, `artifact_version`, `outcome`
+  - `study_order`, `component_order` — lists of names. Cross-checked by
+    the script against the `.nc` file's own coordinate labels (exact
+    match, order-sensitive) before anything is exported.
+  - `allowed_component_packages` — a **list of objects**, one per package,
+    each mapping `{component_name: 0 | 1}` (not a list of arrays — the
+    script converts to the array shape `nma-posterior.json` uses,
+    positionally ordered by `component_order`, validating every package's
+    keys match `component_order` exactly).
+  - `risk_score` — an object with (at least) `training_min` and
+    `training_max`; other fields (`source`, `transformation`, ...) are
+    provenance notes and aren't carried into the output.
+  - There is **no `thinning` field** — that's a `--thinning` CLI flag on
+    `export` instead (default 8, matching the committed file), since it's
+    an export-time choice, not something the model-fitting side records.
 
 ## Setup
 

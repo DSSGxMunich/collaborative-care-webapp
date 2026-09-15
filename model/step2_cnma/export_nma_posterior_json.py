@@ -12,10 +12,18 @@ file before exporting.
 `export` reads the fitted CNMA (Component Network Meta-Analysis) posterior —
 an ArviZ InferenceData saved with idata.to_netcdf(...) — and a companion
 manifest.json (structural metadata: model name, study/component order,
-allowed component packages, risk-score training range, thinning factor),
+allowed component packages, risk-score training range — see
+MANIFEST_REQUIRED_FIELDS below for the exact snake_case keys expected),
 and writes src/lib/data/nma-posterior.json in the exact shape
 src/lib/model.ts expects (see that file's header comment for the model
-formula this feeds).
+formula this feeds). The thinning factor is a --thinning CLI flag, not a
+manifest field — see main().
+
+The manifest's study_order/component_order are cross-checked against the
+.nc file's own coordinate labels (order-sensitive) before anything is
+exported, and allowed_component_packages (a list of {component_name: 0|1}
+dicts in the manifest) is converted to the positional list-of-lists shape
+nma-posterior.json uses, validated against component_order.
 
 IMPORTANT — DATA SAFETY:
 An ArviZ InferenceData object can carry groups besides "posterior" —
@@ -53,18 +61,23 @@ import sys
 
 import numpy as np
 
-# Fields nma-posterior.json needs from manifest.json. See
-# model/step2_cnma/README.md for what each means.
+# Fields nma-posterior.json needs from manifest.json, in the snake_case
+# naming the manifest actually uses (verified against a real manifest.json
+# 2026-09-15 — this does NOT match nma-posterior.json's own camelCase
+# output field names, which is expected: the manifest is an independent
+# input format, not a draft of the output). See model/step2_cnma/README.md.
 MANIFEST_REQUIRED_FIELDS = [
-    "modelName",
-    "artifactVersion",
+    "model_name",
+    "artifact_version",
     "outcome",
-    "studyOrder",
-    "componentOrder",
-    "allowedComponentPackages",
-    "riskScore",  # {"trainingMin": ..., "trainingMax": ...}
-    "thinning",
+    "study_order",
+    "component_order",
+    "allowed_component_packages",  # list of {component_name: 0|1} dicts, one per package
+    "risk_score",  # {"training_min": ..., "training_max": ..., ...}
 ]
+# There is no "thinning" field in the manifest — it's a design choice for
+# this export, not something the model-fitting side records, so it's a
+# --thinning CLI flag instead (see main()).
 
 POSTERIOR_SCALAR_VARS = ["lambda_risk", "sigma"]
 POSTERIOR_PER_STUDY_VAR = "alpha_study"
@@ -133,6 +146,27 @@ def _summarize_scalar(da, round_to: int = 4) -> dict:
     return {"mean": round(float(flat.mean()), round_to), "ci": _quantile_ci(flat, round_to)}
 
 
+def _nc_coord_labels(da) -> list[str]:
+    """The actual coordinate labels for a (chain, draw, label) DataArray's
+    3rd dimension, straight from the .nc — the ground truth to check a
+    manifest's study_order/component_order against, rather than trusting
+    the manifest's order blindly."""
+    label_dim = da.dims[-1]
+    return [str(v) for v in da.coords[label_dim].values]
+
+
+def _check_order_matches(kind: str, manifest_order: list[str], nc_labels: list[str]) -> None:
+    if manifest_order == nc_labels:
+        return
+    raise SystemExit(
+        f"manifest.json's {kind} does not match the .nc file's own coordinate labels — "
+        f"these must be identical (same entries, same order) or every downstream label "
+        f"would be silently wrong.\n"
+        f"  manifest: {manifest_order}\n"
+        f"  .nc:      {nc_labels}"
+    )
+
+
 def _summarize_per_label(da, labels: list[str], round_to: int = 4) -> dict:
     flat = _flatten_chain_draw(da)  # (n_samples, n_labels)
     if flat.shape[1] != len(labels):
@@ -158,9 +192,14 @@ def cmd_export(args: argparse.Namespace) -> None:
     if missing:
         raise SystemExit(f"manifest.json is missing required field(s): {', '.join(missing)}")
 
-    study_order: list[str] = manifest["studyOrder"]
-    component_order: list[str] = manifest["componentOrder"]
-    thinning: int = manifest["thinning"]
+    study_order: list[str] = manifest["study_order"]
+    component_order: list[str] = manifest["component_order"]
+    thinning: int = args.thinning
+
+    risk_score = manifest["risk_score"]
+    for f in ("training_min", "training_max"):
+        if f not in risk_score:
+            raise SystemExit(f"manifest.json's risk_score is missing required field: {f}")
 
     posterior = load_posterior(args.nc_path)
 
@@ -171,6 +210,31 @@ def cmd_export(args: argparse.Namespace) -> None:
             f"posterior group is missing expected variable(s): {', '.join(missing_vars)}. "
             f"Run `inspect` to see what's actually in this file."
         )
+
+    # Cross-check the manifest's order claims against the .nc's own
+    # coordinate labels — don't trust either file alone (see README).
+    _check_order_matches(
+        "study_order", study_order, _nc_coord_labels(posterior[POSTERIOR_PER_STUDY_VAR])
+    )
+    _check_order_matches(
+        "component_order", component_order, _nc_coord_labels(posterior["beta_component"])
+    )
+
+    # allowed_component_packages arrives as a list of {component_name: 0|1}
+    # dicts (one per package) — convert to the list-of-lists, positionally
+    # ordered by component_order, that nma-posterior.json's committed shape
+    # uses (see src/lib/model.ts's buildPackages(), which indexes by
+    # position against its own hardcoded COMPONENT_ORDER).
+    allowed_component_packages: list[list[int]] = []
+    for i, package in enumerate(manifest["allowed_component_packages"]):
+        extra = set(package) - set(component_order)
+        missing_keys = set(component_order) - set(package)
+        if extra or missing_keys:
+            raise SystemExit(
+                f"allowed_component_packages[{i}] doesn't have exactly the components listed "
+                f"in component_order — extra: {sorted(extra)}, missing: {sorted(missing_keys)}"
+            )
+        allowed_component_packages.append([int(package[c]) for c in component_order])
 
     chains = int(posterior.sizes["chain"])
     draws_per_chain = int(posterior.sizes["draw"])
@@ -216,8 +280,8 @@ def cmd_export(args: argparse.Namespace) -> None:
     }
 
     output = {
-        "modelName": manifest["modelName"],
-        "artifactVersion": manifest["artifactVersion"],
+        "modelName": manifest["model_name"],
+        "artifactVersion": manifest["artifact_version"],
         "outcome": manifest["outcome"],
         "chains": chains,
         "drawsPerChain": draws_per_chain,
@@ -225,8 +289,15 @@ def cmd_export(args: argparse.Namespace) -> None:
         "nDraws": n_draws,
         "studyOrder": study_order,
         "componentOrder": component_order,
-        "riskScore": manifest["riskScore"],
-        "allowedComponentPackages": manifest["allowedComponentPackages"],
+        # Only trainingMin/trainingMax, matching nma-posterior.json's
+        # existing committed shape — risk_score's other manifest fields
+        # (source, transformation, ...) are provenance notes nothing in
+        # src/lib/ reads, so they're deliberately not carried through.
+        "riskScore": {
+            "trainingMin": risk_score["training_min"],
+            "trainingMax": risk_score["training_max"],
+        },
+        "allowedComponentPackages": allowed_component_packages,
         "draws": draws,
         "summary": summary,
     }
@@ -256,6 +327,14 @@ def main() -> None:
         type=int,
         default=5,
         help="Decimal places for the thinned draws array (default 5, matches the committed file's convention)",
+    )
+    p_export.add_argument(
+        "--thinning",
+        type=int,
+        default=8,
+        help="Keep every Nth draw from the flattened chain*draw axis (default 8, matches the "
+        "committed file's convention: 4 chains x 4000 draws / 8 = 2000). Not read from "
+        "manifest.json — it has no thinning field, since this is an export-time choice.",
     )
     p_export.set_defaults(func=cmd_export)
 
