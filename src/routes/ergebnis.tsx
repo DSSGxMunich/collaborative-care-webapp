@@ -147,6 +147,15 @@ function PosteriorTooltip({
   );
 }
 
+/** Rounds a rough step up to a "nice" 1/2/5 × 10^n value, so tick spacing reads as an even, round sequence. */
+function niceStep(roughStep: number): number {
+  if (!(roughStep > 0)) return 1;
+  const magnitude = 10 ** Math.floor(Math.log10(roughStep));
+  const normalized = roughStep / magnitude;
+  const nice = normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 5 ? 5 : 10;
+  return nice * magnitude;
+}
+
 function PosteriorMini({
   label,
   scenario,
@@ -158,28 +167,38 @@ function PosteriorMini({
 }) {
   const draws = useMemo(() => posteriorEndpointDraws(scenario), [scenario]);
   const data = useMemo(() => histogram(draws, domain), [draws, domain]);
-  // Bin width is usually well under 1 PHQ-9 point, so several adjacent bins
-  // round to the same displayed integer (e.g. bins at x0=4.7 and x0=5.2
-  // both round to "5"). recharts' own interval="preserveStartEnd" only
-  // skips ticks that would visually overlap in pixel space, which a
-  // narrow 9px-font label often doesn't -- so it was rendering nearly
-  // every bin's rounded label, producing runs like "5 5 6 6 7 7 8 8"
-  // instead of one tick per distinct value. Deduplicating explicitly by
-  // rounded value (not by rendered pixel width) fixes that; passing this
-  // as XAxis's `ticks` prop overrides its automatic interval logic
-  // entirely, so `interval` is dropped rather than left to conflict.
+  // Bin width is usually well under 1 PHQ-9 point, so many adjacent bins
+  // round to the same displayed integer. Deduplicating ticks by their
+  // rounded value alone (the previous approach) kept whichever bin edges
+  // happened to round first, which produces an uneven sequence like
+  // "5 6 7 8 10 11" -- the gap after 8 isn't a gap in the data, it's an
+  // artifact of where bin edges land relative to whole numbers. Instead,
+  // pick a round step (1, 2 or 5 × 10^n) for ~5-6 ticks across the domain,
+  // then snap each of those evenly-spaced values to its nearest actual
+  // bin, so XAxis (keyed on the categorical bin label) can place it.
   const xTicks = useMemo(() => {
+    if (data.length === 0) return [];
+    const [lo, hi] = domain;
+    const step = niceStep((hi - lo) / 5);
     const seen = new Set<string>();
     const ticks: string[] = [];
-    for (const bin of data) {
-      const rounded = Math.round(Number(bin.label)).toString();
-      if (!seen.has(rounded)) {
-        seen.add(rounded);
-        ticks.push(bin.label);
+    for (let v = Math.ceil(lo / step) * step; v <= hi + 1e-9; v += step) {
+      let closest = data[0]!;
+      let bestDist = Infinity;
+      for (const bin of data) {
+        const dist = Math.abs(Number(bin.label) - v);
+        if (dist < bestDist) {
+          bestDist = dist;
+          closest = bin;
+        }
+      }
+      if (!seen.has(closest.label)) {
+        seen.add(closest.label);
+        ticks.push(closest.label);
       }
     }
     return ticks;
-  }, [data]);
+  }, [data, domain]);
   return (
     <div>
       <p className="text-xs text-muted-foreground">{label}</p>
