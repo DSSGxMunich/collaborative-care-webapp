@@ -60,12 +60,12 @@ function Questionnaire() {
         return (
           session.safety.plan !== null &&
           session.safety.canStaySafe !== null &&
-          session.safety.pastAttempt !== null
+          session.safety.pastAttempt !== null &&
+          session.safety.familyHistory !== null
         );
       case "history":
         return (
           session.profile.priorEpisode !== null &&
-          session.profile.familyHistoryDepression !== null &&
           session.profile.priorTreatment.length > 0 &&
           session.profile.gad7Known !== null &&
           (session.profile.gad7Known === "yes"
@@ -194,6 +194,11 @@ function Questionnaire() {
             value={session.safety.pastAttempt}
             onChange={(v) => updateSafety({ pastAttempt: v })}
           />
+          <YesNoField
+            label={q.safety.questions.familyHistory}
+            value={session.safety.familyHistory}
+            onChange={(v) => updateSafety({ familyHistory: v })}
+          />
         </div>
       )}
 
@@ -206,11 +211,6 @@ function Questionnaire() {
             label={q.profile.priorEpisode.question}
             value={session.profile.priorEpisode}
             onChange={(v) => updateProfile({ priorEpisode: v })}
-          />
-          <YesNoField
-            label={q.profile.familyHistory.question}
-            value={session.profile.familyHistoryDepression}
-            onChange={(v) => updateProfile({ familyHistoryDepression: v })}
           />
           <fieldset className="surface-card p-5">
             <legend className="mb-1 block text-base font-semibold">

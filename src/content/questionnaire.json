@@ -113,8 +113,8 @@
   },
   "safety": {
     "intro": {
-      "de": "Diese drei Fragen helfen einzuschätzen, wie schnell Sie Unterstützung brauchen. Antworten Sie so offen, wie es Ihnen möglich ist.",
-      "en": "These three questions help judge how quickly you need support. Please answer as openly as you can."
+      "de": "Diese Fragen helfen einzuschätzen, wie schnell Sie Unterstützung brauchen. Antworten Sie so offen, wie es Ihnen möglich ist.",
+      "en": "These questions help judge how quickly you need support. Please answer as openly as you can."
     },
     "questions": {
       "plan": {
@@ -128,6 +128,10 @@
       "pastAttempt": {
         "de": "Haben Sie sich in den letzten 12 Monaten selbst verletzt oder einen Suizidversuch unternommen?",
         "en": "In the past 12 months, have you harmed yourself or attempted suicide?"
+      },
+      "familyHistory": {
+        "de": "Gab es in Ihrer Familie (Eltern, Geschwister) einen Suizid oder Suizidversuch?",
+        "en": "Has anyone in your immediate family (parents, siblings) died by suicide or attempted suicide?"
       }
     },
     "whyShown": { "de": "Warum wird das angezeigt?", "en": "Why is this shown?" }
@@ -163,12 +167,6 @@
       "question": {
         "de": "Hatten Sie früher schon einmal eine depressive Phase?",
         "en": "Have you had a depressive episode before?"
-      }
-    },
-    "familyHistory": {
-      "question": {
-        "de": "Gab es in Ihrer Familie (Eltern, Geschwister) bereits Depressionen?",
-        "en": "Has anyone in your immediate family (parents, siblings) had depression?"
       }
     },
     "priorTreatment": {

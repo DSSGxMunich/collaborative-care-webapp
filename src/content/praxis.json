@@ -33,13 +33,13 @@
       "de": "Selbstverletzung/Versuch < 12 Monate",
       "en": "Self-harm/attempt < 12 months"
     },
+    "familyHistory": {
+      "de": "Suizid/-versuch in der Familie",
+      "en": "Family history of suicide/attempt"
+    },
     "age": { "de": "Alter", "en": "Age" },
     "sex": { "de": "Geschlecht", "en": "Sex" },
     "priorEpisode": { "de": "Frühere depressive Episode", "en": "Previous depressive episode" },
-    "familyHistory": {
-      "de": "Familiäre Vorbelastung (Depression)",
-      "en": "Family history of depression"
-    },
     "priorTreatment": { "de": "Vorbehandlungen", "en": "Previous treatments" },
     "gad7": { "de": "GAD-7 (falls bekannt)", "en": "GAD-7 (if known)" },
     "gad7Assumed": {
