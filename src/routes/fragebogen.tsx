@@ -195,6 +195,7 @@ function Questionnaire() {
             <p className="text-sm">{tr(q.safety.questions.probability)}</p>
             <Choice
               name="safety-probability"
+              columns={3}
               options={PROBABILITY_OPTIONS}
               value={session.safety.probability}
               onChange={(v) => updateSafety({ probability: v })}
