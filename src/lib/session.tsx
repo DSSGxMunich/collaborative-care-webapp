@@ -57,11 +57,20 @@ export type SafetyAnswers = {
   familyHistory: YesNo | null;
 };
 
+/**
+ * How the questionnaire is being filled in: "clinic" is the default —
+ * GP and patient go through it together. "waitingRoom" means the patient
+ * is filling it in alone before being called in, so results must not be
+ * shown until the GP confirms they're both together — see src/routes/warten.tsx.
+ */
+export type SessionMode = "clinic" | "waitingRoom";
+
 export type Session = {
   phq: (number | null)[];
   safety: SafetyAnswers;
   profile: Profile;
   completedAt: string | null;
+  mode: SessionMode;
 };
 
 export const emptySession = (): Session => ({
@@ -78,6 +87,7 @@ export const emptySession = (): Session => ({
     gad7Answers: Array<number | null>(7).fill(null),
   },
   completedAt: null,
+  mode: "clinic",
 });
 
 export const PRIOR_TREATMENTS = questionnaireContent.profile.priorTreatment.options;

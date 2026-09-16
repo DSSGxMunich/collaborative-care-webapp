@@ -15,5 +15,9 @@
     "de": "Warten Sie nicht auf den Fragebogen. Rufen Sie 112 an, wenden Sie sich an den ärztlichen Bereitschaftsdienst unter 116 117 oder an die Telefonseelsorge unter 0800 111 0 111.",
     "en": "Do not wait for the questionnaire. Call 112, contact the out-of-hours medical service on 116 117, or call a crisis line on 0800 111 0 111."
   },
-  "crisisLink": { "de": "Alle Krisenkontakte", "en": "All crisis contacts" }
+  "crisisLink": { "de": "Alle Krisenkontakte", "en": "All crisis contacts" },
+  "waitingRoomLink": {
+    "de": "Im Wartezimmer? Fragebogen jetzt ausfüllen",
+    "en": "In the waiting room? Fill in the questionnaire now"
+  }
 }

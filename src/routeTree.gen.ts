@@ -17,6 +17,8 @@ import { Route as FragebogenRouteImport } from './routes/fragebogen'
 import { Route as MethodologyRouteImport } from './routes/methodology'
 import { Route as PraxisRouteImport } from './routes/praxis'
 import { Route as SoforthilfeRouteImport } from './routes/soforthilfe'
+import { Route as WartenRouteImport } from './routes/warten'
+import { Route as WartezimmerRouteImport } from './routes/wartezimmer'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -58,6 +60,16 @@ const SoforthilfeRoute = SoforthilfeRouteImport.update({
   path: '/soforthilfe',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WartenRoute = WartenRouteImport.update({
+  id: '/warten',
+  path: '/warten',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WartezimmerRoute = WartezimmerRouteImport.update({
+  id: '/wartezimmer',
+  path: '/wartezimmer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -68,6 +80,8 @@ export interface FileRoutesByFullPath {
   '/methodology': typeof MethodologyRoute
   '/praxis': typeof PraxisRoute
   '/soforthilfe': typeof SoforthilfeRoute
+  '/warten': typeof WartenRoute
+  '/wartezimmer': typeof WartezimmerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -78,6 +92,8 @@ export interface FileRoutesByTo {
   '/methodology': typeof MethodologyRoute
   '/praxis': typeof PraxisRoute
   '/soforthilfe': typeof SoforthilfeRoute
+  '/warten': typeof WartenRoute
+  '/wartezimmer': typeof WartezimmerRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -89,6 +105,8 @@ export interface FileRoutesById {
   '/methodology': typeof MethodologyRoute
   '/praxis': typeof PraxisRoute
   '/soforthilfe': typeof SoforthilfeRoute
+  '/warten': typeof WartenRoute
+  '/wartezimmer': typeof WartezimmerRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +119,8 @@ export interface FileRouteTypes {
     | '/methodology'
     | '/praxis'
     | '/soforthilfe'
+    | '/warten'
+    | '/wartezimmer'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,6 +131,8 @@ export interface FileRouteTypes {
     | '/methodology'
     | '/praxis'
     | '/soforthilfe'
+    | '/warten'
+    | '/wartezimmer'
   id:
     | '__root__'
     | '/'
@@ -121,6 +143,8 @@ export interface FileRouteTypes {
     | '/methodology'
     | '/praxis'
     | '/soforthilfe'
+    | '/warten'
+    | '/wartezimmer'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -132,6 +156,8 @@ export interface RootRouteChildren {
   MethodologyRoute: typeof MethodologyRoute
   PraxisRoute: typeof PraxisRoute
   SoforthilfeRoute: typeof SoforthilfeRoute
+  WartenRoute: typeof WartenRoute
+  WartezimmerRoute: typeof WartezimmerRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -192,6 +218,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SoforthilfeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/warten': {
+      id: '/warten'
+      path: '/warten'
+      fullPath: '/warten'
+      preLoaderRoute: typeof WartenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wartezimmer': {
+      id: '/wartezimmer'
+      path: '/wartezimmer'
+      fullPath: '/wartezimmer'
+      preLoaderRoute: typeof WartezimmerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -204,6 +244,8 @@ const rootRouteChildren: RootRouteChildren = {
   MethodologyRoute: MethodologyRoute,
   PraxisRoute: PraxisRoute,
   SoforthilfeRoute: SoforthilfeRoute,
+  WartenRoute: WartenRoute,
+  WartezimmerRoute: WartezimmerRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

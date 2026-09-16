@@ -1,0 +1,39 @@
+{
+  "start": {
+    "title": { "de": "Fragebogen im Wartezimmer", "en": "Questionnaire in the waiting room" },
+    "body": {
+      "de": "Sie können den Fragebogen schon jetzt ausfüllen, während Sie auf Ihren Termin warten. Ihre Antworten werden gespeichert — die Auswertung sehen Sie aber erst gemeinsam mit Ihrer Ärztin oder Ihrem Arzt im Sprechzimmer.",
+      "en": "You can fill in the questionnaire now, while you wait for your appointment. Your answers are saved, but you'll see the results together with your GP in the consultation room."
+    },
+    "start": { "de": "Fragebogen jetzt ausfüllen", "en": "Fill in the questionnaire now" },
+    "note": {
+      "de": "Das dauert etwa 5–10 Minuten. Sie können jederzeit unterbrechen.",
+      "en": "This takes about 5–10 minutes. You can stop at any time."
+    }
+  },
+  "blocked": {
+    "title": { "de": "Danke — fast geschafft", "en": "Thank you — almost done" },
+    "body": {
+      "de": "Ihre Antworten sind gespeichert. Bitte warten Sie, bis Sie mit Ihrer Ärztin oder Ihrem Arzt zusammensitzen — die Auswertung besprechen Sie gemeinsam im Termin.",
+      "en": "Your answers are saved. Please wait until you're sitting down with your GP — you'll go through the results together during your appointment."
+    },
+    "waitingNote": {
+      "de": "Sie müssen jetzt nichts weiter tun. Zeigen Sie diesen Bildschirm Ihrer Ärztin oder Ihrem Arzt, wenn Sie aufgerufen werden.",
+      "en": "There's nothing more to do right now. Show this screen to your GP when you're called in."
+    },
+    "continueWithGp": {
+      "de": "Meine Ärztin/mein Arzt ist jetzt da — weiter",
+      "en": "My GP is here now — continue"
+    },
+    "continueHint": {
+      "de": "Bitte nur mit Ihrer Ärztin/Ihrem Arzt zusammen fortfahren.",
+      "en": "Please only continue once your GP is with you."
+    },
+    "seeSupport": { "de": "Angebote vor Ort ansehen", "en": "See local support" },
+    "backHome": { "de": "Zur Startseite", "en": "Back to start" }
+  },
+  "crisisOverrideNote": {
+    "de": "Das gilt unabhängig vom Warten auf Ihre Ärztin/Ihren Arzt — bitte warten Sie damit nicht.",
+    "en": "This applies regardless of waiting for your GP — please don't wait on this."
+  }
+}
