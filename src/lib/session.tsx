@@ -71,6 +71,15 @@ export type Session = {
   profile: Profile;
   completedAt: string | null;
   mode: SessionMode;
+  /**
+   * Only meaningful when mode is "waitingRoom": becomes true once the GP has
+   * confirmed they're with the patient (the "continue" button on the
+   * blocker — see src/components/WaitingBlocker.tsx). Every page that can
+   * show results (/ergebnis, /praxis) must gate on this, not just the
+   * questionnaire's own finish step, or a direct nav link/URL bypasses the
+   * blocker entirely.
+   */
+  unlocked: boolean;
 };
 
 export const emptySession = (): Session => ({
@@ -88,6 +97,7 @@ export const emptySession = (): Session => ({
   },
   completedAt: null,
   mode: "clinic",
+  unlocked: false,
 });
 
 export const PRIOR_TREATMENTS = questionnaireContent.profile.priorTreatment.options;

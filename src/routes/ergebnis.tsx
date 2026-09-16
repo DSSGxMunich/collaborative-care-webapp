@@ -15,6 +15,7 @@ import { SEVERITY_LABEL, SEVERITY_RANGE } from "@/lib/phq9";
 import { posteriorEndpointDraws, type Scenario } from "@/lib/model";
 import { usePrediction } from "@/lib/usePrediction";
 import { ageFromBirthDate, SEX_OPTIONS } from "@/lib/session";
+import { WaitingBlocker } from "@/components/WaitingBlocker";
 import resultsContent from "@/content/results.json";
 
 export const Route = createFileRoute("/ergebnis")({
@@ -316,6 +317,10 @@ function Results() {
         </Link>
       </div>
     );
+  }
+
+  if (p.session.mode === "waitingRoom" && !p.session.unlocked) {
+    return <WaitingBlocker />;
   }
 
   if (!revealed) {

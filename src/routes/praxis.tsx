@@ -7,6 +7,7 @@ import { assessRisk } from "@/lib/safety";
 import { MODEL_META } from "@/lib/model";
 import { usePrediction } from "@/lib/usePrediction";
 import { ageFromBirthDate, PRIOR_TREATMENTS, SEX_OPTIONS } from "@/lib/session";
+import { WaitingBlocker } from "@/components/WaitingBlocker";
 import praxisContent from "@/content/praxis.json";
 import resultsContent from "@/content/results.json";
 
@@ -45,6 +46,10 @@ function Clinician() {
         </Link>
       </div>
     );
+  }
+
+  if (p.session.mode === "waitingRoom" && !p.session.unlocked) {
+    return <WaitingBlocker />;
   }
 
   const { profile, safety } = p.session;

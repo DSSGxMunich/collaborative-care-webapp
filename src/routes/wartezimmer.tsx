@@ -22,7 +22,7 @@ function WaitingRoomStart() {
   const { update } = useSession();
 
   const start = () => {
-    update({ mode: "waitingRoom" });
+    update({ mode: "waitingRoom", unlocked: false });
     navigate({ to: "/fragebogen" });
   };
 
