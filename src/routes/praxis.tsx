@@ -59,6 +59,7 @@ function Clinician() {
     { label: tr(c.rows.planPrep), value: yesNo(safety.plan) },
     { label: tr(c.rows.canStaySafe), value: yesNo(safety.canStaySafe) },
     { label: tr(c.rows.pastAttempt), value: yesNo(safety.pastAttempt) },
+    { label: tr(c.rows.familyHistory), value: yesNo(safety.familyHistory) },
     {
       label: tr(c.rows.age),
       value: profile.birthDate ? ageFromBirthDate(profile.birthDate).toFixed(2) : "–",

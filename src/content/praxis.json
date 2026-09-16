@@ -33,6 +33,10 @@
       "de": "Selbstverletzung/Versuch < 12 Monate",
       "en": "Self-harm/attempt < 12 months"
     },
+    "familyHistory": {
+      "de": "Suizid/-versuch in der Familie",
+      "en": "Family history of suicide/attempt"
+    },
     "age": { "de": "Alter", "en": "Age" },
     "sex": { "de": "Geschlecht", "en": "Sex" },
     "priorEpisode": { "de": "Frühere depressive Episode", "en": "Previous depressive episode" },

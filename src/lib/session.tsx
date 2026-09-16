@@ -47,6 +47,14 @@ export type SafetyAnswers = {
   canStaySafe: YesNo | null;
   /** Self-harm within the past 12 months. */
   pastAttempt: YesNo | null;
+  /**
+   * Suicide or suicide attempt in a first-degree relative (parent/sibling).
+   * Family history of suicidal behavior is an evidenced risk factor
+   * independent of psychiatric diagnosis — collected here alongside the
+   * other safety questions, but not currently fed into assessRisk's
+   * acute-risk checklist (see the caveat in lib/safety.ts).
+   */
+  familyHistory: YesNo | null;
 };
 
 export type Session = {
@@ -58,7 +66,7 @@ export type Session = {
 
 export const emptySession = (): Session => ({
   phq: Array<number | null>(9).fill(null),
-  safety: { plan: null, canStaySafe: null, pastAttempt: null },
+  safety: { plan: null, canStaySafe: null, pastAttempt: null, familyHistory: null },
   profile: {
     birthDate: null,
     sex: null,

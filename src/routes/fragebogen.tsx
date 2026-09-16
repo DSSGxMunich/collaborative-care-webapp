@@ -60,7 +60,8 @@ function Questionnaire() {
         return (
           session.safety.plan !== null &&
           session.safety.canStaySafe !== null &&
-          session.safety.pastAttempt !== null
+          session.safety.pastAttempt !== null &&
+          session.safety.familyHistory !== null
         );
       case "history":
         return (
@@ -192,6 +193,11 @@ function Questionnaire() {
             label={q.safety.questions.pastAttempt}
             value={session.safety.pastAttempt}
             onChange={(v) => updateSafety({ pastAttempt: v })}
+          />
+          <YesNoField
+            label={q.safety.questions.familyHistory}
+            value={session.safety.familyHistory}
+            onChange={(v) => updateSafety({ familyHistory: v })}
           />
         </div>
       )}
