@@ -236,38 +236,29 @@ function PosteriorMini({
 }
 
 /**
- * A full-width stripe that stays pinned centered in the viewport
- * (position: sticky) as the reader scrolls through the runway div below
- * it, so it reads as an interactive stop rather than a plain paragraph —
- * no card/border framing, just a tinted band with its text column
- * centered in the middle. Content scrolls internally once it's taller
- * than the stripe; once the reader has scrolled past the runway's
- * height, the stripe releases and normal page scroll continues down
- * into the results.
+ * The trial-eligibility disclaimer, laid out as a sidebar card next to the
+ * predictions on desktop (see the grid in Results) and stacked below them
+ * on mobile — a static note, not an interactive/scroll-linked element.
  */
-function DisclaimerGate() {
+function DisclaimerCard() {
   const { tr } = useLang();
   return (
-    <div className="relative h-[170vh]">
-      <div className="sticky top-1/2 w-full -translate-y-1/2 bg-warning-soft">
-        <div className="mx-auto max-h-[70vh] max-w-xl overflow-y-auto px-4 py-10">
-          <h2 className="text-lg font-semibold">{tr(r.prototypeNote.heading)}</h2>
-          <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-            {tr(r.prototypeNote.intro)}
-          </p>
-          <ul className="mt-3 space-y-1 text-sm leading-relaxed">
-            {r.prototypeNote.items.map((item, i) => (
-              <li key={i} className="flex gap-2">
-                <span aria-hidden="true" className="text-muted-foreground">
-                  –
-                </span>
-                <span>{tr(item)}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-3 text-sm font-medium leading-relaxed">{tr(r.prototypeNote.closing)}</p>
-        </div>
-      </div>
+    <div className="rounded-md border border-warning/30 bg-warning-soft p-4">
+      <h2 className="text-base font-semibold">{tr(r.prototypeNote.heading)}</h2>
+      <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+        {tr(r.prototypeNote.intro)}
+      </p>
+      <ul className="mt-3 space-y-1 text-sm leading-relaxed">
+        {r.prototypeNote.items.map((item, i) => (
+          <li key={i} className="flex gap-2">
+            <span aria-hidden="true" className="text-muted-foreground">
+              –
+            </span>
+            <span>{tr(item)}</span>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-3 text-sm font-medium leading-relaxed">{tr(r.prototypeNote.closing)}</p>
     </div>
   );
 }
@@ -390,10 +381,8 @@ function Results() {
   const activeIntro = tab === "combo" ? r.scenariosIntro : r.singleScenariosIntro;
 
   return (
-    <div>
-      <DisclaimerGate />
-
-      <div className="mx-auto max-w-2xl px-4 py-10">
+    <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-4 py-10 md:grid-cols-3">
+      <div className="md:col-span-2">
         <h1 className="text-2xl font-semibold">{tr(r.title)}</h1>
 
         <div className="mt-6 flex items-baseline gap-3 border-b border-border pb-4">
@@ -540,6 +529,10 @@ function Results() {
             {tr(r.actions.localSupport)}
           </Link>
         </div>
+      </div>
+
+      <div className="md:col-span-1">
+        <DisclaimerCard />
       </div>
     </div>
   );

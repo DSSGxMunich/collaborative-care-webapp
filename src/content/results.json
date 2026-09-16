@@ -21,21 +21,33 @@
     },
     "items": [
       {
-        "de": "Bereits in Therapie, fachärztlicher Behandlung oder unter Antidepressiva (10 von 12 Studien)",
-        "en": "Already in therapy, specialist mental health care, or taking antidepressants (10 of 12 trials)"
+        "de": "Bereits in Therapie, fachärztlicher Behandlung oder unter Antidepressiva (10 von 12 Studien schlossen sie aus)",
+        "en": "Already in therapy, specialist mental health care, or taking antidepressants (10 of 12 studies excluded them)"
       },
       {
-        "de": "Alkohol- oder Drogenabhängigkeit (8 von 12 Studien)",
-        "en": "Alcohol or drug dependence (8 of 12 trials)"
+        "de": "Alkohol- oder Drogenabhängigkeit (8 von 12 Studien schlossen sie aus)",
+        "en": "Alcohol or drug dependence (8 of 12 studies excluded them)"
       },
-      { "de": "Bipolare Störung (7 von 12 Studien)", "en": "Bipolar disorder (7 of 12 trials)" },
       {
-        "de": "Kognitive Beeinträchtigung (5 von 12 Studien)",
-        "en": "Cognitive impairment (5 of 12 trials)"
+        "de": "Bipolare Störung (7 von 12 Studien schlossen sie aus)",
+        "en": "Bipolar disorder (7 of 12 studies excluded them)"
       },
-      { "de": "Akute Suizidalität (4 von 12 Studien)", "en": "Acute suicidality (4 of 12 trials)" },
-      { "de": "Schwangerschaft (3 von 12 Studien)", "en": "Pregnancy (3 of 12 trials)" },
-      { "de": "Unter 18 Jahren (9 von 12 Studien)", "en": "Under 18 (9 of 12 trials)" }
+      {
+        "de": "Kognitive Beeinträchtigung (5 von 12 Studien schlossen sie aus)",
+        "en": "Cognitive impairment (5 of 12 studies excluded them)"
+      },
+      {
+        "de": "Akute Suizidalität (4 von 12 Studien schlossen sie aus)",
+        "en": "Acute suicidality (4 of 12 studies excluded them)"
+      },
+      {
+        "de": "Schwangerschaft (3 von 12 Studien schlossen sie aus)",
+        "en": "Pregnancy (3 of 12 studies excluded them)"
+      },
+      {
+        "de": "Unter 18 Jahren (9 von 12 Studien schlossen sie aus)",
+        "en": "Under 18 (9 of 12 studies excluded them)"
+      }
     ],
     "closing": {
       "de": "Trifft etwas davon auf Sie zu, verstehen Sie die folgenden Zahlen bitte eher als groben Anhaltspunkt denn als präzise Vorhersage.",
