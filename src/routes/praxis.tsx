@@ -216,7 +216,7 @@ function Clinician() {
                       ) : (
                         <span className="font-medium text-warning">
                           +{-delta}
-                          <span className="sr-only"> ({tr(c.table.notImproved)})</span>
+                          <span className="sr-only"> ({tr(c.table.worse)})</span>
                         </span>
                       )}
                     </td>
@@ -239,7 +239,7 @@ function Clinician() {
           </span>
           <span className="inline-flex items-center gap-1.5">
             <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-warning" />
-            {tr(c.table.notImproved)}
+            {tr(c.table.worse)}
           </span>
         </div>
         <p className="mt-3 text-xs leading-relaxed text-muted-foreground">

@@ -30,8 +30,8 @@
       "en": "Improvement expected vs. today"
     },
     "worse": {
-      "de": "Keine Verbesserung gegenüber heute erwartet",
-      "en": "No improvement expected vs. today"
+      "de": "Verschlechterung gegenüber heute erwartet",
+      "en": "Worse than today expected"
     },
     "same": { "de": "Etwa gleich wie heute", "en": "About the same as today" }
   },

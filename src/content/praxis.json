@@ -56,9 +56,9 @@
       "de": "Verbesserung ggü. üblicher Versorgung",
       "en": "Improvement vs. usual care"
     },
-    "notImproved": {
-      "de": "Keine Verbesserung ggü. üblicher Versorgung",
-      "en": "No improvement vs. usual care"
+    "worse": {
+      "de": "Schlechter als übliche Versorgung",
+      "en": "Worse than usual care"
     }
   },
   "footer": {
