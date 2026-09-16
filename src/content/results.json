@@ -190,17 +190,14 @@
     }
   },
   "predictorsNote": {
-    "de": "Ausgangswert PHQ-9, Alter, Geschlecht und GAD-7 (falls bekannt) fließen über ein vorgeschaltetes Schritt-1-Modell in die Schätzung ein — ist der GAD-7 nicht bekannt, wird dafür ein typischer Bevölkerungswert angenommen. Ihre übrige Vorgeschichte (z. B. Vorbehandlung) sehen Sie in der Zusammenfassung für die Praxis, sie verändert die Schätzung aber nicht.",
-    "en": "Baseline PHQ-9, age, sex and GAD-7 (if known) all feed into the estimate via an upstream Step 1 model — if GAD-7 isn't known, a population-typical value is assumed for it. Your other history (e.g. prior treatment) appears in the practice summary but does not change the estimate."
+    "de": "Ausgangswert PHQ-9, Alter, Geschlecht und GAD-7 (falls bekannt) fließen in die Schätzung ein — ist der GAD-7 nicht bekannt, wird dafür ein typischer Bevölkerungswert angenommen. Ihre übrige Vorgeschichte (z. B. Vorbehandlung) sehen Sie in der Zusammenfassung für die Praxis, sie verändert die Schätzung aber nicht.",
+    "en": "Baseline PHQ-9, age, sex and GAD-7 (if known) all feed into the estimate — if GAD-7 isn't known, a population-typical value is assumed for it. Your other history (e.g. prior treatment) appears in the practice summary but does not change the estimate."
   },
   "predictors": {
     "baseline": { "label": { "de": "Ausgangswert PHQ-9", "en": "Baseline PHQ-9" } },
     "age": { "label": { "de": "Alter", "en": "Age" } },
     "sex": { "label": { "de": "Geschlecht", "en": "Sex" } },
     "gad7": { "label": { "de": "GAD-7", "en": "GAD-7" } },
-    "riskScore": {
-      "label": { "de": "Schritt-1-Schätzung", "en": "Step 1 estimate" }
-    },
     "notProvided": { "de": "keine Angabe", "en": "not provided" }
   },
   "whatCanBeExpected": {

@@ -529,12 +529,6 @@ function Results() {
                 })()}
               </dd>
             </div>
-            <div className="flex justify-between gap-4 py-2">
-              <dt className="text-muted-foreground">{tr(r.predictors.riskScore.label)}</dt>
-              <dd className="font-medium">
-                {p.predictors.find((row) => row.id === "riskScore")?.value ?? "–"}
-              </dd>
-            </div>
           </dl>
         </section>
 
