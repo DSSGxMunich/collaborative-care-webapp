@@ -382,7 +382,7 @@ function Results() {
 
   return (
     <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-4 py-10 md:grid-cols-3">
-      <div className="md:col-span-2">
+      <div className="order-2 md:order-1 md:col-span-2">
         <h1 className="text-2xl font-semibold">{tr(r.title)}</h1>
 
         <div className="mt-6 flex items-baseline gap-3 border-b border-border pb-4">
@@ -531,7 +531,7 @@ function Results() {
         </div>
       </div>
 
-      <div className="md:col-span-1">
+      <div className="order-1 md:order-2 md:col-span-1">
         <DisclaimerCard />
       </div>
     </div>
