@@ -236,19 +236,21 @@ function PosteriorMini({
 }
 
 /**
- * A card that stays pinned centered in the viewport (position: sticky) as
- * the reader scrolls through the outer runway div below it, so it reads as
- * an interactive stop rather than a plain paragraph. Its own content
- * scrolls internally once it's taller than the card; once the reader has
- * scrolled past the runway's height, the card releases and normal page
- * scroll continues down into the results.
+ * A full-width stripe that stays pinned centered in the viewport
+ * (position: sticky) as the reader scrolls through the runway div below
+ * it, so it reads as an interactive stop rather than a plain paragraph —
+ * no card/border framing, just a tinted band with its text column
+ * centered in the middle. Content scrolls internally once it's taller
+ * than the stripe; once the reader has scrolled past the runway's
+ * height, the stripe releases and normal page scroll continues down
+ * into the results.
  */
 function DisclaimerGate() {
   const { tr } = useLang();
   return (
     <div className="relative h-[170vh]">
-      <div className="sticky top-1/2 mx-auto max-w-xl -translate-y-1/2 px-4">
-        <div className="max-h-[70vh] overflow-y-auto rounded-xl border border-warning/30 bg-warning-soft p-6 shadow-lg">
+      <div className="sticky top-1/2 w-full -translate-y-1/2 bg-warning-soft">
+        <div className="mx-auto max-h-[70vh] max-w-xl overflow-y-auto px-4 py-10">
           <h2 className="text-lg font-semibold">{tr(r.prototypeNote.heading)}</h2>
           <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
             {tr(r.prototypeNote.intro)}

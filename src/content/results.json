@@ -21,21 +21,21 @@
     },
     "items": [
       {
-        "de": "Bereits in Therapie, fachärztlicher Behandlung oder unter Antidepressiva (10 von 12 Studien schlossen dies aus)",
-        "en": "Already in therapy, specialist mental health care, or taking antidepressants (excluded by 10 of 12 trials)"
+        "de": "Bereits in Therapie, fachärztlicher Behandlung oder unter Antidepressiva (10 von 12 Studien)",
+        "en": "Already in therapy, specialist mental health care, or taking antidepressants (10 of 12 trials)"
       },
       {
-        "de": "Alkohol- oder Drogenabhängigkeit (8 von 12)",
-        "en": "Alcohol or drug dependence (8 of 12)"
+        "de": "Alkohol- oder Drogenabhängigkeit (8 von 12 Studien)",
+        "en": "Alcohol or drug dependence (8 of 12 trials)"
       },
-      { "de": "Bipolare Störung (7 von 12)", "en": "Bipolar disorder (7 of 12)" },
-      { "de": "Kognitive Beeinträchtigung (5 von 12)", "en": "Cognitive impairment (5 of 12)" },
-      { "de": "Akute Suizidalität (4 von 12)", "en": "Acute suicidality (4 of 12)" },
-      { "de": "Schwangerschaft (3 von 12)", "en": "Pregnancy (3 of 12)" },
+      { "de": "Bipolare Störung (7 von 12 Studien)", "en": "Bipolar disorder (7 of 12 trials)" },
       {
-        "de": "Unter 18 Jahren (9 von 12 Studien schlossen nur Erwachsene ein)",
-        "en": "Under 18 (9 of 12 trials enrolled adults only)"
-      }
+        "de": "Kognitive Beeinträchtigung (5 von 12 Studien)",
+        "en": "Cognitive impairment (5 of 12 trials)"
+      },
+      { "de": "Akute Suizidalität (4 von 12 Studien)", "en": "Acute suicidality (4 of 12 trials)" },
+      { "de": "Schwangerschaft (3 von 12 Studien)", "en": "Pregnancy (3 of 12 trials)" },
+      { "de": "Unter 18 Jahren (9 von 12 Studien)", "en": "Under 18 (9 of 12 trials)" }
     ],
     "closing": {
       "de": "Trifft etwas davon auf Sie zu, verstehen Sie die folgenden Zahlen bitte eher als groben Anhaltspunkt denn als präzise Vorhersage.",
