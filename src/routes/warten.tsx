@@ -1,8 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ui, useLang } from "@/lib/i18n";
-import { assessRisk } from "@/lib/safety";
 import { usePrediction } from "@/lib/usePrediction";
-import resultsContent from "@/content/results.json";
 import wartezimmerContent from "@/content/wartezimmer.json";
 
 export const Route = createFileRoute("/warten")({
@@ -13,7 +11,6 @@ export const Route = createFileRoute("/warten")({
 });
 
 const w = wartezimmerContent;
-const r = resultsContent;
 
 function Waiting() {
   const { tr } = useLang();
@@ -37,27 +34,8 @@ function Waiting() {
     );
   }
 
-  const risk = assessRisk(p.session);
-  const crisisRisk = risk === "acute" || risk === "elevated" ? risk : null;
-
   return (
     <div className="mx-auto max-w-xl px-4 py-12">
-      {crisisRisk && (
-        <div className="mb-6 rounded-md border border-destructive/40 bg-destructive/5 p-4">
-          <h2 className="text-base font-semibold text-destructive">
-            {tr(r.crisis[crisisRisk].title)}
-          </h2>
-          <p className="mt-2 text-sm leading-relaxed">{tr(r.crisis[crisisRisk].message)}</p>
-          <p className="mt-2 text-xs text-muted-foreground">{tr(w.crisisOverrideNote)}</p>
-          <Link
-            to="/soforthilfe"
-            className="mt-3 inline-flex text-sm font-medium text-destructive underline underline-offset-2"
-          >
-            {tr(ui.nav.crisis)}
-          </Link>
-        </div>
-      )}
-
       <h1 className="text-2xl font-semibold">{tr(w.blocked.title)}</h1>
       <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{tr(w.blocked.body)}</p>
       <p className="mt-3 text-sm leading-relaxed text-muted-foreground">

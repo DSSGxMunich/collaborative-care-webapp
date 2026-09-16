@@ -31,9 +31,5 @@
     },
     "seeSupport": { "de": "Angebote vor Ort ansehen", "en": "See local support" },
     "backHome": { "de": "Zur Startseite", "en": "Back to start" }
-  },
-  "crisisOverrideNote": {
-    "de": "Das gilt unabhängig vom Warten auf Ihre Ärztin/Ihren Arzt — bitte warten Sie damit nicht.",
-    "en": "This applies regardless of waiting for your GP — please don't wait on this."
   }
 }
