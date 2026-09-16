@@ -14,8 +14,34 @@
   },
   "title": { "de": "Ihre Auswertung", "en": "Your results" },
   "prototypeNote": {
-    "de": "Dies ist ein Forschungsprototyp, keine klinisch validierte Vorhersage. Die zugrunde liegenden 12 Studien hatten Ein- und Ausschlusskriterien und bilden daher nicht jede Situation gleich gut ab: Die meisten schlossen Personen aus, die bereits in Therapie, fachärztlicher Behandlung oder unter Antidepressiva standen (10/12), eine Alkohol- oder Drogenabhängigkeit (8/12), eine bipolare Störung (7/12) oder eine kognitive Beeinträchtigung (5/12) hatten, akut suizidal (4/12) oder schwanger (3/12) waren; die meisten beschränkten sich zudem auf Erwachsene ab 18 Jahren (9/12). Trifft etwas davon auf Sie zu, verstehen Sie die Vorhersage bitte eher als groben Anhaltspunkt denn als präzise Schätzung.",
-    "en": "This is a research prototype, not a clinically validated prediction. The 12 underlying trials had eligibility criteria, so they don't represent every situation equally well: most excluded people who were already in therapy, specialist mental health care, or taking antidepressants (10/12), had an alcohol or drug dependence (8/12), a bipolar disorder (7/12), or a cognitive impairment (5/12), were acutely suicidal (4/12), or were pregnant (3/12); most also limited enrolment to adults 18 and over (9/12). If any of this applies to you, treat the prediction as a rough guide rather than a precise estimate."
+    "heading": { "de": "Bevor Sie Ihre Ergebnisse sehen", "en": "Before you view your results" },
+    "intro": { "de": "Das sollten Sie wissen:", "en": "Here's what you need to know:" },
+    "items": [
+      {
+        "de": "Bereits in Therapie, fachärztlicher Behandlung oder unter Antidepressiva — in 10 von 12 Studien ausgeschlossen",
+        "en": "Already in therapy, specialist mental health care, or taking antidepressants — excluded in 10 of 12 trials"
+      },
+      {
+        "de": "Alkohol- oder Drogenabhängigkeit — 8 von 12",
+        "en": "Alcohol or drug dependence — 8 of 12"
+      },
+      { "de": "Bipolare Störung — 7 von 12", "en": "Bipolar disorder — 7 of 12" },
+      { "de": "Kognitive Beeinträchtigung — 5 von 12", "en": "Cognitive impairment — 5 of 12" },
+      { "de": "Akute Suizidalität — 4 von 12", "en": "Acute suicidality — 4 of 12" },
+      { "de": "Schwangerschaft — 3 von 12", "en": "Pregnancy — 3 of 12" },
+      {
+        "de": "Unter 18 Jahren — die meisten Studien (9 von 12) schlossen nur Erwachsene ein",
+        "en": "Under 18 — most trials (9 of 12) enrolled adults only"
+      }
+    ],
+    "closing": {
+      "de": "Trifft etwas davon auf Sie zu, verstehen Sie die folgenden Zahlen als groben Anhaltspunkt aus einem Forschungsprototyp — nicht als präzise, klinisch validierte Vorhersage.",
+      "en": "If any of this applies to you, treat the numbers below as a rough guide from a research prototype — not a precise, clinically validated prediction."
+    },
+    "scrollHint": {
+      "de": "Scrollen Sie nach unten, um fortzufahren",
+      "en": "Scroll down to continue"
+    }
   },
   "phq9Label": "PHQ-9",
   "of27": { "de": "von 27 Punkten", "en": "of 27 points" },

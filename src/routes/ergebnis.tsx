@@ -235,6 +235,37 @@ function PosteriorMini({
   );
 }
 
+/**
+ * Full-viewport-height, centered content block shown before the results, so
+ * the reader can't land straight into the numbers without at least
+ * scrolling past this once. No click-through/JS gating — the scroll itself
+ * is the interaction, and the content stays reachable via normal scrolling
+ * (back up) at any time.
+ */
+function DisclaimerGate() {
+  const { tr } = useLang();
+  return (
+    <div className="flex min-h-[100dvh] flex-col items-center justify-center border-b border-warning/40 bg-warning-soft px-4 py-16 text-center">
+      <div className="max-w-lg">
+        <h2 className="text-xl font-semibold">{tr(r.prototypeNote.heading)}</h2>
+        <p className="mt-3 text-sm leading-relaxed">{tr(r.prototypeNote.intro)}</p>
+        <ul className="mt-4 space-y-1.5 text-left text-sm leading-relaxed">
+          {r.prototypeNote.items.map((item, i) => (
+            <li key={i} className="flex gap-2">
+              <span aria-hidden="true">·</span>
+              <span>{tr(item)}</span>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-4 text-sm leading-relaxed">{tr(r.prototypeNote.closing)}</p>
+      </div>
+      <div className="mt-10 animate-bounce text-xs font-medium text-muted-foreground">
+        {tr(r.prototypeNote.scrollHint)} ↓
+      </div>
+    </div>
+  );
+}
+
 /** Legend for ComparisonRow — each swatch reuses the exact classes drawn in the chart. */
 function ChartLegend() {
   const { tr } = useLang();
@@ -353,156 +384,156 @@ function Results() {
   const activeIntro = tab === "combo" ? r.scenariosIntro : r.singleScenariosIntro;
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10">
-      <h1 className="text-2xl font-semibold">{tr(r.title)}</h1>
+    <div>
+      <DisclaimerGate />
 
-      <p className="mt-3 rounded-md border border-warning/40 bg-warning-soft p-3 text-sm leading-relaxed">
-        {tr(r.prototypeNote)}
-      </p>
+      <div className="mx-auto max-w-2xl px-4 py-10">
+        <h1 className="text-2xl font-semibold">{tr(r.title)}</h1>
 
-      <div className="mt-6 flex items-baseline gap-3 border-b border-border pb-4">
-        <span className="text-4xl font-semibold tabular-nums leading-none">{p.baseline}</span>
-        <div className="text-sm">
-          <p className="text-muted-foreground">
-            {r.phq9Label} {tr(r.of27)}
-          </p>
-          <p className="font-medium">
-            {tr(SEVERITY_LABEL[p.severity])} · {tr(r.range)} {SEVERITY_RANGE[p.severity]}
-          </p>
-        </div>
-      </div>
-
-      {/* ---------------- The result: PHQ-9 at 12 months ---------------- */}
-      <section className="mt-8">
-        <h2 className="text-lg font-semibold">{tr(r.whatCanBeExpected)}</h2>
-        <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-muted-foreground">
-          {tr(r.whatCanBeExpectedBody)}
-        </p>
-
-        <div className="mt-4 inline-flex rounded-md border border-border p-0.5 text-sm">
-          {(["single", "combo"] as const).map((t) => (
-            <button
-              key={t}
-              type="button"
-              onClick={() => setTab(t)}
-              aria-pressed={tab === t}
-              className={[
-                "rounded-[5px] px-3 py-1.5 font-medium transition-colors",
-                tab === t
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:text-foreground",
-              ].join(" ")}
-            >
-              {tr(r.scenarioTabs[t])}
-            </button>
-          ))}
-        </div>
-
-        <BaselinePointer baseline={p.baseline} />
-        <div className="divide-y divide-border rounded-md border border-border px-4">
-          {activeScenarios.map((scenario) => (
-            <ComparisonRow
-              key={scenario.id}
-              label={scenarioLabel(scenario)}
-              scenario={scenario}
-              baseline={p.baseline}
-            />
-          ))}
-        </div>
-        <ChartLegend />
-        <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{tr(activeIntro)}</p>
-
-        <button
-          type="button"
-          onClick={() => setShowDistributions((v) => !v)}
-          className="mt-4 text-xs font-medium text-primary underline underline-offset-2"
-        >
-          {tr(showDistributions ? r.posterior.hide : r.posterior.show)}
-        </button>
-        {showDistributions && (
-          <div className="mt-3 rounded-md bg-secondary p-4">
-            <p className="text-xs text-muted-foreground">{tr(r.posterior.explain)}</p>
-            <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {activeScenarios.map((scenario) => (
-                <PosteriorMini
-                  key={scenario.id}
-                  label={scenarioLabel(scenario)}
-                  scenario={scenario}
-                  domain={distributionsDomain}
-                />
-              ))}
-            </div>
-            <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground">
-              {tr(r.posterior.placeholderNote)}
+        <div className="mt-6 flex items-baseline gap-3 border-b border-border pb-4">
+          <span className="text-4xl font-semibold tabular-nums leading-none">{p.baseline}</span>
+          <div className="text-sm">
+            <p className="text-muted-foreground">
+              {r.phq9Label} {tr(r.of27)}
+            </p>
+            <p className="font-medium">
+              {tr(SEVERITY_LABEL[p.severity])} · {tr(r.range)} {SEVERITY_RANGE[p.severity]}
             </p>
           </div>
-        )}
-      </section>
+        </div>
 
-      {/* ---------------- What influences the estimate ---------------- */}
-      <section className="mt-10">
-        <h2 className="text-lg font-semibold">{tr(r.whatInfluences)}</h2>
-        <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-muted-foreground">
-          {tr(r.predictorsNote)}
-        </p>
+        {/* ---------------- The result: PHQ-9 at 12 months ---------------- */}
+        <section className="mt-8">
+          <h2 className="text-lg font-semibold">{tr(r.whatCanBeExpected)}</h2>
+          <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-muted-foreground">
+            {tr(r.whatCanBeExpectedBody)}
+          </p>
 
-        <dl className="mt-4 divide-y divide-border border-y border-border text-sm">
-          <div className="flex justify-between gap-4 py-2">
-            <dt className="text-muted-foreground">{tr(r.predictors.baseline.label)}</dt>
-            <dd className="font-medium">{p.baseline}/27</dd>
+          <div className="mt-4 inline-flex rounded-md border border-border p-0.5 text-sm">
+            {(["single", "combo"] as const).map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setTab(t)}
+                aria-pressed={tab === t}
+                className={[
+                  "rounded-[5px] px-3 py-1.5 font-medium transition-colors",
+                  tab === t
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground",
+                ].join(" ")}
+              >
+                {tr(r.scenarioTabs[t])}
+              </button>
+            ))}
           </div>
-          <div className="flex justify-between gap-4 py-2">
-            <dt className="text-muted-foreground">{tr(r.predictors.age.label)}</dt>
-            <dd className="font-medium">
-              {p.session.profile.birthDate
-                ? ageFromBirthDate(p.session.profile.birthDate).toFixed(2)
-                : tr(r.predictors.notProvided)}
-            </dd>
-          </div>
-          <div className="flex justify-between gap-4 py-2">
-            <dt className="text-muted-foreground">{tr(r.predictors.sex.label)}</dt>
-            <dd className="font-medium">
-              {p.session.profile.sex
-                ? tr(
-                    SEX_OPTIONS.find((o) => o.value === p.session.profile.sex)?.label ?? {
-                      de: "–",
-                      en: "–",
-                    },
-                  )
-                : tr(r.predictors.notProvided)}
-            </dd>
-          </div>
-          <div className="flex justify-between gap-4 py-2">
-            <dt className="text-muted-foreground">{tr(r.predictors.gad7.label)}</dt>
-            <dd className="font-medium">
-              {(() => {
-                const score = effectiveGad7Score(p.session.profile);
-                return score !== null ? `${score}/21` : tr(r.predictors.notProvided);
-              })()}
-            </dd>
-          </div>
-          <div className="flex justify-between gap-4 py-2">
-            <dt className="text-muted-foreground">{tr(r.predictors.riskScore.label)}</dt>
-            <dd className="font-medium">
-              {p.predictors.find((row) => row.id === "riskScore")?.value ?? "–"}
-            </dd>
-          </div>
-        </dl>
-      </section>
 
-      <div className="mt-10 flex flex-wrap gap-2">
-        <Link
-          to="/praxis"
-          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
-        >
-          {tr(r.actions.clinicianSummary)}
-        </Link>
-        <Link
-          to="/angebote"
-          className="rounded-md border border-border px-4 py-2 text-sm font-medium hover:bg-secondary"
-        >
-          {tr(r.actions.localSupport)}
-        </Link>
+          <BaselinePointer baseline={p.baseline} />
+          <div className="divide-y divide-border rounded-md border border-border px-4">
+            {activeScenarios.map((scenario) => (
+              <ComparisonRow
+                key={scenario.id}
+                label={scenarioLabel(scenario)}
+                scenario={scenario}
+                baseline={p.baseline}
+              />
+            ))}
+          </div>
+          <ChartLegend />
+          <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{tr(activeIntro)}</p>
+
+          <button
+            type="button"
+            onClick={() => setShowDistributions((v) => !v)}
+            className="mt-4 text-xs font-medium text-primary underline underline-offset-2"
+          >
+            {tr(showDistributions ? r.posterior.hide : r.posterior.show)}
+          </button>
+          {showDistributions && (
+            <div className="mt-3 rounded-md bg-secondary p-4">
+              <p className="text-xs text-muted-foreground">{tr(r.posterior.explain)}</p>
+              <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {activeScenarios.map((scenario) => (
+                  <PosteriorMini
+                    key={scenario.id}
+                    label={scenarioLabel(scenario)}
+                    scenario={scenario}
+                    domain={distributionsDomain}
+                  />
+                ))}
+              </div>
+              <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground">
+                {tr(r.posterior.placeholderNote)}
+              </p>
+            </div>
+          )}
+        </section>
+
+        {/* ---------------- What influences the estimate ---------------- */}
+        <section className="mt-10">
+          <h2 className="text-lg font-semibold">{tr(r.whatInfluences)}</h2>
+          <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-muted-foreground">
+            {tr(r.predictorsNote)}
+          </p>
+
+          <dl className="mt-4 divide-y divide-border border-y border-border text-sm">
+            <div className="flex justify-between gap-4 py-2">
+              <dt className="text-muted-foreground">{tr(r.predictors.baseline.label)}</dt>
+              <dd className="font-medium">{p.baseline}/27</dd>
+            </div>
+            <div className="flex justify-between gap-4 py-2">
+              <dt className="text-muted-foreground">{tr(r.predictors.age.label)}</dt>
+              <dd className="font-medium">
+                {p.session.profile.birthDate
+                  ? ageFromBirthDate(p.session.profile.birthDate).toFixed(2)
+                  : tr(r.predictors.notProvided)}
+              </dd>
+            </div>
+            <div className="flex justify-between gap-4 py-2">
+              <dt className="text-muted-foreground">{tr(r.predictors.sex.label)}</dt>
+              <dd className="font-medium">
+                {p.session.profile.sex
+                  ? tr(
+                      SEX_OPTIONS.find((o) => o.value === p.session.profile.sex)?.label ?? {
+                        de: "–",
+                        en: "–",
+                      },
+                    )
+                  : tr(r.predictors.notProvided)}
+              </dd>
+            </div>
+            <div className="flex justify-between gap-4 py-2">
+              <dt className="text-muted-foreground">{tr(r.predictors.gad7.label)}</dt>
+              <dd className="font-medium">
+                {(() => {
+                  const score = effectiveGad7Score(p.session.profile);
+                  return score !== null ? `${score}/21` : tr(r.predictors.notProvided);
+                })()}
+              </dd>
+            </div>
+            <div className="flex justify-between gap-4 py-2">
+              <dt className="text-muted-foreground">{tr(r.predictors.riskScore.label)}</dt>
+              <dd className="font-medium">
+                {p.predictors.find((row) => row.id === "riskScore")?.value ?? "–"}
+              </dd>
+            </div>
+          </dl>
+        </section>
+
+        <div className="mt-10 flex flex-wrap gap-2">
+          <Link
+            to="/praxis"
+            className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+          >
+            {tr(r.actions.clinicianSummary)}
+          </Link>
+          <Link
+            to="/angebote"
+            className="rounded-md border border-border px-4 py-2 text-sm font-medium hover:bg-secondary"
+          >
+            {tr(r.actions.localSupport)}
+          </Link>
+        </div>
       </div>
     </div>
   );
