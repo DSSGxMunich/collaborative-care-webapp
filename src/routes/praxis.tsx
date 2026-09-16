@@ -211,7 +211,7 @@ function Clinician() {
                       ) : delta > 0 ? (
                         <span className="font-medium text-success">
                           -{delta}
-                          <span className="sr-only"> ({tr(c.table.improved)})</span>
+                          <span className="sr-only"> ({tr(c.table.better)})</span>
                         </span>
                       ) : (
                         <span className="font-medium text-warning">
@@ -235,7 +235,7 @@ function Clinician() {
         <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
           <span className="inline-flex items-center gap-1.5">
             <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-success" />
-            {tr(c.table.improved)}
+            {tr(c.table.better)}
           </span>
           <span className="inline-flex items-center gap-1.5">
             <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-warning" />

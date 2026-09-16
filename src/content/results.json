@@ -25,14 +25,8 @@
     "today": { "de": "Ihr PHQ-9 heute ({baseline})", "en": "Your PHQ-9 today ({baseline})" },
     "todayLine": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" },
     "scale": { "de": "Skala 0–27", "en": "scale 0–27" },
-    "better": {
-      "de": "Verbesserung gegenüber heute erwartet",
-      "en": "Improvement expected vs. today"
-    },
-    "worse": {
-      "de": "Verschlechterung gegenüber heute erwartet",
-      "en": "Worse than today expected"
-    },
+    "better": { "de": "Besser als heute", "en": "Better than today" },
+    "worse": { "de": "Schlechter als heute", "en": "Worse than today" },
     "same": { "de": "Etwa gleich wie heute", "en": "About the same as today" }
   },
   "scenarios": {
