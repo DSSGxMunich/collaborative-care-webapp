@@ -140,23 +140,23 @@ function SiteHeader() {
 
   return (
     <header className="border-b border-border">
-      <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-x-5 gap-y-2 px-4 py-3">
-        <Link to="/" className="text-sm font-semibold">
+      <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-5 gap-y-2 px-4 py-3">
+        <Link to="/" className="shrink-0 text-sm font-semibold">
           {tr(ui.appName)}
         </Link>
-        <nav className="order-3 flex w-full flex-wrap gap-x-4 gap-y-1 text-sm sm:order-none sm:w-auto">
+        <nav className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
           {navItems.map((item) => (
             <Link
               key={item.to}
               to={item.to}
               activeProps={{ className: "text-foreground font-medium" }}
-              className="text-muted-foreground hover:text-foreground"
+              className="whitespace-nowrap text-muted-foreground hover:text-foreground"
             >
               {tr(item.label)}
             </Link>
           ))}
         </nav>
-        <div className="ml-auto flex items-center gap-4">
+        <div className="ml-auto flex shrink-0 items-center gap-4">
           <Link to="/soforthilfe" className="text-sm font-medium text-destructive">
             {tr(ui.nav.crisis)}
           </Link>
