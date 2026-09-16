@@ -191,17 +191,15 @@ function Questionnaire() {
             value={session.safety.plan}
             onChange={(v) => updateSafety({ plan: v })}
           />
-          <fieldset className="surface-card p-5">
-            <legend className="mb-3 block text-base font-semibold">
-              {tr(q.safety.questions.probability)}
-            </legend>
+          <div className="space-y-2 rounded-md border border-border px-3.5 py-2.5">
+            <p className="text-sm">{tr(q.safety.questions.probability)}</p>
             <Choice
               name="safety-probability"
               options={PROBABILITY_OPTIONS}
               value={session.safety.probability}
               onChange={(v) => updateSafety({ probability: v })}
             />
-          </fieldset>
+          </div>
           <YesNoField
             label={q.safety.questions.preventive}
             value={session.safety.preventive}

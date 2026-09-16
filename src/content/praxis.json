@@ -7,10 +7,12 @@
   "print": { "de": "Drucken / als PDF speichern", "en": "Print / save as PDF" },
   "riskFlagLabel": { "de": "Risikoflag", "en": "Risk flag" },
   "riskFlag": {
-    "none": { "de": "kein Hinweis", "en": "no indication" },
-    "low": { "de": "Item 9 positiv (einzelne Tage)", "en": "item 9 positive (several days)" },
-    "elevated": { "de": "erhöht — zeitnahe Abklärung", "en": "elevated — timely review" },
-    "acute": { "de": "AKUT — sofortiges Handeln", "en": "ACUTE — act immediately" }
+    "minimal": { "de": "minimal — kein akuter Hinweis", "en": "minimal — no acute indication" },
+    "lower": {
+      "de": "niedriger — zeitnahe Abklärung empfohlen",
+      "en": "lower — timely review recommended"
+    },
+    "higher": { "de": "höher — dringender Handlungsbedarf", "en": "higher — urgent action needed" }
   },
   "riskAdvice": {
     "de": "Suizidalität explizit ansprechen, Sicherheitsplan und Erreichbarkeit klären, ggf. fachpsychiatrische Mitbeurteilung veranlassen.",

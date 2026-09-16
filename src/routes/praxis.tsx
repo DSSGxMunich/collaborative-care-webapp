@@ -56,11 +56,18 @@ function Clinician() {
   const risk = assessRisk(p.session);
   const yesNo = (v: "yes" | "no" | null) => (v ? tr(v === "yes" ? ui.yes : ui.no) : "–");
 
-  const rows: { label: string; value: string }[] = [
+  /** Badge tone per RiskLevel — "minimal" gets no badge (plain row, like everything else). */
+  const RISK_TONE: Record<typeof risk, "warning" | "destructive" | undefined> = {
+    minimal: undefined,
+    lower: "warning",
+    higher: "destructive",
+  };
+
+  const rows: { label: string; value: string; tone?: "warning" | "destructive" | undefined }[] = [
+    { label: tr(c.rows.riskAssessment), value: tr(c.riskFlag[risk]), tone: RISK_TONE[risk] },
     { label: tr(c.rows.phq9Total), value: `${p.baseline}/27` },
     { label: tr(c.rows.severity), value: tr(SEVERITY_LABEL[p.severity]) },
     { label: tr(c.rows.suicidality), value: `${p.session.phq[8] ?? 0}/3` },
-    { label: tr(c.rows.riskAssessment), value: tr(c.riskFlag[risk]) },
     { label: tr(c.rows.past), value: yesNo(safety.past) },
     { label: tr(c.rows.plan), value: yesNo(safety.plan) },
     {
@@ -76,7 +83,11 @@ function Clinician() {
           : "–",
     },
     { label: tr(c.rows.preventive), value: yesNo(safety.preventive) },
-    { label: tr(c.rows.familyHistory), value: yesNo(safety.familyHistory) },
+    {
+      label: tr(c.rows.familyHistory),
+      value: yesNo(safety.familyHistory),
+      tone: safety.familyHistory === "yes" ? "warning" : undefined,
+    },
     {
       label: tr(c.rows.age),
       value: profile.birthDate ? ageFromBirthDate(profile.birthDate).toFixed(2) : "–",
@@ -141,7 +152,22 @@ function Clinician() {
             {rows.map((row) => (
               <div key={row.label} className="flex justify-between gap-4 py-2">
                 <dt className="text-muted-foreground">{row.label}</dt>
-                <dd className="text-right font-medium">{row.value}</dd>
+                <dd className="text-right">
+                  {row.tone ? (
+                    <span
+                      className={[
+                        "rounded-md border px-2 py-0.5 text-xs font-semibold",
+                        row.tone === "destructive"
+                          ? "border-destructive/40 bg-destructive-soft text-destructive"
+                          : "border-warning/40 bg-warning-soft text-warning",
+                      ].join(" ")}
+                    >
+                      {row.value}
+                    </span>
+                  ) : (
+                    <span className="font-medium">{row.value}</span>
+                  )}
+                </dd>
               </div>
             ))}
           </dl>
