@@ -140,7 +140,7 @@ function SiteHeader() {
 
   return (
     <header className="border-b border-border">
-      <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-5 gap-y-2 px-4 py-3">
+      <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-5 gap-y-2 px-4 py-3">
         <Link to="/" className="shrink-0 text-sm font-semibold">
           {tr(ui.appName)}
         </Link>
@@ -156,7 +156,7 @@ function SiteHeader() {
             </Link>
           ))}
         </nav>
-        <div className="ml-auto flex shrink-0 items-center gap-4">
+        <div className="flex shrink-0 items-center gap-4">
           <Link to="/soforthilfe" className="text-sm font-medium text-destructive">
             {tr(ui.nav.crisis)}
           </Link>
