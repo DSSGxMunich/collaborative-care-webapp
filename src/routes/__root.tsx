@@ -131,11 +131,11 @@ function SiteHeader() {
   const { tr } = useLang();
   const navItems = [
     { to: "/fragebogen" as const, label: ui.nav.questionnaire },
-    { to: "/ergebnis" as const, label: ui.nav.results },
-    { to: "/angebote" as const, label: ui.nav.support },
-    { to: "/praxis" as const, label: ui.nav.clinician },
-    { to: "/faq" as const, label: ui.nav.faq },
     { to: "/methodology" as const, label: ui.nav.methodology },
+    { to: "/ergebnis" as const, label: ui.nav.results },
+    { to: "/praxis" as const, label: ui.nav.clinician },
+    { to: "/angebote" as const, label: ui.nav.support },
+    { to: "/faq" as const, label: ui.nav.faq },
   ];
 
   return (
