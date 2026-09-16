@@ -236,33 +236,35 @@ function PosteriorMini({
 }
 
 /**
- * Full-width, softly tinted banner shown above the results — reads as part
- * of the page (the reader scrolls past it in normal flow), not as a
- * separate interstitial screen. Full-bleed background, readable-width text
- * column, matching the typography of the sections below it.
+ * A card that stays pinned centered in the viewport (position: sticky) as
+ * the reader scrolls through the outer runway div below it, so it reads as
+ * an interactive stop rather than a plain paragraph. Its own content
+ * scrolls internally once it's taller than the card; once the reader has
+ * scrolled past the runway's height, the card releases and normal page
+ * scroll continues down into the results.
  */
 function DisclaimerGate() {
   const { tr } = useLang();
   return (
-    <div className="w-full border-b border-warning/25 bg-warning-soft/50">
-      <div className="mx-auto max-w-2xl px-4 py-8">
-        <h2 className="text-lg font-semibold">{tr(r.prototypeNote.heading)}</h2>
-        <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-muted-foreground">
-          {tr(r.prototypeNote.intro)}
-        </p>
-        <ul className="mt-3 space-y-1 text-sm leading-relaxed">
-          {r.prototypeNote.items.map((item, i) => (
-            <li key={i} className="flex gap-2">
-              <span aria-hidden="true" className="text-muted-foreground">
-                –
-              </span>
-              <span>{tr(item)}</span>
-            </li>
-          ))}
-        </ul>
-        <p className="mt-3 max-w-xl text-sm font-medium leading-relaxed">
-          {tr(r.prototypeNote.closing)}
-        </p>
+    <div className="relative h-[170vh]">
+      <div className="sticky top-1/2 mx-auto max-w-xl -translate-y-1/2 px-4">
+        <div className="max-h-[70vh] overflow-y-auto rounded-xl border border-warning/30 bg-warning-soft p-6 shadow-lg">
+          <h2 className="text-lg font-semibold">{tr(r.prototypeNote.heading)}</h2>
+          <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+            {tr(r.prototypeNote.intro)}
+          </p>
+          <ul className="mt-3 space-y-1 text-sm leading-relaxed">
+            {r.prototypeNote.items.map((item, i) => (
+              <li key={i} className="flex gap-2">
+                <span aria-hidden="true" className="text-muted-foreground">
+                  –
+                </span>
+                <span>{tr(item)}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-3 text-sm font-medium leading-relaxed">{tr(r.prototypeNote.closing)}</p>
+        </div>
       </div>
     </div>
   );
