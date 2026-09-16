@@ -14,8 +14,45 @@
   },
   "title": { "de": "Ihre Auswertung", "en": "Your results" },
   "prototypeNote": {
-    "de": "Diese Schätzungen stammen aus einer gefitteten Komponenten-Netzwerk-Metaanalyse (6 Behandlungsbausteine, 7 Studien) mit einem vorgeschalteten Schritt-1-Modell für Alter, Geschlecht, Ausgangs-PHQ-9 und GAD-7. Alle Bandbreiten sind echte Posterior-Kredibilitätsintervalle. Es handelt sich um einen Forschungsprototyp, keine klinisch validierte Vorhersage.",
-    "en": "These estimates come from a fitted component network meta-analysis (6 treatment components, 7 trials) with an upstream Step 1 model for age, sex, baseline PHQ-9 and GAD-7. All ranges are real posterior credible intervals. This is a research prototype, not a clinically validated prediction."
+    "heading": { "de": "Bevor Sie Ihre Ergebnisse sehen", "en": "Before you view your results" },
+    "intro": {
+      "de": "Unser Modell basiert auf Daten aus randomisiert-kontrollierten Studien (RCTs). Folgende Merkmale waren in diesen Studien kaum oder gar nicht vertreten:",
+      "en": "Our model is based on data from randomized controlled trials (RCTs). Here are some circumstances that weren't well represented in those trials:"
+    },
+    "items": [
+      {
+        "de": "Bereits in Therapie, fachärztlicher Behandlung oder unter Antidepressiva (10 von 12 Studien schlossen sie aus)",
+        "en": "Already in therapy, specialist mental health care, or taking antidepressants (10 of 12 studies excluded them)"
+      },
+      {
+        "de": "Alkohol- oder Drogenabhängigkeit (8 von 12 Studien schlossen sie aus)",
+        "en": "Alcohol or drug dependence (8 of 12 studies excluded them)"
+      },
+      {
+        "de": "Bipolare Störung (7 von 12 Studien schlossen sie aus)",
+        "en": "Bipolar disorder (7 of 12 studies excluded them)"
+      },
+      {
+        "de": "Kognitive Beeinträchtigung (5 von 12 Studien schlossen sie aus)",
+        "en": "Cognitive impairment (5 of 12 studies excluded them)"
+      },
+      {
+        "de": "Akute Suizidalität (4 von 12 Studien schlossen sie aus)",
+        "en": "Acute suicidality (4 of 12 studies excluded them)"
+      },
+      {
+        "de": "Schwangerschaft (3 von 12 Studien schlossen sie aus)",
+        "en": "Pregnancy (3 of 12 studies excluded them)"
+      },
+      {
+        "de": "Unter 18 Jahren (9 von 12 Studien schlossen sie aus)",
+        "en": "Under 18 (9 of 12 studies excluded them)"
+      }
+    ],
+    "closing": {
+      "de": "Trifft etwas davon auf Sie zu, verstehen Sie die folgenden Zahlen bitte eher als groben Anhaltspunkt denn als präzise Vorhersage.",
+      "en": "If any of this applies to you, treat the numbers below as a rough guide rather than a precise prediction."
+    }
   },
   "phq9Label": "PHQ-9",
   "of27": { "de": "von 27 Punkten", "en": "of 27 points" },
