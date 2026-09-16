@@ -139,7 +139,7 @@ function SiteHeader() {
   ];
 
   return (
-    <header className="border-b border-border">
+    <header className="border-b border-border print:hidden">
       <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-5 gap-y-2 px-4 py-3">
         <Link to="/" className="shrink-0 text-sm font-semibold">
           {tr(ui.appName)}
@@ -170,7 +170,7 @@ function SiteHeader() {
 function SiteFooter() {
   const { tr } = useLang();
   return (
-    <footer className="mt-16 border-t border-border">
+    <footer className="mt-16 border-t border-border print:hidden">
       <div className="mx-auto max-w-3xl px-4 py-6 text-xs leading-relaxed text-muted-foreground">
         <p>{tr(ui.disclaimer)}</p>
       </div>
@@ -265,7 +265,7 @@ function RootComponent() {
       <LanguageProvider>
         <SessionProvider>
           {!framed && (
-            <div className="border-b border-border bg-secondary/60 px-4 py-1.5">
+            <div className="border-b border-border bg-secondary/60 px-4 py-1.5 print:hidden">
               <div className="mx-auto flex max-w-3xl justify-end">
                 <ViewToggle mode={mode} onChange={changeMode} />
               </div>

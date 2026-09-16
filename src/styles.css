@@ -126,3 +126,18 @@
 @utility text-balance-tight {
   text-wrap: balance;
 }
+
+@media print {
+  @page {
+    margin: 1.5cm;
+  }
+
+  /* Browsers drop background/border colors on print by default (to save
+     ink) — without this the risk-level and family-history badges on the
+     clinician print report (src/routes/praxis.tsx) would print colorless,
+     defeating the point of color-coding them. */
+  * {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}

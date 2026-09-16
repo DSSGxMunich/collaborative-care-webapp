@@ -139,7 +139,7 @@ function Clinician() {
         <button
           type="button"
           onClick={() => window.print()}
-          className="rounded-md border border-border px-3.5 py-2 text-sm font-medium hover:bg-secondary"
+          className="rounded-md border border-border px-3.5 py-2 text-sm font-medium hover:bg-secondary print:hidden"
         >
           {tr(c.print)}
         </button>
@@ -206,7 +206,7 @@ function Clinician() {
       <section className="mt-8">
         <h2 className="text-base font-semibold">{tr(c.modelEstimates)}</h2>
 
-        <div className="mt-3 inline-flex rounded-md border border-border p-0.5 text-sm">
+        <div className="mt-3 inline-flex rounded-md border border-border p-0.5 text-sm print:hidden">
           {(["single", "combo"] as const).map((t) => (
             <button
               key={t}
