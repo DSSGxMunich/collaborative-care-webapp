@@ -236,31 +236,33 @@ function PosteriorMini({
 }
 
 /**
- * Full-viewport-height, centered content block shown before the results, so
- * the reader can't land straight into the numbers without at least
- * scrolling past this once. No click-through/JS gating — the scroll itself
- * is the interaction, and the content stays reachable via normal scrolling
- * (back up) at any time.
+ * Full-width, softly tinted banner shown above the results — reads as part
+ * of the page (the reader scrolls past it in normal flow), not as a
+ * separate interstitial screen. Full-bleed background, readable-width text
+ * column, matching the typography of the sections below it.
  */
 function DisclaimerGate() {
   const { tr } = useLang();
   return (
-    <div className="flex min-h-[100dvh] flex-col items-center justify-center border-b border-warning/40 bg-warning-soft px-4 py-16 text-center">
-      <div className="max-w-lg">
-        <h2 className="text-xl font-semibold">{tr(r.prototypeNote.heading)}</h2>
-        <p className="mt-3 text-sm leading-relaxed">{tr(r.prototypeNote.intro)}</p>
-        <ul className="mt-4 space-y-1.5 text-left text-sm leading-relaxed">
+    <div className="w-full border-b border-warning/25 bg-warning-soft/50">
+      <div className="mx-auto max-w-2xl px-4 py-8">
+        <h2 className="text-lg font-semibold">{tr(r.prototypeNote.heading)}</h2>
+        <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-muted-foreground">
+          {tr(r.prototypeNote.intro)}
+        </p>
+        <ul className="mt-3 space-y-1 text-sm leading-relaxed">
           {r.prototypeNote.items.map((item, i) => (
             <li key={i} className="flex gap-2">
-              <span aria-hidden="true">·</span>
+              <span aria-hidden="true" className="text-muted-foreground">
+                –
+              </span>
               <span>{tr(item)}</span>
             </li>
           ))}
         </ul>
-        <p className="mt-4 text-sm leading-relaxed">{tr(r.prototypeNote.closing)}</p>
-      </div>
-      <div className="mt-10 animate-bounce text-xs font-medium text-muted-foreground">
-        {tr(r.prototypeNote.scrollHint)} ↓
+        <p className="mt-3 max-w-xl text-sm font-medium leading-relaxed">
+          {tr(r.prototypeNote.closing)}
+        </p>
       </div>
     </div>
   );

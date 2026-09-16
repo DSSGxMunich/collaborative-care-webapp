@@ -15,32 +15,31 @@
   "title": { "de": "Ihre Auswertung", "en": "Your results" },
   "prototypeNote": {
     "heading": { "de": "Bevor Sie Ihre Ergebnisse sehen", "en": "Before you view your results" },
-    "intro": { "de": "Das sollten Sie wissen:", "en": "Here's what you need to know:" },
+    "intro": {
+      "de": "Unser Modell basiert auf Daten aus randomisiert-kontrollierten Studien (RCTs). Folgende Merkmale waren in diesen Studien kaum oder gar nicht vertreten:",
+      "en": "Our model is based on data from randomized controlled trials (RCTs). Here are some circumstances that weren't well represented in those trials:"
+    },
     "items": [
       {
-        "de": "Bereits in Therapie, fachärztlicher Behandlung oder unter Antidepressiva — in 10 von 12 Studien ausgeschlossen",
-        "en": "Already in therapy, specialist mental health care, or taking antidepressants — excluded in 10 of 12 trials"
+        "de": "Bereits in Therapie, fachärztlicher Behandlung oder unter Antidepressiva (10 von 12 Studien schlossen dies aus)",
+        "en": "Already in therapy, specialist mental health care, or taking antidepressants (excluded by 10 of 12 trials)"
       },
       {
-        "de": "Alkohol- oder Drogenabhängigkeit — 8 von 12",
-        "en": "Alcohol or drug dependence — 8 of 12"
+        "de": "Alkohol- oder Drogenabhängigkeit (8 von 12)",
+        "en": "Alcohol or drug dependence (8 of 12)"
       },
-      { "de": "Bipolare Störung — 7 von 12", "en": "Bipolar disorder — 7 of 12" },
-      { "de": "Kognitive Beeinträchtigung — 5 von 12", "en": "Cognitive impairment — 5 of 12" },
-      { "de": "Akute Suizidalität — 4 von 12", "en": "Acute suicidality — 4 of 12" },
-      { "de": "Schwangerschaft — 3 von 12", "en": "Pregnancy — 3 of 12" },
+      { "de": "Bipolare Störung (7 von 12)", "en": "Bipolar disorder (7 of 12)" },
+      { "de": "Kognitive Beeinträchtigung (5 von 12)", "en": "Cognitive impairment (5 of 12)" },
+      { "de": "Akute Suizidalität (4 von 12)", "en": "Acute suicidality (4 of 12)" },
+      { "de": "Schwangerschaft (3 von 12)", "en": "Pregnancy (3 of 12)" },
       {
-        "de": "Unter 18 Jahren — die meisten Studien (9 von 12) schlossen nur Erwachsene ein",
-        "en": "Under 18 — most trials (9 of 12) enrolled adults only"
+        "de": "Unter 18 Jahren (9 von 12 Studien schlossen nur Erwachsene ein)",
+        "en": "Under 18 (9 of 12 trials enrolled adults only)"
       }
     ],
     "closing": {
-      "de": "Trifft etwas davon auf Sie zu, verstehen Sie die folgenden Zahlen als groben Anhaltspunkt aus einem Forschungsprototyp — nicht als präzise, klinisch validierte Vorhersage.",
-      "en": "If any of this applies to you, treat the numbers below as a rough guide from a research prototype — not a precise, clinically validated prediction."
-    },
-    "scrollHint": {
-      "de": "Scrollen Sie nach unten, um fortzufahren",
-      "en": "Scroll down to continue"
+      "de": "Trifft etwas davon auf Sie zu, verstehen Sie die folgenden Zahlen bitte eher als groben Anhaltspunkt denn als präzise Vorhersage.",
+      "en": "If any of this applies to you, treat the numbers below as a rough guide rather than a precise prediction."
     }
   },
   "phq9Label": "PHQ-9",
