@@ -4,7 +4,7 @@
     "de": "Vom Patienten selbst ausgefüllt. Alle Angaben sind Selbstauskunft und ersetzen keine Diagnostik.",
     "en": "Completed by the patient. All entries are self-report and do not replace clinical assessment."
   },
-  "print": { "de": "Drucken / als PDF speichern", "en": "Print / save as PDF" },
+  "print": { "de": "PDF herunterladen", "en": "Download PDF" },
   "riskFlagLabel": { "de": "Risikoflag", "en": "Risk flag" },
   "riskFlag": {
     "minimal": { "de": "minimal — kein akuter Hinweis", "en": "minimal — no acute indication" },

@@ -5,6 +5,7 @@ import { fill, ui, useLang } from "@/lib/i18n";
 import { PHQ9_ITEMS, SEVERITY_LABEL } from "@/lib/phq9";
 import { assessRisk } from "@/lib/safety";
 import { MODEL_META } from "@/lib/model";
+import { generatePraxisPdf } from "@/lib/pdf";
 import { usePrediction } from "@/lib/usePrediction";
 import {
   ageFromBirthDate,
@@ -129,6 +130,48 @@ function Clinician() {
       ? tr(r.scenarios.usualCare.label)
       : scenario.components.map((id) => tr(r.components[id].short)).join(" + ");
 
+  const scenarioTableRows = (scenarios: typeof p.scenarios) =>
+    scenarios.map((scenario) => {
+      const delta = round1(usualEndpoint - scenario.expectedEndpoint);
+      return {
+        label: careOptionLabel(scenario),
+        endpoint: String(scenario.expectedEndpoint),
+        range: `${scenario.endpointRange[0]}–${scenario.endpointRange[1]}`,
+        delta: scenario.id === "usualCare" ? "–" : delta > 0 ? `-${delta}` : `+${-delta}`,
+      };
+    });
+
+  const downloadPdf = () => {
+    const [riskRow, ...restRows] = rows;
+    generatePraxisPdf({
+      filenamePrefix: tr({ de: "kurzbefund-praxis", en: "clinical-summary" }),
+      title: tr(c.title),
+      subtitle: tr(c.subtitle),
+      riskLabel: riskRow?.label ?? "",
+      riskValue: riskRow?.value ?? "",
+      riskTone: riskRow?.tone,
+      summaryHeading: tr(c.summary),
+      rows: restRows,
+      phq9Heading: tr(c.phq9ItemProfile),
+      phq9Items: PHQ9_ITEMS.map((item, i) => ({
+        index: i + 1,
+        label: tr(item),
+        value: p.session.phq[i] ?? 0,
+      })),
+      modelHeading: tr(c.modelEstimates),
+      tableHeaders: {
+        careOption: tr(c.table.careOption),
+        endpoint: tr(c.table.endpoint),
+        delta: tr(c.table.delta),
+      },
+      scenarioTables: [
+        { heading: tr(r.scenarioTabs.single), rows: scenarioTableRows(p.singleScenarios) },
+        { heading: tr(r.scenarioTabs.combo), rows: scenarioTableRows(p.scenarios) },
+      ],
+      footer: fill(tr(c.footer), { version: MODEL_META.version }),
+    });
+  };
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
       <div className="flex flex-wrap items-end justify-between gap-4">
@@ -138,7 +181,7 @@ function Clinician() {
         </div>
         <button
           type="button"
-          onClick={() => window.print()}
+          onClick={downloadPdf}
           className="rounded-md border border-border px-3.5 py-2 text-sm font-medium hover:bg-secondary print:hidden"
         >
           {tr(c.print)}
