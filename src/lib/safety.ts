@@ -7,6 +7,19 @@ import type { Session } from "./session";
  * PHQ-9 item 9 ("thoughts that you would be better off dead..."). This is
  * the risk-score half of the model: safety-question risk score. It is
  * deliberately independent of PHQ-9 total severity.
+ *
+ * The three questions themselves follow the German NVL/S3-Leitlinie
+ * Unipolare Depression's suicidality staging (Empfehlung 12-3, Tabelle
+ * 41/42, konsensbasiert): "plan" mirrors Stufe 3 ("konkrete Suizidpläne
+ * oder -vorbereitungen"), "canStaySafe" reflects "Distanzierung von
+ * suizidalem Verhalten"/"Absprachefähigkeit", and "pastAttempt" reflects
+ * the "Suizidversuch(e) in der Anamnese" risk factor. The guideline is
+ * explicit that these factors are a clinical decision aid, not a
+ * validated diagnostic checklist ("keine Checkliste zur validen Diagnose
+ * des Suizidrisikos") — the yes/no rule logic below is a deliberate
+ * simplification of that guidance for an automated triage banner, not a
+ * clinically validated scoring algorithm, and should be read as such by
+ * anyone extending it.
  */
 export type RiskLevel = "none" | "low" | "elevated" | "acute";
 
