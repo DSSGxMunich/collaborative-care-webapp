@@ -165,6 +165,12 @@
         "en": "Have you had a depressive episode before?"
       }
     },
+    "familyHistory": {
+      "question": {
+        "de": "Gab es in Ihrer Familie (Eltern, Geschwister) bereits Depressionen?",
+        "en": "Has anyone in your immediate family (parents, siblings) had depression?"
+      }
+    },
     "priorTreatment": {
       "question": {
         "de": "Welche Behandlungen haben Sie bereits erhalten?",

@@ -25,6 +25,8 @@ export type Profile = {
   /** Used by the Step-1 risk-score model (src/lib/riskScore.ts) when female/male. */
   sex: Sex | null;
   priorEpisode: YesNo | null;
+  /** First-degree relative (parent/sibling) with depression — heritability roughly doubles-to-quintuples offspring risk. */
+  familyHistoryDepression: YesNo | null;
   priorTreatment: string[];
   /**
    * Only asked if the patient already knows it. Feeds the Step-1 risk-score
@@ -63,6 +65,7 @@ export const emptySession = (): Session => ({
     birthDate: null,
     sex: null,
     priorEpisode: null,
+    familyHistoryDepression: null,
     priorTreatment: [],
     gad7Known: null,
     gad7Score: null,

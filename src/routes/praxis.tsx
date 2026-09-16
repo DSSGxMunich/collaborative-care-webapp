@@ -70,6 +70,7 @@ function Clinician() {
         : "–",
     },
     { label: tr(c.rows.priorEpisode), value: yesNo(profile.priorEpisode) },
+    { label: tr(c.rows.familyHistory), value: yesNo(profile.familyHistoryDepression) },
     {
       label: tr(c.rows.priorTreatment),
       value:
