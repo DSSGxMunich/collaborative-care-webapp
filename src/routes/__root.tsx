@@ -140,11 +140,11 @@ function SiteHeader() {
 
   return (
     <header className="border-b border-border">
-      <div className="mx-auto flex max-w-3xl items-center gap-x-5 overflow-x-auto px-4 py-3">
+      <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-5 gap-y-2 px-4 py-3">
         <Link to="/" className="shrink-0 text-sm font-semibold">
           {tr(ui.appName)}
         </Link>
-        <nav className="flex shrink-0 gap-x-4 text-sm">
+        <nav className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
           {navItems.map((item) => (
             <Link
               key={item.to}
