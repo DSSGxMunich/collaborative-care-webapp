@@ -15,6 +15,7 @@ import {
   ageFromBirthDate,
   birthDateBounds,
   PRIOR_TREATMENTS,
+  PROBABILITY_OPTIONS,
   SEX_OPTIONS,
   useSession,
 } from "@/lib/session";
@@ -58,9 +59,10 @@ function Questionnaire() {
         return session.phq.every((v) => v !== null);
       case "safety":
         return (
+          session.safety.past !== null &&
           session.safety.plan !== null &&
-          session.safety.canStaySafe !== null &&
-          session.safety.pastAttempt !== null &&
+          session.safety.probability !== null &&
+          session.safety.preventive !== null &&
           session.safety.familyHistory !== null
         );
       case "history":
@@ -180,19 +182,30 @@ function Questionnaire() {
         <div className="space-y-3">
           <p className="text-sm leading-relaxed text-muted-foreground">{tr(q.safety.intro)}</p>
           <YesNoField
+            label={q.safety.questions.past}
+            value={session.safety.past}
+            onChange={(v) => updateSafety({ past: v })}
+          />
+          <YesNoField
             label={q.safety.questions.plan}
             value={session.safety.plan}
             onChange={(v) => updateSafety({ plan: v })}
           />
+          <fieldset className="surface-card p-5">
+            <legend className="mb-3 block text-base font-semibold">
+              {tr(q.safety.questions.probability)}
+            </legend>
+            <Choice
+              name="safety-probability"
+              options={PROBABILITY_OPTIONS}
+              value={session.safety.probability}
+              onChange={(v) => updateSafety({ probability: v })}
+            />
+          </fieldset>
           <YesNoField
-            label={q.safety.questions.canStaySafe}
-            value={session.safety.canStaySafe}
-            onChange={(v) => updateSafety({ canStaySafe: v })}
-          />
-          <YesNoField
-            label={q.safety.questions.pastAttempt}
-            value={session.safety.pastAttempt}
-            onChange={(v) => updateSafety({ pastAttempt: v })}
+            label={q.safety.questions.preventive}
+            value={session.safety.preventive}
+            onChange={(v) => updateSafety({ preventive: v })}
           />
           <YesNoField
             label={q.safety.questions.familyHistory}

@@ -6,7 +6,12 @@ import { PHQ9_ITEMS, SEVERITY_LABEL } from "@/lib/phq9";
 import { assessRisk } from "@/lib/safety";
 import { MODEL_META } from "@/lib/model";
 import { usePrediction } from "@/lib/usePrediction";
-import { ageFromBirthDate, PRIOR_TREATMENTS, SEX_OPTIONS } from "@/lib/session";
+import {
+  ageFromBirthDate,
+  PRIOR_TREATMENTS,
+  PROBABILITY_OPTIONS,
+  SEX_OPTIONS,
+} from "@/lib/session";
 import praxisContent from "@/content/praxis.json";
 import resultsContent from "@/content/results.json";
 
@@ -56,9 +61,21 @@ function Clinician() {
     { label: tr(c.rows.severity), value: tr(SEVERITY_LABEL[p.severity]) },
     { label: tr(c.rows.suicidality), value: `${p.session.phq[8] ?? 0}/3` },
     { label: tr(c.rows.riskAssessment), value: tr(c.riskFlag[risk]) },
-    { label: tr(c.rows.planPrep), value: yesNo(safety.plan) },
-    { label: tr(c.rows.canStaySafe), value: yesNo(safety.canStaySafe) },
-    { label: tr(c.rows.pastAttempt), value: yesNo(safety.pastAttempt) },
+    { label: tr(c.rows.past), value: yesNo(safety.past) },
+    { label: tr(c.rows.plan), value: yesNo(safety.plan) },
+    {
+      label: tr(c.rows.probability),
+      value:
+        safety.probability !== null
+          ? tr(
+              PROBABILITY_OPTIONS.find((o) => o.value === safety.probability)?.label ?? {
+                de: "–",
+                en: "–",
+              },
+            )
+          : "–",
+    },
+    { label: tr(c.rows.preventive), value: yesNo(safety.preventive) },
     { label: tr(c.rows.familyHistory), value: yesNo(safety.familyHistory) },
     {
       label: tr(c.rows.age),

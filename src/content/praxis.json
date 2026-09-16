@@ -24,14 +24,18 @@
     "severity": { "de": "Schweregrad", "en": "Severity" },
     "suicidality": { "de": "Suizidalität (Item 9)", "en": "Suicidality (item 9)" },
     "riskAssessment": { "de": "Risikoeinschätzung", "en": "Risk assessment" },
-    "planPrep": { "de": "Konkreter Plan / Vorbereitung", "en": "Concrete plan / preparation" },
-    "canStaySafe": {
-      "de": "Kann sich bis zum Kontakt schützen",
-      "en": "Able to stay safe until contact"
+    "past": {
+      "de": "Selbstverletzung/Suizidversuch (jemals)",
+      "en": "Self-harm/suicide attempt (ever)"
     },
-    "pastAttempt": {
-      "de": "Selbstverletzung/Versuch < 12 Monate",
-      "en": "Self-harm/attempt < 12 months"
+    "plan": { "de": "Gedanken an Methode (Plan)", "en": "Thought about method (plan)" },
+    "probability": {
+      "de": "Selbsteingeschätzte Wahrscheinlichkeit",
+      "en": "Self-rated probability"
+    },
+    "preventive": {
+      "de": "Schützende Faktoren vorhanden",
+      "en": "Protective factors present"
     },
     "familyHistory": {
       "de": "Suizid/-versuch in der Familie",

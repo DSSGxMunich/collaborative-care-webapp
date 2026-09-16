@@ -3,50 +3,77 @@ import { severityFor } from "./phq9";
 import type { Session } from "./session";
 
 /**
- * Risk level driven purely by the three explicit safety questions plus
- * PHQ-9 item 9 ("thoughts that you would be better off dead..."). This is
- * the risk-score half of the model: safety-question risk score. It is
+ * Risk level driven by the P4-based safety questions plus PHQ-9 item 9
+ * ("thoughts that you would be better off dead..."). This is the
+ * risk-score half of the model: safety-question risk score. It is
  * deliberately independent of PHQ-9 total severity.
  *
- * The three questions themselves follow the German NVL/S3-Leitlinie
- * Unipolare Depression's suicidality staging (Empfehlung 12-3, Tabelle
- * 41/42, konsensbasiert): "plan" mirrors Stufe 3 ("konkrete Suizidpläne
- * oder -vorbereitungen"), "canStaySafe" reflects "Distanzierung von
- * suizidalem Verhalten"/"Absprachefähigkeit", and "pastAttempt" reflects
- * the "Suizidversuch(e) in der Anamnese" risk factor. The guideline is
- * explicit that these factors are a clinical decision aid, not a
- * validated diagnostic checklist ("keine Checkliste zur validen Diagnose
- * des Suizidrisikos") — the yes/no rule logic below is a deliberate
- * simplification of that guidance for an automated triage banner, not a
- * clinically validated scoring algorithm, and should be read as such by
- * anyone extending it.
+ * The four safety questions (past/plan/probability/preventive) follow the
+ * P4 Screener (Dube, Kroenke, Bair, Theobald & Williams, 2010, Prim Care
+ * Companion J Clin Psychiatry 12(6)) — a brief suicide-risk screener
+ * validated in 2 RCTs of primary-care/oncology patients (past attempt,
+ * plan, self-rated probability of acting, and preventive/protective
+ * factors). A German translation was separately validated against the
+ * SBQ-R (Schluessel et al. 2023, J Clin Med, LMU Munich).
+ *
+ * IMPORTANT: the acute/elevated/low thresholds below are this app's own
+ * adaptation for an automated triage banner, not Dube et al.'s published
+ * risk-classification rule — this session could not independently verify
+ * the original paper's exact "minimal/lower/higher risk" algorithm
+ * (network access to the primary sources was blocked), so the mapping from
+ * P4 answers to a RiskLevel here should be checked against the source
+ * paper before being relied on as equivalent to the validated instrument's
+ * own scoring.
  */
 export type RiskLevel = "none" | "low" | "elevated" | "acute";
 
 export function assessRisk(s: Session): RiskLevel {
   const item9 = s.phq[8] ?? 0;
-  const { plan, canStaySafe, pastAttempt } = s.safety;
+  const { plan, probability, past, preventive } = s.safety;
 
-  if (plan === "yes" || canStaySafe === "no") return "acute";
-  if (item9 >= 2 || (item9 >= 1 && pastAttempt === "yes")) return "elevated";
+  if (probability === 2) return "acute";
+  if (
+    item9 >= 2 ||
+    (item9 >= 1 && past === "yes") ||
+    plan === "yes" ||
+    probability === 1 ||
+    preventive === "no"
+  )
+    return "elevated";
   if (item9 >= 1) return "low";
   return "none";
 }
 
-const REASON: Record<"plan" | "canStaySafe" | "item9High" | "item9AndPastAttempt", L> = {
-  plan: {
-    de: "Sie haben angegeben, einen Plan oder Vorbereitungen zu haben.",
-    en: "You indicated having a plan or preparations.",
+const REASON: Record<
+  | "probabilityVery"
+  | "plan"
+  | "probabilitySomewhat"
+  | "noPreventive"
+  | "item9High"
+  | "item9AndPast",
+  L
+> = {
+  probabilityVery: {
+    de: "Sie haben angegeben, dass Sie es für sehr wahrscheinlich halten, diese Gedanken in die Tat umzusetzen.",
+    en: "You indicated it is very likely you will act on these thoughts.",
   },
-  canStaySafe: {
-    de: "Sie haben angegeben, sich bis zum nächsten Kontakt nicht sicher fühlen zu können.",
-    en: "You indicated not feeling able to stay safe until your next contact.",
+  plan: {
+    de: "Sie haben angegeben, darüber nachgedacht zu haben, wie Sie sich verletzen könnten.",
+    en: "You indicated having thought about how you might hurt yourself.",
+  },
+  probabilitySomewhat: {
+    de: "Sie haben angegeben, dass Sie es für einigermaßen wahrscheinlich halten, diese Gedanken in die Tat umzusetzen.",
+    en: "You indicated it is somewhat likely you will act on these thoughts.",
+  },
+  noPreventive: {
+    de: "Sie haben angegeben, dass Sie nichts davon abhalten würde, sich selbst zu verletzen.",
+    en: "You indicated nothing would prevent you from harming yourself.",
   },
   item9High: {
     de: "Sie haben bei der PHQ-9-Frage zu Gedanken an Tod/Selbstverletzung „an mehr als der Hälfte der Tage“ oder „beinahe jeden Tag“ angegeben.",
     en: "You answered the PHQ-9 question on thoughts of death/self-harm with “more than half the days” or “nearly every day”.",
   },
-  item9AndPastAttempt: {
+  item9AndPast: {
     de: "Sie haben bei der PHQ-9-Frage zu Gedanken an Tod/Selbstverletzung mit „ja“ geantwortet und eine frühere Selbstverletzung/einen Versuch angegeben.",
     en: "You answered yes to the PHQ-9 question on thoughts of death/self-harm and reported a past self-harm episode or attempt.",
   },
@@ -54,19 +81,18 @@ const REASON: Record<"plan" | "canStaySafe" | "item9High" | "item9AndPastAttempt
 
 /**
  * Explains *why* assessRisk fired acute/elevated, so the safety-step banner
- * never appears unexplained — e.g. answering "No" to all three safety
- * questions can still trigger it, because "No" to "do you feel able to
- * keep yourself safe" is itself the concerning answer, and PHQ-9 item 9
- * alone (independent of the three safety questions) can also trigger it.
+ * never appears unexplained.
  */
 export function riskReasons(s: Session): L[] {
   const item9 = s.phq[8] ?? 0;
-  const { plan, canStaySafe, pastAttempt } = s.safety;
+  const { plan, probability, past, preventive } = s.safety;
   const reasons: L[] = [];
+  if (probability === 2) reasons.push(REASON.probabilityVery);
   if (plan === "yes") reasons.push(REASON.plan);
-  if (canStaySafe === "no") reasons.push(REASON.canStaySafe);
+  if (probability === 1) reasons.push(REASON.probabilitySomewhat);
+  if (preventive === "no") reasons.push(REASON.noPreventive);
   if (item9 >= 2) reasons.push(REASON.item9High);
-  else if (item9 >= 1 && pastAttempt === "yes") reasons.push(REASON.item9AndPastAttempt);
+  else if (item9 >= 1 && past === "yes") reasons.push(REASON.item9AndPast);
   return reasons;
 }
 

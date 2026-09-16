@@ -117,23 +117,35 @@
       "en": "These questions help judge how quickly you need support. Please answer as openly as you can."
     },
     "questions": {
+      "past": {
+        "de": "Haben Sie sich jemals selbst verletzt oder einen Suizidversuch unternommen?",
+        "en": "Have you ever attempted to harm yourself in the past?"
+      },
       "plan": {
-        "de": "Haben Sie konkrete Pläne oder Vorbereitungen getroffen, sich das Leben zu nehmen oder sich zu verletzen?",
-        "en": "Have you made concrete plans or preparations to end your life or to hurt yourself?"
+        "de": "Haben Sie darüber nachgedacht, wie Sie sich tatsächlich verletzen könnten?",
+        "en": "Have you thought about how you might actually hurt yourself?"
       },
-      "canStaySafe": {
-        "de": "Trauen Sie sich zu, sich bis zum nächsten Kontakt mit Ihrer Praxis nicht zu schaden?",
-        "en": "Do you feel able to keep yourself safe until your next contact with the practice?"
+      "probability": {
+        "de": "Wie wahrscheinlich ist es, dass Sie diese Gedanken, sich zu verletzen oder Ihr Leben zu beenden, im nächsten Monat in die Tat umsetzen?",
+        "en": "How likely do you think it is that you will act on these thoughts about hurting yourself or ending your life sometime over the next month?"
       },
-      "pastAttempt": {
-        "de": "Haben Sie sich in den letzten 12 Monaten selbst verletzt oder einen Suizidversuch unternommen?",
-        "en": "In the past 12 months, have you harmed yourself or attempted suicide?"
+      "preventive": {
+        "de": "Gibt es etwas, das Sie davon abhalten würde, sich selbst zu verletzen?",
+        "en": "Is there anything that would prevent or keep you from harming yourself?"
       },
       "familyHistory": {
         "de": "Gab es in Ihrer Familie (Eltern, Geschwister) einen Suizid oder Suizidversuch?",
         "en": "Has anyone in your immediate family (parents, siblings) died by suicide or attempted suicide?"
       }
     },
+    "probabilityOptions": [
+      {
+        "value": 0,
+        "label": { "de": "Überhaupt nicht wahrscheinlich", "en": "Not at all likely" }
+      },
+      { "value": 1, "label": { "de": "Einigermaßen wahrscheinlich", "en": "Somewhat likely" } },
+      { "value": 2, "label": { "de": "Sehr wahrscheinlich", "en": "Very likely" } }
+    ],
     "whyShown": { "de": "Warum wird das angezeigt?", "en": "Why is this shown?" }
   },
   "profile": {
