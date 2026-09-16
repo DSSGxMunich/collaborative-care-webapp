@@ -52,7 +52,10 @@
     "careOption": { "de": "Versorgungsoption", "en": "Care option" },
     "endpoint": { "de": "PHQ-9 12 Mo. (95%-KI)", "en": "PHQ-9 12 mo. (95% CI)" },
     "delta": { "de": "Δ vs. übliche Versorgung", "en": "Δ vs. usual care" },
-    "improved": { "de": "Verbesserung ggü. üblicher Versorgung", "en": "Improvement vs. usual care" },
+    "improved": {
+      "de": "Verbesserung ggü. üblicher Versorgung",
+      "en": "Improvement vs. usual care"
+    },
     "notImproved": {
       "de": "Keine Verbesserung ggü. üblicher Versorgung",
       "en": "No improvement vs. usual care"
