@@ -38,6 +38,15 @@ const pct = (x: number) => (x / PHQ9_MAX) * 100;
  * a solid reference line at the patient's baseline ("today"). Position and
  * distance from "today" carry the comparison — no separate rank badge.
  */
+/**
+ * Lower PHQ-9 is better, which is easy to misread at a glance, so each row's
+ * marker/interval is tinted by direction vs. baseline ("today"): a muted
+ * green for an expected improvement, a muted amber for none — never red,
+ * since patients see this chart too and red reads as a distress signal
+ * rather than a neutral "this option didn't help as much" result. The sign
+ * (below, and the fixed "today" line) still carries the same information
+ * for anyone who can't rely on color.
+ */
 function ComparisonRow({
   label,
   scenario,
@@ -47,13 +56,23 @@ function ComparisonRow({
   scenario: Scenario;
   baseline: number;
 }) {
+  const { tr } = useLang();
   const [low, high] = scenario.endpointRange;
+  const improved = scenario.expectedEndpoint < baseline;
+  const worsened = scenario.expectedEndpoint > baseline;
+  const directionLabel = tr(improved ? r.legend.better : worsened ? r.legend.worse : r.legend.same);
+  const textTone = improved ? "text-success" : worsened ? "text-warning" : "text-foreground";
+  const dotTone = improved ? "border-success" : worsened ? "border-warning" : "border-primary";
+  const barTone = improved ? "bg-success/35" : worsened ? "bg-warning/35" : "bg-primary/35";
   return (
     <div className="py-3">
       <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5 text-sm">
         <span className="font-medium">{label}</span>
         <span className="tabular-nums">
-          {scenario.expectedEndpoint}{" "}
+          <span className={`font-semibold ${textTone}`}>
+            {scenario.expectedEndpoint}
+            <span className="sr-only"> ({directionLabel})</span>
+          </span>{" "}
           <span className="text-xs text-muted-foreground">
             ({low}–{high})
           </span>
@@ -66,11 +85,11 @@ function ComparisonRow({
           style={{ left: `${pct(baseline)}%` }}
         />
         <div
-          className="absolute top-1/2 h-0.5 -translate-y-1/2 rounded-full bg-primary/35"
+          className={`absolute top-1/2 h-0.5 -translate-y-1/2 rounded-full ${barTone}`}
           style={{ left: `${pct(low)}%`, width: `${pct(high) - pct(low)}%` }}
         />
         <div
-          className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-primary bg-card"
+          className={`absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 bg-card ${dotTone}`}
           style={{ left: `${pct(scenario.expectedEndpoint)}%` }}
         />
       </div>
@@ -236,17 +255,49 @@ function PosteriorMini({
   );
 }
 
+/**
+ * The trial-eligibility disclaimer, laid out as a sidebar card next to the
+ * predictions on desktop (see the grid in Results) and stacked below them
+ * on mobile — a static note, not an interactive/scroll-linked element.
+ */
+function DisclaimerCard() {
+  const { tr } = useLang();
+  return (
+    <div className="rounded-md border border-warning/30 bg-warning-soft p-4">
+      <h2 className="text-base font-semibold">{tr(r.prototypeNote.heading)}</h2>
+      <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+        {tr(r.prototypeNote.intro)}
+      </p>
+      <ul className="mt-3 space-y-1 text-sm leading-relaxed">
+        {r.prototypeNote.items.map((item, i) => (
+          <li key={i} className="flex gap-2">
+            <span aria-hidden="true" className="text-muted-foreground">
+              –
+            </span>
+            <span>{tr(item)}</span>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-3 text-sm font-medium leading-relaxed">{tr(r.prototypeNote.closing)}</p>
+    </div>
+  );
+}
+
 /** Legend for ComparisonRow — each swatch reuses the exact classes drawn in the chart. */
 function ChartLegend() {
   const { tr } = useLang();
   return (
     <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-muted-foreground">
       <span className="inline-flex items-center gap-1.5">
-        <span className="h-2.5 w-2.5 shrink-0 rounded-full border-2 border-primary bg-card" />
-        {tr(r.legend.estimate)}
+        <span className="h-2.5 w-2.5 shrink-0 rounded-full border-2 border-success bg-card" />
+        {tr(r.legend.better)}
       </span>
       <span className="inline-flex items-center gap-1.5">
-        <span className="h-0.5 w-4 shrink-0 rounded-full bg-primary/35" />
+        <span className="h-2.5 w-2.5 shrink-0 rounded-full border-2 border-warning bg-card" />
+        {tr(r.legend.worse)}
+      </span>
+      <span className="inline-flex items-center gap-1.5">
+        <span className="h-0.5 w-4 shrink-0 rounded-full bg-muted-foreground/40" />
         {tr(r.legend.interval)}
       </span>
       <span className="inline-flex items-center gap-1.5">
@@ -358,156 +409,152 @@ function Results() {
   const activeIntro = tab === "combo" ? r.scenariosIntro : r.singleScenariosIntro;
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10">
-      <h1 className="text-2xl font-semibold">{tr(r.title)}</h1>
+    <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-4 py-10 md:grid-cols-3">
+      <div className="order-2 md:order-1 md:col-span-2">
+        <h1 className="text-2xl font-semibold">{tr(r.title)}</h1>
 
-      <p className="mt-3 rounded-md border border-warning/40 bg-warning-soft p-3 text-sm leading-relaxed">
-        {tr(r.prototypeNote)}
-      </p>
+        <div className="mt-6 flex items-baseline gap-3 border-b border-border pb-4">
+          <span className="text-4xl font-semibold tabular-nums leading-none">{p.baseline}</span>
+          <div className="text-sm">
+            <p className="text-muted-foreground">
+              {r.phq9Label} {tr(r.of27)}
+            </p>
+            <p className="font-medium">
+              {tr(SEVERITY_LABEL[p.severity])} · {tr(r.range)} {SEVERITY_RANGE[p.severity]}
+            </p>
+          </div>
+        </div>
 
-      <div className="mt-6 flex items-baseline gap-3 border-b border-border pb-4">
-        <span className="text-4xl font-semibold tabular-nums leading-none">{p.baseline}</span>
-        <div className="text-sm">
-          <p className="text-muted-foreground">
-            {r.phq9Label} {tr(r.of27)}
+        {/* ---------------- The result: PHQ-9 at 12 months ---------------- */}
+        <section className="mt-8">
+          <h2 className="text-lg font-semibold">{tr(r.whatCanBeExpected)}</h2>
+          <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-muted-foreground">
+            {tr(r.whatCanBeExpectedBody)}
           </p>
-          <p className="font-medium">
-            {tr(SEVERITY_LABEL[p.severity])} · {tr(r.range)} {SEVERITY_RANGE[p.severity]}
+
+          <div className="mt-4 inline-flex rounded-md border border-border p-0.5 text-sm">
+            {(["single", "combo"] as const).map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setTab(t)}
+                aria-pressed={tab === t}
+                className={[
+                  "rounded-[5px] px-3 py-1.5 font-medium transition-colors",
+                  tab === t
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground",
+                ].join(" ")}
+              >
+                {tr(r.scenarioTabs[t])}
+              </button>
+            ))}
+          </div>
+
+          <BaselinePointer baseline={p.baseline} />
+          <div className="divide-y divide-border rounded-md border border-border px-4">
+            {activeScenarios.map((scenario) => (
+              <ComparisonRow
+                key={scenario.id}
+                label={scenarioLabel(scenario)}
+                scenario={scenario}
+                baseline={p.baseline}
+              />
+            ))}
+          </div>
+          <ChartLegend />
+          <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{tr(activeIntro)}</p>
+
+          <button
+            type="button"
+            onClick={() => setShowDistributions((v) => !v)}
+            className="mt-4 text-xs font-medium text-primary underline underline-offset-2"
+          >
+            {tr(showDistributions ? r.posterior.hide : r.posterior.show)}
+          </button>
+          {showDistributions && (
+            <div className="mt-3 rounded-md bg-secondary p-4">
+              <p className="text-xs text-muted-foreground">{tr(r.posterior.explain)}</p>
+              <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {activeScenarios.map((scenario) => (
+                  <PosteriorMini
+                    key={scenario.id}
+                    label={scenarioLabel(scenario)}
+                    scenario={scenario}
+                    domain={distributionsDomain}
+                  />
+                ))}
+              </div>
+              <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground">
+                {tr(r.posterior.placeholderNote)}
+              </p>
+            </div>
+          )}
+        </section>
+
+        {/* ---------------- What influences the estimate ---------------- */}
+        <section className="mt-10">
+          <h2 className="text-lg font-semibold">{tr(r.whatInfluences)}</h2>
+          <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-muted-foreground">
+            {tr(r.predictorsNote)}
           </p>
+
+          <dl className="mt-4 divide-y divide-border border-y border-border text-sm">
+            <div className="flex justify-between gap-4 py-2">
+              <dt className="text-muted-foreground">{tr(r.predictors.baseline.label)}</dt>
+              <dd className="font-medium">{p.baseline}/27</dd>
+            </div>
+            <div className="flex justify-between gap-4 py-2">
+              <dt className="text-muted-foreground">{tr(r.predictors.age.label)}</dt>
+              <dd className="font-medium">
+                {p.session.profile.birthDate
+                  ? ageFromBirthDate(p.session.profile.birthDate).toFixed(2)
+                  : tr(r.predictors.notProvided)}
+              </dd>
+            </div>
+            <div className="flex justify-between gap-4 py-2">
+              <dt className="text-muted-foreground">{tr(r.predictors.sex.label)}</dt>
+              <dd className="font-medium">
+                {p.session.profile.sex
+                  ? tr(
+                      SEX_OPTIONS.find((o) => o.value === p.session.profile.sex)?.label ?? {
+                        de: "–",
+                        en: "–",
+                      },
+                    )
+                  : tr(r.predictors.notProvided)}
+              </dd>
+            </div>
+            <div className="flex justify-between gap-4 py-2">
+              <dt className="text-muted-foreground">{tr(r.predictors.gad7.label)}</dt>
+              <dd className="font-medium">
+                {(() => {
+                  const score = effectiveGad7Score(p.session.profile);
+                  return score !== null ? `${score}/21` : tr(r.predictors.notProvided);
+                })()}
+              </dd>
+            </div>
+          </dl>
+        </section>
+
+        <div className="mt-10 flex flex-wrap gap-2">
+          <Link
+            to="/praxis"
+            className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+          >
+            {tr(r.actions.clinicianSummary)}
+          </Link>
+          <Link
+            to="/angebote"
+            className="rounded-md border border-border px-4 py-2 text-sm font-medium hover:bg-secondary"
+          >
+            {tr(r.actions.localSupport)}
+          </Link>
         </div>
       </div>
 
-      {/* ---------------- The result: PHQ-9 at 12 months ---------------- */}
-      <section className="mt-8">
-        <h2 className="text-lg font-semibold">{tr(r.whatCanBeExpected)}</h2>
-        <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-muted-foreground">
-          {tr(r.whatCanBeExpectedBody)}
-        </p>
-
-        <div className="mt-4 inline-flex rounded-md border border-border p-0.5 text-sm">
-          {(["single", "combo"] as const).map((t) => (
-            <button
-              key={t}
-              type="button"
-              onClick={() => setTab(t)}
-              aria-pressed={tab === t}
-              className={[
-                "rounded-[5px] px-3 py-1.5 font-medium transition-colors",
-                tab === t
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:text-foreground",
-              ].join(" ")}
-            >
-              {tr(r.scenarioTabs[t])}
-            </button>
-          ))}
-        </div>
-
-        <BaselinePointer baseline={p.baseline} />
-        <div className="divide-y divide-border rounded-md border border-border px-4">
-          {activeScenarios.map((scenario) => (
-            <ComparisonRow
-              key={scenario.id}
-              label={scenarioLabel(scenario)}
-              scenario={scenario}
-              baseline={p.baseline}
-            />
-          ))}
-        </div>
-        <ChartLegend />
-        <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{tr(activeIntro)}</p>
-
-        <button
-          type="button"
-          onClick={() => setShowDistributions((v) => !v)}
-          className="mt-4 text-xs font-medium text-primary underline underline-offset-2"
-        >
-          {tr(showDistributions ? r.posterior.hide : r.posterior.show)}
-        </button>
-        {showDistributions && (
-          <div className="mt-3 rounded-md bg-secondary p-4">
-            <p className="text-xs text-muted-foreground">{tr(r.posterior.explain)}</p>
-            <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {activeScenarios.map((scenario) => (
-                <PosteriorMini
-                  key={scenario.id}
-                  label={scenarioLabel(scenario)}
-                  scenario={scenario}
-                  domain={distributionsDomain}
-                />
-              ))}
-            </div>
-            <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground">
-              {tr(r.posterior.placeholderNote)}
-            </p>
-          </div>
-        )}
-      </section>
-
-      {/* ---------------- What influences the estimate ---------------- */}
-      <section className="mt-10">
-        <h2 className="text-lg font-semibold">{tr(r.whatInfluences)}</h2>
-        <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-muted-foreground">
-          {tr(r.predictorsNote)}
-        </p>
-
-        <dl className="mt-4 divide-y divide-border border-y border-border text-sm">
-          <div className="flex justify-between gap-4 py-2">
-            <dt className="text-muted-foreground">{tr(r.predictors.baseline.label)}</dt>
-            <dd className="font-medium">{p.baseline}/27</dd>
-          </div>
-          <div className="flex justify-between gap-4 py-2">
-            <dt className="text-muted-foreground">{tr(r.predictors.age.label)}</dt>
-            <dd className="font-medium">
-              {p.session.profile.birthDate
-                ? ageFromBirthDate(p.session.profile.birthDate).toFixed(2)
-                : tr(r.predictors.notProvided)}
-            </dd>
-          </div>
-          <div className="flex justify-between gap-4 py-2">
-            <dt className="text-muted-foreground">{tr(r.predictors.sex.label)}</dt>
-            <dd className="font-medium">
-              {p.session.profile.sex
-                ? tr(
-                    SEX_OPTIONS.find((o) => o.value === p.session.profile.sex)?.label ?? {
-                      de: "–",
-                      en: "–",
-                    },
-                  )
-                : tr(r.predictors.notProvided)}
-            </dd>
-          </div>
-          <div className="flex justify-between gap-4 py-2">
-            <dt className="text-muted-foreground">{tr(r.predictors.gad7.label)}</dt>
-            <dd className="font-medium">
-              {(() => {
-                const score = effectiveGad7Score(p.session.profile);
-                return score !== null ? `${score}/21` : tr(r.predictors.notProvided);
-              })()}
-            </dd>
-          </div>
-          <div className="flex justify-between gap-4 py-2">
-            <dt className="text-muted-foreground">{tr(r.predictors.riskScore.label)}</dt>
-            <dd className="font-medium">
-              {p.predictors.find((row) => row.id === "riskScore")?.value ?? "–"}
-            </dd>
-          </div>
-        </dl>
-      </section>
-
-      <div className="mt-10 flex flex-wrap gap-2">
-        <Link
-          to="/praxis"
-          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
-        >
-          {tr(r.actions.clinicianSummary)}
-        </Link>
-        <Link
-          to="/angebote"
-          className="rounded-md border border-border px-4 py-2 text-sm font-medium hover:bg-secondary"
-        >
-          {tr(r.actions.localSupport)}
-        </Link>
+      <div className="order-1 md:order-2 md:col-span-1">
+        <DisclaimerCard />
       </div>
     </div>
   );

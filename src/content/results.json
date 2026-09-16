@@ -14,21 +14,57 @@
   },
   "title": { "de": "Ihre Auswertung", "en": "Your results" },
   "prototypeNote": {
-    "de": "Diese Schätzungen stammen aus einer gefitteten Komponenten-Netzwerk-Metaanalyse (6 Behandlungsbausteine, 7 Studien) mit einem vorgeschalteten Schritt-1-Modell für Alter, Geschlecht, Ausgangs-PHQ-9 und GAD-7. Alle Bandbreiten sind echte Posterior-Kredibilitätsintervalle. Es handelt sich um einen Forschungsprototyp, keine klinisch validierte Vorhersage.",
-    "en": "These estimates come from a fitted component network meta-analysis (6 treatment components, 7 trials) with an upstream Step 1 model for age, sex, baseline PHQ-9 and GAD-7. All ranges are real posterior credible intervals. This is a research prototype, not a clinically validated prediction."
+    "heading": { "de": "Bevor Sie Ihre Ergebnisse sehen", "en": "Before you view your results" },
+    "intro": {
+      "de": "Unser Modell basiert auf Daten aus randomisiert-kontrollierten Studien (RCTs). Folgende Merkmale waren in diesen Studien kaum oder gar nicht vertreten:",
+      "en": "Our model is based on data from randomized controlled trials (RCTs). Here are some circumstances that weren't well represented in those trials:"
+    },
+    "items": [
+      {
+        "de": "Bereits in Therapie, fachärztlicher Behandlung oder unter Antidepressiva (10 von 12 Studien schlossen sie aus)",
+        "en": "Already in therapy, specialist mental health care, or taking antidepressants (10 of 12 studies excluded them)"
+      },
+      {
+        "de": "Alkohol- oder Drogenabhängigkeit (8 von 12 Studien schlossen sie aus)",
+        "en": "Alcohol or drug dependence (8 of 12 studies excluded them)"
+      },
+      {
+        "de": "Bipolare Störung (7 von 12 Studien schlossen sie aus)",
+        "en": "Bipolar disorder (7 of 12 studies excluded them)"
+      },
+      {
+        "de": "Kognitive Beeinträchtigung (5 von 12 Studien schlossen sie aus)",
+        "en": "Cognitive impairment (5 of 12 studies excluded them)"
+      },
+      {
+        "de": "Akute Suizidalität (4 von 12 Studien schlossen sie aus)",
+        "en": "Acute suicidality (4 of 12 studies excluded them)"
+      },
+      {
+        "de": "Schwangerschaft (3 von 12 Studien schlossen sie aus)",
+        "en": "Pregnancy (3 of 12 studies excluded them)"
+      },
+      {
+        "de": "Unter 18 Jahren (9 von 12 Studien schlossen sie aus)",
+        "en": "Under 18 (9 of 12 studies excluded them)"
+      }
+    ],
+    "closing": {
+      "de": "Trifft etwas davon auf Sie zu, verstehen Sie die folgenden Zahlen bitte eher als groben Anhaltspunkt denn als präzise Vorhersage.",
+      "en": "If any of this applies to you, treat the numbers below as a rough guide rather than a precise prediction."
+    }
   },
   "phq9Label": "PHQ-9",
   "of27": { "de": "von 27 Punkten", "en": "of 27 points" },
   "range": { "de": "Bereich", "en": "Range" },
   "legend": {
-    "estimate": {
-      "de": "Geschätzter PHQ-9 nach 12 Monaten",
-      "en": "Estimated PHQ-9 at 12 months"
-    },
     "interval": { "de": "95 %-Kredibilitätsintervall", "en": "95% credible interval" },
     "today": { "de": "Ihr PHQ-9 heute ({baseline})", "en": "Your PHQ-9 today ({baseline})" },
     "todayLine": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" },
-    "scale": { "de": "Skala 0–27", "en": "scale 0–27" }
+    "scale": { "de": "Skala 0–27", "en": "scale 0–27" },
+    "better": { "de": "Besser als heute", "en": "Better than today" },
+    "worse": { "de": "Schlechter als heute", "en": "Worse than today" },
+    "same": { "de": "Etwa gleich wie heute", "en": "About the same as today" }
   },
   "scenarios": {
     "usualCare": {
@@ -154,17 +190,14 @@
     }
   },
   "predictorsNote": {
-    "de": "Ausgangswert PHQ-9, Alter, Geschlecht und GAD-7 (falls bekannt) fließen über ein vorgeschaltetes Schritt-1-Modell in die Schätzung ein — ist der GAD-7 nicht bekannt, wird dafür ein typischer Bevölkerungswert angenommen. Ihre übrige Vorgeschichte (z. B. Vorbehandlung) sehen Sie in der Zusammenfassung für die Praxis, sie verändert die Schätzung aber nicht.",
-    "en": "Baseline PHQ-9, age, sex and GAD-7 (if known) all feed into the estimate via an upstream Step 1 model — if GAD-7 isn't known, a population-typical value is assumed for it. Your other history (e.g. prior treatment) appears in the practice summary but does not change the estimate."
+    "de": "Ausgangswert PHQ-9, Alter, Geschlecht und GAD-7 (falls bekannt) fließen in die Schätzung ein — ist der GAD-7 nicht bekannt, wird dafür ein typischer Bevölkerungswert angenommen. Ihre übrige Vorgeschichte (z. B. Vorbehandlung) sehen Sie in der Zusammenfassung für die Praxis, sie verändert die Schätzung aber nicht.",
+    "en": "Baseline PHQ-9, age, sex and GAD-7 (if known) all feed into the estimate — if GAD-7 isn't known, a population-typical value is assumed for it. Your other history (e.g. prior treatment) appears in the practice summary but does not change the estimate."
   },
   "predictors": {
     "baseline": { "label": { "de": "Ausgangswert PHQ-9", "en": "Baseline PHQ-9" } },
     "age": { "label": { "de": "Alter", "en": "Age" } },
     "sex": { "label": { "de": "Geschlecht", "en": "Sex" } },
     "gad7": { "label": { "de": "GAD-7", "en": "GAD-7" } },
-    "riskScore": {
-      "label": { "de": "Schritt-1-Schätzung", "en": "Step 1 estimate" }
-    },
     "notProvided": { "de": "keine Angabe", "en": "not provided" }
   },
   "whatCanBeExpected": {

@@ -209,13 +209,43 @@ function Clinician() {
                       </span>
                     </td>
                     <td className="px-4 py-2.5">
-                      {scenario.id === "usualCare" ? "–" : delta > 0 ? `-${delta}` : `+${-delta}`}
+                      {scenario.id === "usualCare" ? (
+                        <span className="text-muted-foreground">–</span>
+                      ) : delta === 0 ? (
+                        <span className="text-muted-foreground">±0</span>
+                      ) : delta > 0 ? (
+                        <span className="font-medium text-success">
+                          -{delta}
+                          <span className="sr-only"> ({tr(c.table.better)})</span>
+                        </span>
+                      ) : (
+                        <span className="font-medium text-warning">
+                          +{-delta}
+                          <span className="sr-only"> ({tr(c.table.worse)})</span>
+                        </span>
+                      )}
                     </td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
+        </div>
+        {/*
+          Lower PHQ-9 is better, so a negative delta (e.g. -0.5) is the good
+          outcome — color-coded the same green/amber as the results chart
+          (never red: clinicians print this for patients too) so it isn't
+          misread as the sign alone would suggest.
+        */}
+        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+          <span className="inline-flex items-center gap-1.5">
+            <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-success" />
+            {tr(c.table.better)}
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-warning" />
+            {tr(c.table.worse)}
+          </span>
         </div>
         <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
           {fill(tr(c.footer), { version: MODEL_META.version })}
