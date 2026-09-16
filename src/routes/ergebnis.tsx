@@ -37,6 +37,15 @@ const pct = (x: number) => (x / PHQ9_MAX) * 100;
  * a solid reference line at the patient's baseline ("today"). Position and
  * distance from "today" carry the comparison — no separate rank badge.
  */
+/**
+ * Lower PHQ-9 is better, which is easy to misread at a glance, so each row's
+ * marker/interval is tinted by direction vs. baseline ("today"): a muted
+ * green for an expected improvement, a muted amber for none — never red,
+ * since patients see this chart too and red reads as a distress signal
+ * rather than a neutral "this option didn't help as much" result. The sign
+ * (below, and the fixed "today" line) still carries the same information
+ * for anyone who can't rely on color.
+ */
 function ComparisonRow({
   label,
   scenario,
@@ -46,13 +55,23 @@ function ComparisonRow({
   scenario: Scenario;
   baseline: number;
 }) {
+  const { tr } = useLang();
   const [low, high] = scenario.endpointRange;
+  const improved = scenario.expectedEndpoint < baseline;
+  const worsened = scenario.expectedEndpoint > baseline;
+  const directionLabel = tr(improved ? r.legend.better : worsened ? r.legend.worse : r.legend.same);
+  const textTone = improved ? "text-success" : worsened ? "text-warning" : "text-foreground";
+  const dotTone = improved ? "border-success" : worsened ? "border-warning" : "border-primary";
+  const barTone = improved ? "bg-success/35" : worsened ? "bg-warning/35" : "bg-primary/35";
   return (
     <div className="py-3">
       <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5 text-sm">
         <span className="font-medium">{label}</span>
         <span className="tabular-nums">
-          {scenario.expectedEndpoint}{" "}
+          <span className={`font-semibold ${textTone}`}>
+            {scenario.expectedEndpoint}
+            <span className="sr-only"> ({directionLabel})</span>
+          </span>{" "}
           <span className="text-xs text-muted-foreground">
             ({low}–{high})
           </span>
@@ -65,11 +84,11 @@ function ComparisonRow({
           style={{ left: `${pct(baseline)}%` }}
         />
         <div
-          className="absolute top-1/2 h-0.5 -translate-y-1/2 rounded-full bg-primary/35"
+          className={`absolute top-1/2 h-0.5 -translate-y-1/2 rounded-full ${barTone}`}
           style={{ left: `${pct(low)}%`, width: `${pct(high) - pct(low)}%` }}
         />
         <div
-          className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-primary bg-card"
+          className={`absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 bg-card ${dotTone}`}
           style={{ left: `${pct(scenario.expectedEndpoint)}%` }}
         />
       </div>
@@ -241,11 +260,15 @@ function ChartLegend() {
   return (
     <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-muted-foreground">
       <span className="inline-flex items-center gap-1.5">
-        <span className="h-2.5 w-2.5 shrink-0 rounded-full border-2 border-primary bg-card" />
-        {tr(r.legend.estimate)}
+        <span className="h-2.5 w-2.5 shrink-0 rounded-full border-2 border-success bg-card" />
+        {tr(r.legend.better)}
       </span>
       <span className="inline-flex items-center gap-1.5">
-        <span className="h-0.5 w-4 shrink-0 rounded-full bg-primary/35" />
+        <span className="h-2.5 w-2.5 shrink-0 rounded-full border-2 border-warning bg-card" />
+        {tr(r.legend.worse)}
+      </span>
+      <span className="inline-flex items-center gap-1.5">
+        <span className="h-0.5 w-4 shrink-0 rounded-full bg-muted-foreground/40" />
         {tr(r.legend.interval)}
       </span>
       <span className="inline-flex items-center gap-1.5">

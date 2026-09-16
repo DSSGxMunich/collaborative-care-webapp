@@ -10,6 +10,11 @@
  * actions and links, red reserved strictly for crisis/destructive states.
  * Small radii, 1px borders, no glow shadows, no decorative color. All
  * colours are oklch tokens — never hardcode colours in components.
+ *
+ * Outcome direction (better/worse than a reference PHQ-9 value) uses a
+ * muted green/amber pair (--success / --warning), never --destructive —
+ * patients see these too, and a lower-is-better score reading as "red"
+ * would read as alarming rather than informative.
  */
 
 @theme inline {
@@ -35,6 +40,8 @@
   --color-destructive-soft: var(--destructive-soft);
   --color-warning: var(--warning);
   --color-warning-soft: var(--warning-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -66,6 +73,9 @@
   --warning: oklch(0.4 0.09 75);
   --warning-soft: oklch(0.96 0.035 85);
 
+  --success: oklch(0.45 0.1 145);
+  --success-soft: oklch(0.95 0.035 145);
+
   --border: oklch(0.89 0 0);
   --input: oklch(0.85 0 0);
   --ring: oklch(0.28 0.03 260);
@@ -90,6 +100,8 @@
   --destructive-soft: oklch(0.28 0.06 22);
   --warning: oklch(0.78 0.1 80);
   --warning-soft: oklch(0.28 0.05 80);
+  --success: oklch(0.75 0.11 145);
+  --success-soft: oklch(0.28 0.05 145);
   --border: oklch(1 0 0 / 14%);
   --input: oklch(1 0 0 / 18%);
   --ring: oklch(0.85 0.02 260);

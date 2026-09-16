@@ -21,14 +21,13 @@
   "of27": { "de": "von 27 Punkten", "en": "of 27 points" },
   "range": { "de": "Bereich", "en": "Range" },
   "legend": {
-    "estimate": {
-      "de": "Geschätzter PHQ-9 nach 12 Monaten",
-      "en": "Estimated PHQ-9 at 12 months"
-    },
     "interval": { "de": "95 %-Kredibilitätsintervall", "en": "95% credible interval" },
     "today": { "de": "Ihr PHQ-9 heute ({baseline})", "en": "Your PHQ-9 today ({baseline})" },
     "todayLine": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" },
-    "scale": { "de": "Skala 0–27", "en": "scale 0–27" }
+    "scale": { "de": "Skala 0–27", "en": "scale 0–27" },
+    "better": { "de": "Besser als heute", "en": "Better than today" },
+    "worse": { "de": "Schlechter als heute", "en": "Worse than today" },
+    "same": { "de": "Etwa gleich wie heute", "en": "About the same as today" }
   },
   "scenarios": {
     "usualCare": {
