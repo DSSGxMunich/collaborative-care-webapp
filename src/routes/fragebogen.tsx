@@ -114,8 +114,11 @@ function Questionnaire() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
       <div className="mb-8">
-        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          {tr(ui.step)} {index + 1} {tr(ui.of)} {total}
+        <p
+          key={index}
+          className="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
+        >
+          {`${tr(ui.step)} ${index + 1} ${tr(ui.of)} ${total}`}
         </p>
         <div
           className="mt-2 h-1 w-full overflow-hidden rounded-sm bg-secondary"
