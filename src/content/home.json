@@ -14,16 +14,16 @@
     },
     "items": [
       {
-        "de": "Sie beantworten einen kurzen Fragebogen (etwa 5–10 Minuten) und sehen anschließend eine Schätzung, die Sie erkunden und zwischen verschiedenen Versorgungsoptionen vergleichen können.",
-        "en": "You'll answer a short questionnaire (about 5–10 minutes), then see an estimate you can explore and compare across different care options."
+        "de": "Sie beantworten einen kurzen Fragebogen (etwa 5 bis 10 Minuten) und sehen anschließend eine Schätzung, die Sie erkunden und zwischen verschiedenen Versorgungsoptionen vergleichen können.",
+        "en": "You'll answer a short questionnaire (about 5 to 10 minutes), then see an estimate you can explore and compare across different care options."
       },
       {
         "de": "Die Schätzungen basieren auf echten Studiendaten: einer Metaanalyse individueller Patientendaten (IPD) aus 7 randomisierten kontrollierten Studien zur strukturierten Depressionsversorgung.",
         "en": "The estimates are built from real trial data: an individual-patient-data (IPD) meta-analysis pooling 7 randomized controlled trials of structured depression care."
       },
       {
-        "de": "Dies ist ein Forschungsprototyp mit vorläufigen Parametern, keine Diagnose und kein Ersatz für ärztliche Beurteilung. Die Schätzungen sind Durchschnittswerte für Gruppen mit ähnlichem Profil – ein Ausgangspunkt, den Sie gemeinsam mit Ihrer Hausärztin oder Ihrem Hausarzt besprechen können.",
-        "en": "This is a research prototype with provisional parameters, not a diagnosis or a substitute for clinical judgement. Estimates are group-level averages for people with a similar profile — a starting point to explore and discuss with your GP."
+        "de": "Dies ist ein Forschungsprototyp. Er beruht auf Annahmen und Modellierungsentscheidungen, die wir weiterhin testen und verfeinern. Er ersetzt keine Diagnose und keine ärztliche Beurteilung. Die Schätzungen sind Durchschnittswerte für Gruppen mit ähnlichem Profil. Sie sind ein Ausgangspunkt zum Besprechen mit Ihrer Hausärztin oder Ihrem Hausarzt, keine Aussage über eine einzelne Person.",
+        "en": "This is a research prototype. It relies on assumptions and modeling choices that we're still testing and refining, so it doesn't replace a diagnosis or clinical judgement. The estimates are averages for groups of people with a similar profile. They're a starting point to discuss with your GP, not a prediction for any one person."
       }
     ]
   },
