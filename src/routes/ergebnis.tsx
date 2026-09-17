@@ -20,7 +20,7 @@ import resultsContent from "@/content/results.json";
 export const Route = createFileRoute("/ergebnis")({
   head: () => ({
     meta: [
-      { title: "Ihre Auswertung – Depressions-Kompass" },
+      { title: "Ihre Auswertung – Versorgungskompass" },
       { name: "description", content: resultsContent.title.de },
     ],
   }),

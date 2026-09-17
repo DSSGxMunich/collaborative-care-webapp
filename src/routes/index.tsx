@@ -5,9 +5,9 @@ import home from "@/content/home.json";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Depressions-Kompass" },
+      { title: "Versorgungskompass" },
       { name: "description", content: home.body.de },
-      { property: "og:title", content: "Depressions-Kompass" },
+      { property: "og:title", content: "Versorgungskompass" },
       { property: "og:description", content: home.body.de },
     ],
   }),
