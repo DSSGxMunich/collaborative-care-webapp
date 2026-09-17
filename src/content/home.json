@@ -9,13 +9,17 @@
   },
   "about": {
     "heading": {
-      "de": "Über dieses Werkzeug",
-      "en": "About this tool"
+      "de": "So funktioniert es",
+      "en": "How this works"
+    },
+    "readMore": {
+      "de": "Mehr erfahren:",
+      "en": "Read more:"
     },
     "items": [
       {
-        "de": "Sie beantworten einen kurzen Fragebogen (etwa 5–10 Minuten) und sehen anschließend eine Schätzung, die Sie erkunden und zwischen verschiedenen Versorgungsoptionen vergleichen können. Über das Menü oben gelangen Sie jederzeit zu Fragebogen, Methodik oder häufigen Fragen.",
-        "en": "You'll answer a short questionnaire (about 5–10 minutes), then see an estimate you can explore and compare across different care options. Use the menu above to jump to the questionnaire, methodology, or FAQ at any time."
+        "de": "Sie beantworten einen kurzen Fragebogen (etwa 5–10 Minuten) und sehen anschließend eine Schätzung, die Sie erkunden und zwischen verschiedenen Versorgungsoptionen vergleichen können.",
+        "en": "You'll answer a short questionnaire (about 5–10 minutes), then see an estimate you can explore and compare across different care options."
       },
       {
         "de": "Die Schätzungen basieren auf echten Studiendaten: einer Metaanalyse individueller Patientendaten (IPD) aus 7 randomisierten kontrollierten Studien zur strukturierten Depressionsversorgung.",
@@ -26,18 +30,6 @@
         "en": "This is a research prototype with provisional parameters, not a diagnosis or a substitute for clinical judgement. Estimates are group-level averages for people with a similar profile — a starting point to explore and discuss with your GP."
       }
     ]
-  },
-  "learnMore": {
-    "de": "Wie diese Schätzungen berechnet werden und wo ihre Grenzen liegen, erklärt die Seite",
-    "en": "How these estimates are calculated and where their limits lie is explained on the"
-  },
-  "learnMoreMid": {
-    "de": "; häufige Fragen beantwortet die Seite",
-    "en": "page; common questions are answered on the"
-  },
-  "learnMoreEnd": {
-    "de": ".",
-    "en": "page."
   },
   "crisisTitle": {
     "de": "Wenn es Ihnen jetzt sehr schlecht geht",

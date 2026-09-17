@@ -29,25 +29,24 @@ function Index() {
 
       <div className="mt-8 border-t border-border pt-6">
         <h2 className="text-sm font-semibold">{tr(home.about.heading)}</h2>
-        <ul className="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
-          {home.about.items.map((item, i) => (
-            <li key={i}>{tr(item)}</li>
-          ))}
-        </ul>
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-          {tr(home.learnMore)}{" "}
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+          {tr(home.about.readMore)}{" "}
           <Link
             to="/methodology"
             className="font-medium text-foreground underline underline-offset-2"
           >
             {tr(ui.nav.methodology)}
-          </Link>
-          {tr(home.learnMoreMid)}{" "}
+          </Link>{" "}
+          ·{" "}
           <Link to="/faq" className="font-medium text-foreground underline underline-offset-2">
             {tr(ui.nav.faq)}
           </Link>
-          {tr(home.learnMoreEnd)}
         </p>
+        <ul className="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
+          {home.about.items.map((item, i) => (
+            <li key={i}>{tr(item)}</li>
+          ))}
+        </ul>
       </div>
 
       <div className="mt-8">
