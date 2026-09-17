@@ -25,7 +25,7 @@ function Index() {
       <h1 className="mt-3 text-balance-tight text-2xl font-semibold leading-snug sm:text-3xl">
         {tr(home.title)}
       </h1>
-      <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">{tr(home.body)}</p>
+      <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{tr(home.body)}</p>
       <div className="mt-7">
         <Link
           to="/fragebogen"
