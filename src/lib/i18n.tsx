@@ -33,6 +33,13 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     if (stored === "de" || stored === "en") setLangState(stored);
   }, []);
 
+  // Keep the <html lang> attribute in sync with the selected language: a
+  // mismatch (e.g. lang="de" while English text is shown) confuses browser
+  // auto-translate, which can then garble inline links and punctuation.
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
+
   const setLang = useCallback((l: Lang) => {
     setLangState(l);
     window.localStorage.setItem(STORAGE_KEY, l);

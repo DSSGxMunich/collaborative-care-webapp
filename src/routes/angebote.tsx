@@ -6,7 +6,7 @@ import supportContent from "@/content/support.json";
 export const Route = createFileRoute("/angebote")({
   head: () => ({
     meta: [
-      { title: "Angebote vor Ort – Depressions-Kompass" },
+      { title: "Angebote vor Ort – Versorgungskompass" },
       { name: "description", content: supportContent.intro.de },
     ],
   }),
