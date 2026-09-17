@@ -41,15 +41,15 @@
       "body": [
         {
           "de": "Ein ordinales Regressionsmodell (gefittet mit R, Paket rms, Funktion orm) sagt aus Alter, Geschlecht, PHQ-9-Ausgangswert und GAD-7 den erwarteten PHQ-9-Wert nach 12 Monaten unter üblicher Versorgung voraus, also ohne jeden zusätzlichen Versorgungsbaustein. Dieser erwartete Wert wird \"Risikoscore\" genannt.",
-          "en": "An ordinal regression model (fitted in R, package rms, function orm) predicts the expected 12-month PHQ-9 under usual care, that is, with no added structured-care component, from age, sex, baseline PHQ-9 and GAD-7. This expected value is called the \"risk score\"."
+          "en": "An ordinal regression model predicts the expected 12 month PHQ 9 score under usual care. Usual care refers to the usual treatment provided by a GP practice for depressive symptoms, which may include appointments with the GP, medication, or referral to other healthcare professionals, without any added structured care component. The prediction uses age, sex, baseline PHQ 9, and baseline GAD 7. This predicted value is called the \"risk score\"."
         },
         {
           "de": "Der Risikoscore ist kein Maß dafür, wie wahrscheinlich eine Person eine bestimmte Behandlung erhält; er ist keine Propensity Score im Sinne der Kausalanalyse. Das Modell schätzt nirgends eine Behandlungszuweisung; es sagt ausschließlich den erwarteten Symptomverlauf voraus und dient in Schritt 2 als Prognoseindex, der beeinflusst, wie stark ein Versorgungsbaustein wirkt.",
-          "en": "The risk score is not a measure of how likely a person is to receive a given treatment; it is not a propensity score in the causal-inference sense. The model never estimates treatment assignment; it predicts expected symptom outcome only, and serves in Step 2 as a prognostic index that modulates how strongly a care component acts."
+          "en": "The risk score is the expected value, E[Y], of the full probability distribution the model outputs over PHQ 9 levels 0 through 20+. It reflects a patient's prognosis, meaning how severe their symptoms are expected to be at 12 months under usual care alone. It is not a probability of receiving any particular treatment. In Step 2, this prognostic index modulates how strongly a care component's effect acts."
         },
         {
           "de": "Kontinuierliche Prädiktoren (Alter, PHQ-9, GAD-7) gehen als restringierte kubische Splines mit je 4 Knoten ein, um nichtlineare Zusammenhänge abzubilden. Das Modell liefert eine volle Wahrscheinlichkeitsverteilung über PHQ-9-Werte von 0 bis 20+; der Risikoscore ist deren Erwartungswert E[Y]. Er wird auf den Wertebereich begrenzt, auf dem Schritt 2 trainiert wurde, da außerhalb dieses Bereichs keine verlässliche Information vorliegt.",
-          "en": "Continuous predictors (age, PHQ-9, GAD-7) enter as restricted cubic splines with 4 knots each, to capture non-linear relationships. The model outputs a full probability distribution over PHQ-9 levels 0 through 20+; the risk score is its expected value E[Y]. It's clamped to the range Step 2 was trained on, since no reliable information exists outside that range."
+          "en": "Continuous predictors (age, PHQ 9, GAD 7) enter as restricted cubic splines with 4 knots each, to capture nonlinear relationships. The risk score is clamped to the range Step 2 was trained on, since no reliable information exists outside that range."
         }
       ]
     },
@@ -99,23 +99,23 @@
       "body": [
         {
           "de": "Forschungsprototyp mit vorläufigen Parametern. Nicht klinisch validiert und kein Ersatz für ärztliche Beurteilung.",
-          "en": "Research prototype with provisional parameters. Not clinically validated, and no substitute for clinical judgment."
+          "en": "This is a research prototype. Its parameters are preliminary and may change as the underlying analysis is refined. It has not been clinically validated and does not replace clinical judgment."
         },
         {
           "de": "Regression zur Mitte wirkt doppelt: einmal implizit in Schritt 1 (der auf Basis des Ausgangswerts in Richtung Populationsmittel schätzt) und erneut strukturell in Schritt 2 über lambda_risk. Das ist für dieses Modelldesign erwartbar, erklärt aber, warum bereits die übliche-Versorgung-Schätzung für einen hohen PHQ-9-Ausgangswert einen spürbaren Rückgang vorhersagt.",
-          "en": "Regression to the mean is baked in twice: once implicitly in Step 1 (which predicts toward the population mean given baseline severity) and again structurally in Step 2 via lambda_risk. That's expected for this model design, but it's why even the usual-care estimate alone predicts a noticeable drop for a high baseline PHQ-9."
+          "en": "Regression to the mean is baked in twice: once implicitly in Step 1, which predicts toward the population mean given baseline severity, and again structurally in Step 2 via lambda_risk. This is expected given the model design, but it explains why even the usual care estimate alone predicts a noticeable drop for a high baseline PHQ 9. In practice, this means a person who starts with severe symptoms is predicted to improve somewhat even without any structured care component, so the added benefit of a component should be read as improvement beyond that already declining usual care trajectory, not as improvement from the starting score."
         },
         {
           "de": "Ein Studien-Achsenabschnitt ist schwach identifiziert (95-%-Kredibilitätsintervall von etwa -8 bis +5 für eine der 7 Studien). Da alpha_study über alle 7 Studien gemittelt wird, geht diese Unsicherheit direkt, und korrekt, in die Breite jeder gezeigten Spanne ein.",
-          "en": "One trial's intercept is only weakly identified (a 95% credible interval of roughly -8 to +5 for one of the 7 trials). Since alpha_study is averaged across all 7 trials, this uncertainty flows directly, and correctly, into the width of every shown range."
+          "en": "One trial's intercept is only weakly identified: its 95% credible interval spans roughly minus 8 to plus 5. Since alpha_study is averaged across all 7 trials, this uncertainty correctly flows into the width of every shown range."
         },
         {
           "de": "Schritt 1 und Schritt 2 sind statistisch gekoppelt: Schritt 2 wurde mit Risikoscore-Werten aus einer bestimmten Version von Schritt 1 gefittet. Eine Neukalibrierung von Schritt 1 allein, ohne Schritt 2 neu zu fitten, würde diese Kopplung stillschweigend verletzen.",
-          "en": "Step 1 and Step 2 are statistically coupled: Step 2 was fit using risk-score values from one specific version of Step 1. Recalibrating Step 1 alone, without refitting Step 2 against it, would silently break that coupling."
+          "en": "Step 1 and Step 2 are statistically coupled. Step 2 was fit using risk score values produced by one specific version of Step 1. Recalibrating Step 1 alone, without refitting Step 2 against it, would silently break that coupling."
         },
         {
           "de": "Einzeln hinzugefügte Bausteine sind eine Extrapolation der additiven Formel, keine erprobte Behandlung. Siehe Schritt 2 oben.",
-          "en": "Individually added components are an extrapolation of the additive formula, not a trial-tested treatment. See Step 2 above."
+          "en": "When a single component is added on its own, rather than as part of one of the 6 combinations tested in the trials ('packages'), its effect is an extrapolation from the additive formula, not a result observed in any trial. See Step 2 above."
         }
       ]
     },
