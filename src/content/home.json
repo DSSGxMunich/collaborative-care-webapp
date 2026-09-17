@@ -1,11 +1,43 @@
 {
   "title": {
-    "de": "Welche Depressionsbehandlung passt zu mir?",
-    "en": "Which depression care is likely to help me?"
+    "de": "Auf der Suche nach dem, was helfen könnte?",
+    "en": "Exploring what might help?"
   },
   "body": {
-    "de": "Ein kurzer Fragebogen (PHQ-9, Sicherheitsfragen, wenige persönliche Angaben) und eine Schätzung, wie sich Ihre Beschwerden unter üblicher Versorgung und unter zwei zusätzlichen Versorgungsbausteinen bis in 12 Monaten entwickeln könnten.",
-    "en": "A short questionnaire (PHQ-9, safety questions, a few personal details) and an estimate of how your symptoms might develop over 12 months under usual care and two additional care components."
+    "de": "Ein Forschungsprototyp, der ein Gespräch mit Ihrer Hausärztin oder Ihrem Hausarzt unterstützen soll – zum Beispiel, wenn Sie sich seit längerem niedergeschlagen, erschöpft oder schlaflos fühlen. Beantworten Sie einen kurzen Fragebogen und sehen Sie eine Schätzung, wie sich solche Beschwerden über die nächsten 12 Monate entwickeln könnten – mit und ohne zusätzliche Unterstützung.",
+    "en": "A research prototype to support a conversation with your GP — for example if you've been feeling persistently low, exhausted, or struggling to sleep. Answer a short questionnaire and see an estimate of how symptoms like these tend to develop over the next 12 months, with and without extra care."
+  },
+  "about": {
+    "heading": {
+      "de": "Über dieses Werkzeug",
+      "en": "About this tool"
+    },
+    "items": [
+      {
+        "de": "Sie beantworten einen kurzen Fragebogen (etwa 5–10 Minuten) und sehen anschließend eine Schätzung, die Sie erkunden und zwischen verschiedenen Versorgungsoptionen vergleichen können. Über das Menü oben gelangen Sie jederzeit zu Fragebogen, Methodik oder häufigen Fragen.",
+        "en": "You'll answer a short questionnaire (about 5–10 minutes), then see an estimate you can explore and compare across different care options. Use the menu above to jump to the questionnaire, methodology, or FAQ at any time."
+      },
+      {
+        "de": "Die Schätzungen basieren auf echten Studiendaten: einer Metaanalyse individueller Patientendaten (IPD) aus 7 randomisierten kontrollierten Studien zur strukturierten Depressionsversorgung.",
+        "en": "The estimates are built from real trial data: an individual-patient-data (IPD) meta-analysis pooling 7 randomized controlled trials of structured depression care."
+      },
+      {
+        "de": "Dies ist ein Forschungsprototyp mit vorläufigen Parametern, keine Diagnose und kein Ersatz für ärztliche Beurteilung. Die Schätzungen sind Durchschnittswerte für Gruppen mit ähnlichem Profil – ein Ausgangspunkt, den Sie gemeinsam mit Ihrer Hausärztin oder Ihrem Hausarzt besprechen können.",
+        "en": "This is a research prototype with provisional parameters, not a diagnosis or a substitute for clinical judgement. Estimates are group-level averages for people with a similar profile — a starting point to explore and discuss with your GP."
+      }
+    ]
+  },
+  "learnMore": {
+    "de": "Wie diese Schätzungen berechnet werden und wo ihre Grenzen liegen, erklärt die Seite",
+    "en": "How these estimates are calculated and where their limits lie is explained on the"
+  },
+  "learnMoreMid": {
+    "de": "; häufige Fragen beantwortet die Seite",
+    "en": "page; common questions are answered on the"
+  },
+  "learnMoreEnd": {
+    "de": ".",
+    "en": "page."
   },
   "crisisTitle": {
     "de": "Wenn es Ihnen jetzt sehr schlecht geht",

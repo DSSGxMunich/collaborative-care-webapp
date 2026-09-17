@@ -37,6 +37,29 @@ function Index() {
       <p className="mt-4 text-xs text-muted-foreground">{tr(ui.noAnswersLeaveDevice)}</p>
 
       <div className="mt-12 border-t border-border pt-6">
+        <h2 className="text-sm font-semibold">{tr(home.about.heading)}</h2>
+        <ul className="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
+          {home.about.items.map((item, i) => (
+            <li key={i}>{tr(item)}</li>
+          ))}
+        </ul>
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+          {tr(home.learnMore)}{" "}
+          <Link
+            to="/methodology"
+            className="font-medium text-foreground underline underline-offset-2"
+          >
+            {tr(ui.nav.methodology)}
+          </Link>
+          {tr(home.learnMoreMid)}{" "}
+          <Link to="/faq" className="font-medium text-foreground underline underline-offset-2">
+            {tr(ui.nav.faq)}
+          </Link>
+          {tr(home.learnMoreEnd)}
+        </p>
+      </div>
+
+      <div className="mt-8 border-t border-border pt-6">
         <h2 className="text-sm font-semibold text-destructive">{tr(home.crisisTitle)}</h2>
         <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
           {tr(home.crisisBody)}
