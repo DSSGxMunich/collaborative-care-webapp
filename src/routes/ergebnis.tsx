@@ -48,10 +48,12 @@ const pct = (x: number) => (x / PHQ9_MAX) * 100;
  */
 function ComparisonRow({
   label,
+  description,
   scenario,
   baseline,
 }: {
   label: string;
+  description?: string | undefined;
   scenario: Scenario;
   baseline: number;
 }) {
@@ -77,6 +79,11 @@ function ComparisonRow({
           </span>
         </span>
       </div>
+      {description ? (
+        <p className="mt-0.5 max-w-md text-xs leading-relaxed text-muted-foreground">
+          {description}
+        </p>
+      ) : null}
       <div className="relative mt-2.5 h-4">
         <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-border" />
         <div
@@ -401,6 +408,14 @@ function Results() {
       ? tr(r.scenarios.usualCare.short)
       : scenario.components.map((id) => tr(r.components[id].short)).join(" + ");
 
+  /** Only a single-component row (one component, "single" tab) has one unambiguous explanation to show. */
+  const scenarioDescription = (scenario: Scenario): string | undefined => {
+    const [id] = scenario.components;
+    return tab === "single" && id !== undefined && scenario.components.length === 1
+      ? tr(r.components[id].description)
+      : undefined;
+  };
+
   const activeIntro = tab === "combo" ? r.scenariosIntro : r.singleScenariosIntro;
 
   return (
@@ -452,6 +467,7 @@ function Results() {
               <ComparisonRow
                 key={scenario.id}
                 label={scenarioLabel(scenario)}
+                description={scenarioDescription(scenario)}
                 scenario={scenario}
                 baseline={p.baseline}
               />
