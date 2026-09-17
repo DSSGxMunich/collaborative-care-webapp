@@ -20,16 +20,8 @@
         "en": "What does the 12-month follow-up mean?"
       },
       "answer": {
-        "de": "In klinischen Studien werden Patient:innen nach Behandlungsbeginn über einen festgelegten Zeitraum beobachtet. Unser Modell schätzt den voraussichtlichen PHQ-9-Wert einer Patientin oder eines Patienten 12 Monate nach der Erstuntersuchung. Dazu nutzt es Daten vieler Patient:innen mit einem ähnlichen Profil (gleicher Ausgangswert, Alter, Geschlecht, Angstniveau), um einzuschätzen, wo Ihr Wert nach einem Jahr voraussichtlich liegen wird. Dies ist ein statistischer Durchschnittswert für Ihr Profil. Ihr individueller Verlauf kann davon abweichen.",
-        "en": "In clinical trials, patients are tracked for a set period after starting treatment. Our model predicts a patient's likely PHQ-9 score 12 months from the first assessment. It uses data from many patients with a similar profile (same baseline severity, age, sex, anxiety level) to estimate where your score is likely to be after one year. This is a statistical average for your profile and your individual outcome may differ."
-      }
-    },
-    {
-      "id": "gad7",
-      "question": { "de": "Was ist der GAD-7?", "en": "What is the GAD-7?" },
-      "answer": {
-        "de": "Der GAD-7 (Generalized Anxiety Disorder-7) ist ein validierter Fragebogen mit 7 Fragen zu Angstsymptomen, mit Werten von 0 bis 21. Wir fragen ihn hier nur ab, wenn er schon bekannt ist. Ist er bekannt, fließt er über das vorgeschaltete Schritt-1-Modell in die PHQ-9-Vorhersage ein; ist er nicht bekannt, nehmen wir stattdessen einen typischen Bevölkerungswert an.",
-        "en": "The GAD-7 (Generalized Anxiety Disorder-7) is a validated 7-item questionnaire for anxiety symptoms, scored from 0 to 21. We only ask for it here if it's already known. When it is, it feeds into the PHQ-9 prediction through the Step 1 model; when it isn't, we assume a population-typical value instead."
+        "de": "In klinischen Studien werden Patient:innen nach Behandlungsbeginn über einen festgelegten Zeitraum beobachtet. Unser Modell schätzt den voraussichtlichen PHQ-9-Wert einer Patientin oder eines Patienten 12 Monate nach der Erstuntersuchung. Dazu nutzt es Daten vieler Patient:innen mit einem ähnlichen Profil (gleicher Ausgangswert, Alter, Geschlecht), um einzuschätzen, wo Ihr Wert nach einem Jahr voraussichtlich liegen wird. Dies ist ein statistischer Durchschnittswert für Ihr Profil. Ihr individueller Verlauf kann davon abweichen.",
+        "en": "In clinical trials, patients are tracked for a set period after starting treatment. Our model predicts a patient's likely PHQ-9 score 12 months from the first assessment. It uses data from many patients with a similar profile (same baseline severity, age, sex) to estimate where your score is likely to be after one year. This is a statistical average for your profile and your individual outcome may differ."
       }
     },
     {
