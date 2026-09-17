@@ -79,39 +79,78 @@
   "components": {
     "counseling": {
       "label": {
-        "de": "Beratung zusätzlich zur Medikation (≤ 8 Sitzungen)",
-        "en": "Counseling in addition to medication (≤ 8 sessions)"
+        "de": "Kurzberatung: bis zu 8 Sitzungen",
+        "en": "Brief counselling: up to 8 sessions"
       },
-      "short": { "de": "Beratung (≤ 8 Sitzungen)", "en": "Counseling (≤ 8 sessions)" }
+      "short": {
+        "de": "Kurzberatung (bis zu 8 Sitzungen)",
+        "en": "Brief counselling (up to 8 sessions)"
+      },
+      "description": {
+        "de": "In diesen Gesprächen geht es um Ihre Beschwerden und Wege, damit umzugehen. Die Beratung kann auch zusätzlich zu einer Medikation erfolgen.",
+        "en": "These conversations focus on your symptoms and ways to manage them. Counselling may also be provided alongside medication."
+      }
     },
     "manualTherapy": {
-      "label": { "de": "Manualisierte Psychotherapie", "en": "Manual-based psychotherapy" },
-      "short": { "de": "Manualisierte Psychotherapie", "en": "Manual-based psychotherapy" }
+      "label": {
+        "de": "Psychotherapie nach einem strukturierten Behandlungsplan: mehr als 8 Sitzungen",
+        "en": "Psychotherapy following a structured treatment plan: more than 8 sessions"
+      },
+      "short": {
+        "de": "Strukturierte Psychotherapie (>8 Sitzungen)",
+        "en": "Structured psychotherapy (>8 sessions)"
+      },
+      "description": {
+        "de": "Sie arbeiten über mehr als acht Sitzungen mit einer Ärztin/einem Arzt oder einer Therapeutin/einem Therapeuten zusammen. Die Therapie folgt einem festgelegten Behandlungsansatz mit geplanten Themen und Übungen. Sie kann auch zusätzlich zu einer Medikation erfolgen.",
+        "en": "You work with a doctor or therapist over more than eight sessions. The therapy follows a defined treatment approach with planned topics and activities. It can also be provided alongside medication."
+      }
     },
     "patientPreference": {
       "label": {
-        "de": "Patientenpräferenz bei der Behandlungsentscheidung berücksichtigt",
-        "en": "Patient preference considered in treatment decisions"
+        "de": "Ihre Behandlungswünsche werden berücksichtigt",
+        "en": "Taking your treatment preferences into account"
       },
-      "short": { "de": "Patientenpräferenz berücksichtigt", "en": "Patient preference considered" }
+      "short": {
+        "de": "Behandlungswünsche berücksichtigt",
+        "en": "Treatment preferences considered"
+      },
+      "description": {
+        "de": "Sie besprechen gemeinsam, welche Behandlung Sie bevorzugen und was Ihnen wichtig ist. Ihre Wünsche werden bei der Planung Ihrer Versorgung berücksichtigt.",
+        "en": "You discuss which treatment you would prefer and what matters to you. Your preferences are considered when planning your care."
+      }
     },
     "automatedFollowUp": {
       "label": {
-        "de": "Automatisierter Nachverfolgungsprozess",
-        "en": "Automated follow-up process"
+        "de": "Automatische Erinnerungen und Hinweise für Ihr Behandlungsteam",
+        "en": "Automatic reminders and alerts for your care team"
       },
-      "short": { "de": "Automatisierte Nachverfolgung", "en": "Automated follow-up" }
+      "short": { "de": "Automatische Erinnerungen", "en": "Automatic reminders" },
+      "description": {
+        "de": "Ein System unterstützt Ihr Behandlungsteam dabei, den Überblick über Ihre Nachsorge zu behalten. Es kann zum Beispiel erinnern, wenn ein Kontakt ansteht, oder Hinweise geben, wenn sich Ihre Beschwerden verschlechtern könnten. Das bedeutet keine durchgehende Überwachung und keine Garantie für eine sofortige Reaktion.",
+        "en": "A system that helps your care team to keep track of your follow-up care. For example, it can remind the team when contact is due or flag signs that your symptoms may be getting worse. This does not mean continuous monitoring or guarantee an immediate response."
+      }
     },
     "relapsePrevention": {
-      "label": { "de": "Rückfallpräventionsplan", "en": "Relapse-prevention plan" },
-      "short": { "de": "Rückfallpräventionsplan", "en": "Relapse-prevention plan" }
+      "label": {
+        "de": "Ein Plan zur Vorbeugung und für den Fall, dass Beschwerden zurückkehren",
+        "en": "A plan to help prevent symptoms from returning and for when symptoms return"
+      },
+      "short": { "de": "Rückfallpräventionsplan", "en": "Relapse-prevention plan" },
+      "description": {
+        "de": "Gemeinsam mit Ihrem Behandlungsteam oder Ihrer Ärztin/Ihrem Arzt erstellen Sie einen Plan, um gesund zu bleiben und frühe Warnzeichen zu erkennen. Der Plan beschreibt, was Sie tun können und an wen Sie sich wenden, falls Beschwerden zurückkehren.",
+        "en": "Together with your care team or doctor, you make a plan for staying well and recognizing early warning signs to look out for. Your plan explains what you can do and whom to contact if symptoms return."
+      }
     },
     "familyInvolvement": {
       "label": {
-        "de": "Familie und Freunde wurden einbezogen",
-        "en": "Family and friends were involved"
+        "de": "Einbindung von Vertrauenspersonen in Ihre Versorgung",
+        "en": "Involving people you trust in your care"
       },
-      "short": { "de": "Familie/Freunde einbezogen", "en": "Family/friends involved" }
+      "short": { "de": "Familie/Freunde einbezogen", "en": "Family/friends involved" },
+      "description": {
+        "de": "Mit Ihrem Einverständnis werden Familienmitglieder oder Freunde in Ihre Versorgung einbezogen. Gemeinsam besprechen Sie, wie sie Sie unterstützen können.",
+        "en": "With your agreement, family members or friends are involved in your care. You discuss together how they can support you."
+      }
     }
   },
   "scenarioTabs": {
