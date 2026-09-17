@@ -294,10 +294,23 @@ export function describePredictors(input: PredictionInput): PredictorRow[] {
 
 export { RISK_SCORE_TRAINING };
 
+/**
+ * Usual care stays first as the fixed reference row; everything else is
+ * ranked most helpful -> least helpful, i.e. ascending expectedEndpoint
+ * (lower PHQ-9 is the better outcome).
+ */
+function rankByHelpfulness(scenarios: Scenario[]): Scenario[] {
+  const [usualCare, ...rest] = scenarios;
+  if (!usualCare) return scenarios;
+  return [usualCare, ...rest.sort((a, b) => a.expectedEndpoint - b.expectedEndpoint)];
+}
+
 export function buildPredictions(input: PredictionInput) {
   const estimates = estimateComponents(input);
-  const scenarios = COMBO_SCENARIO_IDS.map((id) => predictScenario(input, id));
-  const singleScenarios = SINGLE_SCENARIO_IDS.map((id) => predictScenario(input, id));
+  const scenarios = rankByHelpfulness(COMBO_SCENARIO_IDS.map((id) => predictScenario(input, id)));
+  const singleScenarios = rankByHelpfulness(
+    SINGLE_SCENARIO_IDS.map((id) => predictScenario(input, id)),
+  );
   const predictors = describePredictors(input);
 
   return { estimates, scenarios, singleScenarios, predictors };
