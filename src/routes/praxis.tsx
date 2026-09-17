@@ -5,8 +5,14 @@ import { fill, ui, useLang } from "@/lib/i18n";
 import { PHQ9_ITEMS, SEVERITY_LABEL } from "@/lib/phq9";
 import { assessRisk } from "@/lib/safety";
 import { MODEL_META } from "@/lib/model";
+import { generatePraxisPdf } from "@/lib/pdf";
 import { usePrediction } from "@/lib/usePrediction";
-import { ageFromBirthDate, PRIOR_TREATMENTS, SEX_OPTIONS } from "@/lib/session";
+import {
+  ageFromBirthDate,
+  PRIOR_TREATMENTS,
+  PROBABILITY_OPTIONS,
+  SEX_OPTIONS,
+} from "@/lib/session";
 import praxisContent from "@/content/praxis.json";
 import resultsContent from "@/content/results.json";
 
@@ -51,15 +57,38 @@ function Clinician() {
   const risk = assessRisk(p.session);
   const yesNo = (v: "yes" | "no" | null) => (v ? tr(v === "yes" ? ui.yes : ui.no) : "–");
 
-  const rows: { label: string; value: string }[] = [
+  /** Badge tone per RiskLevel — "minimal" gets no badge (plain row, like everything else). */
+  const RISK_TONE: Record<typeof risk, "warning" | "destructive" | undefined> = {
+    minimal: undefined,
+    lower: "warning",
+    higher: "destructive",
+  };
+
+  const rows: { label: string; value: string; tone?: "warning" | "destructive" | undefined }[] = [
+    { label: tr(c.rows.riskAssessment), value: tr(c.riskFlag[risk]), tone: RISK_TONE[risk] },
     { label: tr(c.rows.phq9Total), value: `${p.baseline}/27` },
     { label: tr(c.rows.severity), value: tr(SEVERITY_LABEL[p.severity]) },
     { label: tr(c.rows.suicidality), value: `${p.session.phq[8] ?? 0}/3` },
-    { label: tr(c.rows.riskAssessment), value: tr(c.riskFlag[risk]) },
-    { label: tr(c.rows.planPrep), value: yesNo(safety.plan) },
-    { label: tr(c.rows.canStaySafe), value: yesNo(safety.canStaySafe) },
-    { label: tr(c.rows.pastAttempt), value: yesNo(safety.pastAttempt) },
-    { label: tr(c.rows.familyHistory), value: yesNo(safety.familyHistory) },
+    { label: tr(c.rows.past), value: yesNo(safety.past) },
+    { label: tr(c.rows.plan), value: yesNo(safety.plan) },
+    {
+      label: tr(c.rows.probability),
+      value:
+        safety.probability !== null
+          ? tr(
+              PROBABILITY_OPTIONS.find((o) => o.value === safety.probability)?.label ?? {
+                de: "–",
+                en: "–",
+              },
+            )
+          : "–",
+    },
+    { label: tr(c.rows.preventive), value: yesNo(safety.preventive) },
+    {
+      label: tr(c.rows.familyHistory),
+      value: yesNo(safety.familyHistory),
+      tone: safety.familyHistory === "yes" ? "warning" : undefined,
+    },
     {
       label: tr(c.rows.age),
       value: profile.birthDate ? ageFromBirthDate(profile.birthDate).toFixed(2) : "–",
@@ -101,6 +130,48 @@ function Clinician() {
       ? tr(r.scenarios.usualCare.label)
       : scenario.components.map((id) => tr(r.components[id].short)).join(" + ");
 
+  const scenarioTableRows = (scenarios: typeof p.scenarios) =>
+    scenarios.map((scenario) => {
+      const delta = round1(usualEndpoint - scenario.expectedEndpoint);
+      return {
+        label: careOptionLabel(scenario),
+        endpoint: String(scenario.expectedEndpoint),
+        range: `${scenario.endpointRange[0]}–${scenario.endpointRange[1]}`,
+        delta: scenario.id === "usualCare" ? "–" : delta > 0 ? `-${delta}` : `+${-delta}`,
+      };
+    });
+
+  const downloadPdf = () => {
+    const [riskRow, ...restRows] = rows;
+    generatePraxisPdf({
+      filenamePrefix: tr({ de: "kurzbefund-praxis", en: "clinical-summary" }),
+      title: tr(c.title),
+      subtitle: tr(c.subtitle),
+      riskLabel: riskRow?.label ?? "",
+      riskValue: riskRow?.value ?? "",
+      riskTone: riskRow?.tone,
+      summaryHeading: tr(c.summary),
+      rows: restRows,
+      phq9Heading: tr(c.phq9ItemProfile),
+      phq9Items: PHQ9_ITEMS.map((item, i) => ({
+        index: i + 1,
+        label: tr(item),
+        value: p.session.phq[i] ?? 0,
+      })),
+      modelHeading: tr(c.modelEstimates),
+      tableHeaders: {
+        careOption: tr(c.table.careOption),
+        endpoint: tr(c.table.endpoint),
+        delta: tr(c.table.delta),
+      },
+      scenarioTables: [
+        { heading: tr(r.scenarioTabs.single), rows: scenarioTableRows(p.singleScenarios) },
+        { heading: tr(r.scenarioTabs.combo), rows: scenarioTableRows(p.scenarios) },
+      ],
+      footer: fill(tr(c.footer), { version: MODEL_META.version }),
+    });
+  };
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
       <div className="flex flex-wrap items-end justify-between gap-4">
@@ -110,8 +181,8 @@ function Clinician() {
         </div>
         <button
           type="button"
-          onClick={() => window.print()}
-          className="rounded-md border border-border px-3.5 py-2 text-sm font-medium hover:bg-secondary"
+          onClick={downloadPdf}
+          className="rounded-md border border-border px-3.5 py-2 text-sm font-medium hover:bg-secondary print:hidden"
         >
           {tr(c.print)}
         </button>
@@ -124,7 +195,22 @@ function Clinician() {
             {rows.map((row) => (
               <div key={row.label} className="flex justify-between gap-4 py-2">
                 <dt className="text-muted-foreground">{row.label}</dt>
-                <dd className="text-right font-medium">{row.value}</dd>
+                <dd className="text-right">
+                  {row.tone ? (
+                    <span
+                      className={[
+                        "rounded-md border px-2 py-0.5 text-xs font-semibold",
+                        row.tone === "destructive"
+                          ? "border-destructive/40 bg-destructive-soft text-destructive"
+                          : "border-warning/40 bg-warning-soft text-warning",
+                      ].join(" ")}
+                    >
+                      {row.value}
+                    </span>
+                  ) : (
+                    <span className="font-medium">{row.value}</span>
+                  )}
+                </dd>
               </div>
             ))}
           </dl>
@@ -163,7 +249,7 @@ function Clinician() {
       <section className="mt-8">
         <h2 className="text-base font-semibold">{tr(c.modelEstimates)}</h2>
 
-        <div className="mt-3 inline-flex rounded-md border border-border p-0.5 text-sm">
+        <div className="mt-3 inline-flex rounded-md border border-border p-0.5 text-sm print:hidden">
           {(["single", "combo"] as const).map((t) => (
             <button
               key={t}

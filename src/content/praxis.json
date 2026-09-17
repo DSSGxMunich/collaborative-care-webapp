@@ -4,13 +4,15 @@
     "de": "Vom Patienten selbst ausgefüllt. Alle Angaben sind Selbstauskunft und ersetzen keine Diagnostik.",
     "en": "Completed by the patient. All entries are self-report and do not replace clinical assessment."
   },
-  "print": { "de": "Drucken / als PDF speichern", "en": "Print / save as PDF" },
+  "print": { "de": "PDF herunterladen", "en": "Download PDF" },
   "riskFlagLabel": { "de": "Risikoflag", "en": "Risk flag" },
   "riskFlag": {
-    "none": { "de": "kein Hinweis", "en": "no indication" },
-    "low": { "de": "Item 9 positiv (einzelne Tage)", "en": "item 9 positive (several days)" },
-    "elevated": { "de": "erhöht — zeitnahe Abklärung", "en": "elevated — timely review" },
-    "acute": { "de": "AKUT — sofortiges Handeln", "en": "ACUTE — act immediately" }
+    "minimal": { "de": "minimal — kein akuter Hinweis", "en": "minimal — no acute indication" },
+    "lower": {
+      "de": "niedriger — zeitnahe Abklärung empfohlen",
+      "en": "lower — timely review recommended"
+    },
+    "higher": { "de": "höher — dringender Handlungsbedarf", "en": "higher — urgent action needed" }
   },
   "riskAdvice": {
     "de": "Suizidalität explizit ansprechen, Sicherheitsplan und Erreichbarkeit klären, ggf. fachpsychiatrische Mitbeurteilung veranlassen.",
@@ -24,14 +26,18 @@
     "severity": { "de": "Schweregrad", "en": "Severity" },
     "suicidality": { "de": "Suizidalität (Item 9)", "en": "Suicidality (item 9)" },
     "riskAssessment": { "de": "Risikoeinschätzung", "en": "Risk assessment" },
-    "planPrep": { "de": "Konkreter Plan / Vorbereitung", "en": "Concrete plan / preparation" },
-    "canStaySafe": {
-      "de": "Kann sich bis zum Kontakt schützen",
-      "en": "Able to stay safe until contact"
+    "past": {
+      "de": "Selbstverletzung/Suizidversuch (jemals)",
+      "en": "Self-harm/suicide attempt (ever)"
     },
-    "pastAttempt": {
-      "de": "Selbstverletzung/Versuch < 12 Monate",
-      "en": "Self-harm/attempt < 12 months"
+    "plan": { "de": "Gedanken an Methode (Plan)", "en": "Thought about method (plan)" },
+    "probability": {
+      "de": "Selbsteingeschätzte Wahrscheinlichkeit",
+      "en": "Self-rated probability"
+    },
+    "preventive": {
+      "de": "Schützende Faktoren vorhanden",
+      "en": "Protective factors present"
     },
     "familyHistory": {
       "de": "Suizid/-versuch in der Familie",
