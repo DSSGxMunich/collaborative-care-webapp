@@ -26,17 +26,8 @@ function Index() {
         {tr(home.title)}
       </h1>
       <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{tr(home.body)}</p>
-      <div className="mt-7">
-        <Link
-          to="/fragebogen"
-          className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
-        >
-          {tr(ui.buttons.start)}
-        </Link>
-      </div>
-      <p className="mt-4 text-xs text-muted-foreground">{tr(ui.noAnswersLeaveDevice)}</p>
 
-      <div className="mt-12 border-t border-border pt-6">
+      <div className="mt-8 border-t border-border pt-6">
         <h2 className="text-sm font-semibold">{tr(home.about.heading)}</h2>
         <ul className="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
           {home.about.items.map((item, i) => (
@@ -57,6 +48,16 @@ function Index() {
           </Link>
           {tr(home.learnMoreEnd)}
         </p>
+      </div>
+
+      <div className="mt-8">
+        <Link
+          to="/fragebogen"
+          className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+        >
+          {tr(ui.buttons.start)}
+        </Link>
+        <p className="mt-4 text-xs text-muted-foreground">{tr(ui.noAnswersLeaveDevice)}</p>
       </div>
 
       <div className="mt-8 border-t border-border pt-6">
