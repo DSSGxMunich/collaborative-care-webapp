@@ -248,8 +248,17 @@ export { RISK_SCORE_TRAINING };
 
 export function buildPredictions(input: PredictionInput) {
   const estimates = estimateComponents(input);
-  const scenarios = SCENARIO_IDS.map((id) => predictScenario(input, id));
   const predictors = describePredictors(input);
+
+  // Usual care stays first as the fixed reference point; every component
+  // scenario after it is ordered best-to-worst by expectedEndpoint (lower
+  // PHQ-9 = fewer symptoms = better), since each component's effect varies
+  // with this patient's risk score (delta_component_risk), so there's no
+  // single fixed "best" order across patients — it has to be resorted per
+  // prediction, not baked into SCENARIO_IDS.
+  const [usualCare, ...rest] = SCENARIO_IDS.map((id) => predictScenario(input, id));
+  rest.sort((a, b) => a.expectedEndpoint - b.expectedEndpoint);
+  const scenarios = usualCare ? [usualCare, ...rest] : rest;
 
   return { estimates, scenarios, predictors };
 }
