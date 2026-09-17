@@ -23,6 +23,24 @@ export type PraxisPdfInput = {
   footer: string;
 };
 
+export type ResultsPdfInput = {
+  filenamePrefix: string;
+  title: string;
+  subtitle: string;
+  baselineLabel: string;
+  baselineValue: string;
+  severityValue: string;
+  scenariosHeading: string;
+  scenariosBody: string;
+  modelHeading: string;
+  tableHeaders: { careOption: string; endpoint: string; delta: string };
+  scenarioTables: PdfScenarioTable[];
+  predictorsHeading: string;
+  predictorsBody: string;
+  predictorRows: PdfRow[];
+  footer: string;
+};
+
 const TONE_COLOR: Record<
   "warning" | "destructive",
   { fill: [number, number, number]; text: [number, number, number] }
@@ -167,6 +185,128 @@ export function generatePraxisPdf(input: PraxisPdfInput): void {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     y = (doc as any).lastAutoTable.finalY + 8;
   }
+
+  if (y > 260) {
+    doc.addPage();
+    y = MARGIN;
+  }
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8);
+  doc.setTextColor(130, 130, 130);
+  const footerLines = doc.splitTextToSize(pdfSafe(input.footer), contentWidth);
+  doc.text(footerLines, MARGIN, y);
+
+  doc.save(`${input.filenamePrefix}-${new Date().toISOString().slice(0, 10)}.pdf`);
+}
+
+/**
+ * Generates and downloads a self-contained, patient-facing results PDF —
+ * same "nothing leaves the device" property as generatePraxisPdf: the file
+ * is built and saved entirely client-side, never uploaded anywhere.
+ */
+export function generateResultsPdf(input: ResultsPdfInput): void {
+  const doc = new jsPDF({ unit: "mm", format: "a4" });
+  doc.setProperties({ title: pdfSafe(input.title) });
+  const contentWidth = PAGE_WIDTH - MARGIN * 2;
+  let y = MARGIN;
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(16);
+  doc.setTextColor(20, 20, 20);
+  doc.text(pdfSafe(input.title), MARGIN, y);
+  y += 7;
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9);
+  doc.setTextColor(100, 100, 100);
+  const subtitleLines = doc.splitTextToSize(pdfSafe(input.subtitle), contentWidth);
+  doc.text(subtitleLines, MARGIN, y);
+  y += subtitleLines.length * 4 + 4;
+
+  // Baseline banner — plain, no risk tone (this page never shows the patient a risk flag).
+  const bannerText = pdfSafe(
+    `${input.baselineLabel}: ${input.baselineValue} — ${input.severityValue}`,
+  );
+  doc.setFontSize(11);
+  doc.setFont("helvetica", "bold");
+  const bannerLines = doc.splitTextToSize(bannerText, contentWidth - 8);
+  const bannerHeight = bannerLines.length * 5 + 6;
+  doc.setDrawColor(210, 210, 210);
+  doc.roundedRect(MARGIN, y, contentWidth, bannerHeight, 2, 2, "S");
+  doc.setTextColor(20, 20, 20);
+  doc.text(bannerLines, MARGIN + 4, y + 5.5);
+  y += bannerHeight + 8;
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(12);
+  doc.text(pdfSafe(input.scenariosHeading), MARGIN, y);
+  y += 4;
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8.5);
+  doc.setTextColor(100, 100, 100);
+  const scenariosBodyLines = doc.splitTextToSize(pdfSafe(input.scenariosBody), contentWidth);
+  doc.text(scenariosBodyLines, MARGIN, y);
+  y += scenariosBodyLines.length * 3.6 + 3;
+
+  for (const table of input.scenarioTables) {
+    if (y > 240) {
+      doc.addPage();
+      y = MARGIN;
+    }
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10.5);
+    doc.setTextColor(20, 20, 20);
+    doc.text(pdfSafe(`${input.modelHeading} — ${table.heading}`), MARGIN, y);
+    y += 4;
+    autoTable(doc, {
+      startY: y,
+      margin: { left: MARGIN, right: MARGIN },
+      head: [
+        [
+          pdfSafe(input.tableHeaders.careOption),
+          pdfSafe(input.tableHeaders.endpoint),
+          pdfSafe(input.tableHeaders.delta),
+        ],
+      ],
+      body: table.rows.map((r) => [
+        pdfSafe(r.label),
+        `${r.endpoint}  (${r.range})`,
+        pdfSafe(r.delta),
+      ]),
+      theme: "striped",
+      styles: { fontSize: 8.5 },
+      headStyles: { fillColor: [245, 245, 245], textColor: [90, 90, 90], fontStyle: "normal" },
+    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    y = (doc as any).lastAutoTable.finalY + 8;
+  }
+
+  if (y > 250) {
+    doc.addPage();
+    y = MARGIN;
+  }
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(12);
+  doc.setTextColor(20, 20, 20);
+  doc.text(pdfSafe(input.predictorsHeading), MARGIN, y);
+  y += 4;
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8.5);
+  doc.setTextColor(100, 100, 100);
+  const predictorsBodyLines = doc.splitTextToSize(pdfSafe(input.predictorsBody), contentWidth);
+  doc.text(predictorsBodyLines, MARGIN, y);
+  y += predictorsBodyLines.length * 3.6 + 3;
+
+  autoTable(doc, {
+    startY: y,
+    margin: { left: MARGIN, right: MARGIN },
+    body: input.predictorRows.map((r) => [pdfSafe(r.label), pdfSafe(r.value)]),
+    theme: "plain",
+    styles: { fontSize: 9, cellPadding: { top: 1.6, bottom: 1.6, left: 2, right: 2 } },
+    columnStyles: { 0: { textColor: [100, 100, 100] }, 1: { fontStyle: "bold", halign: "right" } },
+  });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  y = (doc as any).lastAutoTable.finalY + 8;
 
   if (y > 260) {
     doc.addPage();

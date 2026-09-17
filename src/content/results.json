@@ -217,6 +217,22 @@
       "de": "Zusammenfassung für die Praxis",
       "en": "Summary for the practice"
     },
-    "localSupport": { "de": "Passende Angebote vor Ort", "en": "Suitable local offers" }
+    "localSupport": { "de": "Passende Angebote vor Ort", "en": "Suitable local offers" },
+    "downloadPdf": { "de": "PDF herunterladen", "en": "Download PDF" }
+  },
+  "pdf": {
+    "subtitle": {
+      "de": "Ihre persönliche Auswertung. Diese Datei wird ausschließlich auf Ihrem Gerät erstellt und nirgends hochgeladen.",
+      "en": "Your personal results. This file is generated only on your device and is never uploaded anywhere."
+    },
+    "table": {
+      "careOption": { "de": "Versorgungsoption", "en": "Care option" },
+      "endpoint": { "de": "PHQ-9 12 Mon. (95%-KI)", "en": "PHQ-9 12 mo. (95% CI)" },
+      "delta": { "de": "Δ vs. übliche Versorgung", "en": "Δ vs. usual care" }
+    },
+    "footer": {
+      "de": "Dieser Ausdruck stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (6 Bausteine, 7 Studien) beruht. Die Werte in Klammern sind 95 %-Posterior-Kredibilitätsintervalle. Die Vorhersagen sind nicht klinisch validiert und ersetzen keine ärztliche Diagnose oder Behandlung.",
+      "en": "This printout comes from a research prototype built on a component network meta-analysis (6 components, 7 trials). The numbers in parentheses are 95% posterior credible intervals. These predictions haven't been clinically validated and do not replace medical diagnosis or treatment."
+    }
   }
 }

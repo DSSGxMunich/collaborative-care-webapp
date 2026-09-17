@@ -13,6 +13,7 @@ import { effectiveGad7Score } from "@/lib/gad7";
 import { fill, ui, useLang } from "@/lib/i18n";
 import { SEVERITY_LABEL, SEVERITY_RANGE } from "@/lib/phq9";
 import { posteriorEndpointDraws, type Scenario } from "@/lib/model";
+import { generateResultsPdf } from "@/lib/pdf";
 import { usePrediction } from "@/lib/usePrediction";
 import { ageFromBirthDate, SEX_OPTIONS } from "@/lib/session";
 import resultsContent from "@/content/results.json";
@@ -403,10 +404,87 @@ function Results() {
 
   const activeIntro = tab === "combo" ? r.scenariosIntro : r.singleScenariosIntro;
 
+  const round1 = (x: number) => Number(x.toFixed(1));
+  const usualEndpoint =
+    p.scenarios.find((s) => s.id === "usualCare")?.expectedEndpoint ?? p.baseline;
+
+  const scenarioTableRows = (scenarios: Scenario[]) =>
+    scenarios.map((scenario) => {
+      const delta = round1(usualEndpoint - scenario.expectedEndpoint);
+      return {
+        label: scenarioLabel(scenario),
+        endpoint: String(scenario.expectedEndpoint),
+        range: `${scenario.endpointRange[0]}–${scenario.endpointRange[1]}`,
+        delta: scenario.id === "usualCare" ? "–" : delta > 0 ? `-${delta}` : `+${-delta}`,
+      };
+    });
+
+  const downloadPdf = () => {
+    generateResultsPdf({
+      filenamePrefix: tr({ de: "meine-auswertung", en: "my-results" }),
+      title: tr(r.title),
+      subtitle: tr(r.pdf.subtitle),
+      baselineLabel: `${r.phq9Label} ${tr(r.of27)}`,
+      baselineValue: `${p.baseline}/27`,
+      severityValue: `${tr(SEVERITY_LABEL[p.severity])} · ${tr(r.range)} ${SEVERITY_RANGE[p.severity]}`,
+      scenariosHeading: tr(r.whatCanBeExpected),
+      scenariosBody: tr(r.whatCanBeExpectedBody),
+      modelHeading: tr(r.whatCanBeExpected),
+      tableHeaders: {
+        careOption: tr(r.pdf.table.careOption),
+        endpoint: tr(r.pdf.table.endpoint),
+        delta: tr(r.pdf.table.delta),
+      },
+      scenarioTables: [
+        { heading: tr(r.scenarioTabs.single), rows: scenarioTableRows(p.singleScenarios) },
+        { heading: tr(r.scenarioTabs.combo), rows: scenarioTableRows(p.scenarios) },
+      ],
+      predictorsHeading: tr(r.whatInfluences),
+      predictorsBody: tr(r.predictorsNote),
+      predictorRows: [
+        { label: tr(r.predictors.baseline.label), value: `${p.baseline}/27` },
+        {
+          label: tr(r.predictors.age.label),
+          value: p.session.profile.birthDate
+            ? ageFromBirthDate(p.session.profile.birthDate).toFixed(2)
+            : tr(r.predictors.notProvided),
+        },
+        {
+          label: tr(r.predictors.sex.label),
+          value: p.session.profile.sex
+            ? tr(
+                SEX_OPTIONS.find((o) => o.value === p.session.profile.sex)?.label ?? {
+                  de: "–",
+                  en: "–",
+                },
+              )
+            : tr(r.predictors.notProvided),
+        },
+        {
+          label: tr(r.predictors.gad7.label),
+          value: (() => {
+            const score = effectiveGad7Score(p.session.profile);
+            return score !== null ? `${score}/21` : tr(r.predictors.notProvided);
+          })(),
+        },
+      ],
+      footer: tr(r.pdf.footer),
+    });
+  };
+
   return (
     <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-4 py-10 md:grid-cols-3">
       <div className="order-2 md:order-1 md:col-span-2">
-        <h1 className="text-2xl font-semibold">{tr(r.title)}</h1>
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <h1 className="text-2xl font-semibold">{tr(r.title)}</h1>
+          <button
+            type="button"
+            onClick={downloadPdf}
+            className="rounded-md border border-border px-3.5 py-2 text-sm font-medium hover:bg-secondary print:hidden"
+          >
+            {tr(r.actions.downloadPdf)}
+          </button>
+        </div>
 
         <div className="mt-6 flex items-baseline gap-3 border-b border-border pb-4">
           <span className="text-4xl font-semibold tabular-nums leading-none">{p.baseline}</span>
