@@ -19,20 +19,6 @@
       ]
     },
     {
-      "id": "trialsAndSample",
-      "heading": {
-        "de": "Studien und Stichprobe",
-        "en": "Trials and sample"
-      },
-      "body": [
-        {
-          "de": "Platzhalter: Diese Sektion wird ergänzt, sobald die genaue Anzahl der eingeschlossenen randomisierten Studien und Patient:innen vom Forschungsteam bestätigt ist.",
-          "en": "Placeholder: this section will be filled in once the exact number of included randomized trials and patients is confirmed by the research team.",
-          "placeholder": true
-        }
-      ]
-    },
-    {
       "id": "step1",
       "heading": {
         "de": "Schritt 1: Ordinale Regression (Risikoscore)",
