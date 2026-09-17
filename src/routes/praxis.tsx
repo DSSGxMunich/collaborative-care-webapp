@@ -13,6 +13,7 @@ import {
   PROBABILITY_OPTIONS,
   SEX_OPTIONS,
 } from "@/lib/session";
+import { chunk } from "@/lib/utils";
 import praxisContent from "@/content/praxis.json";
 import resultsContent from "@/content/results.json";
 
@@ -129,6 +130,15 @@ function Clinician() {
     scenario.id === "usualCare"
       ? tr(r.scenarios.usualCare.label)
       : scenario.components.map((id) => tr(r.components[id].short)).join(" + ");
+
+  /** Same components as careOptionLabel, grouped at most 2 per line so a 3-4 component package doesn't run on into one long string in the table cell. */
+  const careOptionLabelLines = (scenario: (typeof p.scenarios)[number]): string[] =>
+    scenario.id === "usualCare"
+      ? [tr(r.scenarios.usualCare.label)]
+      : chunk(
+          scenario.components.map((id) => tr(r.components[id].short)),
+          2,
+        ).map((group) => group.join(" + "));
 
   const scenarioTableRows = (scenarios: typeof p.scenarios) =>
     scenarios.map((scenario) => {
@@ -282,7 +292,13 @@ function Clinician() {
                 const delta = round1(usualEndpoint - scenario.expectedEndpoint);
                 return (
                   <tr key={scenario.id}>
-                    <td className="px-4 py-2.5 font-medium">{careOptionLabel(scenario)}</td>
+                    <td className="px-4 py-2.5 font-medium">
+                      {careOptionLabelLines(scenario).map((line, i) => (
+                        <span key={i} className="block">
+                          {line}
+                        </span>
+                      ))}
+                    </td>
                     <td className="px-4 py-2.5">
                       {scenario.expectedEndpoint}{" "}
                       <span className="text-xs text-muted-foreground">

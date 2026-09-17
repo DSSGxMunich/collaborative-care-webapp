@@ -154,7 +154,7 @@
     }
   },
   "scenarioTabs": {
-    "combo": { "de": "Kombinationen aus den Studien", "en": "Combinations from the trials" },
+    "combo": { "de": "Behandlungskombinationen", "en": "Treatment combinations" },
     "single": { "de": "Einzelne Bausteine", "en": "Single components" }
   },
   "scenariosIntro": {
