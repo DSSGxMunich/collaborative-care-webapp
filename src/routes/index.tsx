@@ -30,7 +30,6 @@ function Index() {
       <div className="mt-8 border-t border-border pt-6">
         <h2 className="text-sm font-semibold">{tr(home.about.heading)}</h2>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-          {tr(home.about.readMore)}{" "}
           <Link
             to="/methodology"
             className="font-medium text-foreground underline underline-offset-2"
