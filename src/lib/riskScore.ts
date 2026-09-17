@@ -10,20 +10,28 @@
  * Ported from `risk_score_model.R`'s fitted `model` list (see
  * model/step1_risk_score/export_risk_model_json.R).
  *
- * IMPORTANT — this is NOT that script's own `predict_phq9()`/`eta` value.
- * `eta` (the raw linear predictor, log-cumulative-odds scale, typically a
- * small number like -2..+3) is an intermediate quantity, not the "risk
- * score" the Step-2 CNMA was actually fit against (the manifest's
- * `risk_column: "expected_phq9_12mo"` — a real 0–27-scale PHQ-9 expected
- * value, same semantics as the previous `rms::orm`-based Step 1 model).
- * Feeding raw `eta` into Step 2 as `risk_score` was tried and produces
- * clinically implausible predictions (near-total remission regardless of
- * baseline severity — `lambda_risk * risk_score` is dominated by
- * `alpha_study` when `risk_score` is O(1) instead of O(10)); see the PR
- * this landed in for the smoke-test numbers that caught it. This module
- * instead reconstructs `expected_phq9_12mo` = E[Y] from `eta` via the
- * fitted ordinal thresholds, exactly the same E[Y]-over-the-full-
- * distribution approach the previous Step 1 model used:
+ * IMPORTANT — this is NOT that script's own `predict_phq9()`/`eta` value,
+ * and NOT a naive per-study-random-effect-at-zero E[Y] either. `eta` (the
+ * raw linear predictor, log-cumulative-odds scale, typically a small number
+ * like -2..+3) is an intermediate quantity, not the "risk score" the
+ * Step-2 CNMA was actually fit against (the manifest's `risk_column:
+ * "expected_phq9_12mo"` — a real 0–27-scale PHQ-9 expected value, same
+ * semantics as the previous `rms::orm`-based Step 1 model). Feeding raw
+ * `eta` into Step 2 as `risk_score` was tried and produces clinically
+ * implausible predictions (near-total remission regardless of baseline
+ * severity — `lambda_risk * risk_score` is dominated by `alpha_study` when
+ * `risk_score` is O(1) instead of O(10)).
+ *
+ * This model has per-study random effects (a random intercept, `sigma0`,
+ * and a random slope on `y0_c`, `sigma1` — see `risk_score_model.R`'s
+ * `clmm` formula, `(1 | study) + (0 + y0_c | study)`). Since the app has no
+ * specific study to condition on for a new patient, the risk score needs
+ * to be the *marginal* (population-averaged) E[Y] — integrating out both
+ * random effects — not the *conditional* E[Y] at a random effect of
+ * exactly zero (that conditional value is what an earlier version of this
+ * file used; it undersells the between-study heterogeneity captured by
+ * sigma0/sigma1 and pulls every prediction closer to the middle of the
+ * scale than the population-averaged curve actually is).
  *
  *   eta = beta_y0c * y0_c + g(age_c) + beta_sexMale * (sex == "Male")
  *   y0_c  = (baseline_phq9 - y0_mu) / y0_sd
@@ -31,16 +39,25 @@
  *   g(age_c) = the fitted natural cubic spline (splines::ns) contribution
  *              of centered age, with knots at ageKnots (2 boundary + 2
  *              interior, on the age_c scale)
- *   P(Y<=j) = logistic(threshold_j - eta)     -- ordinal package's own
- *                                                 parameterization (thresholds
- *                                                 MINUS eta, not plus)
+ *   randomEffectVar = sigma0^2 + y0_c^2 * sigma1^2   -- intercept + slope
+ *              random effects assumed independent (the model was fit
+ *              without their correlation — see risk_score_model.R's own
+ *              comment on why)
+ *   marginalScale = sqrt(1 + c^2 * randomEffectVar), c = 16*sqrt(3)/(15*pi)
+ *              -- the standard logistic/normal-mixture approximation
+ *              (Zeger, Liang & Albert 1988) for integrating a normal random
+ *              effect out of a logistic-link probability
+ *   P(Y<=j) = logistic((threshold_j - eta) / marginalScale)  -- ordinal
+ *              package's own parameterization (thresholds MINUS eta), with
+ *              the marginalization scaling folded in
  *   P(Y=j)  = P(Y<=j) - P(Y<=j-1)    (P(Y<=-1) := 0, P(Y<=27) := 1)
  *   risk_score = E[Y] = sum_j( j * P(Y=j) )
  *
- * Verified this sign convention (not the reverse) against R directly: it's
- * the one that produces a risk score monotonically increasing with baseline
- * PHQ-9 across a realistic 3–18 range, matching `ordinal::clmm`'s
- * documented `logit(P(Y<=j)) = theta_j - eta` parameterization.
+ * Verified the threshold-minus-eta sign convention against R directly
+ * (matches `ordinal::clmm`'s documented `logit(P(Y<=j)) = theta_j - eta`
+ * parameterization), and the marginalized E[Y] values themselves against a
+ * dedicated R script implementing the same formula on the real fitted
+ * model — see the PR this landed in.
  *
  * WHY g() is reconstructed from just 4 numbers, not ns()'s own basis:
  * g(age_c) is a fixed linear combination of natural-cubic-spline basis
@@ -156,6 +173,11 @@ const THRESHOLD_KEYS = riskModelData.yLevels
   .slice(0, -1)
   .map((j) => `${j}|${j + 1}`) as (keyof typeof riskModelData.thresholds)[];
 
+const SIGMA0 = riskModelData.sigma0;
+const SIGMA1 = riskModelData.sigma1;
+/** Zeger, Liang & Albert (1988) logistic/normal-mixture constant — see file header. */
+const MARGINALIZATION_C = (16 * Math.sqrt(3)) / (15 * Math.PI);
+
 export type RiskScoreInput = {
   age: number | null;
   sex: Sex | null;
@@ -168,8 +190,8 @@ export const DEFAULT_AGE = SCALING.ageMu;
 const clamp = (x: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, x));
 const sigmoid = (x: number) => 1 / (1 + Math.exp(-x));
 
-/** The model's linear predictor (log-cumulative-odds scale), before the ordinal-thresholds transform to an expected PHQ-9 value. */
-function computeEta(input: RiskScoreInput): number {
+/** The model's linear predictor (log-cumulative-odds scale) and centered baseline PHQ-9, the two inputs the marginalization needs alongside the fitted thresholds. */
+function computeEtaAndY0c(input: RiskScoreInput): { eta: number; y0c: number } {
   const age = input.age ?? DEFAULT_AGE;
   const sexLabel = input.sex ? (RISK_SEX_CODE[input.sex] ?? "Female") : "Female";
 
@@ -177,24 +199,32 @@ function computeEta(input: RiskScoreInput): number {
   const ageC = (age - SCALING.ageMu) / SCALING.ageSd;
   const sexMale = sexLabel === "Male" ? 1 : 0;
 
-  return COEF.y0_c * y0c + ageSpline(ageC) + COEF.sexMale * sexMale;
+  const eta = COEF.y0_c * y0c + ageSpline(ageC) + COEF.sexMale * sexMale;
+  return { eta, y0c };
 }
 
 /**
- * Computes the Step-1 risk score (E[12-month PHQ-9] under usual care, before
- * any structured-care component is added) for one patient, clamped to the
- * Step-2 model's training range. See file header for why this is a
- * thresholds-transform of `eta`, not `eta` itself.
+ * Computes the Step-1 risk score — the *marginal* (population-averaged)
+ * E[12-month PHQ-9] under usual care, integrating out the per-study random
+ * intercept and random slope-on-baseline-PHQ-9 — for one patient, clamped
+ * to the Step-2 model's training range. See file header for the
+ * marginalization math and why it's not just a thresholds-transform of
+ * `eta` at a random effect of zero.
  */
 export function computeRiskScore(input: RiskScoreInput): number {
-  const eta = computeEta(input);
+  const { eta, y0c } = computeEtaAndY0c(input);
 
-  // ordinal::clmm's own parameterization: logit(P(Y<=j)) = threshold_j - eta.
+  const randomEffectVar = SIGMA0 ** 2 + y0c ** 2 * SIGMA1 ** 2;
+  const marginalScale = Math.sqrt(1 + MARGINALIZATION_C ** 2 * randomEffectVar);
+
+  // ordinal::clmm's own parameterization: logit(P(Y<=j)) = threshold_j - eta,
+  // with the marginalization scaling folded into the denominator.
   let cumBelow = 0; // P(Y <= level-1), starts at P(Y <= -1) = 0
   let mean = 0;
   for (let level = 0; level < riskModelData.yLevels.length; level++) {
     const key = THRESHOLD_KEYS[level];
-    const cumAt = key !== undefined ? sigmoid(riskModelData.thresholds[key] - eta) : 1; // P(Y<=27) = 1
+    const cumAt =
+      key !== undefined ? sigmoid((riskModelData.thresholds[key] - eta) / marginalScale) : 1; // P(Y<=27) = 1
     mean += level * (cumAt - cumBelow);
     cumBelow = cumAt;
   }

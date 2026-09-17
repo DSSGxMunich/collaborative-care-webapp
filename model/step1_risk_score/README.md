@@ -11,11 +11,14 @@ ordered(y) ~ y0_c + ns(age_c, knots = age_knots[2:3], Boundary.knots = age_knots
   (1 | study) + (0 + y0_c | study)
 ```
 
-`y0_c`/`age_c` are centered/scaled baseline PHQ-9 and age; the risk score
-this app uses (`eta`) is the model's linear predictor with the per-study
-random effect set to zero, **not** an expected 0–27 PHQ-9 value like the
-previous `rms::orm`-based Step 1 model. GAD-7 was dropped as a predictor in
-this refit.
+`y0_c`/`age_c` are centered/scaled baseline PHQ-9 and age. The risk score
+this app uses is **not** the model's raw linear predictor (`eta`) — it's
+the marginal (population-averaged) E[12-month PHQ-9], integrating out the
+per-study random intercept and random slope on baseline PHQ-9 rather than
+setting them to zero, computed from `eta` and the fitted thresholds. It's
+the same 0–27-scale expected-PHQ-9 quantity as the previous `rms::orm`-based
+Step 1 model, just derived differently — see `src/lib/riskScore.ts`'s file
+header for the full math. GAD-7 was dropped as a predictor in this refit.
 
 ## Regenerating `risk-model.json` from a fitted model
 
@@ -72,17 +75,17 @@ Rules for this directory:
 
 ## Step 1 / Step 2 coupling — read before refitting
 
-`src/lib/model.ts` (Step 2, the CNMA) was fit using `risk_score` (`eta`)
-values that came out of _this_ Step 1 model. If you refit Step 1 with new
-data or a different formula, the `risk_score` distribution it produces
-shifts, and Step 2's `lambda_risk` / `delta_component_risk` — calibrated
-against the old distribution — become stale. There's no automated check for
-this (neither JSON file carries a version tying them together yet); refit
-or at minimum sanity-check both steps together, don't update this file in
-isolation.
+`src/lib/model.ts` (Step 2, the CNMA) was fit using `risk_score` (the
+marginal E[Y], not raw `eta` — see above) values that came out of _this_
+Step 1 model. If you refit Step 1 with new data or a different formula, the
+`risk_score` distribution it produces shifts, and Step 2's `lambda_risk` /
+`delta_component_risk` — calibrated against the old distribution — become
+stale. There's no automated check for this (neither JSON file carries a
+version tying them together yet); refit or at minimum sanity-check both
+steps together, don't update this file in isolation.
 
 **Also see the TODO in `src/lib/riskScore.ts`** on `RISK_SCORE_TRAINING`:
-the range to clamp `eta` to (the range Step 2 was actually trained on) has
-to be computed from the same training rows Step 2 was fit against — it
-can't be derived from this script's aggregate-only output, and is currently
-left unclamped as a placeholder.
+the range to clamp `risk_score` to (the range Step 2 was actually trained
+on) has to be computed from the same training rows Step 2 was fit
+against — it can't be derived from this script's aggregate-only output, and
+currently reuses the previous model's range as an interim approximation.
