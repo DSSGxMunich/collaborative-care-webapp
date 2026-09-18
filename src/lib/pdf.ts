@@ -3,7 +3,7 @@ import autoTable from "jspdf-autotable";
 
 export type PdfRow = { label: string; value: string; tone?: "warning" | "destructive" | undefined };
 export type PdfPhqItem = { index: number; label: string; value: number };
-export type PdfScenarioRow = { label: string; endpoint: string; range: string; delta: string };
+export type PdfScenarioRow = { label: string; rank: string; note: string };
 export type PdfScenarioTable = { heading: string; rows: PdfScenarioRow[] };
 
 export type PraxisPdfInput = {
@@ -18,7 +18,7 @@ export type PraxisPdfInput = {
   phq9Heading: string;
   phq9Items: PdfPhqItem[];
   modelHeading: string;
-  tableHeaders: { careOption: string; endpoint: string; delta: string };
+  tableHeaders: { careOption: string; rank: string; note: string };
   scenarioTables: PdfScenarioTable[];
   footer: string;
 };
@@ -33,7 +33,7 @@ export type ResultsPdfInput = {
   scenariosHeading: string;
   scenariosBody: string;
   modelHeading: string;
-  tableHeaders: { careOption: string; endpoint: string; delta: string };
+  tableHeaders: { careOption: string; rank: string; note: string };
   scenarioTables: PdfScenarioTable[];
   predictorsHeading: string;
   predictorsBody: string;
@@ -168,19 +168,16 @@ export function generatePraxisPdf(input: PraxisPdfInput): void {
       margin: { left: MARGIN, right: MARGIN },
       head: [
         [
+          pdfSafe(input.tableHeaders.rank),
           pdfSafe(input.tableHeaders.careOption),
-          pdfSafe(input.tableHeaders.endpoint),
-          pdfSafe(input.tableHeaders.delta),
+          pdfSafe(input.tableHeaders.note),
         ],
       ],
-      body: table.rows.map((r) => [
-        pdfSafe(r.label),
-        `${r.endpoint}  (${r.range})`,
-        pdfSafe(r.delta),
-      ]),
+      body: table.rows.map((r) => [pdfSafe(r.rank), pdfSafe(r.label), pdfSafe(r.note)]),
       theme: "striped",
       styles: { fontSize: 8.5 },
       headStyles: { fillColor: [245, 245, 245], textColor: [90, 90, 90], fontStyle: "normal" },
+      columnStyles: { 0: { cellWidth: 12, halign: "center" } },
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     y = (doc as any).lastAutoTable.finalY + 8;
@@ -263,19 +260,16 @@ export function generateResultsPdf(input: ResultsPdfInput): void {
       margin: { left: MARGIN, right: MARGIN },
       head: [
         [
+          pdfSafe(input.tableHeaders.rank),
           pdfSafe(input.tableHeaders.careOption),
-          pdfSafe(input.tableHeaders.endpoint),
-          pdfSafe(input.tableHeaders.delta),
+          pdfSafe(input.tableHeaders.note),
         ],
       ],
-      body: table.rows.map((r) => [
-        pdfSafe(r.label),
-        `${r.endpoint}  (${r.range})`,
-        pdfSafe(r.delta),
-      ]),
+      body: table.rows.map((r) => [pdfSafe(r.rank), pdfSafe(r.label), pdfSafe(r.note)]),
       theme: "striped",
       styles: { fontSize: 8.5 },
       headStyles: { fillColor: [245, 245, 245], textColor: [90, 90, 90], fontStyle: "normal" },
+      columnStyles: { 0: { cellWidth: 12, halign: "center" } },
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     y = (doc as any).lastAutoTable.finalY + 8;

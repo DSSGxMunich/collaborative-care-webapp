@@ -67,8 +67,8 @@
       }
     ],
     "closing": {
-      "de": "Trifft etwas davon auf Sie zu, verstehen Sie die folgenden Zahlen bitte eher als groben Anhaltspunkt denn als präzise Vorhersage.",
-      "en": "If any of this applies to you, treat the numbers below as a rough guide rather than a precise prediction."
+      "de": "Trifft etwas davon auf Sie zu, verstehen Sie die folgende Einschätzung bitte eher als groben Anhaltspunkt denn als präzise Vorhersage.",
+      "en": "If any of this applies to you, treat the assessment below as a rough guide rather than a precise prediction."
     },
     "showDetails": {
       "de": "Details anzeigen",
@@ -83,13 +83,19 @@
   "of27": { "de": "von 27 Punkten", "en": "of 27 points" },
   "range": { "de": "Bereich", "en": "Range" },
   "legend": {
-    "interval": { "de": "95 %-Kredibilitätsintervall", "en": "95% credible interval" },
-    "today": { "de": "Ihr PHQ-9 heute ({baseline})", "en": "Your PHQ-9 today ({baseline})" },
-    "todayLine": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" },
-    "scale": { "de": "Skala 0–27", "en": "scale 0–27" },
-    "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
-    "worse": { "de": "Schlechter als heute", "en": "Worse than today" },
-    "same": { "de": "Etwa gleich wie heute", "en": "About the same as today" }
+    "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" }
+  },
+  "ranking": {
+    "usualCareHeading": { "de": "Ihre derzeitige Versorgung", "en": "Your current care" },
+    "helpfulSection": {
+      "de": "Wahrscheinlich hilfreicher als Ihre derzeitige Versorgung",
+      "en": "Likely to help more than your current care"
+    },
+    "otherSection": { "de": "Weitere Bausteine", "en": "Other components" },
+    "rankAria": {
+      "de": "Platz {rank} von {total} — nach erwartetem Nutzen gereiht, hilfreichste Option zuerst",
+      "en": "Rank {rank} of {total} — ordered by expected benefit, most helpful option first"
+    }
   },
   "scenarios": {
     "usualCare": {
@@ -99,8 +105,8 @@
       },
       "short": { "de": "Übliche Versorgung", "en": "Usual care from your GP — for comparison" },
       "description": {
-        "de": "Behandlung wie bisher: Termine bei Bedarf, Beratung, Verlaufsbeobachtung.",
-        "en": "The usual treatment provided by a GP practice for depressive symptoms. This may include appointments with your GP, medication or referral to other healthcare professionals. *The exact care provided can vary between GP practices and may differ from the care you currently receive."
+        "de": "Die übliche Behandlung, die eine Hausarztpraxis bei depressiven Beschwerden anbietet. Dazu können Termine bei Ihrer Hausärztin/Ihrem Hausarzt, eine medikamentöse Behandlung oder eine Überweisung an andere Fachpersonen gehören. Die tatsächlich angebotene Versorgung kann sich zwischen Hausarztpraxen unterscheiden und von der Versorgung abweichen, die Sie aktuell erhalten.",
+        "en": "The usual treatment provided by a GP practice for depressive symptoms. This may include appointments with your GP, medication or referral to other healthcare professionals. The exact care provided can vary between GP practices and may differ from the care you currently receive."
       }
     }
   },
@@ -249,30 +255,6 @@
   "scenarioTabs": {
     "single": { "de": "Einzelne Bausteine", "en": "Single components" }
   },
-  "scenariosIntro": {
-    "de": "Niedrigere Werte bedeuten weniger Beschwerden. Diese Ansicht zeigt jeden Baustein einzeln zur üblichen Versorgung hinzugefügt — keiner davon wurde allein in einer Studie getestet. Mehr Bausteine gleichzeitig bedeutet nicht automatisch ein besseres Ergebnis.",
-    "en": "Lower values mean fewer symptoms. This view shows each component added on its own to usual care — none of them was tested alone in any trial. Using more components at once is not automatically better."
-  },
-  "posterior": {
-    "sectionTitle": {
-      "de": "Unsicherheit im Detail: Posterior-Verteilung",
-      "en": "Uncertainty in detail: posterior distribution"
-    },
-    "show": { "de": "Verteilung anzeigen", "en": "Show distribution" },
-    "hide": { "de": "Verteilung ausblenden", "en": "Hide distribution" },
-    "explain": {
-      "de": "Dies zeigt, wie sicher sich das Modell bei der Schätzung des durchschnittlichen PHQ-9-Werts nach 12 Monaten für Personen mit Ihrem Profil ist — nicht, wie stark die tatsächlichen Werte einzelner Personen streuen. Eine schmale Verteilung bedeutet also eine präzise Schätzung des Durchschnitts, nicht, dass alle Personen nahe diesem Wert landen.",
-      "en": "This shows how confident the model is in its estimate of the average 12-month PHQ-9 for people with your profile — not how much individual people's actual outcomes vary. A narrow distribution means a precise estimate of the average, not that everyone ends up close to this value."
-    },
-    "placeholderNote": {
-      "de": "Diese Verteilung besteht aus den echten Posterior-Stichproben des gefitteten Modells (2 000 Ziehungen aus 4 Ketten), nicht aus einer Näherung.",
-      "en": "This distribution is made up of the fitted model's real posterior draws (2,000 draws across 4 chains), not an approximation."
-    },
-    "tooltipDraws": {
-      "de": "{count} von {total} Ziehungen",
-      "en": "{count} of {total} draws"
-    }
-  },
   "crisis": {
     "acute": {
       "title": { "de": "Bitte holen Sie sich jetzt Hilfe", "en": "Please get help now" },
@@ -327,12 +309,12 @@
     "notProvided": { "de": "keine Angabe", "en": "not provided" }
   },
   "whatCanBeExpected": {
-    "de": "Geschätzter PHQ-9 nach 12 Monaten",
-    "en": "Estimated PHQ-9 at 12 months"
+    "de": "Was Ihnen am ehesten helfen könnte",
+    "en": "What is most likely to help you"
   },
   "whatCanBeExpectedBody": {
-    "de": "Im Vergleich zur üblichen Versorgung, mit in Studien getesteten Kombinationen und einzelnen Bausteinen. Die Schätzungen gelten für ähnliche Personengruppen, nicht als Zusage für Ihren eigenen Verlauf.",
-    "en": "Compared to usual care, showing both trial-tested combinations and individual components. Estimates reflect similar patient groups, not a guarantee for your own course."
+    "de": "Sie sehen hier eine Rangfolge von Behandlungsoptionen – von der wahrscheinlich hilfreichsten bis zur am wenigsten hilfreichen.",
+    "en": "You'll see a ranking of treatments here, from what's likely to be most helpful to the least."
   },
   "whatInfluences": {
     "de": "Was beeinflusst diese Schätzung?",
@@ -353,12 +335,12 @@
     },
     "table": {
       "careOption": { "de": "Versorgungsoption", "en": "Care option" },
-      "endpoint": { "de": "PHQ-9 12 Mon. (95%-KI)", "en": "PHQ-9 12 mo. (95% CI)" },
-      "delta": { "de": "Δ vs. übliche Versorgung", "en": "Δ vs. usual care" }
+      "rank": { "de": "Rang", "en": "Rank" },
+      "note": { "de": "Einschätzung", "en": "Assessment" }
     },
     "footer": {
-      "de": "Dieser Ausdruck stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Die Werte in Klammern sind 95 %-Posterior-Kredibilitätsintervalle. Die Vorhersagen sind nicht klinisch validiert und ersetzen keine ärztliche Diagnose oder Behandlung.",
-      "en": "This printout comes from a research prototype built on a component network meta-analysis (10 components, 12 trials). The numbers in parentheses are 95% posterior credible intervals. These predictions haven't been clinically validated and do not replace medical diagnosis or treatment."
+      "de": "Dieser Ausdruck stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Bausteine sind nach erwartetem Nutzen gereiht, nicht nach exakten Zahlenwerten. Die Einschätzungen sind nicht klinisch validiert und ersetzen keine ärztliche Diagnose oder Behandlung.",
+      "en": "This printout comes from a research prototype built on a component network meta-analysis (10 components, 12 trials). Components are ranked by expected benefit, not exact numeric values. These assessments haven't been clinically validated and do not replace medical diagnosis or treatment."
     }
   }
 }

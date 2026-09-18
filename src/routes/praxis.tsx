@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { CareRanking } from "@/components/CareRanking";
 import { fill, ui, useLang } from "@/lib/i18n";
 import { PHQ9_ITEMS, SEVERITY_LABEL } from "@/lib/phq9";
 import { assessRisk } from "@/lib/safety";
@@ -109,10 +110,6 @@ function Clinician() {
     },
   ];
 
-  const round1 = (x: number) => Number(x.toFixed(1));
-  const usualEndpoint =
-    p.scenarios.find((s) => s.id === "usualCare")?.expectedEndpoint ?? p.baseline;
-
   /** Usual care keeps its own label; a package's label is its active components joined together. */
   const careOptionLabel = (scenario: (typeof p.scenarios)[number]) =>
     scenario.id === "usualCare"
@@ -128,14 +125,33 @@ function Clinician() {
           2,
         ).map((group) => group.join(" + "));
 
+  /** Every row is a single component added alone, so it always has one unambiguous explanation to show. */
+  const careOptionDescription = (scenario: (typeof p.scenarios)[number]): string | undefined => {
+    const [id] = scenario.components;
+    return id !== undefined && scenario.components.length === 1
+      ? tr(r.components[id].description)
+      : undefined;
+  };
+
+  /** A component is flagged "likely to help" when its expected outcome beats the patient's own baseline — no magnitude shown, just the direction. */
+  const isHelpful = (scenario: (typeof p.scenarios)[number]) =>
+    scenario.expectedEndpoint < p.baseline;
+
+  const rankedScenarios = p.scenarios.filter((s) => s.id !== "usualCare");
+  const usualCareScenario = p.scenarios.find((s) => s.id === "usualCare");
+
   const scenarioTableRows = (scenarios: typeof p.scenarios) =>
     scenarios.map((scenario) => {
-      const delta = round1(usualEndpoint - scenario.expectedEndpoint);
+      const isUsualCare = scenario.id === "usualCare";
+      const rank = isUsualCare ? "–" : String(rankedScenarios.indexOf(scenario) + 1);
       return {
         label: careOptionLabel(scenario),
-        endpoint: String(scenario.expectedEndpoint),
-        range: `${scenario.endpointRange[0]}–${scenario.endpointRange[1]}`,
-        delta: scenario.id === "usualCare" ? "–" : delta > 0 ? `-${delta}` : `+${-delta}`,
+        rank,
+        note: isUsualCare
+          ? tr(c.ranking.usualCareHeading)
+          : isHelpful(scenario)
+            ? tr(c.table.better)
+            : "–",
       };
     });
 
@@ -159,8 +175,8 @@ function Clinician() {
       modelHeading: tr(c.modelEstimates),
       tableHeaders: {
         careOption: tr(c.table.careOption),
-        endpoint: tr(c.table.endpoint),
-        delta: tr(c.table.delta),
+        rank: tr(c.table.rank),
+        note: tr(c.table.note),
       },
       scenarioTables: [
         { heading: tr(r.scenarioTabs.single), rows: scenarioTableRows(p.scenarios) },
@@ -245,66 +261,27 @@ function Clinician() {
 
       <section className="mt-8">
         <h2 className="text-base font-semibold">{tr(c.modelEstimates)}</h2>
+        <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+          {tr(c.modelEstimatesIntro)}
+        </p>
 
-        <div className="mt-3 overflow-x-auto rounded-md border border-border">
-          <table className="w-full min-w-[26rem] text-sm">
-            <thead>
-              <tr className="text-left text-xs uppercase tracking-wide text-muted-foreground">
-                <th className="px-4 py-2.5 font-medium">{tr(c.table.careOption)}</th>
-                <th className="px-4 py-2.5 font-medium">{tr(c.table.endpoint)}</th>
-                <th className="px-4 py-2.5 font-medium">{tr(c.table.delta)}</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {p.scenarios.map((scenario) => {
-                const delta = round1(usualEndpoint - scenario.expectedEndpoint);
-                return (
-                  <tr key={scenario.id}>
-                    <td className="px-4 py-2.5 font-medium">
-                      {careOptionLabelLines(scenario).map((line, i) => (
-                        <span key={i} className="block">
-                          {line}
-                        </span>
-                      ))}
-                    </td>
-                    <td className="px-4 py-2.5">
-                      {scenario.expectedEndpoint}{" "}
-                      <span className="text-xs text-muted-foreground">
-                        ({scenario.endpointRange[0]}–{scenario.endpointRange[1]})
-                      </span>
-                    </td>
-                    <td className="px-4 py-2.5">
-                      {scenario.id === "usualCare" ? (
-                        <span className="text-muted-foreground">–</span>
-                      ) : delta === 0 ? (
-                        <span className="text-muted-foreground">±0</span>
-                      ) : delta > 0 ? (
-                        <span className="rounded-md border-2 border-success bg-success-soft px-2 py-1 font-medium text-success">
-                          -{delta}
-                          <span className="sr-only"> ({tr(c.table.better)})</span>
-                        </span>
-                      ) : (
-                        <span className="font-medium">+{-delta}</span>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-        {/*
-          Lower PHQ-9 is better, which is easy to misread at a glance. As on
-          the results page, only an expected improvement gets a visual
-          highlight (a green box around the delta) — a worse or unchanged
-          delta renders as plain neutral text, no color, no separate label.
-        */}
-        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
-          <span className="inline-flex items-center gap-1.5">
-            <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-success" />
-            {tr(c.table.better)}
-          </span>
-        </div>
+        {usualCareScenario && (
+          <div className="mt-4">
+            <CareRanking
+              compact
+              usualCare={usualCareScenario}
+              ranked={rankedScenarios}
+              labelLines={careOptionLabelLines}
+              description={careOptionDescription}
+              helpful={isHelpful}
+              usualCareHeading={tr(c.ranking.usualCareHeading)}
+              usualCareDescription={tr(r.scenarios.usualCare.description)}
+              helpfulSectionLabel={tr(c.ranking.helpfulSection)}
+              otherSectionLabel={tr(c.ranking.otherSection)}
+              rankAriaLabel={(rank, total) => fill(tr(c.ranking.rankAria), { rank, total })}
+            />
+          </div>
+        )}
         <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
           {fill(tr(c.footer), { version: MODEL_META.version })}
         </p>
