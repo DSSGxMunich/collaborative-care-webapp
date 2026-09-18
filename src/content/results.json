@@ -68,11 +68,14 @@
   },
   "scenarios": {
     "usualCare": {
-      "label": { "de": "Übliche hausärztliche Versorgung", "en": "Usual GP care" },
+      "label": {
+        "de": "Übliche hausärztliche Versorgung",
+        "en": "Usual care from your GP — for comparison"
+      },
       "short": { "de": "Übliche Versorgung", "en": "Usual care" },
       "description": {
         "de": "Behandlung wie bisher: Termine bei Bedarf, Beratung, Verlaufsbeobachtung.",
-        "en": "Care as before: appointments as needed, advice and watchful monitoring."
+        "en": "The usual treatment provided by a GP practice for depressive symptoms. This may include appointments with your GP, medication or referral to other healthcare professionals. *The exact care provided can vary between GP practices and may differ from the care you currently receive."
       }
     }
   },
@@ -80,7 +83,7 @@
     "specialistInvolvement": {
       "label": {
         "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Einbindung einer Fachärztin/eines Facharztes oder Psychologin/Psychologen",
-        "en": "[Draft — pending clinical/UX review] Involvement of a supervising psychiatrist or psychologist"
+        "en": "Specialist advice for your care team"
       },
       "short": {
         "de": "Fachärztliche/psychologische Einbindung",
@@ -88,13 +91,13 @@
       },
       "description": {
         "de": "Eine Fachärztin/ein Facharzt oder eine Psychologin/ein Psychologe begleitet oder berät bei Ihrer Behandlung, zusätzlich zu Ihrer Hausarztpraxis.",
-        "en": "A psychiatrist or psychologist supervises or co-treats alongside your usual GP care."
+        "en": "A psychiatrist or psychologist advises your care team. You do not need a separate appointment with this specialist for the team to receive this advice."
       }
     },
     "psychologicalTreatment": {
       "label": {
         "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Beratung oder Psychotherapie",
-        "en": "[Draft — pending clinical/UX review] Counselling or psychotherapy"
+        "en": "Brief counselling: up to 8 sessions"
       },
       "short": {
         "de": "Beratung/Psychotherapie",
@@ -102,13 +105,13 @@
       },
       "description": {
         "de": "In diesen Gesprächen geht es um Ihre Beschwerden und Wege, damit umzugehen — von kurzer Beratung bis zu strukturierter Psychotherapie über mehrere Sitzungen. Kann auch zusätzlich zu einer Medikation erfolgen.",
-        "en": "These conversations focus on your symptoms and ways to manage them — ranging from brief counselling to structured psychotherapy over several sessions. Can also be provided alongside medication."
+        "en": "These conversations focus on your symptoms and ways to manage them. Counselling may also be provided alongside medication."
       }
     },
     "goalSetting": {
       "label": {
         "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Gemeinsam festgelegte Behandlungsziele",
-        "en": "[Draft — pending clinical/UX review] Jointly set treatment goals"
+        "en": "Agreeing on your personal treatment goals"
       },
       "short": {
         "de": "Behandlungsziele festgelegt",
@@ -116,7 +119,7 @@
       },
       "description": {
         "de": "Sie legen gemeinsam mit Ihrem Behandlungsteam konkrete Ziele für Ihre Behandlung fest.",
-        "en": "You and your care team agree on concrete goals for your treatment together."
+        "en": "You discuss what you would like treatment to help you change. You and your care team agree on specific goals."
       }
     },
     "patientPreference": {
@@ -147,23 +150,23 @@
     "regularPatientReview": {
       "label": {
         "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Regelmäßige Verlaufskontrollen",
-        "en": "[Draft — pending clinical/UX review] Regularly scheduled review of your progress"
+        "en": "Regular team reviews of your treatment"
       },
       "short": { "de": "Regelmäßige Verlaufskontrollen", "en": "Regular patient review" },
       "description": {
         "de": "Ihr Behandlungsteam plant feste, wiederkehrende Termine, um Ihren Verlauf zu besprechen — unabhängig davon, ob es Ihnen gerade besser oder schlechter geht.",
-        "en": "Your care team schedules fixed, recurring appointments to review how you're doing, whether things are improving or not."
+        "en": "Your care team meets or checks in at planned intervals to review how your treatment is going and whether anything needs to change."
       }
     },
     "copingStrategies": {
       "label": {
         "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Vermittlung von Bewältigungsstrategien",
-        "en": "[Draft — pending clinical/UX review] Coping-strategies training"
+        "en": "Learning ways to manage depressive symptoms"
       },
       "short": { "de": "Bewältigungsstrategien", "en": "Coping strategies" },
       "description": {
         "de": "Sie lernen konkrete Strategien, um mit Ihren Beschwerden im Alltag umzugehen.",
-        "en": "You're taught concrete strategies for coping with your symptoms in everyday life."
+        "en": "You learn and practise ways to manage your symptoms in daily life. You discuss which approaches suit your situation."
       }
     },
     "relapsePrevention": {
@@ -174,7 +177,7 @@
       "short": { "de": "Rückfallpräventionsplan", "en": "Relapse-prevention plan" },
       "description": {
         "de": "Gemeinsam mit Ihrem Behandlungsteam oder Ihrer Ärztin/Ihrem Arzt erstellen Sie einen Plan, um gesund zu bleiben und frühe Warnzeichen zu erkennen. Der Plan beschreibt, was Sie tun können und an wen Sie sich wenden, falls Beschwerden zurückkehren.",
-        "en": "Together with your care team or doctor, you make a plan for staying well and recognizing early warning signs to look out for. Your plan explains what you can do and whom to contact if symptoms return."
+        "en": "Together with your care partner or doctor, you make a plan for staying well and recognizing early warning signs to look out for. Your plan explains what you can do and whom to contact if symptoms return."
       }
     },
     "familyInvolvement": {
@@ -191,7 +194,7 @@
     "communityCulturalBg": {
       "label": {
         "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Berücksichtigung von Gemeinschaft und kulturellem Hintergrund",
-        "en": "[Draft — pending clinical/UX review] Consideration of community and cultural background"
+        "en": "Taking your community and cultural background into account"
       },
       "short": {
         "de": "Gemeinschaft/kultureller Hintergrund",
@@ -199,7 +202,7 @@
       },
       "description": {
         "de": "Ihre Versorgung wird an Ihr kulturelles und soziales Umfeld angepasst.",
-        "en": "Your care is adapted to your cultural and community background."
+        "en": "Your care considers support available in your community or your cultural background. This may include support groups, social services, or values and ways of life that matter to you."
       }
     }
   },
