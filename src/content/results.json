@@ -68,41 +68,58 @@
   },
   "scenarios": {
     "usualCare": {
-      "label": { "de": "Übliche hausärztliche Versorgung", "en": "Usual GP care" },
-      "short": { "de": "Übliche Versorgung", "en": "Usual care" },
+      "label": {
+        "de": "Übliche hausärztliche Versorgung",
+        "en": "Usual care from your GP — for comparison"
+      },
+      "short": { "de": "Übliche Versorgung", "en": "Usual care from your GP — for comparison" },
       "description": {
         "de": "Behandlung wie bisher: Termine bei Bedarf, Beratung, Verlaufsbeobachtung.",
-        "en": "Care as before: appointments as needed, advice and watchful monitoring."
+        "en": "The usual treatment provided by a GP practice for depressive symptoms. This may include appointments with your GP, medication or referral to other healthcare professionals. *The exact care provided can vary between GP practices and may differ from the care you currently receive."
       }
     }
   },
   "components": {
-    "counseling": {
+    "specialistInvolvement": {
       "label": {
-        "de": "Kurzberatung: bis zu 8 Sitzungen",
+        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Einbindung einer Fachärztin/eines Facharztes oder Psychologin/Psychologen",
+        "en": "Specialist advice for your care team"
+      },
+      "short": {
+        "de": "Fachärztliche/psychologische Einbindung",
+        "en": "Specialist advice for your care team"
+      },
+      "description": {
+        "de": "Eine Fachärztin/ein Facharzt oder eine Psychologin/ein Psychologe begleitet oder berät bei Ihrer Behandlung, zusätzlich zu Ihrer Hausarztpraxis.",
+        "en": "A psychiatrist or psychologist advises your care team. You do not need a separate appointment with this specialist for the team to receive this advice."
+      }
+    },
+    "psychologicalTreatment": {
+      "label": {
+        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Beratung oder Psychotherapie",
         "en": "Brief counselling: up to 8 sessions"
       },
       "short": {
-        "de": "Kurzberatung (bis zu 8 Sitzungen)",
-        "en": "Brief counselling (up to 8 sessions)"
+        "de": "Beratung/Psychotherapie",
+        "en": "Brief counselling: up to 8 sessions"
       },
       "description": {
-        "de": "In diesen Gesprächen geht es um Ihre Beschwerden und Wege, damit umzugehen. Die Beratung kann auch zusätzlich zu einer Medikation erfolgen.",
+        "de": "In diesen Gesprächen geht es um Ihre Beschwerden und Wege, damit umzugehen — von kurzer Beratung bis zu strukturierter Psychotherapie über mehrere Sitzungen. Kann auch zusätzlich zu einer Medikation erfolgen.",
         "en": "These conversations focus on your symptoms and ways to manage them. Counselling may also be provided alongside medication."
       }
     },
-    "manualTherapy": {
+    "goalSetting": {
       "label": {
-        "de": "Psychotherapie nach einem strukturierten Behandlungsplan: mehr als 8 Sitzungen",
-        "en": "Psychotherapy following a structured treatment plan: more than 8 sessions"
+        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Gemeinsam festgelegte Behandlungsziele",
+        "en": "Agreeing on your personal treatment goals"
       },
       "short": {
-        "de": "Strukturierte Psychotherapie (>8 Sitzungen)",
-        "en": "Structured psychotherapy (>8 sessions)"
+        "de": "Behandlungsziele festgelegt",
+        "en": "Agreeing on your personal treatment goals"
       },
       "description": {
-        "de": "Sie arbeiten über mehr als acht Sitzungen mit einer Ärztin/einem Arzt oder einer Therapeutin/einem Therapeuten zusammen. Die Therapie folgt einem festgelegten Behandlungsansatz mit geplanten Themen und Übungen. Sie kann auch zusätzlich zu einer Medikation erfolgen.",
-        "en": "You work with a doctor or therapist over more than eight sessions. The therapy follows a defined treatment approach with planned topics and activities. It can also be provided alongside medication."
+        "de": "Sie legen gemeinsam mit Ihrem Behandlungsteam konkrete Ziele für Ihre Behandlung fest.",
+        "en": "You discuss what you would like treatment to help you change. You and your care team agree on specific goals."
       }
     },
     "patientPreference": {
@@ -112,7 +129,7 @@
       },
       "short": {
         "de": "Behandlungswünsche berücksichtigt",
-        "en": "Treatment preferences considered"
+        "en": "Taking your treatment preferences into account"
       },
       "description": {
         "de": "Sie besprechen gemeinsam, welche Behandlung Sie bevorzugen und was Ihnen wichtig ist. Ihre Wünsche werden bei der Planung Ihrer Versorgung berücksichtigt.",
@@ -124,10 +141,41 @@
         "de": "Automatische Erinnerungen und Hinweise für Ihr Behandlungsteam",
         "en": "Automatic reminders and alerts for your care team"
       },
-      "short": { "de": "Automatische Erinnerungen", "en": "Automatic reminders" },
+      "short": {
+        "de": "Automatische Erinnerungen",
+        "en": "Automatic reminders and alerts for your care team"
+      },
       "description": {
         "de": "Ein System unterstützt Ihr Behandlungsteam dabei, den Überblick über Ihre Nachsorge zu behalten. Es kann zum Beispiel erinnern, wenn ein Kontakt ansteht, oder Hinweise geben, wenn sich Ihre Beschwerden verschlechtern könnten. Das bedeutet keine durchgehende Überwachung und keine Garantie für eine sofortige Reaktion.",
         "en": "A system that helps your care team to keep track of your follow-up care. For example, it can remind the team when contact is due or flag signs that your symptoms may be getting worse. This does not mean continuous monitoring or guarantee an immediate response."
+      }
+    },
+    "regularPatientReview": {
+      "label": {
+        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Regelmäßige Verlaufskontrollen",
+        "en": "Regular team reviews of your treatment"
+      },
+      "short": {
+        "de": "Regelmäßige Verlaufskontrollen",
+        "en": "Regular team reviews of your treatment"
+      },
+      "description": {
+        "de": "Ihr Behandlungsteam plant feste, wiederkehrende Termine, um Ihren Verlauf zu besprechen — unabhängig davon, ob es Ihnen gerade besser oder schlechter geht.",
+        "en": "Your care team meets or checks in at planned intervals to review how your treatment is going and whether anything needs to change."
+      }
+    },
+    "copingStrategies": {
+      "label": {
+        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Vermittlung von Bewältigungsstrategien",
+        "en": "Learning ways to manage depressive symptoms"
+      },
+      "short": {
+        "de": "Bewältigungsstrategien",
+        "en": "Learning ways to manage depressive symptoms"
+      },
+      "description": {
+        "de": "Sie lernen konkrete Strategien, um mit Ihren Beschwerden im Alltag umzugehen.",
+        "en": "You learn and practise ways to manage your symptoms in daily life. You discuss which approaches suit your situation."
       }
     },
     "relapsePrevention": {
@@ -135,10 +183,13 @@
         "de": "Ein Plan zur Vorbeugung und für den Fall, dass Beschwerden zurückkehren",
         "en": "A plan to help prevent symptoms from returning and for when symptoms return"
       },
-      "short": { "de": "Rückfallpräventionsplan", "en": "Relapse-prevention plan" },
+      "short": {
+        "de": "Rückfallpräventionsplan",
+        "en": "A plan to help prevent symptoms from returning and for when symptoms return"
+      },
       "description": {
         "de": "Gemeinsam mit Ihrem Behandlungsteam oder Ihrer Ärztin/Ihrem Arzt erstellen Sie einen Plan, um gesund zu bleiben und frühe Warnzeichen zu erkennen. Der Plan beschreibt, was Sie tun können und an wen Sie sich wenden, falls Beschwerden zurückkehren.",
-        "en": "Together with your care team or doctor, you make a plan for staying well and recognizing early warning signs to look out for. Your plan explains what you can do and whom to contact if symptoms return."
+        "en": "Together with your care partner or doctor, you make a plan for staying well and recognizing early warning signs to look out for. Your plan explains what you can do and whom to contact if symptoms return."
       }
     },
     "familyInvolvement": {
@@ -146,24 +197,36 @@
         "de": "Einbindung von Vertrauenspersonen in Ihre Versorgung",
         "en": "Involving people you trust in your care"
       },
-      "short": { "de": "Familie/Freunde einbezogen", "en": "Family/friends involved" },
+      "short": {
+        "de": "Familie/Freunde einbezogen",
+        "en": "Involving people you trust in your care"
+      },
       "description": {
         "de": "Mit Ihrem Einverständnis werden Familienmitglieder oder Freunde in Ihre Versorgung einbezogen. Gemeinsam besprechen Sie, wie sie Sie unterstützen können.",
         "en": "With your agreement, family members or friends are involved in your care. You discuss together how they can support you."
       }
+    },
+    "communityCulturalBg": {
+      "label": {
+        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Berücksichtigung von Gemeinschaft und kulturellem Hintergrund",
+        "en": "Taking your community and cultural background into account"
+      },
+      "short": {
+        "de": "Gemeinschaft/kultureller Hintergrund",
+        "en": "Taking your community and cultural background into account"
+      },
+      "description": {
+        "de": "Ihre Versorgung wird an Ihr kulturelles und soziales Umfeld angepasst.",
+        "en": "Your care considers support available in your community or your cultural background. This may include support groups, social services, or values and ways of life that matter to you."
+      }
     }
   },
   "scenarioTabs": {
-    "combo": { "de": "Behandlungskombinationen", "en": "Treatment combinations" },
     "single": { "de": "Einzelne Bausteine", "en": "Single components" }
   },
   "scenariosIntro": {
-    "de": "Niedrigere Werte bedeuten weniger Beschwerden. Jede Zeile außer der Referenz ist eine tatsächlich in einer der 7 eingeschlossenen Studien untersuchte Kombination von Bausteinen — keine frei wählbare Zusammenstellung.",
-    "en": "Lower values mean fewer symptoms. Every row besides the reference is a combination of components actually tested in one of the 7 included trials — not a freely chosen combination."
-  },
-  "singleScenariosIntro": {
-    "de": "Niedrigere Werte bedeuten weniger Beschwerden. Diese Ansicht zeigt jeden Baustein einzeln zur üblichen Versorgung hinzugefügt — keiner davon wurde allein in einer Studie getestet, keine Studie hat je nur einen Baustein eingesetzt. Mehr Bausteine gleichzeitig bedeutet nicht automatisch ein besseres Ergebnis; welche Kombinationen tatsächlich untersucht wurden, zeigt die andere Ansicht.",
-    "en": "Lower values mean fewer symptoms. This view shows each component added on its own to usual care — none of them was tested alone in any trial. Using more components at once is not automatically better; which combinations were actually tested is shown in the other view."
+    "de": "Niedrigere Werte bedeuten weniger Beschwerden. Diese Ansicht zeigt jeden Baustein einzeln zur üblichen Versorgung hinzugefügt — keiner davon wurde allein in einer Studie getestet. Mehr Bausteine gleichzeitig bedeutet nicht automatisch ein besseres Ergebnis.",
+    "en": "Lower values mean fewer symptoms. This view shows each component added on its own to usual care — none of them was tested alone in any trial. Using more components at once is not automatically better."
   },
   "posterior": {
     "sectionTitle": {
@@ -229,14 +292,13 @@
     }
   },
   "predictorsNote": {
-    "de": "Ausgangswert PHQ-9, Alter, Geschlecht und GAD-7 (falls bekannt) fließen in die Schätzung ein — ist der GAD-7 nicht bekannt, wird dafür ein typischer Bevölkerungswert angenommen. Ihre übrige Vorgeschichte (z. B. Vorbehandlung) sehen Sie in der Zusammenfassung für die Praxis, sie verändert die Schätzung aber nicht.",
-    "en": "Baseline PHQ-9, age, sex and GAD-7 (if known) all feed into the estimate — if GAD-7 isn't known, a population-typical value is assumed for it. Your other history (e.g. prior treatment) appears in the practice summary but does not change the estimate."
+    "de": "Ausgangswert PHQ-9, Alter und Geschlecht fließen in die Schätzung ein. Ihre übrige Vorgeschichte (z. B. Vorbehandlung) sehen Sie in der Zusammenfassung für die Praxis, sie verändert die Schätzung aber nicht.",
+    "en": "Baseline PHQ-9, age and sex feed into the estimate. Your other history (e.g. prior treatment) appears in the practice summary but does not change the estimate."
   },
   "predictors": {
     "baseline": { "label": { "de": "Ausgangswert PHQ-9", "en": "Baseline PHQ-9" } },
     "age": { "label": { "de": "Alter", "en": "Age" } },
     "sex": { "label": { "de": "Geschlecht", "en": "Sex" } },
-    "gad7": { "label": { "de": "GAD-7", "en": "GAD-7" } },
     "notProvided": { "de": "keine Angabe", "en": "not provided" }
   },
   "whatCanBeExpected": {
@@ -270,8 +332,8 @@
       "delta": { "de": "Δ vs. übliche Versorgung", "en": "Δ vs. usual care" }
     },
     "footer": {
-      "de": "Dieser Ausdruck stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (6 Bausteine, 7 Studien) beruht. Die Werte in Klammern sind 95 %-Posterior-Kredibilitätsintervalle. Die Vorhersagen sind nicht klinisch validiert und ersetzen keine ärztliche Diagnose oder Behandlung.",
-      "en": "This printout comes from a research prototype built on a component network meta-analysis (6 components, 7 trials). The numbers in parentheses are 95% posterior credible intervals. These predictions haven't been clinically validated and do not replace medical diagnosis or treatment."
+      "de": "Dieser Ausdruck stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Die Werte in Klammern sind 95 %-Posterior-Kredibilitätsintervalle. Die Vorhersagen sind nicht klinisch validiert und ersetzen keine ärztliche Diagnose oder Behandlung.",
+      "en": "This printout comes from a research prototype built on a component network meta-analysis (10 components, 12 trials). The numbers in parentheses are 95% posterior credible intervals. These predictions haven't been clinically validated and do not replace medical diagnosis or treatment."
     }
   }
 }

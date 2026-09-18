@@ -9,7 +9,6 @@ import {
   YAxis,
   type TooltipProps,
 } from "recharts";
-import { effectiveGad7Score } from "@/lib/gad7";
 import { fill, ui, useLang } from "@/lib/i18n";
 import { SEVERITY_LABEL, SEVERITY_RANGE } from "@/lib/phq9";
 import { posteriorEndpointDraws, type Scenario } from "@/lib/model";
@@ -345,22 +344,19 @@ function BaselinePointer({ baseline }: { baseline: number }) {
   );
 }
 
-type ScenarioTab = "combo" | "single";
-
 function Results() {
   const { tr } = useLang();
   const p = usePrediction();
   const [revealed, setRevealed] = useState(false);
   const [showDistributions, setShowDistributions] = useState(false);
-  const [tab, setTab] = useState<ScenarioTab>("single");
 
-  // buildPredictions() (inside usePrediction) always returns scenarios/
-  // singleScenarios, even before hydration/completion, so this is safe to
-  // compute here — it must be, since hooks can't follow the early returns
-  // below. Only actually binned while the panel is open (the common case
-  // is collapsed) — see posteriorDomain()'s own comment for why the
-  // domain isn't just 0–27.
-  const activeScenarios = tab === "combo" ? p.scenarios : p.singleScenarios;
+  // buildPredictions() (inside usePrediction) always returns scenarios,
+  // even before hydration/completion, so this is safe to compute here — it
+  // must be, since hooks can't follow the early returns below. Only
+  // actually binned while the panel is open (the common case is collapsed)
+  // — see posteriorDomain()'s own comment for why the domain isn't just
+  // 0–27.
+  const activeScenarios = p.scenarios;
   const distributionsDomain = useMemo(
     () =>
       showDistributions ? posteriorDomain(activeScenarios) : ([0, PHQ9_MAX] as [number, number]),
@@ -417,11 +413,13 @@ function Results() {
       : scenario.components.map((id) => tr(r.components[id].short)).join(" + ");
 
   /**
-   * Same components as scenarioLabel, but grouped at most 2 per line — a
-   * package can combine up to 4 components, and joining all of them into one
-   * run-on string wraps unpredictably and pushes the endpoint value onto its
-   * own line. Grid layout in ComparisonRow keeps the value pinned to the
-   * right no matter how many lines this returns.
+   * Same components as scenarioLabel, but as an array of lines instead of
+   * one joined string, since ComparisonRow's grid layout renders each line
+   * separately to keep the endpoint value pinned to the right regardless of
+   * how long the label runs. Every scenario here has 0 or 1 component, so
+   * this always returns a single-element array — this chunking logic
+   * carries over from when packages could combine up to 4 components, but
+   * is harmless (and correct) for today's single-component-only scenarios.
    */
   const scenarioLabelLines = (scenario: Scenario): string[] =>
     scenario.id === "usualCare"
@@ -431,15 +429,13 @@ function Results() {
           2,
         ).map((group) => group.join(" + "));
 
-  /** Only a single-component row (one component, "single" tab) has one unambiguous explanation to show. */
+  /** Every row is a single component added alone, so it always has one unambiguous explanation to show. */
   const scenarioDescription = (scenario: Scenario): string | undefined => {
     const [id] = scenario.components;
-    return tab === "single" && id !== undefined && scenario.components.length === 1
+    return id !== undefined && scenario.components.length === 1
       ? tr(r.components[id].description)
       : undefined;
   };
-
-  const activeIntro = tab === "combo" ? r.scenariosIntro : r.singleScenariosIntro;
 
   const round1 = (x: number) => Number(x.toFixed(1));
   const usualEndpoint =
@@ -473,8 +469,7 @@ function Results() {
         delta: tr(r.pdf.table.delta),
       },
       scenarioTables: [
-        { heading: tr(r.scenarioTabs.single), rows: scenarioTableRows(p.singleScenarios) },
-        { heading: tr(r.scenarioTabs.combo), rows: scenarioTableRows(p.scenarios) },
+        { heading: tr(r.scenarioTabs.single), rows: scenarioTableRows(p.scenarios) },
       ],
       predictorsHeading: tr(r.whatInfluences),
       predictorsBody: tr(r.predictorsNote),
@@ -496,13 +491,6 @@ function Results() {
                 },
               )
             : tr(r.predictors.notProvided),
-        },
-        {
-          label: tr(r.predictors.gad7.label),
-          value: (() => {
-            const score = effectiveGad7Score(p.session.profile);
-            return score !== null ? `${score}/21` : tr(r.predictors.notProvided);
-          })(),
         },
       ],
       footer: tr(r.pdf.footer),
@@ -542,25 +530,6 @@ function Results() {
             {tr(r.whatCanBeExpectedBody)}
           </p>
 
-          <div className="mt-4 inline-flex rounded-md border border-border p-0.5 text-sm">
-            {(["single", "combo"] as const).map((t) => (
-              <button
-                key={t}
-                type="button"
-                onClick={() => setTab(t)}
-                aria-pressed={tab === t}
-                className={[
-                  "rounded-[5px] px-3 py-1.5 font-medium transition-colors",
-                  tab === t
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground",
-                ].join(" ")}
-              >
-                {tr(r.scenarioTabs[t])}
-              </button>
-            ))}
-          </div>
-
           <BaselinePointer baseline={p.baseline} />
           <div className="divide-y divide-border rounded-md border border-border px-4">
             {activeScenarios.map((scenario) => (
@@ -574,7 +543,9 @@ function Results() {
             ))}
           </div>
           <ChartLegend />
-          <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{tr(activeIntro)}</p>
+          <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+            {tr(r.scenariosIntro)}
+          </p>
 
           <button
             type="button"
@@ -634,15 +605,6 @@ function Results() {
                       },
                     )
                   : tr(r.predictors.notProvided)}
-              </dd>
-            </div>
-            <div className="flex justify-between gap-4 py-2">
-              <dt className="text-muted-foreground">{tr(r.predictors.gad7.label)}</dt>
-              <dd className="font-medium">
-                {(() => {
-                  const score = effectiveGad7Score(p.session.profile);
-                  return score !== null ? `${score}/21` : tr(r.predictors.notProvided);
-                })()}
               </dd>
             </div>
           </dl>

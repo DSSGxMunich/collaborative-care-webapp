@@ -47,11 +47,6 @@
     "sex": { "de": "Geschlecht", "en": "Sex" },
     "priorEpisode": { "de": "Frühere depressive Episode", "en": "Previous depressive episode" },
     "priorTreatment": { "de": "Vorbehandlungen", "en": "Previous treatments" },
-    "gad7": { "de": "GAD-7 (falls bekannt)", "en": "GAD-7 (if known)" },
-    "gad7Assumed": {
-      "de": "unbekannt (Bevölkerungswert angenommen)",
-      "en": "unknown (population value assumed)"
-    },
     "riskScore": { "de": "Schritt-1-Schätzung", "en": "Step 1 estimate" }
   },
   "table": {
@@ -62,7 +57,7 @@
     "worse": { "de": "Schlechter als übliche Versorgung", "en": "Worse than usual care" }
   },
   "footer": {
-    "de": "Dieser Kurzbefund stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (6 Bausteine, 7 Studien) beruht. Die Werte in Klammern sind 95 %-Posterior-Kredibilitätsintervalle. Die Vorhersagen sind nicht klinisch validiert. Alle Angaben bleiben in der Browser-Sitzung des Patienten.",
-    "en": "This report comes from a research prototype built on a component network meta-analysis (6 components, 7 trials). The numbers in parentheses are 95% posterior credible intervals, and these predictions haven't been clinically validated. Everything entered stays in the patient's browser session."
+    "de": "Dieser Kurzbefund stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Die Werte in Klammern sind 95 %-Posterior-Kredibilitätsintervalle. Die Vorhersagen sind nicht klinisch validiert. Alle Angaben bleiben in der Browser-Sitzung des Patienten.",
+    "en": "This report comes from a research prototype built on a component network meta-analysis (10 components, 12 studies). The numbers in parentheses are 95% posterior credible intervals, and these predictions haven't been clinically validated. Everything entered stays in the patient's browser session."
   }
 }

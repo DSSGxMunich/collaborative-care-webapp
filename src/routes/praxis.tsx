@@ -1,6 +1,4 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
-import { effectiveGad7Score } from "@/lib/gad7";
 import { fill, ui, useLang } from "@/lib/i18n";
 import { PHQ9_ITEMS, SEVERITY_LABEL } from "@/lib/phq9";
 import { assessRisk } from "@/lib/safety";
@@ -30,12 +28,9 @@ export const Route = createFileRoute("/praxis")({
 const c = praxisContent;
 const r = resultsContent;
 
-type ScenarioTab = "single" | "combo";
-
 function Clinician() {
   const { tr } = useLang();
   const p = usePrediction();
-  const [tab, setTab] = useState<ScenarioTab>("single");
 
   if (!p.hydrated) return <div className="mx-auto max-w-3xl px-4 py-16" />;
 
@@ -109,13 +104,6 @@ function Clinician() {
           .join(", ") || "–",
     },
     {
-      label: tr(c.rows.gad7),
-      value: (() => {
-        const score = effectiveGad7Score(profile);
-        return score !== null ? `${score}/21` : tr(c.rows.gad7Assumed);
-      })(),
-    },
-    {
       label: tr(c.rows.riskScore),
       value: p.predictors.find((row) => row.id === "riskScore")?.value ?? "–",
     },
@@ -175,8 +163,7 @@ function Clinician() {
         delta: tr(c.table.delta),
       },
       scenarioTables: [
-        { heading: tr(r.scenarioTabs.single), rows: scenarioTableRows(p.singleScenarios) },
-        { heading: tr(r.scenarioTabs.combo), rows: scenarioTableRows(p.scenarios) },
+        { heading: tr(r.scenarioTabs.single), rows: scenarioTableRows(p.scenarios) },
       ],
       footer: fill(tr(c.footer), { version: MODEL_META.version }),
     });
@@ -259,25 +246,6 @@ function Clinician() {
       <section className="mt-8">
         <h2 className="text-base font-semibold">{tr(c.modelEstimates)}</h2>
 
-        <div className="mt-3 inline-flex rounded-md border border-border p-0.5 text-sm print:hidden">
-          {(["single", "combo"] as const).map((t) => (
-            <button
-              key={t}
-              type="button"
-              onClick={() => setTab(t)}
-              aria-pressed={tab === t}
-              className={[
-                "rounded-[5px] px-3 py-1.5 font-medium transition-colors",
-                tab === t
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:text-foreground",
-              ].join(" ")}
-            >
-              {tr(r.scenarioTabs[t])}
-            </button>
-          ))}
-        </div>
-
         <div className="mt-3 overflow-x-auto rounded-md border border-border">
           <table className="w-full min-w-[26rem] text-sm">
             <thead>
@@ -288,7 +256,7 @@ function Clinician() {
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {(tab === "single" ? p.singleScenarios : p.scenarios).map((scenario) => {
+              {p.scenarios.map((scenario) => {
                 const delta = round1(usualEndpoint - scenario.expectedEndpoint);
                 return (
                   <tr key={scenario.id}>

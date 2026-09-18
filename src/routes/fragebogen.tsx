@@ -1,14 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import {
-  Choice,
-  DateField,
-  MultiChoice,
-  NumberField,
-  Toggle,
-  YesNoField,
-} from "@/components/fields";
-import { GAD7_INTRO, GAD7_ITEMS, GAD7_OPTIONS, gad7Total } from "@/lib/gad7";
+import { Choice, DateField, MultiChoice, YesNoField } from "@/components/fields";
 import { ui, useLang } from "@/lib/i18n";
 import { PHQ9_INTRO, PHQ9_ITEMS, PHQ9_OPTIONS } from "@/lib/phq9";
 import {
@@ -66,14 +58,7 @@ function Questionnaire() {
           session.safety.familyHistory !== null
         );
       case "history":
-        return (
-          session.profile.priorEpisode !== null &&
-          session.profile.priorTreatment.length > 0 &&
-          session.profile.gad7Known !== null &&
-          (session.profile.gad7Known === "yes"
-            ? session.profile.gad7Score !== null
-            : !session.profile.gad7FillNow || gad7Total(session.profile.gad7Answers) !== null)
-        );
+        return session.profile.priorEpisode !== null && session.profile.priorTreatment.length > 0;
       default:
         return false;
     }
@@ -89,12 +74,6 @@ function Questionnaire() {
     }
     setIndex((i) => i + 1);
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const setGad7Answer = (idx: number, value: number) => {
-    const answers = [...session.profile.gad7Answers];
-    answers[idx] = value;
-    updateProfile({ gad7Answers: answers });
   };
 
   const toggleTreatment = (id: string) => {
@@ -240,64 +219,6 @@ function Questionnaire() {
               onToggle={toggleTreatment}
             />
           </fieldset>
-          <YesNoField
-            label={q.profile.gad7.knownQuestion}
-            value={session.profile.gad7Known}
-            onChange={(v) =>
-              updateProfile({
-                gad7Known: v,
-                gad7Score: v === "no" ? null : session.profile.gad7Score,
-              })
-            }
-          />
-          {session.profile.gad7Known === "yes" && (
-            <NumberField
-              label={q.profile.gad7.scoreQuestion}
-              hint={q.profile.gad7.scoreHint}
-              min={0}
-              max={21}
-              value={session.profile.gad7Score}
-              onChange={(v) => updateProfile({ gad7Score: v })}
-            />
-          )}
-          {session.profile.gad7Known === "no" && (
-            <div className="surface-card p-5">
-              <div className="flex items-center justify-between gap-3">
-                <span className="text-sm">{tr(q.profile.gad7.fillNowQuestion)}</span>
-                <Toggle
-                  label={q.profile.gad7.fillNowQuestion}
-                  checked={session.profile.gad7FillNow}
-                  onChange={(v) =>
-                    updateProfile({
-                      gad7FillNow: v,
-                      ...(v ? {} : { gad7Answers: Array<number | null>(7).fill(null) }),
-                    })
-                  }
-                />
-              </div>
-              {session.profile.gad7FillNow && (
-                <div className="mt-5 space-y-5">
-                  <p className="text-sm text-muted-foreground">{tr(GAD7_INTRO)}</p>
-                  {GAD7_ITEMS.map((item, idx) => (
-                    <fieldset
-                      key={idx}
-                      className="border-t border-border pt-4 first:border-t-0 first:pt-0"
-                    >
-                      <legend className="mb-3 block text-sm font-medium">
-                        {idx + 1}. {tr(item)}
-                      </legend>
-                      <Choice
-                        name={`gad7-${idx}`}
-                        options={GAD7_OPTIONS}
-                        value={session.profile.gad7Answers[idx] as 0 | 1 | 2 | 3 | null}
-                        onChange={(v) => setGad7Answer(idx, v)}
-                      />
-                    </fieldset>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
         </div>
       )}
 

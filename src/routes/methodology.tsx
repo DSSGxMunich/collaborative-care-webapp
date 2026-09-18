@@ -41,13 +41,6 @@ function Methodology() {
               {section.body.map((paragraph, i) =>
                 "latex" in paragraph && paragraph.latex ? (
                   <LatexBlock key={i} tex={tr(paragraph)} />
-                ) : "placeholder" in paragraph && paragraph.placeholder ? (
-                  <p
-                    key={i}
-                    className="rounded-md border border-dashed border-border p-3 text-sm italic text-muted-foreground"
-                  >
-                    {tr(paragraph)}
-                  </p>
                 ) : (
                   <p key={i} className="text-sm leading-relaxed text-muted-foreground">
                     {tr(paragraph)}
