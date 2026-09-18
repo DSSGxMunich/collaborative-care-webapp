@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Bar,
@@ -273,6 +273,44 @@ function PosteriorMini({
 }
 
 /**
+ * A short label that reveals a fuller explanation on hover/focus, used as
+ * the exclusion-count column header in DisclaimerCard below instead of a
+ * standalone sentence — a sentence sitting next to a column of numbers is
+ * easy to skim past, so the "what does this number mean" explanation moves
+ * into a tooltip anchored right on the header those numbers sit under.
+ * Opens on hover *and* keyboard focus (not just :hover) so it's reachable
+ * without a mouse.
+ */
+function InfoTooltip({ label, description }: { label: string; description: string }) {
+  const [open, setOpen] = useState(false);
+  const tooltipId = useId();
+  return (
+    <span className="relative inline-block">
+      <button
+        type="button"
+        className="cursor-help whitespace-nowrap border-b border-dotted border-muted-foreground/60 text-xs font-medium text-muted-foreground"
+        aria-describedby={tooltipId}
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
+        onFocus={() => setOpen(true)}
+        onBlur={() => setOpen(false)}
+      >
+        {label}
+      </button>
+      {open && (
+        <span
+          id={tooltipId}
+          role="tooltip"
+          className="absolute right-0 top-full z-10 mt-1.5 w-56 rounded-md border border-border bg-card p-2.5 text-xs leading-relaxed text-foreground shadow-md"
+        >
+          {description}
+        </span>
+      )}
+    </span>
+  );
+}
+
+/**
  * The trial-eligibility disclaimer, now placed above the results in reading
  * order rather than beside them in a sidebar. Sitting first doesn't mean
  * gating: only the heading and one-sentence intro show by default, so the
@@ -284,10 +322,9 @@ function PosteriorMini({
  *
  * Each criterion is a short topic label with an optional smaller-font
  * description underneath, not a full sentence — and the "N of 12 studies
- * excluded them" clause, which used to repeat verbatim on every line, is
- * explained once (countNote) and then shown per row as a bare fraction, the
- * same divide-y dt/dd row shape used by the predictors list further down
- * the page.
+ * excluded them" clause, which used to repeat verbatim on every line, is now
+ * a column header (countHeader) sitting directly above the fractions it
+ * describes, via InfoTooltip, rather than a sentence people can skim past.
  */
 function DisclaimerCard() {
   const { tr } = useLang();
@@ -300,8 +337,13 @@ function DisclaimerCard() {
       </p>
       {expanded && (
         <>
-          <p className="mt-3 text-xs text-muted-foreground">{tr(r.prototypeNote.countNote)}</p>
-          <dl className="mt-1.5 divide-y divide-warning/20 text-sm">
+          <div className="mt-3 flex justify-end">
+            <InfoTooltip
+              label={tr(r.prototypeNote.countHeader)}
+              description={tr(r.prototypeNote.countNote)}
+            />
+          </div>
+          <dl className="mt-1 divide-y divide-warning/20 text-sm">
             {r.prototypeNote.items.map((item, i) => (
               <div key={i} className="flex items-start justify-between gap-4 py-2">
                 <dt>

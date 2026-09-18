@@ -20,6 +20,10 @@
       "en": "Our model is based on data from randomized controlled trials (RCTs). Here are some circumstances that weren't well represented in those trials:"
     },
     "totalStudies": 12,
+    "countHeader": {
+      "de": "Ausschlüsse",
+      "en": "Exclusions"
+    },
     "countNote": {
       "de": "Die Zahl zeigt, in wie vielen der 12 Studien dieses Merkmal zum Ausschluss führte.",
       "en": "The number shows how many of the 12 studies excluded people with this trait."
