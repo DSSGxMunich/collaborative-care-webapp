@@ -281,9 +281,6 @@ function Results() {
               />
             </div>
           )}
-          <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-            {tr(r.scenariosIntro)}
-          </p>
         </section>
 
         {/* ---------------- What influences the estimate ---------------- */}

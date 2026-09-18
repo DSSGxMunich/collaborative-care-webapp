@@ -255,10 +255,6 @@
   "scenarioTabs": {
     "single": { "de": "Einzelne Bausteine", "en": "Single components" }
   },
-  "scenariosIntro": {
-    "de": "Diese Rangfolge zeigt jeden Baustein einzeln zur üblichen Versorgung hinzugefügt — keiner davon wurde allein in einer Studie getestet. Mehr Bausteine gleichzeitig bedeutet nicht automatisch ein besseres Ergebnis.",
-    "en": "This ranking shows each component added on its own to usual care — none of them was tested alone in any trial. Using more components at once is not automatically better."
-  },
   "crisis": {
     "acute": {
       "title": { "de": "Bitte holen Sie sich jetzt Hilfe", "en": "Please get help now" },
