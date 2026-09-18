@@ -275,7 +275,8 @@ function Results() {
                 helpful={isHelpful}
                 usualCareHeading={tr(r.ranking.usualCareHeading)}
                 usualCareDescription={tr(r.scenarios.usualCare.description)}
-                helpfulBadge={tr(r.legend.better)}
+                helpfulSectionLabel={tr(r.ranking.helpfulSection)}
+                otherSectionLabel={tr(r.ranking.otherSection)}
                 rankAriaLabel={(rank, total) => fill(tr(r.ranking.rankAria), { rank, total })}
               />
             </div>

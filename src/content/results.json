@@ -87,6 +87,11 @@
   },
   "ranking": {
     "usualCareHeading": { "de": "Ihre derzeitige Versorgung", "en": "Your current care" },
+    "helpfulSection": {
+      "de": "Wahrscheinlich hilfreicher als Ihre derzeitige Versorgung",
+      "en": "Likely to help more than your current care"
+    },
+    "otherSection": { "de": "Weitere Bausteine", "en": "Other components" },
     "rankAria": {
       "de": "Platz {rank} von {total} — nach erwartetem Nutzen gereiht, hilfreichste Option zuerst",
       "en": "Rank {rank} of {total} — ordered by expected benefit, most helpful option first"
