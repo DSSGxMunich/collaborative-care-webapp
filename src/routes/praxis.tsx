@@ -261,7 +261,7 @@ function Clinician() {
 
       <section className="mt-8">
         <h2 className="text-base font-semibold">{tr(c.modelEstimates)}</h2>
-        <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-muted-foreground">
+        <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
           {tr(c.modelEstimatesIntro)}
         </p>
 
@@ -275,6 +275,7 @@ function Clinician() {
               description={careOptionDescription}
               helpful={isHelpful}
               usualCareHeading={tr(c.ranking.usualCareHeading)}
+              usualCareDescription={tr(r.scenarios.usualCare.description)}
               usualCareNote={tr(c.ranking.usualCareNote)}
               helpfulBadge={tr(c.table.better)}
               rankAriaLabel={(rank, total) => fill(tr(c.ranking.rankAria), { rank, total })}

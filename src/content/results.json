@@ -88,8 +88,8 @@
   "ranking": {
     "usualCareHeading": { "de": "Ihre derzeitige Versorgung", "en": "Your current care" },
     "usualCareNote": {
-      "de": "So sieht Ihre Behandlung aktuell aus. Die Liste unten reiht zusätzliche Bausteine von der wahrscheinlich hilfreichsten bis zur wahrscheinlich am wenigsten hilfreichen Option, laut unserem Modell.",
-      "en": "This is the care you currently receive. The list below ranks additional components from most to least likely to help, according to our model."
+      "de": "Die Liste unten reiht zusätzliche Bausteine von der wahrscheinlich hilfreichsten bis zur wahrscheinlich am wenigsten hilfreichen Option, laut unserem Modell.",
+      "en": "The list below ranks additional components from most to least likely to help, according to our model."
     },
     "rankAria": {
       "de": "Platz {rank} von {total} — nach erwartetem Nutzen gereiht, hilfreichste Option zuerst",
@@ -104,7 +104,7 @@
       },
       "short": { "de": "Übliche Versorgung", "en": "Usual care from your GP — for comparison" },
       "description": {
-        "de": "Behandlung wie bisher: Termine bei Bedarf, Beratung, Verlaufsbeobachtung.",
+        "de": "Die übliche Behandlung, die eine Hausarztpraxis bei depressiven Beschwerden anbietet. Dazu können Termine bei Ihrer Hausärztin/Ihrem Hausarzt, eine medikamentöse Behandlung oder eine Überweisung an andere Fachpersonen gehören. *Die tatsächlich angebotene Versorgung kann sich zwischen Hausarztpraxen unterscheiden und von der Versorgung abweichen, die Sie aktuell erhalten.",
         "en": "The usual treatment provided by a GP practice for depressive symptoms. This may include appointments with your GP, medication or referral to other healthcare professionals. *The exact care provided can vary between GP practices and may differ from the care you currently receive."
       }
     }
@@ -316,8 +316,8 @@
     "en": "What is most likely to help you"
   },
   "whatCanBeExpectedBody": {
-    "de": "Statt genauer Zahlen zeigt diese Liste eine Rangfolge: Bausteine, die laut Modell zusätzlich zur üblichen Versorgung am wahrscheinlichsten helfen, stehen oben. Die Reihenfolge gilt für ähnliche Personengruppen, nicht als Zusage für Ihren eigenen Verlauf.",
-    "en": "Instead of exact numbers, this list shows a ranking: components the model expects to help most, added on top of usual care, are listed first. The order reflects similar patient groups, not a guarantee for your own course."
+    "de": "Sie sehen hier eine Rangfolge von Behandlungsoptionen – von der wahrscheinlich hilfreichsten bis zur am wenigsten hilfreichen.",
+    "en": "You'll see a ranking of treatments here, from what's likely to be most helpful to the least."
   },
   "whatInfluences": {
     "de": "Was beeinflusst diese Schätzung?",

@@ -261,7 +261,7 @@ function Results() {
         {/* ---------------- The result: ranked care components ---------------- */}
         <section className="mt-8">
           <h2 className="text-lg font-semibold">{tr(r.whatCanBeExpected)}</h2>
-          <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-muted-foreground">
+          <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
             {tr(r.whatCanBeExpectedBody)}
           </p>
 
@@ -274,6 +274,7 @@ function Results() {
                 description={scenarioDescription}
                 helpful={isHelpful}
                 usualCareHeading={tr(r.ranking.usualCareHeading)}
+                usualCareDescription={tr(r.scenarios.usualCare.description)}
                 usualCareNote={tr(r.ranking.usualCareNote)}
                 helpfulBadge={tr(r.legend.better)}
                 rankAriaLabel={(rank, total) => fill(tr(r.ranking.rankAria), { rank, total })}

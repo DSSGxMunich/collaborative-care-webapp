@@ -25,8 +25,8 @@
     "en": "Ranking of care components"
   },
   "modelEstimatesIntro": {
-    "de": "Statt genauer Zahlenwerte: eine Rangfolge der einzeln testbaren Versorgungsbausteine nach erwartetem Zusatznutzen für diese:n Patient:in, zusätzlich zur üblichen Versorgung.",
-    "en": "Instead of exact numeric values: a ranking of the individually addable care components by expected added benefit for this patient, on top of usual care."
+    "de": "Sie sehen hier eine Rangfolge von Versorgungsbausteinen, zusätzlich zur üblichen Versorgung – von der für diese:n Patient:in wahrscheinlich hilfreichsten bis zur am wenigsten hilfreichen Option.",
+    "en": "You'll see a ranking of care components here, on top of usual care – from what's likely to help this patient most to the least."
   },
   "ranking": {
     "usualCareHeading": {
@@ -34,8 +34,8 @@
       "en": "Current care (reference)"
     },
     "usualCareNote": {
-      "de": "Vergleichspunkt: übliche hausärztliche Versorgung. Die Liste darunter reiht die einzeln testbaren Bausteine nach erwartetem Zusatznutzen.",
-      "en": "Reference point: usual GP care. The list below ranks the individually addable components by expected added benefit."
+      "de": "Die Liste darunter reiht die einzeln testbaren Bausteine nach erwartetem Zusatznutzen.",
+      "en": "The list below ranks the individually addable components by expected added benefit."
     },
     "rankAria": {
       "de": "Rang {rank} von {total} — nach erwartetem Zusatznutzen gereiht",
