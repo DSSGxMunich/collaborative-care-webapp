@@ -82,21 +82,28 @@ import riskModelData from "./data/risk-model.json";
 import type { Sex } from "./session";
 
 /**
- * TODO(risk-score-training-range): the exact range to clamp to is the
- * min/max of `risk_score` across the same training rows Step 2 was fit on
- * — that requires per-patient data this repo deliberately never receives
- * (see model/step1_risk_score/README.md), so it has to be computed once
- * outside this repo and reported back as two numbers. Until then, this
- * reuses the *previous* model's training range as an interim approximation
- * (not a real bound for this refit): both models' risk scores are now on
- * the same E[Y]-of-12-month-PHQ-9 scale, and this refit's own E[Y] at
- * baseline PHQ-9 extremes (~3 at PHQ-9=0, ~18 at PHQ-9=27) lines up closely
- * with this range, so it's a reasonable placeholder — but confirm the real
- * number before treating predictions near these bounds as reliable.
+ * The real min/max of `risk_score` (the marginal E[Y] below) over the
+ * fitted model's actual training domain: `ageRange` from risk-model.json
+ * (the real min/max age in the training sample — `range(df$age)` in
+ * risk_score_model.R, not a guess) crossed with baseline PHQ-9's real
+ * instrument bounds [0, 27] and both sex levels. Computed with a dense
+ * (400x400x2) grid search over that domain directly from the fitted
+ * model's own parameters (thresholds/beta/knots/scaling/sigma0/sigma1) —
+ * not derived from per-patient rows, since risk-model.json never carries
+ * those (see model/step1_risk_score/README.md). The minimum isn't at a
+ * domain corner (it's baseline PHQ-9=0, age≈40, male — the age spline
+ * isn't monotonic), which is why this is a numeric grid search rather than
+ * just evaluating the 8 corners of the box.
+ *
+ * This is the model's own output range over its real training domain, not
+ * strictly the empirical min/max of risk scores actually observed across
+ * training patients (which would require their individual age/PHQ-9/sex
+ * triples) — but it's the right quantity for clamping Step 2's input to
+ * where this Step 1 model is well-supported, and it isn't a placeholder.
  */
 export const RISK_SCORE_TRAINING = {
-  min: 2.21116203598618,
-  max: 17.9887400340882,
+  min: 3.273575,
+  max: 17.86725,
 };
 
 const COEF = riskModelData.coefficients;

@@ -84,8 +84,19 @@ stale. There's no automated check for this (neither JSON file carries a
 version tying them together yet); refit or at minimum sanity-check both
 steps together, don't update this file in isolation.
 
-**Also see the TODO in `src/lib/riskScore.ts`** on `RISK_SCORE_TRAINING`:
-the range to clamp `risk_score` to (the range Step 2 was actually trained
-on) has to be computed from the same training rows Step 2 was fit
-against — it can't be derived from this script's aggregate-only output, and
-currently reuses the previous model's range as an interim approximation.
+**Also see `RISK_SCORE_TRAINING` in `src/lib/riskScore.ts`**: it clamps
+`risk_score` to this fitted model's real output range, computed by a dense
+grid search over `ageRange` (the real training age extremes) × baseline
+PHQ-9's real [0, 27] instrument bounds × both sexes — derivable from the
+`.rds`'s aggregate-only output, no per-patient rows needed. That's the
+model's own output range over its real training domain, not strictly the
+empirical min/max of risk scores actually observed across training
+patients (which would need their individual age/PHQ-9/sex triples) — close
+enough for clamping purposes, but worth knowing the distinction. Recompute
+it whenever Step 1 is refit:
+
+```sh
+Rscript model/step1_risk_score/compute_risk_score_range.R /path/to/risk_score_model.rds
+```
+
+and copy the printed `min`/`max` into `RISK_SCORE_TRAINING` by hand.
