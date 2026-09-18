@@ -87,7 +87,7 @@
     "today": { "de": "Ihr PHQ-9 heute ({baseline})", "en": "Your PHQ-9 today ({baseline})" },
     "todayLine": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" },
     "scale": { "de": "Skala 0–27", "en": "scale 0–27" },
-    "better": { "de": "Besser als heute", "en": "Better than today" },
+    "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
     "worse": { "de": "Schlechter als heute", "en": "Worse than today" },
     "same": { "de": "Etwa gleich wie heute", "en": "About the same as today" }
   },

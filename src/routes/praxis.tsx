@@ -279,15 +279,12 @@ function Clinician() {
                       ) : delta === 0 ? (
                         <span className="text-muted-foreground">±0</span>
                       ) : delta > 0 ? (
-                        <span className="font-medium text-success">
+                        <span className="rounded-md border-2 border-success bg-success-soft px-2 py-1 font-medium text-success">
                           -{delta}
                           <span className="sr-only"> ({tr(c.table.better)})</span>
                         </span>
                       ) : (
-                        <span className="font-medium text-warning">
-                          +{-delta}
-                          <span className="sr-only"> ({tr(c.table.worse)})</span>
-                        </span>
+                        <span className="font-medium">+{-delta}</span>
                       )}
                     </td>
                   </tr>
@@ -297,19 +294,15 @@ function Clinician() {
           </table>
         </div>
         {/*
-          Lower PHQ-9 is better, so a negative delta (e.g. -0.5) is the good
-          outcome — color-coded the same green/amber as the results chart
-          (never red: clinicians print this for patients too) so it isn't
-          misread as the sign alone would suggest.
+          Lower PHQ-9 is better, which is easy to misread at a glance. As on
+          the results page, only an expected improvement gets a visual
+          highlight (a green box around the delta) — a worse or unchanged
+          delta renders as plain neutral text, no color, no separate label.
         */}
         <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
           <span className="inline-flex items-center gap-1.5">
             <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-success" />
             {tr(c.table.better)}
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-warning" />
-            {tr(c.table.worse)}
           </span>
         </div>
         <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
