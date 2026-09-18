@@ -1,4 +1,4 @@
-import { useId, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Bar,
@@ -9,6 +9,7 @@ import {
   YAxis,
   type TooltipProps,
 } from "recharts";
+import { InfoTooltip } from "@/components/InfoTooltip";
 import { fill, ui, useLang } from "@/lib/i18n";
 import { SEVERITY_LABEL, SEVERITY_RANGE } from "@/lib/phq9";
 import { posteriorEndpointDraws, type Scenario } from "@/lib/model";
@@ -273,44 +274,6 @@ function PosteriorMini({
 }
 
 /**
- * A short label that reveals a fuller explanation on hover/focus, used as
- * the exclusion-count column header in DisclaimerCard below instead of a
- * standalone sentence — a sentence sitting next to a column of numbers is
- * easy to skim past, so the "what does this number mean" explanation moves
- * into a tooltip anchored right on the header those numbers sit under.
- * Opens on hover *and* keyboard focus (not just :hover) so it's reachable
- * without a mouse.
- */
-function InfoTooltip({ label, description }: { label: string; description: string }) {
-  const [open, setOpen] = useState(false);
-  const tooltipId = useId();
-  return (
-    <span className="relative inline-block">
-      <button
-        type="button"
-        className="cursor-help whitespace-nowrap border-b border-dotted border-muted-foreground/60 text-xs font-medium text-muted-foreground"
-        aria-describedby={tooltipId}
-        onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
-        onFocus={() => setOpen(true)}
-        onBlur={() => setOpen(false)}
-      >
-        {label}
-      </button>
-      {open && (
-        <span
-          id={tooltipId}
-          role="tooltip"
-          className="absolute right-0 top-full z-10 mt-1.5 w-56 rounded-md border border-border bg-card p-2.5 text-xs leading-relaxed text-foreground shadow-md"
-        >
-          {description}
-        </span>
-      )}
-    </span>
-  );
-}
-
-/**
  * The trial-eligibility disclaimer, now placed above the results in reading
  * order rather than beside them in a sidebar. Sitting first doesn't mean
  * gating: only the heading and one-sentence intro show by default, so the
@@ -338,10 +301,9 @@ function DisclaimerCard() {
       {expanded && (
         <>
           <div className="mt-3 flex justify-end">
-            <InfoTooltip
-              label={tr(r.prototypeNote.countHeader)}
-              description={tr(r.prototypeNote.countNote)}
-            />
+            <InfoTooltip description={tr(r.prototypeNote.countNote)} align="end">
+              {tr(r.prototypeNote.countHeader)}
+            </InfoTooltip>
           </div>
           <dl className="mt-1 divide-y divide-warning/20 text-sm">
             {r.prototypeNote.items.map((item, i) => (
