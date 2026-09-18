@@ -15,6 +15,7 @@ import { posteriorEndpointDraws, type Scenario } from "@/lib/model";
 import { generateResultsPdf } from "@/lib/pdf";
 import { usePrediction } from "@/lib/usePrediction";
 import { ageFromBirthDate, SEX_OPTIONS } from "@/lib/session";
+import { chunk } from "@/lib/utils";
 import resultsContent from "@/content/results.json";
 
 export const Route = createFileRoute("/ergebnis")({
@@ -47,12 +48,12 @@ const pct = (x: number) => (x / PHQ9_MAX) * 100;
  * for anyone who can't rely on color.
  */
 function ComparisonRow({
-  label,
+  labelLines,
   description,
   scenario,
   baseline,
 }: {
-  label: string;
+  labelLines: string[];
   description?: string | undefined;
   scenario: Scenario;
   baseline: number;
@@ -67,9 +68,15 @@ function ComparisonRow({
   const barTone = improved ? "bg-success/35" : worsened ? "bg-warning/35" : "bg-primary/35";
   return (
     <div className="py-3">
-      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5 text-sm">
-        <span className="font-medium">{label}</span>
-        <span className="tabular-nums">
+      <div className="grid grid-cols-[1fr_auto] items-start gap-x-3 gap-y-0.5 text-sm">
+        <span className="font-medium">
+          {labelLines.map((line, i) => (
+            <span key={i} className="block">
+              {line}
+            </span>
+          ))}
+        </span>
+        <span className="whitespace-nowrap text-right tabular-nums">
           <span className={`font-semibold ${textTone}`}>
             {scenario.expectedEndpoint}
             <span className="sr-only"> ({directionLabel})</span>
@@ -405,6 +412,23 @@ function Results() {
       ? tr(r.scenarios.usualCare.short)
       : scenario.components.map((id) => tr(r.components[id].short)).join(" + ");
 
+  /**
+   * Same components as scenarioLabel, but as an array of lines instead of
+   * one joined string, since ComparisonRow's grid layout renders each line
+   * separately to keep the endpoint value pinned to the right regardless of
+   * how long the label runs. Every scenario here has 0 or 1 component, so
+   * this always returns a single-element array — this chunking logic
+   * carries over from when packages could combine up to 4 components, but
+   * is harmless (and correct) for today's single-component-only scenarios.
+   */
+  const scenarioLabelLines = (scenario: Scenario): string[] =>
+    scenario.id === "usualCare"
+      ? [tr(r.scenarios.usualCare.short)]
+      : chunk(
+          scenario.components.map((id) => tr(r.components[id].short)),
+          2,
+        ).map((group) => group.join(" + "));
+
   /** Every row is a single component added alone, so it always has one unambiguous explanation to show. */
   const scenarioDescription = (scenario: Scenario): string | undefined => {
     const [id] = scenario.components;
@@ -511,7 +535,7 @@ function Results() {
             {activeScenarios.map((scenario) => (
               <ComparisonRow
                 key={scenario.id}
-                label={scenarioLabel(scenario)}
+                labelLines={scenarioLabelLines(scenario)}
                 description={scenarioDescription(scenario)}
                 scenario={scenario}
                 baseline={p.baseline}
