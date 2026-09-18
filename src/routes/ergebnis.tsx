@@ -39,13 +39,13 @@ const pct = (x: number) => (x / PHQ9_MAX) * 100;
  * distance from "today" carry the comparison — no separate rank badge.
  */
 /**
- * Lower PHQ-9 is better, which is easy to misread at a glance, so each row's
- * marker/interval is tinted by direction vs. baseline ("today"): a muted
- * green for an expected improvement, a muted amber for none — never red,
- * since patients see this chart too and red reads as a distress signal
- * rather than a neutral "this option didn't help as much" result. The sign
- * (below, and the fixed "today" line) still carries the same information
- * for anyone who can't rely on color.
+ * Lower PHQ-9 is better, which is easy to misread at a glance. Rather than a
+ * subtle color tint on both directions (too easy to miss, and risks reading
+ * amber-for-worse as a distress signal to patients), only an expected
+ * improvement gets a visual highlight: the whole row sits in a green-bordered
+ * box. "Worse" and "no change" both render identically, neutral — the sign
+ * (below, and the fixed "today" line) still carries that information for
+ * anyone who needs it, without singling the row out visually.
  */
 function ComparisonRow({
   labelLines,
@@ -63,11 +63,15 @@ function ComparisonRow({
   const improved = scenario.expectedEndpoint < baseline;
   const worsened = scenario.expectedEndpoint > baseline;
   const directionLabel = tr(improved ? r.legend.better : worsened ? r.legend.worse : r.legend.same);
-  const textTone = improved ? "text-success" : worsened ? "text-warning" : "text-foreground";
-  const dotTone = improved ? "border-success" : worsened ? "border-warning" : "border-primary";
-  const barTone = improved ? "bg-success/35" : worsened ? "bg-warning/35" : "bg-primary/35";
+  const textTone = improved ? "text-success" : "text-foreground";
+  const dotTone = improved ? "border-success" : "border-primary";
+  const barTone = improved ? "bg-success/35" : "bg-primary/35";
   return (
-    <div className="py-3">
+    <div
+      className={`rounded-md p-3 ${
+        improved ? "border-2 border-success bg-success-soft" : "border border-transparent"
+      }`}
+    >
       <div className="grid grid-cols-[1fr_auto] items-start gap-x-3 gap-y-0.5 text-sm">
         <span className="font-medium">
           {labelLines.map((line, i) => (
@@ -302,12 +306,8 @@ function ChartLegend() {
   return (
     <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-muted-foreground">
       <span className="inline-flex items-center gap-1.5">
-        <span className="h-2.5 w-2.5 shrink-0 rounded-full border-2 border-success bg-card" />
+        <span className="h-3 w-3 shrink-0 rounded-sm border-2 border-success bg-success-soft" />
         {tr(r.legend.better)}
-      </span>
-      <span className="inline-flex items-center gap-1.5">
-        <span className="h-2.5 w-2.5 shrink-0 rounded-full border-2 border-warning bg-card" />
-        {tr(r.legend.worse)}
       </span>
       <span className="inline-flex items-center gap-1.5">
         <span className="h-0.5 w-4 shrink-0 rounded-full bg-muted-foreground/40" />
@@ -531,7 +531,7 @@ function Results() {
           </p>
 
           <BaselinePointer baseline={p.baseline} />
-          <div className="divide-y divide-border rounded-md border border-border px-4">
+          <div className="space-y-2">
             {activeScenarios.map((scenario) => (
               <ComparisonRow
                 key={scenario.id}
