@@ -42,10 +42,10 @@ const pct = (x: number) => (x / PHQ9_MAX) * 100;
  * Lower PHQ-9 is better, which is easy to misread at a glance. Rather than a
  * subtle color tint on both directions (too easy to miss, and risks reading
  * amber-for-worse as a distress signal to patients), only an expected
- * improvement gets a visual highlight: the whole row sits in a green-bordered
- * box. "Worse" and "no change" both render identically, neutral — the sign
- * (below, and the fixed "today" line) still carries that information for
- * anyone who needs it, without singling the row out visually.
+ * improvement gets a visual highlight: a green-bordered box around the
+ * output value itself (not the whole row). "Worse" and "no change" both
+ * render identically, neutral — the sign (below, and the fixed "today"
+ * line) still carries that information for anyone who needs it.
  */
 function ComparisonRow({
   labelLines,
@@ -67,11 +67,7 @@ function ComparisonRow({
   const dotTone = improved ? "border-success" : "border-primary";
   const barTone = improved ? "bg-success/35" : "bg-primary/35";
   return (
-    <div
-      className={`rounded-md p-3 ${
-        improved ? "border-2 border-success bg-success-soft" : "border border-transparent"
-      }`}
-    >
+    <div className="py-3">
       <div className="grid grid-cols-[1fr_auto] items-start gap-x-3 gap-y-0.5 text-sm">
         <span className="font-medium">
           {labelLines.map((line, i) => (
@@ -80,7 +76,11 @@ function ComparisonRow({
             </span>
           ))}
         </span>
-        <span className="whitespace-nowrap text-right tabular-nums">
+        <span
+          className={`whitespace-nowrap text-right tabular-nums ${
+            improved ? "rounded-md border-2 border-success bg-success-soft px-2 py-1" : ""
+          }`}
+        >
           <span className={`font-semibold ${textTone}`}>
             {scenario.expectedEndpoint}
             <span className="sr-only"> ({directionLabel})</span>
@@ -531,7 +531,7 @@ function Results() {
           </p>
 
           <BaselinePointer baseline={p.baseline} />
-          <div className="space-y-2">
+          <div className="divide-y divide-border rounded-md border border-border px-4">
             {activeScenarios.map((scenario) => (
               <ComparisonRow
                 key={scenario.id}
