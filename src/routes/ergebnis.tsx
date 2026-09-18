@@ -273,29 +273,46 @@ function PosteriorMini({
 }
 
 /**
- * The trial-eligibility disclaimer, laid out as a sidebar card next to the
- * predictions on desktop (see the grid in Results) and stacked below them
- * on mobile — a static note, not an interactive/scroll-linked element.
+ * The trial-eligibility disclaimer, now placed above the results in reading
+ * order rather than beside them in a sidebar. Sitting first doesn't mean
+ * gating: only the heading and one-sentence intro show by default, so the
+ * note registers at a glance without making the reader clear a wall of text
+ * before reaching their results. The 7-item exclusion list and closing line
+ * — the part worth reading closely if it applies to you — stay a tap away
+ * behind "show details", collapsed the same way the posterior distribution
+ * below is (see the showDistributions toggle in Results).
  */
 function DisclaimerCard() {
   const { tr } = useLang();
+  const [expanded, setExpanded] = useState(false);
   return (
     <div className="rounded-md border border-warning/30 bg-warning-soft p-4">
-      <h2 className="text-base font-semibold">{tr(r.prototypeNote.heading)}</h2>
-      <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+      <h2 className="text-sm font-semibold">{tr(r.prototypeNote.heading)}</h2>
+      <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
         {tr(r.prototypeNote.intro)}
       </p>
-      <ul className="mt-3 space-y-1 text-sm leading-relaxed">
-        {r.prototypeNote.items.map((item, i) => (
-          <li key={i} className="flex gap-2">
-            <span aria-hidden="true" className="text-muted-foreground">
-              –
-            </span>
-            <span>{tr(item)}</span>
-          </li>
-        ))}
-      </ul>
-      <p className="mt-3 text-sm font-medium leading-relaxed">{tr(r.prototypeNote.closing)}</p>
+      {expanded && (
+        <>
+          <ul className="mt-3 space-y-1 text-sm leading-relaxed">
+            {r.prototypeNote.items.map((item, i) => (
+              <li key={i} className="flex gap-2">
+                <span aria-hidden="true" className="text-muted-foreground">
+                  –
+                </span>
+                <span>{tr(item)}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-3 text-sm font-medium leading-relaxed">{tr(r.prototypeNote.closing)}</p>
+        </>
+      )}
+      <button
+        type="button"
+        onClick={() => setExpanded((v) => !v)}
+        className="mt-3 text-xs font-medium text-primary underline underline-offset-2"
+      >
+        {tr(expanded ? r.prototypeNote.hideDetails : r.prototypeNote.showDetails)}
+      </button>
     </div>
   );
 }
@@ -498,8 +515,10 @@ function Results() {
   };
 
   return (
-    <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-4 py-10 md:grid-cols-3">
-      <div className="order-2 md:order-1 md:col-span-2">
+    <div className="mx-auto max-w-3xl px-4 py-10">
+      <DisclaimerCard />
+
+      <div className="mt-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <h1 className="text-2xl font-semibold">{tr(r.title)}</h1>
           <button
@@ -624,10 +643,6 @@ function Results() {
             {tr(r.actions.localSupport)}
           </Link>
         </div>
-      </div>
-
-      <div className="order-1 md:order-2 md:col-span-1">
-        <DisclaimerCard />
       </div>
     </div>
   );

@@ -52,6 +52,14 @@
     "closing": {
       "de": "Trifft etwas davon auf Sie zu, verstehen Sie die folgenden Zahlen bitte eher als groben Anhaltspunkt denn als präzise Vorhersage.",
       "en": "If any of this applies to you, treat the numbers below as a rough guide rather than a precise prediction."
+    },
+    "showDetails": {
+      "de": "Details anzeigen",
+      "en": "Show details"
+    },
+    "hideDetails": {
+      "de": "Details ausblenden",
+      "en": "Hide details"
     }
   },
   "phq9Label": "PHQ-9",
