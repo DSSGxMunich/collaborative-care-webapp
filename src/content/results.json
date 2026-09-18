@@ -72,7 +72,7 @@
         "de": "Übliche hausärztliche Versorgung",
         "en": "Usual care from your GP — for comparison"
       },
-      "short": { "de": "Übliche Versorgung", "en": "Usual care" },
+      "short": { "de": "Übliche Versorgung", "en": "Usual care from your GP — for comparison" },
       "description": {
         "de": "Behandlung wie bisher: Termine bei Bedarf, Beratung, Verlaufsbeobachtung.",
         "en": "The usual treatment provided by a GP practice for depressive symptoms. This may include appointments with your GP, medication or referral to other healthcare professionals. *The exact care provided can vary between GP practices and may differ from the care you currently receive."
@@ -87,7 +87,7 @@
       },
       "short": {
         "de": "Fachärztliche/psychologische Einbindung",
-        "en": "Specialist involvement"
+        "en": "Specialist advice for your care team"
       },
       "description": {
         "de": "Eine Fachärztin/ein Facharzt oder eine Psychologin/ein Psychologe begleitet oder berät bei Ihrer Behandlung, zusätzlich zu Ihrer Hausarztpraxis.",
@@ -101,7 +101,7 @@
       },
       "short": {
         "de": "Beratung/Psychotherapie",
-        "en": "Counselling/psychotherapy"
+        "en": "Brief counselling: up to 8 sessions"
       },
       "description": {
         "de": "In diesen Gesprächen geht es um Ihre Beschwerden und Wege, damit umzugehen — von kurzer Beratung bis zu strukturierter Psychotherapie über mehrere Sitzungen. Kann auch zusätzlich zu einer Medikation erfolgen.",
@@ -115,7 +115,7 @@
       },
       "short": {
         "de": "Behandlungsziele festgelegt",
-        "en": "Treatment goals set"
+        "en": "Agreeing on your personal treatment goals"
       },
       "description": {
         "de": "Sie legen gemeinsam mit Ihrem Behandlungsteam konkrete Ziele für Ihre Behandlung fest.",
@@ -129,7 +129,7 @@
       },
       "short": {
         "de": "Behandlungswünsche berücksichtigt",
-        "en": "Treatment preferences considered"
+        "en": "Taking your treatment preferences into account"
       },
       "description": {
         "de": "Sie besprechen gemeinsam, welche Behandlung Sie bevorzugen und was Ihnen wichtig ist. Ihre Wünsche werden bei der Planung Ihrer Versorgung berücksichtigt.",
@@ -141,7 +141,10 @@
         "de": "Automatische Erinnerungen und Hinweise für Ihr Behandlungsteam",
         "en": "Automatic reminders and alerts for your care team"
       },
-      "short": { "de": "Automatische Erinnerungen", "en": "Automatic reminders" },
+      "short": {
+        "de": "Automatische Erinnerungen",
+        "en": "Automatic reminders and alerts for your care team"
+      },
       "description": {
         "de": "Ein System unterstützt Ihr Behandlungsteam dabei, den Überblick über Ihre Nachsorge zu behalten. Es kann zum Beispiel erinnern, wenn ein Kontakt ansteht, oder Hinweise geben, wenn sich Ihre Beschwerden verschlechtern könnten. Das bedeutet keine durchgehende Überwachung und keine Garantie für eine sofortige Reaktion.",
         "en": "A system that helps your care team to keep track of your follow-up care. For example, it can remind the team when contact is due or flag signs that your symptoms may be getting worse. This does not mean continuous monitoring or guarantee an immediate response."
@@ -152,7 +155,10 @@
         "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Regelmäßige Verlaufskontrollen",
         "en": "Regular team reviews of your treatment"
       },
-      "short": { "de": "Regelmäßige Verlaufskontrollen", "en": "Regular patient review" },
+      "short": {
+        "de": "Regelmäßige Verlaufskontrollen",
+        "en": "Regular team reviews of your treatment"
+      },
       "description": {
         "de": "Ihr Behandlungsteam plant feste, wiederkehrende Termine, um Ihren Verlauf zu besprechen — unabhängig davon, ob es Ihnen gerade besser oder schlechter geht.",
         "en": "Your care team meets or checks in at planned intervals to review how your treatment is going and whether anything needs to change."
@@ -163,7 +169,10 @@
         "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Vermittlung von Bewältigungsstrategien",
         "en": "Learning ways to manage depressive symptoms"
       },
-      "short": { "de": "Bewältigungsstrategien", "en": "Coping strategies" },
+      "short": {
+        "de": "Bewältigungsstrategien",
+        "en": "Learning ways to manage depressive symptoms"
+      },
       "description": {
         "de": "Sie lernen konkrete Strategien, um mit Ihren Beschwerden im Alltag umzugehen.",
         "en": "You learn and practise ways to manage your symptoms in daily life. You discuss which approaches suit your situation."
@@ -174,7 +183,10 @@
         "de": "Ein Plan zur Vorbeugung und für den Fall, dass Beschwerden zurückkehren",
         "en": "A plan to help prevent symptoms from returning and for when symptoms return"
       },
-      "short": { "de": "Rückfallpräventionsplan", "en": "Relapse-prevention plan" },
+      "short": {
+        "de": "Rückfallpräventionsplan",
+        "en": "A plan to help prevent symptoms from returning and for when symptoms return"
+      },
       "description": {
         "de": "Gemeinsam mit Ihrem Behandlungsteam oder Ihrer Ärztin/Ihrem Arzt erstellen Sie einen Plan, um gesund zu bleiben und frühe Warnzeichen zu erkennen. Der Plan beschreibt, was Sie tun können und an wen Sie sich wenden, falls Beschwerden zurückkehren.",
         "en": "Together with your care partner or doctor, you make a plan for staying well and recognizing early warning signs to look out for. Your plan explains what you can do and whom to contact if symptoms return."
@@ -185,7 +197,10 @@
         "de": "Einbindung von Vertrauenspersonen in Ihre Versorgung",
         "en": "Involving people you trust in your care"
       },
-      "short": { "de": "Familie/Freunde einbezogen", "en": "Family/friends involved" },
+      "short": {
+        "de": "Familie/Freunde einbezogen",
+        "en": "Involving people you trust in your care"
+      },
       "description": {
         "de": "Mit Ihrem Einverständnis werden Familienmitglieder oder Freunde in Ihre Versorgung einbezogen. Gemeinsam besprechen Sie, wie sie Sie unterstützen können.",
         "en": "With your agreement, family members or friends are involved in your care. You discuss together how they can support you."
@@ -198,7 +213,7 @@
       },
       "short": {
         "de": "Gemeinschaft/kultureller Hintergrund",
-        "en": "Community/cultural background"
+        "en": "Taking your community and cultural background into account"
       },
       "description": {
         "de": "Ihre Versorgung wird an Ihr kulturelles und soziales Umfeld angepasst.",
