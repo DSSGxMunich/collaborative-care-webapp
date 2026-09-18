@@ -53,8 +53,7 @@
     "careOption": { "de": "Versorgungsoption", "en": "Care option" },
     "endpoint": { "de": "PHQ-9 12 Mo. (95%-KI)", "en": "PHQ-9 12 mo. (95% CI)" },
     "delta": { "de": "Δ vs. übliche Versorgung", "en": "Δ vs. usual care" },
-    "better": { "de": "Besser als übliche Versorgung", "en": "Better than usual care" },
-    "worse": { "de": "Schlechter als übliche Versorgung", "en": "Worse than usual care" }
+    "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" }
   },
   "footer": {
     "de": "Dieser Kurzbefund stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Die Werte in Klammern sind 95 %-Posterior-Kredibilitätsintervalle. Die Vorhersagen sind nicht klinisch validiert. Alle Angaben bleiben in der Browser-Sitzung des Patienten.",
