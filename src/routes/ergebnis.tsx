@@ -277,10 +277,17 @@ function PosteriorMini({
  * order rather than beside them in a sidebar. Sitting first doesn't mean
  * gating: only the heading and one-sentence intro show by default, so the
  * note registers at a glance without making the reader clear a wall of text
- * before reaching their results. The 7-item exclusion list and closing line
- * — the part worth reading closely if it applies to you — stay a tap away
+ * before reaching their results. The exclusion criteria and closing line —
+ * the part worth reading closely if it applies to you — stay a tap away
  * behind "show details", collapsed the same way the posterior distribution
  * below is (see the showDistributions toggle in Results).
+ *
+ * Each criterion is a short topic label with an optional smaller-font
+ * description underneath, not a full sentence — and the "N of 12 studies
+ * excluded them" clause, which used to repeat verbatim on every line, is
+ * explained once (countNote) and then shown per row as a bare fraction, the
+ * same divide-y dt/dd row shape used by the predictors list further down
+ * the page.
  */
 function DisclaimerCard() {
   const { tr } = useLang();
@@ -293,16 +300,24 @@ function DisclaimerCard() {
       </p>
       {expanded && (
         <>
-          <ul className="mt-3 space-y-1 text-sm leading-relaxed">
+          <p className="mt-3 text-xs text-muted-foreground">{tr(r.prototypeNote.countNote)}</p>
+          <dl className="mt-1.5 divide-y divide-warning/20 text-sm">
             {r.prototypeNote.items.map((item, i) => (
-              <li key={i} className="flex gap-2">
-                <span aria-hidden="true" className="text-muted-foreground">
-                  –
-                </span>
-                <span>{tr(item)}</span>
-              </li>
+              <div key={i} className="flex items-start justify-between gap-4 py-2">
+                <dt>
+                  <span className="font-medium">{tr(item.label)}</span>
+                  {"description" in item ? (
+                    <span className="mt-0.5 block text-xs text-muted-foreground">
+                      {tr(item.description)}
+                    </span>
+                  ) : null}
+                </dt>
+                <dd className="shrink-0 whitespace-nowrap pt-0.5 text-xs tabular-nums text-muted-foreground">
+                  {item.excludedIn}/{r.prototypeNote.totalStudies}
+                </dd>
+              </div>
             ))}
-          </ul>
+          </dl>
           <p className="mt-3 text-sm font-medium leading-relaxed">{tr(r.prototypeNote.closing)}</p>
         </>
       )}
