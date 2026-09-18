@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Bar,
@@ -273,29 +273,103 @@ function PosteriorMini({
 }
 
 /**
- * The trial-eligibility disclaimer, laid out as a sidebar card next to the
- * predictions on desktop (see the grid in Results) and stacked below them
- * on mobile — a static note, not an interactive/scroll-linked element.
+ * A short label that reveals a fuller explanation on hover/focus, used as
+ * the exclusion-count column header in DisclaimerCard below instead of a
+ * standalone sentence — a sentence sitting next to a column of numbers is
+ * easy to skim past, so the "what does this number mean" explanation moves
+ * into a tooltip anchored right on the header those numbers sit under.
+ * Opens on hover *and* keyboard focus (not just :hover) so it's reachable
+ * without a mouse.
+ */
+function InfoTooltip({ label, description }: { label: string; description: string }) {
+  const [open, setOpen] = useState(false);
+  const tooltipId = useId();
+  return (
+    <span className="relative inline-block">
+      <button
+        type="button"
+        className="cursor-help whitespace-nowrap border-b border-dotted border-muted-foreground/60 text-xs font-medium text-muted-foreground"
+        aria-describedby={tooltipId}
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
+        onFocus={() => setOpen(true)}
+        onBlur={() => setOpen(false)}
+      >
+        {label}
+      </button>
+      {open && (
+        <span
+          id={tooltipId}
+          role="tooltip"
+          className="absolute right-0 top-full z-10 mt-1.5 w-56 rounded-md border border-border bg-card p-2.5 text-xs leading-relaxed text-foreground shadow-md"
+        >
+          {description}
+        </span>
+      )}
+    </span>
+  );
+}
+
+/**
+ * The trial-eligibility disclaimer, now placed above the results in reading
+ * order rather than beside them in a sidebar. Sitting first doesn't mean
+ * gating: only the heading and one-sentence intro show by default, so the
+ * note registers at a glance without making the reader clear a wall of text
+ * before reaching their results. The exclusion criteria and closing line —
+ * the part worth reading closely if it applies to you — stay a tap away
+ * behind "show details", collapsed the same way the posterior distribution
+ * below is (see the showDistributions toggle in Results).
+ *
+ * Each criterion is a short topic label with an optional smaller-font
+ * description underneath, not a full sentence — and the "N of 12 studies
+ * excluded them" clause, which used to repeat verbatim on every line, is now
+ * a column header (countHeader) sitting directly above the fractions it
+ * describes, via InfoTooltip, rather than a sentence people can skim past.
  */
 function DisclaimerCard() {
   const { tr } = useLang();
+  const [expanded, setExpanded] = useState(false);
   return (
     <div className="rounded-md border border-warning/30 bg-warning-soft p-4">
-      <h2 className="text-base font-semibold">{tr(r.prototypeNote.heading)}</h2>
-      <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+      <h2 className="text-sm font-semibold">{tr(r.prototypeNote.heading)}</h2>
+      <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
         {tr(r.prototypeNote.intro)}
       </p>
-      <ul className="mt-3 space-y-1 text-sm leading-relaxed">
-        {r.prototypeNote.items.map((item, i) => (
-          <li key={i} className="flex gap-2">
-            <span aria-hidden="true" className="text-muted-foreground">
-              –
-            </span>
-            <span>{tr(item)}</span>
-          </li>
-        ))}
-      </ul>
-      <p className="mt-3 text-sm font-medium leading-relaxed">{tr(r.prototypeNote.closing)}</p>
+      {expanded && (
+        <>
+          <div className="mt-3 flex justify-end">
+            <InfoTooltip
+              label={tr(r.prototypeNote.countHeader)}
+              description={tr(r.prototypeNote.countNote)}
+            />
+          </div>
+          <dl className="mt-1 divide-y divide-warning/20 text-sm">
+            {r.prototypeNote.items.map((item, i) => (
+              <div key={i} className="flex items-start justify-between gap-4 py-2">
+                <dt>
+                  <span className="font-medium">{tr(item.label)}</span>
+                  {"description" in item ? (
+                    <span className="mt-0.5 block text-xs text-muted-foreground">
+                      {tr(item.description)}
+                    </span>
+                  ) : null}
+                </dt>
+                <dd className="shrink-0 whitespace-nowrap pt-0.5 text-xs tabular-nums text-muted-foreground">
+                  {item.excludedIn}/{r.prototypeNote.totalStudies}
+                </dd>
+              </div>
+            ))}
+          </dl>
+          <p className="mt-3 text-sm font-medium leading-relaxed">{tr(r.prototypeNote.closing)}</p>
+        </>
+      )}
+      <button
+        type="button"
+        onClick={() => setExpanded((v) => !v)}
+        className="mt-3 text-xs font-medium text-primary underline underline-offset-2"
+      >
+        {tr(expanded ? r.prototypeNote.hideDetails : r.prototypeNote.showDetails)}
+      </button>
     </div>
   );
 }
@@ -498,8 +572,10 @@ function Results() {
   };
 
   return (
-    <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-4 py-10 md:grid-cols-3">
-      <div className="order-2 md:order-1 md:col-span-2">
+    <div className="mx-auto max-w-3xl px-4 py-10">
+      <DisclaimerCard />
+
+      <div className="mt-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <h1 className="text-2xl font-semibold">{tr(r.title)}</h1>
           <button
@@ -624,10 +700,6 @@ function Results() {
             {tr(r.actions.localSupport)}
           </Link>
         </div>
-      </div>
-
-      <div className="order-1 md:order-2 md:col-span-1">
-        <DisclaimerCard />
       </div>
     </div>
   );
