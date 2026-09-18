@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { InfoTooltip } from "@/components/InfoTooltip";
 import { useLang, ui } from "@/lib/i18n";
 import home from "@/content/home.json";
 
@@ -19,9 +20,18 @@ function Index() {
 
   return (
     <div className="mx-auto max-w-xl px-4 py-16 sm:py-24">
-      <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-        {tr(ui.researchPrototype)}
-      </p>
+      <InfoTooltip
+        label={tr(ui.researchPrototype)}
+        triggerClassName="cursor-help border-b border-dotted border-muted-foreground/60 text-xs font-medium uppercase tracking-wide text-muted-foreground"
+        panelClassName="w-72"
+        description={
+          <div className="space-y-1.5">
+            {home.prototypeInfo.items.map((item, i) => (
+              <p key={i}>{tr(item)}</p>
+            ))}
+          </div>
+        }
+      />
       <h1 className="mt-3 text-balance-tight text-2xl font-semibold leading-snug sm:text-3xl">
         {tr(home.title)}
       </h1>
