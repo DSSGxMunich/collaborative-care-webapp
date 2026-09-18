@@ -276,7 +276,6 @@ function Clinician() {
               helpful={isHelpful}
               usualCareHeading={tr(c.ranking.usualCareHeading)}
               usualCareDescription={tr(r.scenarios.usualCare.description)}
-              usualCareNote={tr(c.ranking.usualCareNote)}
               helpfulBadge={tr(c.table.better)}
               rankAriaLabel={(rank, total) => fill(tr(c.ranking.rankAria), { rank, total })}
             />

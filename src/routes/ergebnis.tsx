@@ -275,7 +275,6 @@ function Results() {
                 helpful={isHelpful}
                 usualCareHeading={tr(r.ranking.usualCareHeading)}
                 usualCareDescription={tr(r.scenarios.usualCare.description)}
-                usualCareNote={tr(r.ranking.usualCareNote)}
                 helpfulBadge={tr(r.legend.better)}
                 rankAriaLabel={(rank, total) => fill(tr(r.ranking.rankAria), { rank, total })}
               />

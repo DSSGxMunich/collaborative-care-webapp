@@ -17,7 +17,6 @@ export function CareRanking({
   helpful,
   usualCareHeading,
   usualCareDescription,
-  usualCareNote,
   helpfulBadge,
   rankAriaLabel,
   compact = false,
@@ -28,9 +27,8 @@ export function CareRanking({
   description: (scenario: Scenario) => string | undefined;
   helpful: (scenario: Scenario) => boolean;
   usualCareHeading: string;
-  /** What "usual care" itself means — separate from usualCareNote, which instead points ahead to the ranked list below. */
+  /** What "usual care" itself means. */
   usualCareDescription?: string;
-  usualCareNote: string;
   helpfulBadge: string;
   rankAriaLabel: (rank: number, total: number) => string;
   compact?: boolean;
@@ -47,7 +45,6 @@ export function CareRanking({
             {usualCareDescription}
           </p>
         ) : null}
-        <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{usualCareNote}</p>
       </div>
 
       <ol className="mt-4 divide-y divide-border rounded-md border border-border">

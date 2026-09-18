@@ -87,10 +87,6 @@
   },
   "ranking": {
     "usualCareHeading": { "de": "Ihre derzeitige Versorgung", "en": "Your current care" },
-    "usualCareNote": {
-      "de": "Die Liste unten reiht zusätzliche Bausteine von der wahrscheinlich hilfreichsten bis zur wahrscheinlich am wenigsten hilfreichen Option, laut unserem Modell.",
-      "en": "The list below ranks additional components from most to least likely to help, according to our model."
-    },
     "rankAria": {
       "de": "Platz {rank} von {total} — nach erwartetem Nutzen gereiht, hilfreichste Option zuerst",
       "en": "Rank {rank} of {total} — ordered by expected benefit, most helpful option first"

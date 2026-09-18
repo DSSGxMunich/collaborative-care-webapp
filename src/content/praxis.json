@@ -33,10 +33,6 @@
       "de": "Aktuelle Versorgung (Referenz)",
       "en": "Current care (reference)"
     },
-    "usualCareNote": {
-      "de": "Die Liste darunter reiht die einzeln testbaren Bausteine nach erwartetem Zusatznutzen.",
-      "en": "The list below ranks the individually addable components by expected added benefit."
-    },
     "rankAria": {
       "de": "Rang {rank} von {total} — nach erwartetem Zusatznutzen gereiht",
       "en": "Rank {rank} of {total} — ranked by expected added benefit"
