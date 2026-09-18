@@ -20,7 +20,28 @@
   },
   "summary": { "de": "Zusammenfassung", "en": "Summary" },
   "phq9ItemProfile": { "de": "PHQ-9 Itemprofil", "en": "PHQ-9 item profile" },
-  "modelEstimates": { "de": "Modellschätzungen", "en": "Model estimates" },
+  "modelEstimates": {
+    "de": "Rangfolge der Versorgungsbausteine",
+    "en": "Ranking of care components"
+  },
+  "modelEstimatesIntro": {
+    "de": "Statt genauer Zahlenwerte: eine Rangfolge der einzeln testbaren Versorgungsbausteine nach erwartetem Zusatznutzen für diese:n Patient:in, zusätzlich zur üblichen Versorgung.",
+    "en": "Instead of exact numeric values: a ranking of the individually addable care components by expected added benefit for this patient, on top of usual care."
+  },
+  "ranking": {
+    "usualCareHeading": {
+      "de": "Aktuelle Versorgung (Referenz)",
+      "en": "Current care (reference)"
+    },
+    "usualCareNote": {
+      "de": "Vergleichspunkt: übliche hausärztliche Versorgung. Die Liste darunter reiht die einzeln testbaren Bausteine nach erwartetem Zusatznutzen.",
+      "en": "Reference point: usual GP care. The list below ranks the individually addable components by expected added benefit."
+    },
+    "rankAria": {
+      "de": "Rang {rank} von {total} — nach erwartetem Zusatznutzen gereiht",
+      "en": "Rank {rank} of {total} — ranked by expected added benefit"
+    }
+  },
   "rows": {
     "phq9Total": { "de": "PHQ-9 Summenwert", "en": "PHQ-9 total" },
     "severity": { "de": "Schweregrad", "en": "Severity" },
@@ -51,12 +72,12 @@
   },
   "table": {
     "careOption": { "de": "Versorgungsoption", "en": "Care option" },
-    "endpoint": { "de": "PHQ-9 12 Mo. (95%-KI)", "en": "PHQ-9 12 mo. (95% CI)" },
-    "delta": { "de": "Δ vs. übliche Versorgung", "en": "Δ vs. usual care" },
+    "rank": { "de": "Rang", "en": "Rank" },
+    "note": { "de": "Einschätzung", "en": "Assessment" },
     "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" }
   },
   "footer": {
-    "de": "Dieser Kurzbefund stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Die Werte in Klammern sind 95 %-Posterior-Kredibilitätsintervalle. Die Vorhersagen sind nicht klinisch validiert. Alle Angaben bleiben in der Browser-Sitzung des Patienten.",
-    "en": "This report comes from a research prototype built on a component network meta-analysis (10 components, 12 studies). The numbers in parentheses are 95% posterior credible intervals, and these predictions haven't been clinically validated. Everything entered stays in the patient's browser session."
+    "de": "Dieser Kurzbefund stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Bausteine sind nach erwartetem Zusatznutzen gereiht, nicht nach exakten Zahlenwerten. Die Einschätzungen sind nicht klinisch validiert. Alle Angaben bleiben in der Browser-Sitzung des Patienten.",
+    "en": "This report comes from a research prototype built on a component network meta-analysis (10 components, 12 studies). Components are ranked by expected added benefit, not exact numeric values. These assessments haven't been clinically validated. Everything entered stays in the patient's browser session."
   }
 }
