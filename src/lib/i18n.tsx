@@ -79,6 +79,7 @@ export const ui = uiContent as {
   noData: L;
   disclaimer: L;
   researchPrototype: L;
+  moreInfo: L;
   noAnswersLeaveDevice: L;
   dateField: Record<"day" | "month" | "year", L>;
 };

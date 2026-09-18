@@ -301,11 +301,9 @@ function DisclaimerCard() {
       {expanded && (
         <>
           <div className="mt-3 flex justify-end">
-            <InfoTooltip
-              label={tr(r.prototypeNote.countHeader)}
-              description={tr(r.prototypeNote.countNote)}
-              align="end"
-            />
+            <InfoTooltip description={tr(r.prototypeNote.countNote)} align="end">
+              {tr(r.prototypeNote.countHeader)}
+            </InfoTooltip>
           </div>
           <dl className="mt-1 divide-y divide-warning/20 text-sm">
             {r.prototypeNote.items.map((item, i) => (

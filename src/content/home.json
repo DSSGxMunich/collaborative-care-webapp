@@ -4,20 +4,10 @@
     "en": "Exploring what might help?"
   },
   "prototypeInfo": {
-    "items": [
-      {
-        "de": "Dieses Modell wurde noch nicht klinisch validiert und ersetzt keine ärztliche Beurteilung.",
-        "en": "This model hasn't been clinically validated and doesn't replace clinical judgement."
-      },
-      {
-        "de": "Die Zahlen sind Durchschnittswerte für Gruppen mit ähnlichem Profil, keine Vorhersage für eine einzelne Person.",
-        "en": "The numbers are averages for groups with a similar profile, not a prediction for any one person."
-      },
-      {
-        "de": "Jeder gezeigte Wert für einen einzelnen Baustein ist eine aus dem Modell abgeleitete Schätzung, keine direkt in einer Studie getestete Behandlung.",
-        "en": "Each single-component number is a modeled estimate, not a treatment that was directly tested on its own in a trial."
-      }
-    ]
+    "note": {
+      "de": "Dieses Modell wurde noch nicht klinisch validiert und ersetzt keine ärztliche Beurteilung. Die Zahlen sind Durchschnittswerte für Gruppen mit ähnlichem Profil, keine Vorhersage für eine einzelne Person – und jeder Wert für einen einzelnen Baustein ist eine aus dem Modell abgeleitete Schätzung, keine direkt in einer Studie getestete Behandlung.",
+      "en": "This model hasn't been clinically validated and doesn't replace clinical judgement. Its numbers are group averages rather than a prediction for any one person, and each single-component estimate is a modeled value — not something a trial tested on its own."
+    }
   },
   "body": {
     "de": "Willkommen beim Versorgungskompass. Dieses Werkzeug nutzt Daten aus klinischen Studien, um zu zeigen, wie unterschiedliche Formen der Unterstützung Menschen helfen können, die sich seit längerem niedergeschlagen, erschöpft oder schlaflos fühlen. Ein kurzer Fragebogen liefert eine für Sie persönliche Einschätzung, die Sie in Ruhe für sich ansehen oder mit Ihrer Hausärztin oder Ihrem Hausarzt besprechen können.",
