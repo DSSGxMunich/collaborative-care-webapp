@@ -276,6 +276,7 @@ function Results() {
                 outcome={{
                   baseline: p.baseline,
                   todayLabel: tr(r.legend.today),
+                  expectedLabel: () => tr(r.legend.expected),
                   lowLabel: tr(r.legend.fewer),
                   highLabel: tr(r.legend.more),
                   legend: {

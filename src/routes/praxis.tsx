@@ -296,6 +296,8 @@ function Clinician() {
                   scale: tr(c.outcome.scale),
                 },
                 formatValue: formatEndpoint,
+                expectedLabel: (s) =>
+                  fill(tr(c.outcome.expectedHover), { value: formatEndpoint(s) }),
               }}
             />
           </div>

@@ -46,6 +46,10 @@
       "de": "Erwarteter PHQ-9 nach 12 Mo. (Mittelwert)",
       "en": "Expected PHQ-9 at 12 mo. (mean)"
     },
+    "expectedHover": {
+      "de": "Erwarteter PHQ-9 nach 12 Mo.: {value}",
+      "en": "Expected PHQ-9 at 12 mo.: {value}"
+    },
     "helpful": { "de": "Niedriger als heute", "en": "Lower than today" },
     "interval": { "de": "95 %-Kredibilitätsintervall", "en": "95% credible interval" },
     "scale": {

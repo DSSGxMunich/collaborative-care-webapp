@@ -29,18 +29,21 @@ const tone = (improved: boolean) =>
  * The bar has end caps because some intervals (usual care especially) are
  * narrower than the dot. Without caps, the dot would hide the whole bar.
  *
- * "Today" is not labelled on the page. Hovering near the today line in any
- * row shows `todayLabel`, through a hit area wider than the 2px line so it
- * is easy to find. It is visual only, since the strip is aria-hidden.
+ * Nothing on the strip is labelled on the page. Hovering near the today
+ * line shows `todayLabel`, and hovering the dot shows `expectedLabel`. Each
+ * uses a hit area larger than the mark itself so it is easy to find. The
+ * tooltips are visual only, since the strip is aria-hidden.
  */
 export function OutcomeStrip({
   scenario,
   baseline,
   todayLabel,
+  expectedLabel,
 }: {
   scenario: Scenario;
   baseline: number;
   todayLabel: string;
+  expectedLabel: string;
 }) {
   const [low, high] = scenario.endpointRange;
   const t = tone(scenario.expectedEndpoint < baseline);
@@ -55,19 +58,32 @@ export function OutcomeStrip({
       <div className={cap} style={{ left: `${pct(low)}%` }} />
       <div className={cap} style={{ left: `${pct(high)}%` }} />
       <div
-        className={`absolute top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 bg-card ${t.dot}`}
-        style={{ left: `${pct(scenario.expectedEndpoint)}%` }}
-      />
-      <div
         className="group absolute -top-1 -bottom-1 z-10 flex w-4 -translate-x-1/2 justify-center"
         style={{ left: `${pct(baseline)}%` }}
       >
         <span className="h-full w-0.5 bg-foreground/70 group-hover:bg-foreground" />
-        <span className="pointer-events-none absolute bottom-full mb-1 whitespace-nowrap rounded-md border border-border bg-card px-2 py-1 text-xs font-medium opacity-0 shadow-sm transition-opacity group-hover:opacity-100">
-          {todayLabel}
-        </span>
+        <HoverTip>{todayLabel}</HoverTip>
+      </div>
+      {/* After the today line in the DOM, so the dot wins where the two overlap. */}
+      <div
+        className="group absolute top-1/2 z-10 flex h-5 w-5 -translate-x-1/2 -translate-y-1/2 items-center justify-center"
+        style={{ left: `${pct(scenario.expectedEndpoint)}%` }}
+      >
+        <span
+          className={`h-2.5 w-2.5 rounded-full border-2 bg-card transition-transform group-hover:scale-125 ${t.dot}`}
+        />
+        <HoverTip>{expectedLabel}</HoverTip>
       </div>
     </div>
+  );
+}
+
+/** Tooltip above its `group` parent, shown only while the parent is hovered. */
+function HoverTip({ children }: { children: ReactNode }) {
+  return (
+    <span className="pointer-events-none absolute bottom-full mb-1 whitespace-nowrap rounded-md border border-border bg-card px-2 py-1 text-xs font-medium text-foreground opacity-0 shadow-sm transition-opacity group-hover:opacity-100">
+      {children}
+    </span>
   );
 }
 

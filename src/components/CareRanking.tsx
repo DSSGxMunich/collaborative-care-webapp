@@ -12,6 +12,8 @@ export type OutcomeDisplay = {
   baseline: number;
   /** Shown on hover over any row's today line. */
   todayLabel: string;
+  /** Shown on hover over a row's dot. */
+  expectedLabel: (scenario: Scenario) => string;
   lowLabel: string;
   highLabel: string;
   /** Numbered axis ticks; omitted on the patient page, which shows no numbers. */
@@ -106,6 +108,7 @@ export function CareRanking({
               scenario={usualCare}
               baseline={outcome.baseline}
               todayLabel={outcome.todayLabel}
+              expectedLabel={outcome.expectedLabel(usualCare)}
             />
           </Track>
         </div>
@@ -152,6 +155,7 @@ export function CareRanking({
                       scenario={scenario}
                       baseline={outcome.baseline}
                       todayLabel={outcome.todayLabel}
+                      expectedLabel={outcome.expectedLabel(scenario)}
                     />
                   </div>
                 </div>
