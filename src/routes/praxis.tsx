@@ -140,6 +140,12 @@ function Clinician() {
   const rankedScenarios = p.scenarios.filter((s) => s.id !== "usualCare");
   const usualCareScenario = p.scenarios.find((s) => s.id === "usualCare");
 
+  /** e.g. "9.2 (7.1–11.4)": expected 12-month PHQ-9 and its 95% credible interval. */
+  const formatEndpoint = (scenario: (typeof p.scenarios)[number]) => {
+    const f = (x: number) => x.toFixed(1);
+    return `${f(scenario.expectedEndpoint)} (${f(scenario.endpointRange[0])}–${f(scenario.endpointRange[1])})`;
+  };
+
   const scenarioTableRows = (scenarios: typeof p.scenarios) =>
     scenarios.map((scenario) => {
       const isUsualCare = scenario.id === "usualCare";
@@ -147,11 +153,8 @@ function Clinician() {
       return {
         label: careOptionLabel(scenario),
         rank,
-        note: isUsualCare
-          ? tr(c.ranking.usualCareHeading)
-          : isHelpful(scenario)
-            ? tr(c.table.better)
-            : "–",
+        endpoint: formatEndpoint(scenario),
+        note: !isUsualCare && isHelpful(scenario) ? tr(c.table.better) : "–",
       };
     });
 
@@ -176,6 +179,7 @@ function Clinician() {
       tableHeaders: {
         careOption: tr(c.table.careOption),
         rank: tr(c.table.rank),
+        endpoint: tr(c.table.endpoint),
         note: tr(c.table.note),
       },
       scenarioTables: [
@@ -274,11 +278,27 @@ function Clinician() {
               labelLines={careOptionLabelLines}
               description={careOptionDescription}
               helpful={isHelpful}
-              usualCareHeading={tr(c.ranking.usualCareHeading)}
               usualCareDescription={tr(r.scenarios.usualCare.description)}
               helpfulSectionLabel={tr(c.ranking.helpfulSection)}
               otherSectionLabel={tr(c.ranking.otherSection)}
               rankAriaLabel={(rank, total) => fill(tr(c.ranking.rankAria), { rank, total })}
+              outcome={{
+                baseline: p.baseline,
+                todayLabel: fill(tr(c.outcome.today), { baseline: p.baseline }),
+                lowLabel: tr(c.outcome.fewer),
+                highLabel: tr(c.outcome.more),
+                ticks: [0, 5, 10, 15, 20, 27],
+                legend: {
+                  expected: tr(c.outcome.expected),
+                  helpful: tr(c.outcome.helpful),
+                  interval: tr(c.outcome.interval),
+                  today: tr(c.outcome.todayLine),
+                  scale: tr(c.outcome.scale),
+                },
+                formatValue: formatEndpoint,
+                expectedLabel: (s) =>
+                  fill(tr(c.outcome.expectedHover), { value: formatEndpoint(s) }),
+              }}
             />
           </div>
         )}

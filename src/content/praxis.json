@@ -29,10 +29,6 @@
     "en": "You'll see a ranking of care components here, on top of usual care – from what's likely to help this patient most to the least."
   },
   "ranking": {
-    "usualCareHeading": {
-      "de": "Aktuelle Versorgung (Referenz)",
-      "en": "Current care (reference)"
-    },
     "helpfulSection": {
       "de": "Wahrscheinlich hilfreicher als die übliche Versorgung",
       "en": "Likely to help more than usual care"
@@ -42,6 +38,26 @@
       "de": "Rang {rank} von {total} — nach erwartetem Zusatznutzen gereiht",
       "en": "Rank {rank} of {total} — ranked by expected added benefit"
     }
+  },
+  "outcome": {
+    "today": { "de": "PHQ-9 heute ({baseline})", "en": "PHQ-9 today ({baseline})" },
+    "todayLine": { "de": "PHQ-9 heute", "en": "PHQ-9 today" },
+    "expected": {
+      "de": "Erwarteter PHQ-9 nach 12 Mo. (Mittelwert)",
+      "en": "Expected PHQ-9 at 12 mo. (mean)"
+    },
+    "expectedHover": {
+      "de": "Erwarteter PHQ-9 nach 12 Mo.: {value}",
+      "en": "Expected PHQ-9 at 12 mo.: {value}"
+    },
+    "helpful": { "de": "Niedriger als heute", "en": "Lower than today" },
+    "interval": { "de": "95 %-Kredibilitätsintervall", "en": "95% credible interval" },
+    "scale": {
+      "de": "PHQ-9-Skala 0–27, niedriger = besser",
+      "en": "PHQ-9 scale 0–27, lower = better"
+    },
+    "fewer": { "de": "weniger Beschwerden", "en": "fewer symptoms" },
+    "more": { "de": "mehr Beschwerden", "en": "more symptoms" }
   },
   "rows": {
     "phq9Total": { "de": "PHQ-9 Summenwert", "en": "PHQ-9 total" },
@@ -74,11 +90,12 @@
   "table": {
     "careOption": { "de": "Versorgungsoption", "en": "Care option" },
     "rank": { "de": "Rang", "en": "Rank" },
+    "endpoint": { "de": "PHQ-9 12 Mo. (95%-KI)", "en": "PHQ-9 12 mo. (95% CI)" },
     "note": { "de": "Einschätzung", "en": "Assessment" },
     "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" }
   },
   "footer": {
-    "de": "Dieser Kurzbefund stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Bausteine sind nach erwartetem Zusatznutzen gereiht, nicht nach exakten Zahlenwerten. Die Einschätzungen sind nicht klinisch validiert. Alle Angaben bleiben in der Browser-Sitzung des Patienten.",
-    "en": "This report comes from a research prototype built on a component network meta-analysis (10 components, 12 studies). Components are ranked by expected added benefit, not exact numeric values. These assessments haven't been clinically validated. Everything entered stays in the patient's browser session."
+    "de": "Dieser Kurzbefund stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Bausteine sind nach erwartetem Zusatznutzen gereiht; die Werte zeigen den erwarteten PHQ-9 nach 12 Monaten mit 95 %-Posterior-Kredibilitätsintervall. Die Einschätzungen sind nicht klinisch validiert. Alle Angaben bleiben in der Browser-Sitzung des Patienten.",
+    "en": "This report comes from a research prototype built on a component network meta-analysis (10 components, 12 studies). Components are ranked by expected added benefit; values show the expected PHQ-9 at 12 months with its 95% posterior credible interval. These assessments haven't been clinically validated. Everything entered stays in the patient's browser session."
   }
 }

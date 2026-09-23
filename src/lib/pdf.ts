@@ -3,7 +3,8 @@ import autoTable from "jspdf-autotable";
 
 export type PdfRow = { label: string; value: string; tone?: "warning" | "destructive" | undefined };
 export type PdfPhqItem = { index: number; label: string; value: number };
-export type PdfScenarioRow = { label: string; rank: string; note: string };
+/** `endpoint` (expected PHQ-9 with CI) is only filled on the GP report; the patient PDF shows no numbers. */
+export type PdfScenarioRow = { label: string; rank: string; endpoint?: string; note: string };
 export type PdfScenarioTable = { heading: string; rows: PdfScenarioRow[] };
 
 export type PraxisPdfInput = {
@@ -18,7 +19,7 @@ export type PraxisPdfInput = {
   phq9Heading: string;
   phq9Items: PdfPhqItem[];
   modelHeading: string;
-  tableHeaders: { careOption: string; rank: string; note: string };
+  tableHeaders: { careOption: string; rank: string; endpoint: string; note: string };
   scenarioTables: PdfScenarioTable[];
   footer: string;
 };
@@ -170,10 +171,16 @@ export function generatePraxisPdf(input: PraxisPdfInput): void {
         [
           pdfSafe(input.tableHeaders.rank),
           pdfSafe(input.tableHeaders.careOption),
+          pdfSafe(input.tableHeaders.endpoint),
           pdfSafe(input.tableHeaders.note),
         ],
       ],
-      body: table.rows.map((r) => [pdfSafe(r.rank), pdfSafe(r.label), pdfSafe(r.note)]),
+      body: table.rows.map((r) => [
+        pdfSafe(r.rank),
+        pdfSafe(r.label),
+        pdfSafe(r.endpoint ?? "–"),
+        pdfSafe(r.note),
+      ]),
       theme: "striped",
       styles: { fontSize: 8.5 },
       headStyles: { fillColor: [245, 245, 245], textColor: [90, 90, 90], fontStyle: "normal" },

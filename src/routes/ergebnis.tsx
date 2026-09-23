@@ -177,11 +177,7 @@ function Results() {
       return {
         label: scenarioLabel(scenario),
         rank,
-        note: isUsualCare
-          ? tr(r.ranking.usualCareHeading)
-          : isHelpful(scenario)
-            ? tr(r.legend.better)
-            : "–",
+        note: !isUsualCare && isHelpful(scenario) ? tr(r.legend.better) : "–",
       };
     });
 
@@ -273,11 +269,24 @@ function Results() {
                 labelLines={scenarioLabelLines}
                 description={scenarioDescription}
                 helpful={isHelpful}
-                usualCareHeading={tr(r.ranking.usualCareHeading)}
                 usualCareDescription={tr(r.scenarios.usualCare.description)}
                 helpfulSectionLabel={tr(r.ranking.helpfulSection)}
                 otherSectionLabel={tr(r.ranking.otherSection)}
                 rankAriaLabel={(rank, total) => fill(tr(r.ranking.rankAria), { rank, total })}
+                outcome={{
+                  baseline: p.baseline,
+                  todayLabel: tr(r.legend.today),
+                  expectedLabel: () => tr(r.legend.expected),
+                  lowLabel: tr(r.legend.fewer),
+                  highLabel: tr(r.legend.more),
+                  legend: {
+                    expected: tr(r.legend.expected),
+                    helpful: tr(r.legend.helpful),
+                    interval: tr(r.legend.interval),
+                    today: tr(r.legend.today),
+                    scale: tr(r.legend.scale),
+                  },
+                }}
               />
             </div>
           )}
