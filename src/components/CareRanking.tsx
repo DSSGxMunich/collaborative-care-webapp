@@ -4,13 +4,13 @@ import {
   OutcomeLegend,
   OutcomeStrip,
   ScaleAxis,
-  TodayPointer,
   type OutcomeLegendLabels,
 } from "@/components/OutcomeStrip";
 
 export type OutcomeDisplay = {
   /** The patient's PHQ-9 today — the reference line on every strip. */
   baseline: number;
+  /** Shown on hover over any row's today line. */
   todayLabel: string;
   lowLabel: string;
   highLabel: string;
@@ -90,12 +90,6 @@ export function CareRanking({
 
   return (
     <div>
-      <div className="border-x border-transparent">
-        <Track paddingX={rowPaddingX}>
-          <TodayPointer baseline={outcome.baseline} label={outcome.todayLabel} />
-        </Track>
-      </div>
-
       <div className={`rounded-md border border-border bg-secondary/50 ${rowPaddingY}`}>
         <div className={rowPaddingX}>
           <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
@@ -114,7 +108,11 @@ export function CareRanking({
         </div>
         <div className="mt-2.5">
           <Track paddingX={rowPaddingX}>
-            <OutcomeStrip scenario={usualCare} baseline={outcome.baseline} />
+            <OutcomeStrip
+              scenario={usualCare}
+              baseline={outcome.baseline}
+              todayLabel={outcome.todayLabel}
+            />
           </Track>
         </div>
       </div>
@@ -156,7 +154,11 @@ export function CareRanking({
                     <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{desc}</p>
                   ) : null}
                   <div className="mt-2.5">
-                    <OutcomeStrip scenario={scenario} baseline={outcome.baseline} />
+                    <OutcomeStrip
+                      scenario={scenario}
+                      baseline={outcome.baseline}
+                      todayLabel={outcome.todayLabel}
+                    />
                   </div>
                 </div>
               </div>

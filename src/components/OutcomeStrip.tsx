@@ -25,45 +25,48 @@ const tone = (improved: boolean) =>
  * a bar for its 95% credible interval, and a vertical line at the patient's
  * PHQ-9 today. It shows no numbers itself. Whether numbers appear is up to
  * the caller (patients: none, GPs: shown next to the label).
+ *
+ * The bar has end caps because some intervals (usual care especially) are
+ * narrower than the dot. Without caps, the dot would hide the whole bar.
+ *
+ * "Today" is not labelled on the page. Hovering near the today line in any
+ * row shows `todayLabel`, through a hit area wider than the 2px line so it
+ * is easy to find. It is visual only, since the strip is aria-hidden.
  */
-export function OutcomeStrip({ scenario, baseline }: { scenario: Scenario; baseline: number }) {
+export function OutcomeStrip({
+  scenario,
+  baseline,
+  todayLabel,
+}: {
+  scenario: Scenario;
+  baseline: number;
+  todayLabel: string;
+}) {
   const [low, high] = scenario.endpointRange;
   const t = tone(scenario.expectedEndpoint < baseline);
+  const cap = `absolute top-1/2 h-2 w-0.5 -translate-x-1/2 -translate-y-1/2 rounded-full ${t.bar}`;
   return (
     <div aria-hidden className="relative h-4">
       <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-border" />
       <div
-        className="absolute top-0 bottom-0 border-l-2 border-foreground/70"
-        style={{ left: `${pct(baseline)}%` }}
-      />
-      <div
         className={`absolute top-1/2 h-0.5 -translate-y-1/2 rounded-full ${t.bar}`}
         style={{ left: `${pct(low)}%`, width: `${pct(high) - pct(low)}%` }}
       />
+      <div className={cap} style={{ left: `${pct(low)}%` }} />
+      <div className={cap} style={{ left: `${pct(high)}%` }} />
       <div
-        className={`absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 bg-card ${t.dot}`}
+        className={`absolute top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 bg-card ${t.dot}`}
         style={{ left: `${pct(scenario.expectedEndpoint)}%` }}
       />
-    </div>
-  );
-}
-
-/** Label with a short tick pointing at today's position, sitting above the first strip. */
-export function TodayPointer({ baseline, label }: { baseline: number; label: string }) {
-  // Clamped so a label near 0 or 27 doesn't run off the track's edge.
-  const left = Math.min(90, Math.max(10, pct(baseline)));
-  return (
-    <div aria-hidden className="relative h-8">
-      <span
-        className="absolute top-0 -translate-x-1/2 whitespace-nowrap text-xs font-bold text-foreground"
-        style={{ left: `${left}%` }}
-      >
-        {label}
-      </span>
-      <span
-        className="absolute bottom-0 h-2.5 w-0.5 -translate-x-1/2 bg-foreground/70"
+      <div
+        className="group absolute -top-1 -bottom-1 z-10 flex w-4 -translate-x-1/2 justify-center"
         style={{ left: `${pct(baseline)}%` }}
-      />
+      >
+        <span className="h-full w-0.5 bg-foreground/70 group-hover:bg-foreground" />
+        <span className="pointer-events-none absolute bottom-full mb-1 whitespace-nowrap rounded-md border border-border bg-card px-2 py-1 text-xs font-medium opacity-0 shadow-sm transition-opacity group-hover:opacity-100">
+          {todayLabel}
+        </span>
+      </div>
     </div>
   );
 }
