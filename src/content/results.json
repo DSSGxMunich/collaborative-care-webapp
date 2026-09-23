@@ -85,7 +85,7 @@
   "legend": {
     "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
     "expected": { "de": "Erwarteter Wert nach 12 Monaten", "en": "Expected result at 12 months" },
-    "helpful": { "de": "Wahrscheinlich besser als heute", "en": "Likely better than today" },
+    "helpful": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
     "interval": { "de": "Unsicherheitsbereich", "en": "Range of uncertainty" },
     "today": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" },
     "scale": {
