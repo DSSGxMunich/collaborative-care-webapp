@@ -96,7 +96,6 @@
     "more": { "de": "mehr Beschwerden", "en": "more symptoms" }
   },
   "ranking": {
-    "usualCareHeading": { "de": "Ihre derzeitige Versorgung", "en": "Your current care" },
     "helpfulSection": {
       "de": "Wahrscheinlich hilfreicher als Ihre derzeitige Versorgung",
       "en": "Likely to help more than your current care"

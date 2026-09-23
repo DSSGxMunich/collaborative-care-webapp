@@ -61,7 +61,6 @@ export function CareRanking({
   labelLines,
   description,
   helpful,
-  usualCareHeading,
   usualCareDescription,
   helpfulSectionLabel,
   otherSectionLabel,
@@ -74,7 +73,6 @@ export function CareRanking({
   labelLines: (scenario: Scenario) => string[];
   description: (scenario: Scenario) => string | undefined;
   helpful: (scenario: Scenario) => boolean;
-  usualCareHeading: string;
   /** What "usual care" itself means. */
   usualCareDescription?: string;
   helpfulSectionLabel: string;
@@ -92,13 +90,9 @@ export function CareRanking({
     <div>
       <div className={`rounded-md border border-border bg-secondary/50 ${rowPaddingY}`}>
         <div className={rowPaddingX}>
-          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            {usualCareHeading}
-          </p>
           <LabelWithValue
             lines={[labelLines(usualCare).join(" ")]}
             value={outcome.formatValue?.(usualCare)}
-            className="mt-1"
           />
           {usualCareDescription ? (
             <p className="mt-1 text-xs leading-relaxed text-muted-foreground">

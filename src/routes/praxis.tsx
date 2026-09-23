@@ -154,11 +154,7 @@ function Clinician() {
         label: careOptionLabel(scenario),
         rank,
         endpoint: formatEndpoint(scenario),
-        note: isUsualCare
-          ? tr(c.ranking.usualCareHeading)
-          : isHelpful(scenario)
-            ? tr(c.table.better)
-            : "–",
+        note: !isUsualCare && isHelpful(scenario) ? tr(c.table.better) : "–",
       };
     });
 
@@ -282,7 +278,6 @@ function Clinician() {
               labelLines={careOptionLabelLines}
               description={careOptionDescription}
               helpful={isHelpful}
-              usualCareHeading={tr(c.ranking.usualCareHeading)}
               usualCareDescription={tr(r.scenarios.usualCare.description)}
               helpfulSectionLabel={tr(c.ranking.helpfulSection)}
               otherSectionLabel={tr(c.ranking.otherSection)}

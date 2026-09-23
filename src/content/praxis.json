@@ -29,10 +29,6 @@
     "en": "You'll see a ranking of care components here, on top of usual care – from what's likely to help this patient most to the least."
   },
   "ranking": {
-    "usualCareHeading": {
-      "de": "Aktuelle Versorgung (Referenz)",
-      "en": "Current care (reference)"
-    },
     "helpfulSection": {
       "de": "Wahrscheinlich hilfreicher als die übliche Versorgung",
       "en": "Likely to help more than usual care"

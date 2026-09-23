@@ -177,11 +177,7 @@ function Results() {
       return {
         label: scenarioLabel(scenario),
         rank,
-        note: isUsualCare
-          ? tr(r.ranking.usualCareHeading)
-          : isHelpful(scenario)
-            ? tr(r.legend.better)
-            : "–",
+        note: !isUsualCare && isHelpful(scenario) ? tr(r.legend.better) : "–",
       };
     });
 
@@ -273,7 +269,6 @@ function Results() {
                 labelLines={scenarioLabelLines}
                 description={scenarioDescription}
                 helpful={isHelpful}
-                usualCareHeading={tr(r.ranking.usualCareHeading)}
                 usualCareDescription={tr(r.scenarios.usualCare.description)}
                 helpfulSectionLabel={tr(r.ranking.helpfulSection)}
                 otherSectionLabel={tr(r.ranking.otherSection)}
