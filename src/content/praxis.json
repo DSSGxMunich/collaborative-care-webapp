@@ -25,7 +25,7 @@
     "en": "Ranking of care components"
   },
   "modelEstimatesIntro": {
-    "de": "Sie sehen hier eine Rangfolge von Versorgungsbausteinen, zusätzlich zur üblichen Versorgung – von der für diese:n Patient:in wahrscheinlich hilfreichsten bis zur am wenigsten hilfreichen Option.",
+    "de": "Sie sehen hier eine Rangfolge von Versorgungsbausteinen, zusätzlich zur üblichen Versorgung – vom für diese:n Patient:in wahrscheinlich hilfreichsten bis zum am wenigsten hilfreichen Baustein.",
     "en": "You'll see a ranking of care components here, on top of usual care – from what's likely to help this patient most to the least."
   },
   "ranking": {
@@ -88,7 +88,7 @@
     "riskScore": { "de": "Schritt-1-Schätzung", "en": "Step 1 estimate" }
   },
   "table": {
-    "careOption": { "de": "Versorgungsoption", "en": "Care option" },
+    "careComponent": { "de": "Versorgungsbaustein", "en": "Care component" },
     "rank": { "de": "Rang", "en": "Rank" },
     "endpoint": { "de": "PHQ-9 12 Mo. (95%-KI)", "en": "PHQ-9 12 mo. (95% CI)" },
     "note": { "de": "Einschätzung", "en": "Assessment" },

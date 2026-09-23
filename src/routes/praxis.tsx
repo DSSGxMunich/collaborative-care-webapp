@@ -111,13 +111,13 @@ function Clinician() {
   ];
 
   /** Usual care keeps its own label; a package's label is its active components joined together. */
-  const careOptionLabel = (scenario: (typeof p.scenarios)[number]) =>
+  const careComponentLabel = (scenario: (typeof p.scenarios)[number]) =>
     scenario.id === "usualCare"
       ? tr(r.scenarios.usualCare.label)
       : scenario.components.map((id) => tr(r.components[id].short)).join(" + ");
 
-  /** Same components as careOptionLabel, grouped at most 2 per line so a 3-4 component package doesn't run on into one long string in the table cell. */
-  const careOptionLabelLines = (scenario: (typeof p.scenarios)[number]): string[] =>
+  /** Same components as careComponentLabel, grouped at most 2 per line so a 3-4 component package doesn't run on into one long string in the table cell. */
+  const careComponentLabelLines = (scenario: (typeof p.scenarios)[number]): string[] =>
     scenario.id === "usualCare"
       ? [tr(r.scenarios.usualCare.label)]
       : chunk(
@@ -126,7 +126,7 @@ function Clinician() {
         ).map((group) => group.join(" + "));
 
   /** Every row is a single component added alone, so it always has one unambiguous explanation to show. */
-  const careOptionDescription = (scenario: (typeof p.scenarios)[number]): string | undefined => {
+  const careComponentDescription = (scenario: (typeof p.scenarios)[number]): string | undefined => {
     const [id] = scenario.components;
     return id !== undefined && scenario.components.length === 1
       ? tr(r.components[id].description)
@@ -151,7 +151,10 @@ function Clinician() {
       const isUsualCare = scenario.id === "usualCare";
       const rank = isUsualCare ? "–" : String(rankedScenarios.indexOf(scenario) + 1);
       return {
-        label: careOptionLabel(scenario),
+        label: careComponentLabel(scenario),
+        description: isUsualCare
+          ? tr(r.scenarios.usualCare.description)
+          : careComponentDescription(scenario),
         rank,
         endpoint: formatEndpoint(scenario),
         note: !isUsualCare && isHelpful(scenario) ? tr(c.table.better) : "–",
@@ -177,7 +180,7 @@ function Clinician() {
       })),
       modelHeading: tr(c.modelEstimates),
       tableHeaders: {
-        careOption: tr(c.table.careOption),
+        careComponent: tr(c.table.careComponent),
         rank: tr(c.table.rank),
         endpoint: tr(c.table.endpoint),
         note: tr(c.table.note),
@@ -275,8 +278,8 @@ function Clinician() {
               compact
               usualCare={usualCareScenario}
               ranked={rankedScenarios}
-              labelLines={careOptionLabelLines}
-              description={careOptionDescription}
+              labelLines={careComponentLabelLines}
+              description={careComponentDescription}
               helpful={isHelpful}
               usualCareDescription={tr(r.scenarios.usualCare.description)}
               helpfulSectionLabel={tr(c.ranking.helpfulSection)}

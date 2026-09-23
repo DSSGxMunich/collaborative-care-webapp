@@ -3,8 +3,24 @@ import autoTable from "jspdf-autotable";
 
 export type PdfRow = { label: string; value: string; tone?: "warning" | "destructive" | undefined };
 export type PdfPhqItem = { index: number; label: string; value: number };
-/** `endpoint` (expected PHQ-9 with CI) is only filled on the GP report; the patient PDF shows no numbers. */
-export type PdfScenarioRow = { label: string; rank: string; endpoint?: string; note: string };
+/**
+ * `endpoint` (expected PHQ-9 with CI) is only filled on the GP report; the
+ * patient PDF shows no numbers. `description` explains the care component
+ * and is printed under its name.
+ */
+export type PdfScenarioRow = {
+  label: string;
+  description?: string | undefined;
+  rank: string;
+  endpoint?: string;
+  note: string;
+};
+type ScenarioTableHeaders = {
+  careComponent: string;
+  rank: string;
+  endpoint?: string;
+  note: string;
+};
 export type PdfScenarioTable = { heading: string; rows: PdfScenarioRow[] };
 
 export type PraxisPdfInput = {
@@ -19,7 +35,7 @@ export type PraxisPdfInput = {
   phq9Heading: string;
   phq9Items: PdfPhqItem[];
   modelHeading: string;
-  tableHeaders: { careOption: string; rank: string; endpoint: string; note: string };
+  tableHeaders: ScenarioTableHeaders & { endpoint: string };
   scenarioTables: PdfScenarioTable[];
   footer: string;
 };
@@ -34,7 +50,7 @@ export type ResultsPdfInput = {
   scenariosHeading: string;
   scenariosBody: string;
   modelHeading: string;
-  tableHeaders: { careOption: string; rank: string; note: string };
+  tableHeaders: ScenarioTableHeaders;
   scenarioTables: PdfScenarioTable[];
   predictorsHeading: string;
   predictorsBody: string;
@@ -63,6 +79,86 @@ const PAGE_WIDTH = 210; // A4 mm
  */
 const pdfSafe = (text: string): string =>
   text.replaceAll("Δ", "Diff.").replaceAll("≤", "<=").replaceAll("≥", ">=");
+
+/**
+ * The ranked care-component table shared by both PDFs. It has an endpoint
+ * column only when `headers.endpoint` is given (GP report).
+ *
+ * autoTable uses one font per cell, but each care component's name should
+ * read as the main text with its description smaller and grey underneath.
+ * So the cell's text is "name\ndescription" only so that autoTable sizes
+ * the row. willDrawCell clears it, and didDrawCell draws the two parts in
+ * their own styles. The description is drawn smaller than autoTable
+ * measured it, so it always fits.
+ */
+function drawScenarioTable(
+  doc: jsPDF,
+  startY: number,
+  headers: ScenarioTableHeaders,
+  rows: PdfScenarioRow[],
+): number {
+  const withEndpoint = headers.endpoint !== undefined;
+  const hasDescription = (rowIndex: number) => Boolean(rows[rowIndex]?.description);
+  const lineHeight = (fontSize: number) =>
+    (fontSize * doc.getLineHeightFactor()) / doc.internal.scaleFactor;
+
+  autoTable(doc, {
+    startY,
+    margin: { left: MARGIN, right: MARGIN },
+    head: [
+      [
+        pdfSafe(headers.rank),
+        pdfSafe(headers.careComponent),
+        ...(withEndpoint ? [pdfSafe(headers.endpoint ?? "")] : []),
+        pdfSafe(headers.note),
+      ],
+    ],
+    body: rows.map((r) => [
+      pdfSafe(r.rank),
+      pdfSafe(r.description ? `${r.label}\n${r.description}` : r.label),
+      ...(withEndpoint ? [pdfSafe(r.endpoint ?? "–")] : []),
+      pdfSafe(r.note),
+    ]),
+    theme: "striped",
+    styles: { fontSize: 8.5 },
+    headStyles: { fillColor: [245, 245, 245], textColor: [90, 90, 90], fontStyle: "normal" },
+    // Fixed widths so "Likely to help" and "9.5 (8.0–11.0)" stay on one line;
+    // the care-component column takes the rest.
+    columnStyles: withEndpoint
+      ? {
+          0: { cellWidth: 12, halign: "center" },
+          2: { cellWidth: 28 },
+          3: { cellWidth: 26 },
+        }
+      : { 0: { cellWidth: 12, halign: "center" }, 2: { cellWidth: 26 } },
+    willDrawCell: (data) => {
+      if (data.section === "body" && data.column.index === 1 && hasDescription(data.row.index)) {
+        data.cell.text = [];
+      }
+    },
+    didDrawCell: (data) => {
+      const row = rows[data.row.index];
+      if (data.section !== "body" || data.column.index !== 1 || !row?.description) return;
+      const x = data.cell.x + data.cell.padding("left");
+      const width = data.cell.width - data.cell.padding("horizontal");
+      let y = data.cell.y + data.cell.padding("top");
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8.5);
+      doc.setTextColor(20, 20, 20);
+      const labelLines = doc.splitTextToSize(pdfSafe(row.label), width);
+      doc.text(labelLines, x, y, { baseline: "top" });
+      y += labelLines.length * lineHeight(8.5) + 0.6;
+
+      doc.setFontSize(7.5);
+      doc.setTextColor(110, 110, 110);
+      const descriptionLines = doc.splitTextToSize(pdfSafe(row.description), width);
+      doc.text(descriptionLines, x, y, { baseline: "top" });
+    },
+  });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (doc as any).lastAutoTable.finalY;
+}
 
 /** Generates and downloads a self-contained clinician summary PDF — no browser print dialog, no page chrome. */
 export function generatePraxisPdf(input: PraxisPdfInput): void {
@@ -164,30 +260,7 @@ export function generatePraxisPdf(input: PraxisPdfInput): void {
     doc.setFontSize(12);
     doc.text(pdfSafe(`${input.modelHeading} — ${table.heading}`), MARGIN, y);
     y += 4;
-    autoTable(doc, {
-      startY: y,
-      margin: { left: MARGIN, right: MARGIN },
-      head: [
-        [
-          pdfSafe(input.tableHeaders.rank),
-          pdfSafe(input.tableHeaders.careOption),
-          pdfSafe(input.tableHeaders.endpoint),
-          pdfSafe(input.tableHeaders.note),
-        ],
-      ],
-      body: table.rows.map((r) => [
-        pdfSafe(r.rank),
-        pdfSafe(r.label),
-        pdfSafe(r.endpoint ?? "–"),
-        pdfSafe(r.note),
-      ]),
-      theme: "striped",
-      styles: { fontSize: 8.5 },
-      headStyles: { fillColor: [245, 245, 245], textColor: [90, 90, 90], fontStyle: "normal" },
-      columnStyles: { 0: { cellWidth: 12, halign: "center" } },
-    });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    y = (doc as any).lastAutoTable.finalY + 8;
+    y = drawScenarioTable(doc, y, input.tableHeaders, table.rows) + 8;
   }
 
   if (y > 260) {
@@ -262,24 +335,7 @@ export function generateResultsPdf(input: ResultsPdfInput): void {
     doc.setTextColor(20, 20, 20);
     doc.text(pdfSafe(`${input.modelHeading} — ${table.heading}`), MARGIN, y);
     y += 4;
-    autoTable(doc, {
-      startY: y,
-      margin: { left: MARGIN, right: MARGIN },
-      head: [
-        [
-          pdfSafe(input.tableHeaders.rank),
-          pdfSafe(input.tableHeaders.careOption),
-          pdfSafe(input.tableHeaders.note),
-        ],
-      ],
-      body: table.rows.map((r) => [pdfSafe(r.rank), pdfSafe(r.label), pdfSafe(r.note)]),
-      theme: "striped",
-      styles: { fontSize: 8.5 },
-      headStyles: { fillColor: [245, 245, 245], textColor: [90, 90, 90], fontStyle: "normal" },
-      columnStyles: { 0: { cellWidth: 12, halign: "center" } },
-    });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    y = (doc as any).lastAutoTable.finalY + 8;
+    y = drawScenarioTable(doc, y, input.tableHeaders, table.rows) + 8;
   }
 
   if (y > 250) {

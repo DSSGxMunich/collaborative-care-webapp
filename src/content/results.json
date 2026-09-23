@@ -85,7 +85,7 @@
   "legend": {
     "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
     "expected": { "de": "Erwarteter Wert nach 12 Monaten", "en": "Expected result at 12 months" },
-    "helpful": { "de": "Wahrscheinlich besser als heute", "en": "Likely better than today" },
+    "helpful": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
     "interval": { "de": "Unsicherheitsbereich", "en": "Range of uncertainty" },
     "today": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" },
     "scale": {
@@ -102,8 +102,8 @@
     },
     "otherSection": { "de": "Weitere Bausteine", "en": "Other components" },
     "rankAria": {
-      "de": "Platz {rank} von {total} — nach erwartetem Nutzen gereiht, hilfreichste Option zuerst",
-      "en": "Rank {rank} of {total} — ordered by expected benefit, most helpful option first"
+      "de": "Platz {rank} von {total} — nach erwartetem Nutzen gereiht, hilfreichster Baustein zuerst",
+      "en": "Rank {rank} of {total} — ordered by expected benefit, most helpful care component first"
     }
   },
   "scenarios": {
@@ -322,8 +322,8 @@
     "en": "What is most likely to help you"
   },
   "whatCanBeExpectedBody": {
-    "de": "Sie sehen hier eine Rangfolge von Behandlungsoptionen – von der wahrscheinlich hilfreichsten bis zur am wenigsten hilfreichen.",
-    "en": "You'll see a ranking of treatments here, from what's likely to be most helpful to the least."
+    "de": "Sie sehen hier eine Rangfolge von Versorgungsbausteinen – vom wahrscheinlich hilfreichsten bis zum am wenigsten hilfreichen.",
+    "en": "You'll see a ranking of care components here, from what's likely to be most helpful to the least."
   },
   "whatInfluences": {
     "de": "Was beeinflusst diese Schätzung?",
@@ -343,7 +343,7 @@
       "en": "Your personal results. This file is generated only on your device and is never uploaded anywhere."
     },
     "table": {
-      "careOption": { "de": "Versorgungsoption", "en": "Care option" },
+      "careComponent": { "de": "Versorgungsbaustein", "en": "Care component" },
       "rank": { "de": "Rang", "en": "Rank" },
       "note": { "de": "Einschätzung", "en": "Assessment" }
     },
