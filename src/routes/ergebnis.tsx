@@ -278,6 +278,19 @@ function Results() {
                 helpfulSectionLabel={tr(r.ranking.helpfulSection)}
                 otherSectionLabel={tr(r.ranking.otherSection)}
                 rankAriaLabel={(rank, total) => fill(tr(r.ranking.rankAria), { rank, total })}
+                outcome={{
+                  baseline: p.baseline,
+                  todayLabel: tr(r.legend.today),
+                  lowLabel: tr(r.legend.fewer),
+                  highLabel: tr(r.legend.more),
+                  legend: {
+                    expected: tr(r.legend.expected),
+                    helpful: tr(r.legend.helpful),
+                    interval: tr(r.legend.interval),
+                    today: tr(r.legend.today),
+                    scale: tr(r.legend.scale),
+                  },
+                }}
               />
             </div>
           )}

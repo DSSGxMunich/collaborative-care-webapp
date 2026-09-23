@@ -1,4 +1,39 @@
+import type { ReactNode } from "react";
 import type { Scenario } from "@/lib/model";
+import {
+  OutcomeLegend,
+  OutcomeStrip,
+  ScaleAxis,
+  TodayPointer,
+  type OutcomeLegendLabels,
+} from "@/components/OutcomeStrip";
+
+export type OutcomeDisplay = {
+  /** The patient's PHQ-9 today — the reference line on every strip. */
+  baseline: number;
+  todayLabel: string;
+  lowLabel: string;
+  highLabel: string;
+  /** Numbered axis ticks; omitted on the patient page, which shows no numbers. */
+  ticks?: number[];
+  legend: OutcomeLegendLabels;
+  /** Numeric estimate shown beside each label (GP page only). */
+  formatValue?: (scenario: Scenario) => string;
+};
+
+/**
+ * Lines a strip, pointer or axis up with the rows' strips: same horizontal
+ * padding, and an empty column the width of the rank badge (w-6 + gap-3),
+ * so every 0–27 track starts and ends at the same x.
+ */
+function Track({ paddingX, children }: { paddingX: string; children: ReactNode }) {
+  return (
+    <div className={`flex gap-3 ${paddingX}`}>
+      <span aria-hidden className="w-6 shrink-0" />
+      <div className="min-w-0 flex-1">{children}</div>
+    </div>
+  );
+}
 
 /**
  * Shows care options as an ordered list — rank only, no PHQ-9 point
@@ -15,6 +50,10 @@ import type { Scenario } from "@/lib/model";
  * splitting the list at the point components stop beating usual care —
  * `ranked` is already sorted by expected outcome, so that split is a single
  * prefix, not a scattered subset.
+ *
+ * Below each label, an OutcomeStrip shows where that option is expected to
+ * land on the shared 0–27 PHQ-9 scale relative to today, so the list shows
+ * how far apart the options are, not just their order.
  */
 export function CareRanking({
   usualCare,
@@ -27,6 +66,7 @@ export function CareRanking({
   helpfulSectionLabel,
   otherSectionLabel,
   rankAriaLabel,
+  outcome,
   compact = false,
 }: {
   usualCare: Scenario;
@@ -40,6 +80,7 @@ export function CareRanking({
   helpfulSectionLabel: string;
   otherSectionLabel: string;
   rankAriaLabel: (rank: number, total: number) => string;
+  outcome: OutcomeDisplay;
   compact?: boolean;
 }) {
   const firstNotHelpful = ranked.findIndex((scenario) => !helpful(scenario));
@@ -49,16 +90,33 @@ export function CareRanking({
 
   return (
     <div>
-      <div className="rounded-md border border-border bg-secondary/50 p-3.5">
-        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-          {usualCareHeading}
-        </p>
-        <p className="mt-1 text-sm font-medium">{labelLines(usualCare).join(" ")}</p>
-        {usualCareDescription ? (
-          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-            {usualCareDescription}
+      <div className="border-x border-transparent">
+        <Track paddingX={rowPaddingX}>
+          <TodayPointer baseline={outcome.baseline} label={outcome.todayLabel} />
+        </Track>
+      </div>
+
+      <div className={`rounded-md border border-border bg-secondary/50 ${rowPaddingY}`}>
+        <div className={rowPaddingX}>
+          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            {usualCareHeading}
           </p>
-        ) : null}
+          <LabelWithValue
+            lines={[labelLines(usualCare).join(" ")]}
+            value={outcome.formatValue?.(usualCare)}
+            className="mt-1"
+          />
+          {usualCareDescription ? (
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+              {usualCareDescription}
+            </p>
+          ) : null}
+        </div>
+        <div className="mt-2.5">
+          <Track paddingX={rowPaddingX}>
+            <OutcomeStrip scenario={usualCare} baseline={outcome.baseline} />
+          </Track>
+        </div>
       </div>
 
       <ol className="mt-4 divide-y divide-border rounded-md border border-border">
@@ -90,22 +148,62 @@ export function CareRanking({
                 </span>
                 <div className="min-w-0 flex-1">
                   <span className="sr-only">{rankAriaLabel(rank, ranked.length)}</span>
-                  <p className="text-sm font-medium leading-snug">
-                    {labelLines(scenario).map((line, i) => (
-                      <span key={i} className="block">
-                        {line}
-                      </span>
-                    ))}
-                  </p>
+                  <LabelWithValue
+                    lines={labelLines(scenario)}
+                    value={outcome.formatValue?.(scenario)}
+                  />
                   {desc ? (
                     <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{desc}</p>
                   ) : null}
+                  <div className="mt-2.5">
+                    <OutcomeStrip scenario={scenario} baseline={outcome.baseline} />
+                  </div>
                 </div>
               </div>
             </li>
           );
         })}
       </ol>
+
+      <div className="mt-1.5 border-x border-transparent">
+        <Track paddingX={rowPaddingX}>
+          <ScaleAxis
+            ticks={outcome.ticks}
+            lowLabel={outcome.lowLabel}
+            highLabel={outcome.highLabel}
+          />
+        </Track>
+      </div>
+
+      <div className="mt-4">
+        <OutcomeLegend labels={outcome.legend} />
+      </div>
+    </div>
+  );
+}
+
+/** Option label, with the numeric estimate pinned right when one is given (GP page). */
+function LabelWithValue({
+  lines,
+  value,
+  className = "",
+}: {
+  lines: string[];
+  value?: string | undefined;
+  className?: string;
+}) {
+  return (
+    <div className={`flex items-start justify-between gap-3 ${className}`}>
+      <p className="text-sm font-medium leading-snug">
+        {lines.map((line, i) => (
+          <span key={i} className="block">
+            {line}
+          </span>
+        ))}
+      </p>
+      {value ? (
+        <span className="whitespace-nowrap text-right text-sm tabular-nums">{value}</span>
+      ) : null}
     </div>
   );
 }

@@ -83,7 +83,17 @@
   "of27": { "de": "von 27 Punkten", "en": "of 27 points" },
   "range": { "de": "Bereich", "en": "Range" },
   "legend": {
-    "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" }
+    "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
+    "expected": { "de": "Erwarteter Wert nach 12 Monaten", "en": "Expected result at 12 months" },
+    "helpful": { "de": "Wahrscheinlich besser als heute", "en": "Likely better than today" },
+    "interval": { "de": "Unsicherheitsbereich", "en": "Range of uncertainty" },
+    "today": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" },
+    "scale": {
+      "de": "PHQ-9-Skala 0–27, niedriger = weniger Beschwerden",
+      "en": "PHQ-9 scale 0–27, lower = fewer symptoms"
+    },
+    "fewer": { "de": "weniger Beschwerden", "en": "fewer symptoms" },
+    "more": { "de": "mehr Beschwerden", "en": "more symptoms" }
   },
   "ranking": {
     "usualCareHeading": { "de": "Ihre derzeitige Versorgung", "en": "Your current care" },
