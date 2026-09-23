@@ -176,6 +176,9 @@ function Results() {
       const rank = isUsualCare ? "–" : String(rankedScenarios.indexOf(scenario) + 1);
       return {
         label: scenarioLabel(scenario),
+        description: isUsualCare
+          ? tr(r.scenarios.usualCare.description)
+          : scenarioDescription(scenario),
         rank,
         note: !isUsualCare && isHelpful(scenario) ? tr(r.legend.better) : "–",
       };
@@ -193,7 +196,7 @@ function Results() {
       scenariosBody: tr(r.whatCanBeExpectedBody),
       modelHeading: tr(r.whatCanBeExpected),
       tableHeaders: {
-        careOption: tr(r.pdf.table.careOption),
+        careComponent: tr(r.pdf.table.careComponent),
         rank: tr(r.pdf.table.rank),
         note: tr(r.pdf.table.note),
       },
