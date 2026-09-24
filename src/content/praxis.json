@@ -4,13 +4,15 @@
     "de": "Vom Patienten selbst ausgefüllt. Alle Angaben sind Selbstauskunft und ersetzen keine Diagnostik.",
     "en": "Completed by the patient. All entries are self-report and do not replace clinical assessment."
   },
-  "print": { "de": "Drucken / als PDF speichern", "en": "Print / save as PDF" },
+  "print": { "de": "PDF herunterladen", "en": "Download PDF" },
   "riskFlagLabel": { "de": "Risikoflag", "en": "Risk flag" },
   "riskFlag": {
-    "none": { "de": "kein Hinweis", "en": "no indication" },
-    "low": { "de": "Item 9 positiv (einzelne Tage)", "en": "item 9 positive (several days)" },
-    "elevated": { "de": "erhöht — zeitnahe Abklärung", "en": "elevated — timely review" },
-    "acute": { "de": "AKUT — sofortiges Handeln", "en": "ACUTE — act immediately" }
+    "minimal": { "de": "minimal — kein akuter Hinweis", "en": "minimal — no acute indication" },
+    "lower": {
+      "de": "niedriger — zeitnahe Abklärung empfohlen",
+      "en": "lower — timely review recommended"
+    },
+    "higher": { "de": "höher — dringender Handlungsbedarf", "en": "higher — urgent action needed" }
   },
   "riskAdvice": {
     "de": "Suizidalität explizit ansprechen, Sicherheitsplan und Erreichbarkeit klären, ggf. fachpsychiatrische Mitbeurteilung veranlassen.",
@@ -18,20 +20,62 @@
   },
   "summary": { "de": "Zusammenfassung", "en": "Summary" },
   "phq9ItemProfile": { "de": "PHQ-9 Itemprofil", "en": "PHQ-9 item profile" },
-  "modelEstimates": { "de": "Modellschätzungen", "en": "Model estimates" },
+  "modelEstimates": {
+    "de": "Rangfolge der Versorgungsbausteine",
+    "en": "Ranking of care components"
+  },
+  "modelEstimatesIntro": {
+    "de": "Sie sehen hier eine Rangfolge von Versorgungsbausteinen, zusätzlich zur üblichen Versorgung – vom für diese:n Patient:in wahrscheinlich hilfreichsten bis zum am wenigsten hilfreichen Baustein.",
+    "en": "You'll see a ranking of care components here, on top of usual care – from what's likely to help this patient most to the least."
+  },
+  "ranking": {
+    "helpfulSection": {
+      "de": "Wahrscheinlich hilfreicher als die übliche Versorgung",
+      "en": "Likely to help more than usual care"
+    },
+    "otherSection": { "de": "Weitere Bausteine", "en": "Other components" },
+    "rankAria": {
+      "de": "Rang {rank} von {total} — nach erwartetem Zusatznutzen gereiht",
+      "en": "Rank {rank} of {total} — ranked by expected added benefit"
+    }
+  },
+  "outcome": {
+    "today": { "de": "PHQ-9 heute ({baseline})", "en": "PHQ-9 today ({baseline})" },
+    "todayLine": { "de": "PHQ-9 heute", "en": "PHQ-9 today" },
+    "expected": {
+      "de": "Erwarteter PHQ-9 nach 12 Mo. (Mittelwert)",
+      "en": "Expected PHQ-9 at 12 mo. (mean)"
+    },
+    "expectedHover": {
+      "de": "Erwarteter PHQ-9 nach 12 Mo.: {value}",
+      "en": "Expected PHQ-9 at 12 mo.: {value}"
+    },
+    "helpful": { "de": "Niedriger als heute", "en": "Lower than today" },
+    "interval": { "de": "95 %-Kredibilitätsintervall", "en": "95% credible interval" },
+    "scale": {
+      "de": "PHQ-9-Skala 0–27, niedriger = besser",
+      "en": "PHQ-9 scale 0–27, lower = better"
+    },
+    "fewer": { "de": "weniger Beschwerden", "en": "fewer symptoms" },
+    "more": { "de": "mehr Beschwerden", "en": "more symptoms" }
+  },
   "rows": {
     "phq9Total": { "de": "PHQ-9 Summenwert", "en": "PHQ-9 total" },
     "severity": { "de": "Schweregrad", "en": "Severity" },
     "suicidality": { "de": "Suizidalität (Item 9)", "en": "Suicidality (item 9)" },
     "riskAssessment": { "de": "Risikoeinschätzung", "en": "Risk assessment" },
-    "planPrep": { "de": "Konkreter Plan / Vorbereitung", "en": "Concrete plan / preparation" },
-    "canStaySafe": {
-      "de": "Kann sich bis zum Kontakt schützen",
-      "en": "Able to stay safe until contact"
+    "past": {
+      "de": "Selbstverletzung/Suizidversuch (jemals)",
+      "en": "Self-harm/suicide attempt (ever)"
     },
-    "pastAttempt": {
-      "de": "Selbstverletzung/Versuch < 12 Monate",
-      "en": "Self-harm/attempt < 12 months"
+    "plan": { "de": "Gedanken an Methode (Plan)", "en": "Thought about method (plan)" },
+    "probability": {
+      "de": "Selbsteingeschätzte Wahrscheinlichkeit",
+      "en": "Self-rated probability"
+    },
+    "preventive": {
+      "de": "Schützende Faktoren vorhanden",
+      "en": "Protective factors present"
     },
     "familyHistory": {
       "de": "Suizid/-versuch in der Familie",
@@ -41,22 +85,17 @@
     "sex": { "de": "Geschlecht", "en": "Sex" },
     "priorEpisode": { "de": "Frühere depressive Episode", "en": "Previous depressive episode" },
     "priorTreatment": { "de": "Vorbehandlungen", "en": "Previous treatments" },
-    "gad7": { "de": "GAD-7 (falls bekannt)", "en": "GAD-7 (if known)" },
-    "gad7Assumed": {
-      "de": "unbekannt (Bevölkerungswert angenommen)",
-      "en": "unknown (population value assumed)"
-    },
     "riskScore": { "de": "Schritt-1-Schätzung", "en": "Step 1 estimate" }
   },
   "table": {
-    "careOption": { "de": "Versorgungsoption", "en": "Care option" },
+    "careComponent": { "de": "Versorgungsbaustein", "en": "Care component" },
+    "rank": { "de": "Rang", "en": "Rank" },
     "endpoint": { "de": "PHQ-9 12 Mo. (95%-KI)", "en": "PHQ-9 12 mo. (95% CI)" },
-    "delta": { "de": "Δ vs. übliche Versorgung", "en": "Δ vs. usual care" },
-    "better": { "de": "Besser als übliche Versorgung", "en": "Better than usual care" },
-    "worse": { "de": "Schlechter als übliche Versorgung", "en": "Worse than usual care" }
+    "note": { "de": "Einschätzung", "en": "Assessment" },
+    "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" }
   },
   "footer": {
-    "de": "Dieser Kurzbefund stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (6 Bausteine, 7 Studien) beruht. Die Werte in Klammern sind 95 %-Posterior-Kredibilitätsintervalle. Die Vorhersagen sind nicht klinisch validiert. Alle Angaben bleiben in der Browser-Sitzung des Patienten.",
-    "en": "This report comes from a research prototype built on a component network meta-analysis (6 components, 7 trials). The numbers in parentheses are 95% posterior credible intervals, and these predictions haven't been clinically validated. Everything entered stays in the patient's browser session."
+    "de": "Dieser Kurzbefund stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Bausteine sind nach erwartetem Zusatznutzen gereiht; die Werte zeigen den erwarteten PHQ-9 nach 12 Monaten mit 95 %-Posterior-Kredibilitätsintervall. Die Einschätzungen sind nicht klinisch validiert. Alle Angaben bleiben in der Browser-Sitzung des Patienten.",
+    "en": "This report comes from a research prototype built on a component network meta-analysis (10 components, 12 studies). Components are ranked by expected added benefit; values show the expected PHQ-9 at 12 months with its 95% posterior credible interval. These assessments haven't been clinically validated. Everything entered stays in the patient's browser session."
   }
 }

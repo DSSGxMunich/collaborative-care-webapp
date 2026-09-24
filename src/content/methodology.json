@@ -19,20 +19,6 @@
       ]
     },
     {
-      "id": "trialsAndSample",
-      "heading": {
-        "de": "Studien und Stichprobe",
-        "en": "Trials and sample"
-      },
-      "body": [
-        {
-          "de": "Platzhalter: Diese Sektion wird ergänzt, sobald die genaue Anzahl der eingeschlossenen randomisierten Studien und Patient:innen vom Forschungsteam bestätigt ist.",
-          "en": "Placeholder: this section will be filled in once the exact number of included randomized trials and patients is confirmed by the research team.",
-          "placeholder": true
-        }
-      ]
-    },
-    {
       "id": "step1",
       "heading": {
         "de": "Schritt 1: Ordinale Regression (Risikoscore)",
@@ -40,16 +26,16 @@
       },
       "body": [
         {
-          "de": "Ein ordinales Regressionsmodell (gefittet mit R, Paket rms, Funktion orm) sagt aus Alter, Geschlecht, PHQ-9-Ausgangswert und GAD-7 den erwarteten PHQ-9-Wert nach 12 Monaten unter üblicher Versorgung voraus, also ohne jeden zusätzlichen Versorgungsbaustein. Dieser erwartete Wert wird \"Risikoscore\" genannt.",
-          "en": "An ordinal regression model (fitted in R, package rms, function orm) predicts the expected 12-month PHQ-9 under usual care, that is, with no added structured-care component, from age, sex, baseline PHQ-9 and GAD-7. This expected value is called the \"risk score\"."
+          "de": "Ein proportional-odds-Mischmodell (gefittet mit R, Paket ordinal, Funktion clmm, mit zufälligen Effekten je Studie) sagt aus Alter, Geschlecht und PHQ-9-Ausgangswert den Risikoscore für den erwarteten PHQ-9-Wert nach 12 Monaten unter üblicher Versorgung voraus, also ohne jeden zusätzlichen Versorgungsbaustein. GAD-7 wurde in diesem Refit als Prädiktor entfernt.",
+          "en": "A proportional-odds mixed model (fitted with R, package ordinal, function clmm, with per-study random effects) predicts a risk score for the expected 12 month PHQ 9 score under usual care. Usual care refers to the usual treatment provided by a GP practice for depressive symptoms, which may include appointments with the GP, medication, or referral to other healthcare professionals, without any added structured care component. The prediction uses age, sex and baseline PHQ 9 — GAD-7 was dropped as a predictor in this refit."
         },
         {
           "de": "Der Risikoscore ist kein Maß dafür, wie wahrscheinlich eine Person eine bestimmte Behandlung erhält; er ist keine Propensity Score im Sinne der Kausalanalyse. Das Modell schätzt nirgends eine Behandlungszuweisung; es sagt ausschließlich den erwarteten Symptomverlauf voraus und dient in Schritt 2 als Prognoseindex, der beeinflusst, wie stark ein Versorgungsbaustein wirkt.",
-          "en": "The risk score is not a measure of how likely a person is to receive a given treatment; it is not a propensity score in the causal-inference sense. The model never estimates treatment assignment; it predicts expected symptom outcome only, and serves in Step 2 as a prognostic index that modulates how strongly a care component acts."
+          "en": "The risk score is not a probability of receiving any particular treatment. The model estimates no treatment assignment anywhere; it predicts only the expected symptom course, and in Step 2 serves as a prognostic index that modulates how strongly a care component's effect acts."
         },
         {
-          "de": "Kontinuierliche Prädiktoren (Alter, PHQ-9, GAD-7) gehen als restringierte kubische Splines mit je 4 Knoten ein, um nichtlineare Zusammenhänge abzubilden. Das Modell liefert eine volle Wahrscheinlichkeitsverteilung über PHQ-9-Werte von 0 bis 20+; der Risikoscore ist deren Erwartungswert E[Y]. Er wird auf den Wertebereich begrenzt, auf dem Schritt 2 trainiert wurde, da außerhalb dieses Bereichs keine verlässliche Information vorliegt.",
-          "en": "Continuous predictors (age, PHQ-9, GAD-7) enter as restricted cubic splines with 4 knots each, to capture non-linear relationships. The model outputs a full probability distribution over PHQ-9 levels 0 through 20+; the risk score is its expected value E[Y]. It's clamped to the range Step 2 was trained on, since no reliable information exists outside that range."
+          "de": "Alter geht als natürlicher kubischer Spline mit 4 Knoten ein, um nichtlineare Zusammenhänge abzubilden. Der Risikoscore ist weiterhin ein erwarteter PHQ-9-Wert auf der 0–27-Skala (E[Y]), wie beim vorherigen Modell — hier jedoch als bevölkerungsgemittelte (marginale) Schätzung berechnet, die die zufälligen Studieneffekte (Achsenabschnitt und Steigung auf den PHQ-9-Ausgangswert) herausintegriert, statt sie auf null zu setzen. Er wird auf den Wertebereich begrenzt, auf dem Schritt 2 trainiert wurde, da außerhalb dieses Bereichs keine verlässliche Information vorliegt.",
+          "en": "Age enters as a natural cubic spline with 4 knots, to capture nonlinear relationships. The risk score is still an expected PHQ-9 value on the 0–27 scale (E[Y]), as in the previous model — but computed here as a population-averaged (marginal) estimate that integrates out the per-study random effects (intercept and slope on baseline PHQ-9) rather than setting them to zero. It's clamped to the range Step 2 was trained on, since no reliable information exists outside that range."
         }
       ]
     },
@@ -61,8 +47,8 @@
       },
       "body": [
         {
-          "de": "Eine Bayes'sche Komponenten-Netzwerk-Metaanalyse, gefittet mit PyMC auf individuellen Patientendaten aus 7 randomisierten Studien zur kollaborativen Versorgung, zerlegt den Behandlungseffekt additiv in 6 strukturierte Versorgungsbausteine: Beratung, manualisierte Psychotherapie, Berücksichtigung der Patientenpräferenz, automatisierte Nachverfolgung, Rückfallpräventionsplan und Einbindung von Familie/Freunden.",
-          "en": "A Bayesian component network meta-analysis, fitted with PyMC on individual patient data from 7 randomized trials of collaborative care, additively decomposes the treatment effect into 6 structured-care components: counseling, manual-based psychotherapy, patient-preference consideration, automated follow-up, a relapse-prevention plan, and involvement of family/friends."
+          "de": "Eine Bayes'sche Komponenten-Netzwerk-Metaanalyse, gefittet mit PyMC auf individuellen Patientendaten aus 12 Studien zur kollaborativen Versorgung, zerlegt den Behandlungseffekt additiv in 10 strukturierte Versorgungsbausteine: fachärztliche/psychologische Einbindung, Beratung/Psychotherapie, gemeinsam festgelegte Behandlungsziele, Berücksichtigung der Patientenpräferenz, automatisierte Nachverfolgung, regelmäßige Verlaufskontrollen, Bewältigungsstrategien, Rückfallpräventionsplan, Einbindung von Familie/Freunden und Berücksichtigung von Gemeinschaft/kulturellem Hintergrund.",
+          "en": "A Bayesian component network meta-analysis, fitted with PyMC on individual patient data from 12 studies of collaborative care, additively decomposes the treatment effect into 10 structured-care components: specialist involvement, counselling/psychotherapy, jointly set treatment goals, patient-preference consideration, automated follow-up, regular patient review, coping-strategies training, a relapse-prevention plan, involvement of family/friends, and consideration of community/cultural background."
         },
         {
           "de": "Formel für den geschätzten 12-Monats-PHQ-9 (mu):",
@@ -74,12 +60,12 @@
           "latex": true
         },
         {
-          "de": "alpha_study ist der über alle 7 Studien gemittelte Achsenabschnitt, und zwar je Posterior-Zug einzeln gemittelt statt als fixer Wert, wodurch die Uneinigkeit zwischen den Studien direkt in die Unsicherheitsspanne eingeht. lambda_risk skaliert den Risikoscore. Für jeden im gewählten Szenario enthaltenen Baustein k kommt ein fester Effekt (beta_k) plus ein risikoabhängiger Effekt (delta_k × Risikoscore) hinzu, wodurch ein Baustein für Hochrisiko-Patient:innen stärker oder schwächer wirken kann als für Niedrigrisiko-Patient:innen.",
-          "en": "alpha_study is the intercept averaged across all 7 trials, averaged per posterior draw individually rather than as a single fixed value, so disagreement between trials flows directly into the width of the shown uncertainty range. lambda_risk scales the risk score. For each component k included in the chosen scenario, a fixed effect (beta_k) plus a risk-dependent effect (delta_k × risk_score) is added, so a component can act more or less strongly for higher-risk patients than for lower-risk ones."
+          "de": "alpha_study ist der über alle 12 Studien gemittelte Achsenabschnitt, und zwar je Posterior-Zug einzeln gemittelt statt als fixer Wert, wodurch die Uneinigkeit zwischen den Studien direkt in die Unsicherheitsspanne eingeht. lambda_risk skaliert den Risikoscore. Für jeden im gewählten Szenario enthaltenen Baustein k kommt ein fester Effekt (beta_k) plus ein risikoabhängiger Effekt (delta_k × Risikoscore) hinzu, wodurch ein Baustein für Hochrisiko-Patient:innen stärker oder schwächer wirken kann als für Niedrigrisiko-Patient:innen.",
+          "en": "alpha_study is the intercept averaged across all 12 studies, averaged per posterior draw individually rather than as a single fixed value, so disagreement between studies flows directly into the width of the shown uncertainty range. lambda_risk scales the risk score. For each component k included in the chosen scenario, a fixed effect (beta_k) plus a risk-dependent effect (delta_k × risk_score) is added, so a component can act more or less strongly for higher-risk patients than for lower-risk ones."
         },
         {
-          "de": "Nur additive Effekte, keine Interaktion zwischen Bausteinen: Der Effekt einer Kombination ist immer genau die Summe der Einzeleffekte ihrer Bausteine. Nur 6 konkrete Kombinationen wurden tatsächlich in den 7 Studien erprobt (\"Pakete\"); diese werden getrennt von einzelnen, isoliert hinzugefügten Bausteinen dargestellt, da Letztere in keiner Studie allein getestet wurden. Einzelne Bausteine sind die additive Formel auf einen einzelnen Baustein angewendet, keine erprobte Behandlungsoption.",
-          "en": "Additive effects only, no component-by-component interaction: a combination's effect is always exactly the sum of its components' individual effects. Only 6 specific combinations were actually trialled (\"packages\"); these are shown separately from single components added in isolation, since the latter were never tested alone in any trial. Single components are the additive formula applied to one component, not a trial-tested treatment option."
+          "de": "Nur additive Effekte, keine Interaktion zwischen Bausteinen: Der Effekt einer Kombination ist immer genau die Summe der Einzeleffekte ihrer Bausteine. Anders als im vorherigen Modell wird in diesem Refit keine bestimmte Kombination von Bausteinen als in den Studien erprobt ausgewiesen; die App zeigt daher jeden Baustein einzeln zur üblichen Versorgung hinzugefügt. Das ist die additive Formel auf einen einzelnen Baustein angewendet, keine erprobte Behandlungsoption.",
+          "en": "Additive effects only, no component-by-component interaction: a combination's effect is always exactly the sum of its components' individual effects. Unlike the previous model, this refit doesn't flag any specific combination of components as trial-tested, so the app shows each component added on its own to usual care — the additive formula applied to one component, not a trial-tested treatment option."
         }
       ]
     },
@@ -99,23 +85,23 @@
       "body": [
         {
           "de": "Forschungsprototyp mit vorläufigen Parametern. Nicht klinisch validiert und kein Ersatz für ärztliche Beurteilung.",
-          "en": "Research prototype with provisional parameters. Not clinically validated, and no substitute for clinical judgment."
+          "en": "This is a research prototype. Its parameters are preliminary and may change as the underlying analysis is refined. It has not been clinically validated and does not replace clinical judgment."
         },
         {
           "de": "Regression zur Mitte wirkt doppelt: einmal implizit in Schritt 1 (der auf Basis des Ausgangswerts in Richtung Populationsmittel schätzt) und erneut strukturell in Schritt 2 über lambda_risk. Das ist für dieses Modelldesign erwartbar, erklärt aber, warum bereits die übliche-Versorgung-Schätzung für einen hohen PHQ-9-Ausgangswert einen spürbaren Rückgang vorhersagt.",
-          "en": "Regression to the mean is baked in twice: once implicitly in Step 1 (which predicts toward the population mean given baseline severity) and again structurally in Step 2 via lambda_risk. That's expected for this model design, but it's why even the usual-care estimate alone predicts a noticeable drop for a high baseline PHQ-9."
+          "en": "Regression to the mean is baked in twice: once implicitly in Step 1, which predicts toward the population mean given baseline severity, and again structurally in Step 2 via lambda_risk. This is expected given the model design, but it explains why even the usual care estimate alone predicts a noticeable drop for a high baseline PHQ 9. In practice, this means a person who starts with severe symptoms is predicted to improve somewhat even without any structured care component, so the added benefit of a component should be read as improvement beyond that already declining usual care trajectory, not as improvement from the starting score."
         },
         {
-          "de": "Ein Studien-Achsenabschnitt ist schwach identifiziert (95-%-Kredibilitätsintervall von etwa -8 bis +5 für eine der 7 Studien). Da alpha_study über alle 7 Studien gemittelt wird, geht diese Unsicherheit direkt, und korrekt, in die Breite jeder gezeigten Spanne ein.",
-          "en": "One trial's intercept is only weakly identified (a 95% credible interval of roughly -8 to +5 for one of the 7 trials). Since alpha_study is averaged across all 7 trials, this uncertainty flows directly, and correctly, into the width of every shown range."
+          "de": "Ein Studien-Achsenabschnitt ist vergleichsweise schwach identifiziert (95-%-Kredibilitätsintervall von 0,12 bis 2,51 für eine der 12 Studien). Da alpha_study über alle 12 Studien gemittelt wird, geht diese Unsicherheit direkt, und korrekt, in die Breite jeder gezeigten Spanne ein.",
+          "en": "One study's intercept is comparatively weakly identified: its 95% credible interval spans 0.12 to 2.51. Since alpha_study is averaged across all 12 studies, this uncertainty correctly flows into the width of every shown range."
         },
         {
           "de": "Schritt 1 und Schritt 2 sind statistisch gekoppelt: Schritt 2 wurde mit Risikoscore-Werten aus einer bestimmten Version von Schritt 1 gefittet. Eine Neukalibrierung von Schritt 1 allein, ohne Schritt 2 neu zu fitten, würde diese Kopplung stillschweigend verletzen.",
-          "en": "Step 1 and Step 2 are statistically coupled: Step 2 was fit using risk-score values from one specific version of Step 1. Recalibrating Step 1 alone, without refitting Step 2 against it, would silently break that coupling."
+          "en": "Step 1 and Step 2 are statistically coupled. Step 2 was fit using risk score values produced by one specific version of Step 1. Recalibrating Step 1 alone, without refitting Step 2 against it, would silently break that coupling."
         },
         {
-          "de": "Einzeln hinzugefügte Bausteine sind eine Extrapolation der additiven Formel, keine erprobte Behandlung. Siehe Schritt 2 oben.",
-          "en": "Individually added components are an extrapolation of the additive formula, not a trial-tested treatment. See Step 2 above."
+          "de": "Jeder gezeigte Baustein ist eine Extrapolation der additiven Formel, keine erprobte Behandlung — dieser Refit weist keine bestimmte Kombination von Bausteinen als in den Studien erprobt aus. Siehe Schritt 2 oben.",
+          "en": "Every component shown is an extrapolation from the additive formula, not a trial-tested treatment — this refit doesn't flag any specific combination of components as trial-tested. See Step 2 above."
         }
       ]
     },
@@ -127,8 +113,8 @@
       },
       "body": [
         {
-          "de": "Beide Modellschritte wurden auf individuellen Patientendaten (IPD) aus 7 randomisierten Studien zur kollaborativen Depressionsversorgung gefittet, Zielgröße: PHQ-9 nach 12 Monaten. Die eigentlichen Modell-Fits (R/rms für Schritt 1, Python/PyMC für Schritt 2) laufen außerhalb dieser App; sie exportieren ausschließlich aggregierte Parameter (Koeffizienten, Posterior-Züge), niemals einzelne Patientendatensätze, in die App.",
-          "en": "Both model steps were fit on individual patient data (IPD) from 7 randomized trials of collaborative depression care, outcome: 12-month PHQ-9. The actual model fits (R/rms for Step 1, Python/PyMC for Step 2) run outside this app; they export only aggregate parameters (coefficients, posterior draws), never individual patient records, into the app."
+          "de": "Beide Modellschritte wurden auf individuellen Patientendaten (IPD) aus 12 Studien zur kollaborativen Depressionsversorgung gefittet, Zielgröße: PHQ-9 nach 12 Monaten. Die eigentlichen Modell-Fits (R/ordinal für Schritt 1, Python/PyMC für Schritt 2) laufen außerhalb dieser App; sie exportieren ausschließlich aggregierte Parameter (Koeffizienten, Posterior-Züge), niemals einzelne Patientendatensätze, in die App.",
+          "en": "Both model steps were fit on individual patient data (IPD) from 12 studies of collaborative depression care, outcome: 12-month PHQ-9. The actual model fits (R/ordinal for Step 1, Python/PyMC for Step 2) run outside this app; they export only aggregate parameters (coefficients, posterior draws), never individual patient records, into the app."
         },
         {
           "de": "Die Export-Skripte, die diese Trennung technisch durchsetzen, sind Teil des Quellcodes dieses Prototyps und öffentlich einsehbar, ebenso wie die vollständigen, unverdünnten Posterior-Züge selbst (im Browser ausgeliefert, nicht auf einem Server berechnet).",

@@ -1,20 +1,20 @@
 /**
- * Outcome model — 6-component network meta-analysis (CNMA), fitted on
- * individual-patient data (IPD) across 7 trials.
+ * Outcome model — 10-component network meta-analysis (CNMA), fitted on
+ * individual-patient data (IPD) across 12 studies.
  * ----------------------------------------------------------------------------
  * The app's predictions are split into two independent parts:
  *
  *   1. A risk score (src/lib/safety.ts) from the three safety questions and
  *      PHQ-9 severity — drives the crisis message only, no outcome numbers.
  *   2. This file: a two-step outcome model.
- *      - Step 1 (src/lib/riskScore.ts): an ordinal regression predicts each
- *        patient's expected 12-month PHQ-9 under usual care ("risk_score")
- *        from age, sex, baseline PHQ-9 and GAD-7.
+ *      - Step 1 (src/lib/riskScore.ts): a proportional-odds mixed model
+ *        predicts each patient's expected-outcome risk score ("risk_score",
+ *        `eta`) from age, sex and baseline PHQ-9 (no GAD-7 — dropped as a
+ *        predictor in this refit).
  *      - Step 2 (this file): a component network meta-analysis (CNMA) — the
  *        real posterior draws below — estimates the 12-month PHQ-9 for
- *        usual care plus each *trial-observed combination* of up to 6
- *        structured-care components, letting each component's effect vary
- *        with risk_score.
+ *        usual care plus each of 10 structured-care components added on its
+ *        own, letting each component's effect vary with risk_score.
  *
  * DATA: src/lib/data/nma-posterior.json holds real PyMC/ArviZ posterior
  * draws (4 chains x 4000 draws, thinned to every 8th draw = 2000 draws) for
@@ -32,37 +32,25 @@
  *      + sum_k( component[k] * (beta_component[k] + delta_component_risk[k] * risk_score) )
  *
  *   endpoint = clamp(mu, 0, 27)     -- mu models the ABSOLUTE 12-month PHQ-9
- *                                       directly (outcome: "phq9_12m"), not a
- *                                       change score like the previous
- *                                       2-component model did.
+ *                                       directly (outcome: "phq9_12m").
  *
- * `alpha_study` (per-trial intercept) has no single pooled hyperparameter
- * either — same caveat as the previous model: for a new/typical practice we
- * average alpha_study across the 7 reported trials, now done per posterior
- * draw (ALPHA_STUDY_MEAN draws in the data file) so the between-trial
- * heterogeneity propagates into the credible interval rather than being
- * dropped. One trial (08_Coventry_2015) has a very wide, weakly-identified
- * posterior for its own intercept (95% CI roughly -8 to +5) — averaging
- * across all 7 trials means this uncertainty is real and reflected in the
- * width of every scenario's interval, not a bug.
+ * `alpha_study` (per-trial intercept) has no single pooled hyperparameter:
+ * for a new/typical practice we average alpha_study across the 12 reported
+ * studies, done per posterior draw (ALPHA_STUDY_MEAN draws in the data
+ * file) so the between-study heterogeneity propagates into the credible
+ * interval rather than being dropped.
  *
- * COMPONENTS & PACKAGES: the fitted model additively decomposes 6
- * structured-care components (COMPONENT_ORDER below), but only 6 specific
- * *combinations* of them were actually trialled (`allowed_component_packages`
- * in the manifest, one all-zero package = usual care). Per the CNMA
- * additivity assumption — and per instruction, no component x component
- * interaction term is added beyond what's in the formula above — a
- * package's effect is simply the sum of its active components' own effects.
- *
- * The app renders two separate scenario sets (two tabs on the results
- * page), deliberately not merged into one list:
- *   - COMBO_SCENARIO_IDS: usual care + the 6 packages actually trialled
- *     (PACKAGES below) — real, trial-observed treatment arms.
- *   - SINGLE_SCENARIO_IDS: usual care + each of the 6 components ADDED
- *     ALONE. These are not trial-observed; they're the additive formula
- *     applied to a single component, shown on their own tab specifically
- *     so patients don't read "combination has more components" as "more
- *     components is always better" — the two are different questions.
+ * COMPONENTS: the fitted model additively decomposes 10 structured-care
+ * components (COMPONENT_ORDER below). Unlike the previous 6-component
+ * refit, no fixed set of trial-tested *combinations* is presented here —
+ * this refit's manifest doesn't flag any specific combination as
+ * trial-tested (see the CNMA's own manifest), so the app only shows each
+ * component added ALONE to usual care (SCENARIO_IDS below), the additive
+ * formula applied to one component at a time. Per the CNMA additivity
+ * assumption, a combination's effect would be the sum of its components'
+ * own effects, but this app deliberately doesn't offer arbitrary
+ * multi-component combinations as a feature — see PR discussion for why
+ * (no combination is trial-observed in this refit, unlike the previous one).
  *
  * `sigma` (residual SD) is kept in the data file for transparency but is
  * currently unused, same as before — the app shows the estimated PHQ-9
@@ -70,80 +58,52 @@
  */
 
 import nmaData from "./data/nma-posterior.json";
-import { effectiveGad7Score } from "./gad7";
 import { computeRiskScore, RISK_SCORE_TRAINING } from "./riskScore";
 import { ageFromBirthDate, type Profile } from "./session";
 
 export type ComponentId =
-  | "counseling"
-  | "manualTherapy"
+  | "specialistInvolvement"
+  | "psychologicalTreatment"
+  | "goalSetting"
   | "patientPreference"
   | "automatedFollowUp"
+  | "regularPatientReview"
+  | "copingStrategies"
   | "relapsePrevention"
-  | "familyInvolvement";
+  | "familyInvolvement"
+  | "communityCulturalBg";
 
-/** Order matches `component_order` in the fitted artifact's manifest — index into betaComponent/deltaComponentRisk draws. */
+/**
+ * Order matches `componentOrder` in nma-posterior.json (itself the fitted
+ * artifact's `.nc` coordinate order) — index into betaComponent/
+ * deltaComponentRisk draws positionally, not by name.
+ */
 export const COMPONENT_ORDER: ComponentId[] = [
-  "counseling",
-  "manualTherapy",
+  "specialistInvolvement",
+  "psychologicalTreatment",
+  "goalSetting",
   "patientPreference",
   "automatedFollowUp",
+  "regularPatientReview",
+  "copingStrategies",
   "relapsePrevention",
   "familyInvolvement",
+  "communityCulturalBg",
 ];
 
-export type PackageId =
-  "usualCare" | "packageA" | "packageB" | "packageC" | "packageD" | "packageE" | "packageF";
-/** A single component added alone to usual care — not a trial-observed package, see SINGLE_SCENARIO_IDS. */
+/** A single component added alone to usual care — the only kind of scenario this refit's data supports (see file header). */
 export type SingleId = `single_${ComponentId}`;
-export type ScenarioId = PackageId | SingleId;
+export type ScenarioId = "usualCare" | SingleId;
 
-export type Package = { id: PackageId; components: ComponentId[] };
-
-const PACKAGE_LETTERS = ["A", "B", "C", "D", "E", "F"] as const;
-
-/** The trial-observed component combinations from `allowed_component_packages`, excluding the all-zero (usual care) row. */
-function buildPackages(): Package[] {
-  const packages: Package[] = [];
-  for (const row of nmaData.allowedComponentPackages) {
-    if (row.every((v) => v === 0)) continue; // usual care — handled as its own scenario, not a "package"
-    const components = COMPONENT_ORDER.filter((_, i) => row[i] === 1);
-    const letter = PACKAGE_LETTERS[packages.length];
-    if (!letter) continue; // more rows than PACKAGE_LETTERS would be a data/type mismatch
-    packages.push({ id: `package${letter}`, components });
-  }
-  return packages;
-}
-
-/** Every trial-observed treatment combination (usual care excluded — see COMBO_SCENARIO_IDS). */
-export const PACKAGES: Package[] = buildPackages();
-
-/**
- * Combination tab: usual care, then each trial-observed package (real arms
- * from the 7 included trials — see file header on allowed packages).
- */
-export const COMBO_SCENARIO_IDS: ScenarioId[] = ["usualCare", ...PACKAGES.map((p) => p.id)];
-
-/**
- * Single-component tab: usual care, then each of the 6 components added
- * ALONE. None of these were tested in isolation by any trial — they're the
- * model's additive decomposition (component[k] * (beta_k + delta_k *
- * risk_score)) applied to just one component, shown separately from
- * COMBO_SCENARIO_IDS so a lower combo number never reads as "more
- * components is automatically better than one well-matched component".
- */
-export const SINGLE_SCENARIO_IDS: ScenarioId[] = [
+/** Usual care, then each of the 10 components added ALONE — see file header on why no combinations are offered. */
+export const SCENARIO_IDS: ScenarioId[] = [
   "usualCare",
   ...COMPONENT_ORDER.map((c): SingleId => `single_${c}`),
 ];
 
 function componentsFor(id: ScenarioId): ComponentId[] {
   if (id === "usualCare") return [];
-  if (id.startsWith("single_")) {
-    const componentId = id.slice("single_".length) as ComponentId;
-    return [componentId];
-  }
-  return PACKAGES.find((p) => p.id === id)?.components ?? [];
+  return [id.slice("single_".length) as ComponentId];
 }
 
 export const MODEL_META = {
@@ -171,9 +131,8 @@ function quantileOf(sortedAsc: number[], q: number): number {
 /**
  * Full posterior draws (real, thinned PyMC draws — not synthetic) of the
  * estimated 12-month PHQ-9 for one scenario, at one patient's risk score.
- * mu = alpha_study (per-draw mean across trials) + lambda_risk * risk_score
+ * mu = alpha_study (per-draw mean across studies) + lambda_risk * risk_score
  *    + sum over active components of (beta_component + delta_component_risk * risk_score)
- * No component x component interaction term is added — see file header.
  */
 function simulateEndpointDraws(components: ComponentId[], riskScore: number): number[] {
   const activeIdx = components.map((c) => COMPONENT_ORDER.indexOf(c));
@@ -234,7 +193,7 @@ export type ComponentEstimate = {
   effectRange: Range;
 };
 
-/** Per-component decomposition of the fitted effects, at one patient's risk score — for transparency, not a predictable scenario on its own (see file header on allowed packages). */
+/** Per-component decomposition of the fitted effects, at one patient's risk score — for transparency, not a predictable scenario on its own. */
 export function estimateComponents(input: PredictionInput): ComponentEstimate[] {
   const riskScore = riskScoreFor(input);
   return COMPONENT_ORDER.map((id, k) => {
@@ -260,13 +219,12 @@ export type PredictionInput = {
 
 function riskScoreFor(input: PredictionInput): number {
   const age = input.profile.birthDate ? ageFromBirthDate(input.profile.birthDate) : null;
-  const gad7Total = effectiveGad7Score(input.profile);
-  return computeRiskScore({ age, sex: input.profile.sex, baselinePhq9: input.baseline, gad7Total });
+  return computeRiskScore({ age, sex: input.profile.sex, baselinePhq9: input.baseline });
 }
 
 /** Patient characteristics the fitted model actually uses. */
 export type PredictorRow = {
-  id: "baseline" | "age" | "sex" | "gad7" | "riskScore";
+  id: "baseline" | "age" | "sex" | "riskScore";
   value: string;
   available: boolean;
 };
@@ -274,16 +232,10 @@ export type PredictorRow = {
 export function describePredictors(input: PredictionInput): PredictorRow[] {
   const p = input.profile;
   const age = p.birthDate ? ageFromBirthDate(p.birthDate) : null;
-  const gad7Value = effectiveGad7Score(p);
   return [
     { id: "baseline", value: `${input.baseline}/27`, available: true },
     { id: "age", value: age !== null ? age.toFixed(2) : "–", available: age !== null },
     { id: "sex", value: p.sex ?? "–", available: p.sex !== null },
-    {
-      id: "gad7",
-      value: gad7Value !== null ? `${gad7Value}/21` : "–",
-      available: gad7Value !== null,
-    },
     {
       id: "riskScore",
       value: round1(riskScoreFor(input)).toString(),
@@ -294,11 +246,27 @@ export function describePredictors(input: PredictionInput): PredictorRow[] {
 
 export { RISK_SCORE_TRAINING };
 
+/**
+ * Usual care stays first as the fixed reference row; everything else is
+ * ranked most helpful -> least helpful, i.e. ascending expectedEndpoint
+ * (lower PHQ-9 is the better outcome).
+ */
+function rankByHelpfulness(scenarios: Scenario[]): Scenario[] {
+  const [usualCare, ...rest] = scenarios;
+  if (!usualCare) return scenarios;
+  return [usualCare, ...rest.sort((a, b) => a.expectedEndpoint - b.expectedEndpoint)];
+}
+
 export function buildPredictions(input: PredictionInput) {
   const estimates = estimateComponents(input);
-  const scenarios = COMBO_SCENARIO_IDS.map((id) => predictScenario(input, id));
-  const singleScenarios = SINGLE_SCENARIO_IDS.map((id) => predictScenario(input, id));
   const predictors = describePredictors(input);
 
-  return { estimates, scenarios, singleScenarios, predictors };
+  // Ranked best-to-worst by expectedEndpoint (lower PHQ-9 = fewer symptoms
+  // = better) via rankByHelpfulness, since each component's effect varies
+  // with this patient's risk score (delta_component_risk), so there's no
+  // single fixed "best" order across patients — it has to be resorted per
+  // prediction, not baked into SCENARIO_IDS.
+  const scenarios = rankByHelpfulness(SCENARIO_IDS.map((id) => predictScenario(input, id)));
+
+  return { estimates, scenarios, predictors };
 }

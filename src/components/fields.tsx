@@ -11,14 +11,21 @@ export function Choice<T extends string | number>({
   value: T | null;
   onChange: (v: T) => void;
   name: string;
-  columns?: 1 | 2;
+  columns?: 1 | 2 | 3;
 }) {
   const { tr } = useLang();
+  const compact = columns === 3;
   return (
     <div
       role="radiogroup"
       aria-label={name}
-      className={columns === 2 ? "grid gap-2 sm:grid-cols-2" : "grid gap-2"}
+      className={
+        compact
+          ? "grid grid-cols-3 gap-2"
+          : columns === 2
+            ? "grid gap-2 sm:grid-cols-2"
+            : "grid gap-2"
+      }
     >
       {options.map((o) => {
         const selected = value === o.value;
@@ -30,7 +37,8 @@ export function Choice<T extends string | number>({
             aria-checked={selected}
             onClick={() => onChange(o.value)}
             className={[
-              "flex items-center justify-between gap-3 rounded-md border px-3.5 py-2.5 text-left text-sm",
+              "flex items-center gap-3 rounded-md border px-3.5 py-2.5 text-sm",
+              compact ? "justify-center text-center" : "justify-between text-left",
               selected
                 ? "border-primary bg-primary text-primary-foreground"
                 : "border-border bg-card text-foreground hover:border-foreground/30",

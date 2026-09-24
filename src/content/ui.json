@@ -1,5 +1,5 @@
 {
-  "appName": { "de": "Depressions-Kompass", "en": "Depression Compass" },
+  "appName": { "de": "Versorgungskompass", "en": "Collaborative Care Compass" },
   "appTagline": {
     "de": "Entscheidungshilfe für strukturierte Depressionsversorgung",
     "en": "Decision aid for structured depression care"
@@ -33,6 +33,7 @@
     "en": "This tool does not replace medical diagnosis or treatment. Predictions come from a research-prototype model and are estimates for groups of people with a similar profile, not a personal guarantee."
   },
   "researchPrototype": { "de": "Forschungsprototyp", "en": "Research prototype" },
+  "moreInfo": { "de": "Mehr Informationen", "en": "More information" },
   "noAnswersLeaveDevice": {
     "de": "Ihre Antworten bleiben auf diesem Gerät und werden nicht übertragen.",
     "en": "Your answers stay on this device and are not transmitted."

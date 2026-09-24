@@ -72,12 +72,23 @@ MANIFEST_REQUIRED_FIELDS = [
     "outcome",
     "study_order",
     "component_order",
-    "allowed_component_packages",  # list of {component_name: 0|1} dicts, one per package
-    "risk_score",  # {"training_min": ..., "training_max": ..., ...}
 ]
 # There is no "thinning" field in the manifest — it's a design choice for
 # this export, not something the model-fitting side records, so it's a
 # --thinning CLI flag instead (see main()).
+#
+# allowed_component_packages and risk_score are OPTIONAL (as of the
+# 10-component/12-study refit): no component combination is being presented
+# to patients as "trial-tested" in this app version (src/lib/model.ts has no
+# combination/package feature any more — see that file's header), so there's
+# nothing for allowed_component_packages to drive, and risk_score's
+# training_min/training_max weren't available at export time for this refit
+# (they depend on the actual Step-1 `eta` distribution over the training
+# rows, which isn't derivable from this .nc file — see the TODO in
+# src/lib/riskScore.ts). If present in manifest.json, both are still
+# exported for documentation; if absent, they're simply omitted, with a
+# warning, rather than blocking the export.
+MANIFEST_OPTIONAL_FIELDS = ["allowed_component_packages", "risk_score"]
 
 POSTERIOR_SCALAR_VARS = ["lambda_risk", "sigma"]
 POSTERIOR_PER_STUDY_VAR = "alpha_study"
@@ -196,10 +207,19 @@ def cmd_export(args: argparse.Namespace) -> None:
     component_order: list[str] = manifest["component_order"]
     thinning: int = args.thinning
 
-    risk_score = manifest["risk_score"]
-    for f in ("training_min", "training_max"):
-        if f not in risk_score:
-            raise SystemExit(f"manifest.json's risk_score is missing required field: {f}")
+    risk_score = manifest.get("risk_score")
+    if risk_score is not None:
+        for f in ("training_min", "training_max"):
+            if f not in risk_score:
+                raise SystemExit(f"manifest.json's risk_score is missing required field: {f}")
+    else:
+        print(
+            "WARNING: manifest.json has no 'risk_score' field — nma-posterior.json will be "
+            "written without a riskScore.trainingMin/trainingMax. Nothing in src/lib/ reads "
+            "this field directly (Step 1's own clamp lives in src/lib/riskScore.ts), but fill "
+            "it in before that clamp is finalized — see the TODO there.",
+            file=sys.stderr,
+        )
 
     posterior = load_posterior(args.nc_path)
 
@@ -223,18 +243,21 @@ def cmd_export(args: argparse.Namespace) -> None:
     # allowed_component_packages arrives as a list of {component_name: 0|1}
     # dicts (one per package) — convert to the list-of-lists, positionally
     # ordered by component_order, that nma-posterior.json's committed shape
-    # uses (see src/lib/model.ts's buildPackages(), which indexes by
-    # position against its own hardcoded COMPONENT_ORDER).
-    allowed_component_packages: list[list[int]] = []
-    for i, package in enumerate(manifest["allowed_component_packages"]):
-        extra = set(package) - set(component_order)
-        missing_keys = set(component_order) - set(package)
-        if extra or missing_keys:
-            raise SystemExit(
-                f"allowed_component_packages[{i}] doesn't have exactly the components listed "
-                f"in component_order — extra: {sorted(extra)}, missing: {sorted(missing_keys)}"
-            )
-        allowed_component_packages.append([int(package[c]) for c in component_order])
+    # uses. Optional (see MANIFEST_OPTIONAL_FIELDS above) — src/lib/model.ts
+    # no longer has a combination/package feature, so this is only carried
+    # through when present, for documentation.
+    allowed_component_packages: list[list[int]] | None = None
+    if "allowed_component_packages" in manifest:
+        allowed_component_packages = []
+        for i, package in enumerate(manifest["allowed_component_packages"]):
+            extra = set(package) - set(component_order)
+            missing_keys = set(component_order) - set(package)
+            if extra or missing_keys:
+                raise SystemExit(
+                    f"allowed_component_packages[{i}] doesn't have exactly the components listed "
+                    f"in component_order — extra: {sorted(extra)}, missing: {sorted(missing_keys)}"
+                )
+            allowed_component_packages.append([int(package[c]) for c in component_order])
 
     chains = int(posterior.sizes["chain"])
     draws_per_chain = int(posterior.sizes["draw"])
@@ -289,18 +312,20 @@ def cmd_export(args: argparse.Namespace) -> None:
         "nDraws": n_draws,
         "studyOrder": study_order,
         "componentOrder": component_order,
+        "draws": draws,
+        "summary": summary,
+    }
+    if risk_score is not None:
         # Only trainingMin/trainingMax, matching nma-posterior.json's
         # existing committed shape — risk_score's other manifest fields
         # (source, transformation, ...) are provenance notes nothing in
         # src/lib/ reads, so they're deliberately not carried through.
-        "riskScore": {
+        output["riskScore"] = {
             "trainingMin": risk_score["training_min"],
             "trainingMax": risk_score["training_max"],
-        },
-        "allowedComponentPackages": allowed_component_packages,
-        "draws": draws,
-        "summary": summary,
-    }
+        }
+    if allowed_component_packages is not None:
+        output["allowedComponentPackages"] = allowed_component_packages
 
     with open(args.output, "w", encoding="utf-8") as f:
         # Minified on purpose (no indent, no spaces) -- NOT a readable

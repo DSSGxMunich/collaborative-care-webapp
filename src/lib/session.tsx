@@ -26,33 +26,36 @@ export type Profile = {
   sex: Sex | null;
   priorEpisode: YesNo | null;
   priorTreatment: string[];
-  /**
-   * Only asked if the patient already knows it. Feeds the Step-1 risk-score
-   * model (src/lib/riskScore.ts) when known, or via the in-app
-   * mini-questionnaire below when not; otherwise a documented
-   * population-typical default is used (see DEFAULT_GAD7_TOTAL there).
-   */
-  gad7Known: YesNo | null;
-  gad7Score: number | null;
-  /** Whether the patient opted to fill in the GAD-7 mini-questionnaire after saying they don't know their score. */
-  gad7FillNow: boolean;
-  /** Answers to the in-app GAD-7 mini-questionnaire (7 items, 0-3 each) — see effectiveGad7Score in lib/gad7.ts. */
-  gad7Answers: (number | null)[];
 };
 
+/**
+ * The "4 P's" of the P4 Screener (Dube, Kroenke, Bair, Theobald & Williams,
+ * 2010, Prim Care Companion J Clin Psychiatry) — a brief suicide-risk
+ * screener validated in 2 RCTs of primary-care/oncology patients. A German
+ * translation has separately been validated (Schluessel et al. 2023, J Clin
+ * Med, LMU Munich) against the SBQ-R in German primary-care/psychiatric
+ * outpatients — this app's German wording is this session's own translation
+ * of the original English items, not copied from that paper's published
+ * German wording (which could not be retrieved directly — see PR notes), so
+ * it should be checked against Schluessel et al.'s instrument before this
+ * can be called "the validated German P4" rather than "P4-based".
+ */
 export type SafetyAnswers = {
-  /** Any concrete plan or preparation for self-harm. */
+  /** P4 "Past": ever harmed self / attempted suicide (lifetime, not time-boxed). */
+  past: YesNo | null;
+  /** P4 "Plan": has thought about how they might actually hurt themselves. */
   plan: YesNo | null;
-  /** Feels able to stay safe until support is available. */
-  canStaySafe: YesNo | null;
-  /** Self-harm within the past 12 months. */
-  pastAttempt: YesNo | null;
+  /** P4 "Probability": self-rated likelihood of acting on these thoughts within the next month. 0=not at all likely, 1=somewhat likely, 2=very likely. */
+  probability: 0 | 1 | 2 | null;
+  /** P4 "Preventive factors": whether anything would stop them (protective factors). */
+  preventive: YesNo | null;
   /**
    * Suicide or suicide attempt in a first-degree relative (parent/sibling).
-   * Family history of suicidal behavior is an evidenced risk factor
-   * independent of psychiatric diagnosis — collected here alongside the
-   * other safety questions, but not currently fed into assessRisk's
-   * acute-risk checklist (see the caveat in lib/safety.ts).
+   * Not part of P4 — added per GP feedback. Family history of suicidal
+   * behavior is an evidenced risk factor independent of psychiatric
+   * diagnosis — collected here alongside the other safety questions, but
+   * not currently fed into assessRisk's acute-risk logic (see the caveat
+   * in lib/safety.ts).
    */
   familyHistory: YesNo | null;
 };
@@ -84,16 +87,12 @@ export type Session = {
 
 export const emptySession = (): Session => ({
   phq: Array<number | null>(9).fill(null),
-  safety: { plan: null, canStaySafe: null, pastAttempt: null, familyHistory: null },
+  safety: { past: null, plan: null, probability: null, preventive: null, familyHistory: null },
   profile: {
     birthDate: null,
     sex: null,
     priorEpisode: null,
     priorTreatment: [],
-    gad7Known: null,
-    gad7Score: null,
-    gad7FillNow: false,
-    gad7Answers: Array<number | null>(7).fill(null),
   },
   completedAt: null,
   mode: "clinic",
@@ -103,6 +102,10 @@ export const emptySession = (): Session => ({
 export const PRIOR_TREATMENTS = questionnaireContent.profile.priorTreatment.options;
 export const SEX_OPTIONS = questionnaireContent.profile.sex.options as {
   value: Sex;
+  label: { de: string; en: string };
+}[];
+export const PROBABILITY_OPTIONS = questionnaireContent.safety.probabilityOptions as {
+  value: 0 | 1 | 2;
   label: { de: string; en: string };
 }[];
 
