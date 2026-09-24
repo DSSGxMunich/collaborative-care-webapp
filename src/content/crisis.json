@@ -8,7 +8,10 @@
     {
       "name": { "de": "Notruf", "en": "Emergency services" },
       "detail": "112",
-      "note": { "de": "Rettungsdienst bei akuter Lebensgefahr", "en": "Ambulance, in acute danger to life" }
+      "note": {
+        "de": "Rettungsdienst bei akuter Lebensgefahr",
+        "en": "Ambulance, in acute danger to life"
+      }
     },
     {
       "name": { "de": "Telefonseelsorge", "en": "Telephone counselling" },
@@ -18,7 +21,10 @@
     {
       "name": { "de": "Ärztlicher Bereitschaftsdienst", "en": "Out-of-hours medical service" },
       "detail": "116 117",
-      "note": { "de": "Wenn die Praxis geschlossen ist, rund um die Uhr", "en": "When your practice is closed, 24/7" }
+      "note": {
+        "de": "Wenn die Praxis geschlossen ist, rund um die Uhr",
+        "en": "When your practice is closed, 24/7"
+      }
     },
     {
       "name": { "de": "Info-Telefon Depression", "en": "Depression information line" },
