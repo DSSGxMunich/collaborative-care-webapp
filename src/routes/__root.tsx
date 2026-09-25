@@ -6,6 +6,7 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  useRouterState,
 } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 
@@ -141,7 +142,7 @@ function SiteHeader() {
   return (
     <header className="border-b border-border print:hidden">
       <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-5 gap-y-2 px-4 py-3">
-        <Link to="/" className="shrink-0 text-sm font-semibold">
+        <Link to="/start" className="shrink-0 text-sm font-semibold">
           {tr(ui.appName)}
         </Link>
         <nav className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
@@ -257,6 +258,9 @@ function RootComponent() {
     if (m !== "desktop") setFrameSrc(window.location.href);
   };
 
+  // The landing page ("/") is a bare splash screen: no header or footer.
+  const isLanding = useRouterState({ select: (s) => s.location.pathname === "/" });
+
   const previewDevice = mode === "desktop" ? null : mode;
   const showFrame = mounted && !framed && previewDevice !== null;
 
@@ -275,12 +279,12 @@ function RootComponent() {
             <DevicePreviewFrame mode={previewDevice} src={frameSrc} />
           ) : (
             <div className="flex min-h-screen flex-col">
-              <SiteHeader />
+              {!isLanding && <SiteHeader />}
               <main className="flex-1">
                 {/* Required: nested routes render here. */}
                 <Outlet />
               </main>
-              <SiteFooter />
+              {!isLanding && <SiteFooter />}
             </div>
           )}
         </SessionProvider>

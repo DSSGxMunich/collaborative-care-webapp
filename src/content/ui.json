@@ -16,6 +16,7 @@
   },
   "buttons": {
     "start": { "de": "Fragebogen starten", "en": "Start questionnaire" },
+    "enter": { "de": "Start", "en": "Start" },
     "continue": { "de": "Weiter", "en": "Continue" },
     "back": { "de": "Zurück", "en": "Back" },
     "finish": { "de": "Fertig", "en": "Finish" }

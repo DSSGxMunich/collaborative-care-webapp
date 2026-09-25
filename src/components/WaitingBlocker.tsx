@@ -47,7 +47,7 @@ export function WaitingBlocker() {
           {tr(w.blocked.seeSupport)}
         </Link>
         <Link
-          to="/"
+          to="/start"
           className="block pt-1 text-center text-xs text-muted-foreground underline underline-offset-2"
         >
           {tr(w.blocked.backHome)}

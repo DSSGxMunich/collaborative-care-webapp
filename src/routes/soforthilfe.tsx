@@ -46,7 +46,7 @@ function Crisis() {
       </div>
 
       <Link
-        to="/"
+        to="/start"
         className="mt-8 inline-flex text-sm font-medium text-primary underline underline-offset-2"
       >
         {tr(c.backHome)}
