@@ -9,6 +9,7 @@ import { generateResultsPdf } from "@/lib/pdf";
 import { usePrediction } from "@/lib/usePrediction";
 import { ageFromBirthDate, SEX_OPTIONS } from "@/lib/session";
 import { chunk } from "@/lib/utils";
+import { WaitingBlocker } from "@/components/WaitingBlocker";
 import resultsContent from "@/content/results.json";
 
 export const Route = createFileRoute("/ergebnis")({
@@ -104,6 +105,10 @@ function Results() {
         </Link>
       </div>
     );
+  }
+
+  if (p.session.mode === "waitingRoom" && !p.session.unlocked) {
+    return <WaitingBlocker />;
   }
 
   if (!revealed) {

@@ -69,7 +69,7 @@ function Questionnaire() {
   const goNext = () => {
     if (isLast) {
       update({ completedAt: new Date().toISOString() });
-      navigate({ to: "/ergebnis" });
+      navigate({ to: session.mode === "waitingRoom" ? "/warten" : "/ergebnis" });
       return;
     }
     setIndex((i) => i + 1);

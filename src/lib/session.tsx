@@ -60,11 +60,29 @@ export type SafetyAnswers = {
   familyHistory: YesNo | null;
 };
 
+/**
+ * How the questionnaire is being filled in: "clinic" is the default —
+ * GP and patient go through it together. "waitingRoom" means the patient
+ * is filling it in alone before being called in, so results must not be
+ * shown until the GP confirms they're both together — see src/routes/warten.tsx.
+ */
+export type SessionMode = "clinic" | "waitingRoom";
+
 export type Session = {
   phq: (number | null)[];
   safety: SafetyAnswers;
   profile: Profile;
   completedAt: string | null;
+  mode: SessionMode;
+  /**
+   * Only meaningful when mode is "waitingRoom": becomes true once the GP has
+   * confirmed they're with the patient (the "continue" button on the
+   * blocker — see src/components/WaitingBlocker.tsx). Every page that can
+   * show results (/ergebnis, /praxis) must gate on this, not just the
+   * questionnaire's own finish step, or a direct nav link/URL bypasses the
+   * blocker entirely.
+   */
+  unlocked: boolean;
 };
 
 export const emptySession = (): Session => ({
@@ -77,6 +95,8 @@ export const emptySession = (): Session => ({
     priorTreatment: [],
   },
   completedAt: null,
+  mode: "clinic",
+  unlocked: false,
 });
 
 export const PRIOR_TREATMENTS = questionnaireContent.profile.priorTreatment.options;
