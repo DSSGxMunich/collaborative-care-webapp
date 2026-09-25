@@ -1,8 +1,7 @@
-import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useLang } from "@/lib/i18n";
 import { useSession } from "@/lib/session";
-import { computeUnlockCode, normalizeUnlockCode } from "@/lib/unlockCode";
+import { computeUnlockCode } from "@/lib/unlockCode";
 import wartezimmerContent from "@/content/wartezimmer.json";
 
 const w = wartezimmerContent;
@@ -11,28 +10,15 @@ const w = wartezimmerContent;
  * The waiting-room results gate. Shown on /warten right after the
  * questionnaire, and also on /ergebnis and /praxis if someone navigates
  * there directly (e.g. via the nav bar) before a GP has unlocked results —
- * see the mode/unlocked check in each of those routes. Unlocking requires
- * typing back the code shown here, rather than a single tap, so it's the
- * GP (who the patient hands the code to) taking the action, not the patient
- * absent-mindedly clicking through.
+ * see the mode/unlocked check in each of those routes. The code itself is
+ * only entered on the home page's "For the practice" card (see
+ * src/routes/index.tsx) — a GP arriving here is pointed back there, rather
+ * than this page duplicating the same unlock form.
  */
-export function WaitingBlocker({ onContinue }: { onContinue?: () => void }) {
+export function WaitingBlocker() {
   const { tr } = useLang();
-  const { session, update } = useSession();
-  const [input, setInput] = useState("");
-  const [mismatch, setMismatch] = useState(false);
-
+  const { session } = useSession();
   const code = computeUnlockCode(session);
-
-  const tryUnlock = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (normalizeUnlockCode(input) === code) {
-      update({ unlocked: true });
-      onContinue?.();
-    } else {
-      setMismatch(true);
-    }
-  };
 
   return (
     <div className="mx-auto max-w-xl px-4 py-12">
@@ -49,35 +35,9 @@ export function WaitingBlocker({ onContinue }: { onContinue?: () => void }) {
         </p>
       </div>
 
-      <form onSubmit={tryUnlock} className="mt-8 border-t border-border pt-6">
-        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          {tr(w.blocked.gpLabel)}
-        </p>
-        <label htmlFor="unlock-code" className="mt-2 block text-sm">
-          {tr(w.blocked.gpPrompt)}
-        </label>
-        <div className="mt-2 flex gap-2">
-          <input
-            id="unlock-code"
-            value={input}
-            onChange={(e) => {
-              setInput(e.target.value);
-              setMismatch(false);
-            }}
-            placeholder={tr(w.blocked.codePlaceholder)}
-            autoComplete="off"
-            maxLength={8}
-            className="w-32 rounded-md border border-input bg-background px-2.5 py-2 text-sm font-mono uppercase tracking-widest outline-none focus:border-primary"
-          />
-          <button
-            type="submit"
-            className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
-          >
-            {tr(w.blocked.unlockButton)}
-          </button>
-        </div>
-        {mismatch && <p className="mt-2 text-xs text-destructive">{tr(w.blocked.codeMismatch)}</p>}
-      </form>
+      <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
+        {tr(w.blocked.unlockInstructions)}
+      </p>
 
       <div className="mt-8 space-y-2.5">
         <Link

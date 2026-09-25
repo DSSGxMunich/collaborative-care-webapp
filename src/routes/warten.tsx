@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { ui, useLang } from "@/lib/i18n";
 import { usePrediction } from "@/lib/usePrediction";
 import { WaitingBlocker } from "@/components/WaitingBlocker";
@@ -15,7 +15,6 @@ const w = wartezimmerContent;
 
 function Waiting() {
   const { tr } = useLang();
-  const navigate = useNavigate();
   const p = usePrediction();
 
   if (!p.hydrated) return <div className="mx-auto max-w-xl px-4 py-16" />;
@@ -35,5 +34,5 @@ function Waiting() {
     );
   }
 
-  return <WaitingBlocker onContinue={() => navigate({ to: "/ergebnis" })} />;
+  return <WaitingBlocker />;
 }

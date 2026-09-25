@@ -22,16 +22,9 @@
       "de": "Der Code wird aus Ihren Antworten erzeugt. Ändert sich an den Antworten etwas, ändert sich auch der Code.",
       "en": "This code is generated from your answers. If anything about them changes, the code changes too."
     },
-    "gpLabel": { "de": "Für die Praxis", "en": "For the practice" },
-    "gpPrompt": {
-      "de": "Code eingeben, um die Auswertung freizuschalten",
-      "en": "Enter the code to unlock the results"
-    },
-    "codePlaceholder": { "de": "Code", "en": "Code" },
-    "unlockButton": { "de": "Freischalten", "en": "Unlock" },
-    "codeMismatch": {
-      "de": "Der Code stimmt nicht überein. Bitte erneut versuchen.",
-      "en": "That code doesn't match. Please try again."
+    "unlockInstructions": {
+      "de": "Ihre Ärztin oder Ihr Arzt öffnet die Startseite auf diesem Gerät und gibt den Code dort unter „Für die Praxis“ ein.",
+      "en": "Your GP opens this device's home page and enters the code there under “For the practice”."
     },
     "seeSupport": { "de": "Angebote vor Ort ansehen", "en": "See local support" },
     "backHome": { "de": "Zur Startseite", "en": "Back to start" }

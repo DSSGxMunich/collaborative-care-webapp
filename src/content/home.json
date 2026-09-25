@@ -42,8 +42,43 @@
     "en": "Do not wait for the questionnaire. Call 112, contact the out-of-hours medical service on 116 117, or call a crisis line on 0800 111 0 111."
   },
   "crisisLink": { "de": "Alle Krisenkontakte", "en": "All crisis contacts" },
-  "waitingRoomLink": {
-    "de": "Im Wartezimmer? Fragebogen jetzt ausfüllen",
-    "en": "In the waiting room? Fill in the questionnaire now"
+  "entries": {
+    "heading": { "de": "So starten Sie", "en": "Get started" },
+    "together": {
+      "title": { "de": "Gemeinsam mit Ihrer Ärztin/Ihrem Arzt", "en": "Together with your GP" },
+      "body": {
+        "de": "Sie füllen den Fragebogen gemeinsam im Sprechzimmer aus und sehen die Auswertung direkt zusammen.",
+        "en": "Fill in the questionnaire together in the consultation room and see the results together right away."
+      },
+      "cta": { "de": "Fragebogen starten", "en": "Start questionnaire" }
+    },
+    "waitingRoom": {
+      "title": {
+        "de": "Patient/in: allein im Wartezimmer",
+        "en": "Patient: on your own in the waiting room"
+      },
+      "body": {
+        "de": "Füllen Sie den Fragebogen schon vor dem Termin aus. Die Auswertung sehen Sie erst gemeinsam mit Ihrer Ärztin oder Ihrem Arzt.",
+        "en": "Fill in the questionnaire before your appointment. You'll see the results together with your GP."
+      },
+      "cta": { "de": "Jetzt ausfüllen", "en": "Fill in now" }
+    },
+    "gp": {
+      "title": { "de": "Für die Praxis: Code eingeben", "en": "For the practice: enter code" },
+      "body": {
+        "de": "Ihre Patientin/Ihr Patient hat den Fragebogen im Wartezimmer ausgefüllt? Geben Sie hier den Code von ihrem Bildschirm ein, um die Auswertung gemeinsam zu öffnen.",
+        "en": "Did your patient fill in the questionnaire in the waiting room? Enter the code shown on their screen to open the results together."
+      },
+      "codePlaceholder": { "de": "Code", "en": "Code" },
+      "unlockButton": { "de": "Freischalten", "en": "Unlock" },
+      "codeMismatch": {
+        "de": "Der Code stimmt nicht überein. Bitte erneut versuchen.",
+        "en": "That code doesn't match. Please try again."
+      },
+      "noSession": {
+        "de": "Auf diesem Gerät liegt aktuell kein wartender Fragebogen vor.",
+        "en": "There's no waiting-room questionnaire on this device right now."
+      }
+    }
   }
 }
