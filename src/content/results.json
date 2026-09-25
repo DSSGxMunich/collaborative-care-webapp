@@ -14,101 +14,255 @@
   },
   "title": { "de": "Ihre Auswertung", "en": "Your results" },
   "prototypeNote": {
-    "de": "Diese Schätzungen stammen aus einer gefitteten Komponenten-Netzwerk-Metaanalyse (6 Behandlungsbausteine, 7 Studien) mit einem vorgeschalteten Schritt-1-Modell für Alter, Geschlecht, Ausgangs-PHQ-9 und GAD-7. Alle Bandbreiten sind echte Posterior-Kredibilitätsintervalle. Es handelt sich um einen Forschungsprototyp, keine klinisch validierte Vorhersage.",
-    "en": "These estimates come from a fitted component network meta-analysis (6 treatment components, 7 trials) with an upstream Step 1 model for age, sex, baseline PHQ-9 and GAD-7. All ranges are real posterior credible intervals. This is a research prototype, not a clinically validated prediction."
+    "heading": { "de": "Bevor Sie Ihre Ergebnisse sehen", "en": "Before you view your results" },
+    "intro": {
+      "de": "Unser Modell basiert auf Daten aus randomisiert-kontrollierten Studien (RCTs). Folgende Merkmale waren in diesen Studien kaum oder gar nicht vertreten:",
+      "en": "Our model is based on data from randomized controlled trials (RCTs). Here are some circumstances that weren't well represented in those trials:"
+    },
+    "totalStudies": 12,
+    "countHeader": {
+      "de": "Ausschlüsse",
+      "en": "Exclusions"
+    },
+    "countNote": {
+      "de": "Die Zahl zeigt, in wie vielen der 12 Studien dieses Merkmal zum Ausschluss führte.",
+      "en": "The number shows how many of the 12 studies excluded people with this trait."
+    },
+    "items": [
+      {
+        "label": { "de": "Bereits in Behandlung", "en": "Already in treatment" },
+        "description": {
+          "de": "Therapie, fachärztliche Behandlung oder Antidepressiva",
+          "en": "Therapy, specialist mental health care, or antidepressants"
+        },
+        "excludedIn": 10
+      },
+      {
+        "label": { "de": "Sucht", "en": "Substance dependence" },
+        "description": {
+          "de": "Alkohol- oder Drogenabhängigkeit",
+          "en": "Alcohol or drug dependence"
+        },
+        "excludedIn": 8
+      },
+      {
+        "label": { "de": "Bipolare Störung", "en": "Bipolar disorder" },
+        "excludedIn": 7
+      },
+      {
+        "label": { "de": "Kognitive Beeinträchtigung", "en": "Cognitive impairment" },
+        "excludedIn": 5
+      },
+      {
+        "label": { "de": "Akute Suizidalität", "en": "Acute suicidality" },
+        "excludedIn": 4
+      },
+      {
+        "label": { "de": "Schwangerschaft", "en": "Pregnancy" },
+        "excludedIn": 3
+      },
+      {
+        "label": { "de": "Unter 18 Jahren", "en": "Under 18" },
+        "excludedIn": 9
+      }
+    ],
+    "closing": {
+      "de": "Trifft etwas davon auf Sie zu, verstehen Sie die folgende Einschätzung bitte eher als groben Anhaltspunkt denn als präzise Vorhersage.",
+      "en": "If any of this applies to you, treat the assessment below as a rough guide rather than a precise prediction."
+    },
+    "showDetails": {
+      "de": "Details anzeigen",
+      "en": "Show details"
+    },
+    "hideDetails": {
+      "de": "Details ausblenden",
+      "en": "Hide details"
+    }
   },
   "phq9Label": "PHQ-9",
   "of27": { "de": "von 27 Punkten", "en": "of 27 points" },
   "range": { "de": "Bereich", "en": "Range" },
   "legend": {
-    "estimate": {
-      "de": "Geschätzter PHQ-9 nach 12 Monaten",
-      "en": "Estimated PHQ-9 at 12 months"
+    "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
+    "expected": { "de": "Erwarteter Wert nach 12 Monaten", "en": "Expected result at 12 months" },
+    "helpful": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
+    "interval": { "de": "Unsicherheitsbereich", "en": "Range of uncertainty" },
+    "today": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" },
+    "scale": {
+      "de": "PHQ-9-Skala 0–27, niedriger = weniger Beschwerden",
+      "en": "PHQ-9 scale 0–27, lower = fewer symptoms"
     },
-    "interval": { "de": "95 %-Kredibilitätsintervall", "en": "95% credible interval" },
-    "today": { "de": "Ihr PHQ-9 heute ({baseline})", "en": "Your PHQ-9 today ({baseline})" },
-    "todayLine": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" },
-    "scale": { "de": "Skala 0–27", "en": "scale 0–27" }
+    "fewer": { "de": "weniger Beschwerden", "en": "fewer symptoms" },
+    "more": { "de": "mehr Beschwerden", "en": "more symptoms" }
+  },
+  "ranking": {
+    "helpfulSection": {
+      "de": "Wahrscheinlich hilfreicher als Ihre derzeitige Versorgung",
+      "en": "Likely to help more than your current care"
+    },
+    "otherSection": { "de": "Weitere Bausteine", "en": "Other components" },
+    "rankAria": {
+      "de": "Platz {rank} von {total} — nach erwartetem Nutzen gereiht, hilfreichster Baustein zuerst",
+      "en": "Rank {rank} of {total} — ordered by expected benefit, most helpful care component first"
+    }
   },
   "scenarios": {
     "usualCare": {
-      "label": { "de": "Übliche hausärztliche Versorgung", "en": "Usual GP care" },
-      "short": { "de": "Übliche Versorgung", "en": "Usual care" },
+      "label": {
+        "de": "Übliche hausärztliche Versorgung",
+        "en": "Usual care from your GP — for comparison"
+      },
+      "short": { "de": "Übliche Versorgung", "en": "Usual care from your GP — for comparison" },
       "description": {
-        "de": "Behandlung wie bisher: Termine bei Bedarf, Beratung, Verlaufsbeobachtung.",
-        "en": "Care as before: appointments as needed, advice and watchful monitoring."
+        "de": "Die übliche Behandlung, die eine Hausarztpraxis bei depressiven Beschwerden anbietet. Dazu können Termine bei Ihrer Hausärztin/Ihrem Hausarzt, eine medikamentöse Behandlung oder eine Überweisung an andere Fachpersonen gehören. Die tatsächlich angebotene Versorgung kann sich zwischen Hausarztpraxen unterscheiden und von der Versorgung abweichen, die Sie aktuell erhalten.",
+        "en": "The usual treatment provided by a GP practice for depressive symptoms. This may include appointments with your GP, medication or referral to other healthcare professionals. The exact care provided can vary between GP practices and may differ from the care you currently receive."
       }
     }
   },
   "components": {
-    "counseling": {
+    "specialistInvolvement": {
       "label": {
-        "de": "Beratung zusätzlich zur Medikation (≤ 8 Sitzungen)",
-        "en": "Counseling in addition to medication (≤ 8 sessions)"
+        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Einbindung einer Fachärztin/eines Facharztes oder Psychologin/Psychologen",
+        "en": "Specialist advice for your care team"
       },
-      "short": { "de": "Beratung (≤ 8 Sitzungen)", "en": "Counseling (≤ 8 sessions)" }
+      "short": {
+        "de": "Fachärztliche/psychologische Einbindung",
+        "en": "Specialist advice for your care team"
+      },
+      "description": {
+        "de": "Eine Fachärztin/ein Facharzt oder eine Psychologin/ein Psychologe begleitet oder berät bei Ihrer Behandlung, zusätzlich zu Ihrer Hausarztpraxis.",
+        "en": "A psychiatrist or psychologist advises your care team. You do not need a separate appointment with this specialist for the team to receive this advice."
+      }
     },
-    "manualTherapy": {
-      "label": { "de": "Manualisierte Psychotherapie", "en": "Manual-based psychotherapy" },
-      "short": { "de": "Manualisierte Psychotherapie", "en": "Manual-based psychotherapy" }
+    "psychologicalTreatment": {
+      "label": {
+        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Beratung oder Psychotherapie",
+        "en": "Brief counselling: up to 8 sessions"
+      },
+      "short": {
+        "de": "Beratung/Psychotherapie",
+        "en": "Brief counselling: up to 8 sessions"
+      },
+      "description": {
+        "de": "In diesen Gesprächen geht es um Ihre Beschwerden und Wege, damit umzugehen — von kurzer Beratung bis zu strukturierter Psychotherapie über mehrere Sitzungen. Kann auch zusätzlich zu einer Medikation erfolgen.",
+        "en": "These conversations focus on your symptoms and ways to manage them. Counselling may also be provided alongside medication."
+      }
+    },
+    "goalSetting": {
+      "label": {
+        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Gemeinsam festgelegte Behandlungsziele",
+        "en": "Agreeing on your personal treatment goals"
+      },
+      "short": {
+        "de": "Behandlungsziele festgelegt",
+        "en": "Agreeing on your personal treatment goals"
+      },
+      "description": {
+        "de": "Sie legen gemeinsam mit Ihrem Behandlungsteam konkrete Ziele für Ihre Behandlung fest.",
+        "en": "You discuss what you would like treatment to help you change. You and your care team agree on specific goals."
+      }
     },
     "patientPreference": {
       "label": {
-        "de": "Patientenpräferenz bei der Behandlungsentscheidung berücksichtigt",
-        "en": "Patient preference considered in treatment decisions"
+        "de": "Ihre Behandlungswünsche werden berücksichtigt",
+        "en": "Taking your treatment preferences into account"
       },
-      "short": { "de": "Patientenpräferenz berücksichtigt", "en": "Patient preference considered" }
+      "short": {
+        "de": "Behandlungswünsche berücksichtigt",
+        "en": "Taking your treatment preferences into account"
+      },
+      "description": {
+        "de": "Sie besprechen gemeinsam, welche Behandlung Sie bevorzugen und was Ihnen wichtig ist. Ihre Wünsche werden bei der Planung Ihrer Versorgung berücksichtigt.",
+        "en": "You discuss which treatment you would prefer and what matters to you. Your preferences are considered when planning your care."
+      }
     },
     "automatedFollowUp": {
       "label": {
-        "de": "Automatisierter Nachverfolgungsprozess",
-        "en": "Automated follow-up process"
+        "de": "Automatische Erinnerungen und Hinweise für Ihr Behandlungsteam",
+        "en": "Automatic reminders and alerts for your care team"
       },
-      "short": { "de": "Automatisierte Nachverfolgung", "en": "Automated follow-up" }
+      "short": {
+        "de": "Automatische Erinnerungen",
+        "en": "Automatic reminders and alerts for your care team"
+      },
+      "description": {
+        "de": "Ein System unterstützt Ihr Behandlungsteam dabei, den Überblick über Ihre Nachsorge zu behalten. Es kann zum Beispiel erinnern, wenn ein Kontakt ansteht, oder Hinweise geben, wenn sich Ihre Beschwerden verschlechtern könnten. Das bedeutet keine durchgehende Überwachung und keine Garantie für eine sofortige Reaktion.",
+        "en": "A system that helps your care team to keep track of your follow-up care. For example, it can remind the team when contact is due or flag signs that your symptoms may be getting worse. This does not mean continuous monitoring or guarantee an immediate response."
+      }
+    },
+    "regularPatientReview": {
+      "label": {
+        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Regelmäßige Verlaufskontrollen",
+        "en": "Regular team reviews of your treatment"
+      },
+      "short": {
+        "de": "Regelmäßige Verlaufskontrollen",
+        "en": "Regular team reviews of your treatment"
+      },
+      "description": {
+        "de": "Ihr Behandlungsteam plant feste, wiederkehrende Termine, um Ihren Verlauf zu besprechen — unabhängig davon, ob es Ihnen gerade besser oder schlechter geht.",
+        "en": "Your care team meets or checks in at planned intervals to review how your treatment is going and whether anything needs to change."
+      }
+    },
+    "copingStrategies": {
+      "label": {
+        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Vermittlung von Bewältigungsstrategien",
+        "en": "Learning ways to manage depressive symptoms"
+      },
+      "short": {
+        "de": "Bewältigungsstrategien",
+        "en": "Learning ways to manage depressive symptoms"
+      },
+      "description": {
+        "de": "Sie lernen konkrete Strategien, um mit Ihren Beschwerden im Alltag umzugehen.",
+        "en": "You learn and practise ways to manage your symptoms in daily life. You discuss which approaches suit your situation."
+      }
     },
     "relapsePrevention": {
-      "label": { "de": "Rückfallpräventionsplan", "en": "Relapse-prevention plan" },
-      "short": { "de": "Rückfallpräventionsplan", "en": "Relapse-prevention plan" }
+      "label": {
+        "de": "Ein Plan zur Vorbeugung und für den Fall, dass Beschwerden zurückkehren",
+        "en": "A plan to help prevent symptoms from returning and for when symptoms return"
+      },
+      "short": {
+        "de": "Rückfallpräventionsplan",
+        "en": "A plan to help prevent symptoms from returning and for when symptoms return"
+      },
+      "description": {
+        "de": "Gemeinsam mit Ihrem Behandlungsteam oder Ihrer Ärztin/Ihrem Arzt erstellen Sie einen Plan, um gesund zu bleiben und frühe Warnzeichen zu erkennen. Der Plan beschreibt, was Sie tun können und an wen Sie sich wenden, falls Beschwerden zurückkehren.",
+        "en": "Together with your care partner or doctor, you make a plan for staying well and recognizing early warning signs to look out for. Your plan explains what you can do and whom to contact if symptoms return."
+      }
     },
     "familyInvolvement": {
       "label": {
-        "de": "Familie und Freunde wurden einbezogen",
-        "en": "Family and friends were involved"
+        "de": "Einbindung von Vertrauenspersonen in Ihre Versorgung",
+        "en": "Involving people you trust in your care"
       },
-      "short": { "de": "Familie/Freunde einbezogen", "en": "Family/friends involved" }
+      "short": {
+        "de": "Familie/Freunde einbezogen",
+        "en": "Involving people you trust in your care"
+      },
+      "description": {
+        "de": "Mit Ihrem Einverständnis werden Familienmitglieder oder Freunde in Ihre Versorgung einbezogen. Gemeinsam besprechen Sie, wie sie Sie unterstützen können.",
+        "en": "With your agreement, family members or friends are involved in your care. You discuss together how they can support you."
+      }
+    },
+    "communityCulturalBg": {
+      "label": {
+        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Berücksichtigung von Gemeinschaft und kulturellem Hintergrund",
+        "en": "Taking your community and cultural background into account"
+      },
+      "short": {
+        "de": "Gemeinschaft/kultureller Hintergrund",
+        "en": "Taking your community and cultural background into account"
+      },
+      "description": {
+        "de": "Ihre Versorgung wird an Ihr kulturelles und soziales Umfeld angepasst.",
+        "en": "Your care considers support available in your community or your cultural background. This may include support groups, social services, or values and ways of life that matter to you."
+      }
     }
   },
   "scenarioTabs": {
-    "combo": { "de": "Kombinationen aus den Studien", "en": "Combinations from the trials" },
     "single": { "de": "Einzelne Bausteine", "en": "Single components" }
-  },
-  "scenariosIntro": {
-    "de": "Niedrigere Werte bedeuten weniger Beschwerden. Jede Zeile außer der Referenz ist eine tatsächlich in einer der 7 eingeschlossenen Studien untersuchte Kombination von Bausteinen — keine frei wählbare Zusammenstellung.",
-    "en": "Lower values mean fewer symptoms. Every row besides the reference is a combination of components actually tested in one of the 7 included trials — not a freely chosen combination."
-  },
-  "singleScenariosIntro": {
-    "de": "Niedrigere Werte bedeuten weniger Beschwerden. Diese Ansicht zeigt jeden Baustein einzeln zur üblichen Versorgung hinzugefügt — keiner davon wurde allein in einer Studie getestet, keine Studie hat je nur einen Baustein eingesetzt. Mehr Bausteine gleichzeitig bedeutet nicht automatisch ein besseres Ergebnis; welche Kombinationen tatsächlich untersucht wurden, zeigt die andere Ansicht.",
-    "en": "Lower values mean fewer symptoms. This view shows each component added on its own to usual care — none of them was tested alone in any trial. Using more components at once is not automatically better; which combinations were actually tested is shown in the other view."
-  },
-  "posterior": {
-    "sectionTitle": {
-      "de": "Unsicherheit im Detail: Posterior-Verteilung",
-      "en": "Uncertainty in detail: posterior distribution"
-    },
-    "show": { "de": "Verteilung anzeigen", "en": "Show distribution" },
-    "hide": { "de": "Verteilung ausblenden", "en": "Hide distribution" },
-    "explain": {
-      "de": "Dies zeigt, wie sicher sich das Modell bei der Schätzung des durchschnittlichen PHQ-9-Werts nach 12 Monaten für Personen mit Ihrem Profil ist — nicht, wie stark die tatsächlichen Werte einzelner Personen streuen. Eine schmale Verteilung bedeutet also eine präzise Schätzung des Durchschnitts, nicht, dass alle Personen nahe diesem Wert landen.",
-      "en": "This shows how confident the model is in its estimate of the average 12-month PHQ-9 for people with your profile — not how much individual people's actual outcomes vary. A narrow distribution means a precise estimate of the average, not that everyone ends up close to this value."
-    },
-    "placeholderNote": {
-      "de": "Diese Verteilung besteht aus den echten Posterior-Stichproben des gefitteten Modells (2 000 Ziehungen aus 4 Ketten), nicht aus einer Näherung.",
-      "en": "This distribution is made up of the fitted model's real posterior draws (2,000 draws across 4 chains), not an approximation."
-    },
-    "tooltipDraws": {
-      "de": "{count} von {total} Ziehungen",
-      "en": "{count} of {total} draws"
-    }
   },
   "crisis": {
     "acute": {
@@ -154,26 +308,22 @@
     }
   },
   "predictorsNote": {
-    "de": "Ausgangswert PHQ-9, Alter, Geschlecht und GAD-7 (falls bekannt) fließen über ein vorgeschaltetes Schritt-1-Modell in die Schätzung ein — ist der GAD-7 nicht bekannt, wird dafür ein typischer Bevölkerungswert angenommen. Ihre übrige Vorgeschichte (z. B. Vorbehandlung) sehen Sie in der Zusammenfassung für die Praxis, sie verändert die Schätzung aber nicht.",
-    "en": "Baseline PHQ-9, age, sex and GAD-7 (if known) all feed into the estimate via an upstream Step 1 model — if GAD-7 isn't known, a population-typical value is assumed for it. Your other history (e.g. prior treatment) appears in the practice summary but does not change the estimate."
+    "de": "Ausgangswert PHQ-9, Alter und Geschlecht fließen in die Schätzung ein. Ihre übrige Vorgeschichte (z. B. Vorbehandlung) sehen Sie in der Zusammenfassung für die Praxis, sie verändert die Schätzung aber nicht.",
+    "en": "Baseline PHQ-9, age and sex feed into the estimate. Your other history (e.g. prior treatment) appears in the practice summary but does not change the estimate."
   },
   "predictors": {
     "baseline": { "label": { "de": "Ausgangswert PHQ-9", "en": "Baseline PHQ-9" } },
     "age": { "label": { "de": "Alter", "en": "Age" } },
     "sex": { "label": { "de": "Geschlecht", "en": "Sex" } },
-    "gad7": { "label": { "de": "GAD-7", "en": "GAD-7" } },
-    "riskScore": {
-      "label": { "de": "Schritt-1-Schätzung", "en": "Step 1 estimate" }
-    },
     "notProvided": { "de": "keine Angabe", "en": "not provided" }
   },
   "whatCanBeExpected": {
-    "de": "Geschätzter PHQ-9 nach 12 Monaten",
-    "en": "Estimated PHQ-9 at 12 months"
+    "de": "Was Ihnen am ehesten helfen könnte",
+    "en": "What is most likely to help you"
   },
   "whatCanBeExpectedBody": {
-    "de": "Im Vergleich zur üblichen Versorgung, mit in Studien getesteten Kombinationen und einzelnen Bausteinen. Die Schätzungen gelten für ähnliche Personengruppen, nicht als Zusage für Ihren eigenen Verlauf.",
-    "en": "Compared to usual care, showing both trial-tested combinations and individual components. Estimates reflect similar patient groups, not a guarantee for your own course."
+    "de": "Sie sehen hier eine Rangfolge von Versorgungsbausteinen – vom wahrscheinlich hilfreichsten bis zum am wenigsten hilfreichen.",
+    "en": "You'll see a ranking of care components here, from what's likely to be most helpful to the least."
   },
   "whatInfluences": {
     "de": "Was beeinflusst diese Schätzung?",
@@ -184,6 +334,22 @@
       "de": "Zusammenfassung für die Praxis",
       "en": "Summary for the practice"
     },
-    "localSupport": { "de": "Passende Angebote vor Ort", "en": "Suitable local offers" }
+    "localSupport": { "de": "Passende Angebote vor Ort", "en": "Suitable local offers" },
+    "downloadPdf": { "de": "PDF herunterladen", "en": "Download PDF" }
+  },
+  "pdf": {
+    "subtitle": {
+      "de": "Ihre persönliche Auswertung. Diese Datei wird ausschließlich auf Ihrem Gerät erstellt und nirgends hochgeladen.",
+      "en": "Your personal results. This file is generated only on your device and is never uploaded anywhere."
+    },
+    "table": {
+      "careComponent": { "de": "Versorgungsbaustein", "en": "Care component" },
+      "rank": { "de": "Rang", "en": "Rank" },
+      "note": { "de": "Einschätzung", "en": "Assessment" }
+    },
+    "footer": {
+      "de": "Dieser Ausdruck stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Bausteine sind nach erwartetem Nutzen gereiht, nicht nach exakten Zahlenwerten. Die Einschätzungen sind nicht klinisch validiert und ersetzen keine ärztliche Diagnose oder Behandlung.",
+      "en": "This printout comes from a research prototype built on a component network meta-analysis (10 components, 12 trials). Components are ranked by expected benefit, not exact numeric values. These assessments haven't been clinically validated and do not replace medical diagnosis or treatment."
+    }
   }
 }

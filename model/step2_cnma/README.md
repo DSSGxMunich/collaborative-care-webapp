@@ -22,14 +22,21 @@ training range).
   - `study_order`, `component_order` — lists of names. Cross-checked by
     the script against the `.nc` file's own coordinate labels (exact
     match, order-sensitive) before anything is exported.
-  - `allowed_component_packages` — a **list of objects**, one per package,
-    each mapping `{component_name: 0 | 1}` (not a list of arrays — the
-    script converts to the array shape `nma-posterior.json` uses,
-    positionally ordered by `component_order`, validating every package's
-    keys match `component_order` exactly).
-  - `risk_score` — an object with (at least) `training_min` and
-    `training_max`; other fields (`source`, `transformation`, ...) are
-    provenance notes and aren't carried into the output.
+  - `allowed_component_packages` (**optional**) — a **list of objects**, one
+    per package, each mapping `{component_name: 0 | 1}` (not a list of
+    arrays — the script converts to the array shape `nma-posterior.json`
+    uses, positionally ordered by `component_order`, validating every
+    package's keys match `component_order` exactly). Only meaningful if
+    this refit actually flags specific component combinations as
+    trial-tested — as of the 10-component/12-study refit it doesn't, and
+    `src/lib/model.ts` has no combination/package feature any more, so this
+    is normally omitted.
+  - `risk_score` (**optional**) — an object with (at least) `training_min`
+    and `training_max`; other fields (`source`, `transformation`, ...) are
+    provenance notes and aren't carried into the output. If omitted, the
+    export prints a warning and `nma-posterior.json` ships without a
+    `riskScore` field — nothing in `src/lib/` reads it directly (Step 1's
+    own clamp lives in `src/lib/riskScore.ts`), but see the TODO there.
   - There is **no `thinning` field** — that's a `--thinning` CLI flag on
     `export` instead (default 8, matching the committed file), since it's
     an export-time choice, not something the model-fitting side records.

@@ -1,20 +1,13 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import {
-  Choice,
-  DateField,
-  MultiChoice,
-  NumberField,
-  Toggle,
-  YesNoField,
-} from "@/components/fields";
-import { GAD7_INTRO, GAD7_ITEMS, GAD7_OPTIONS, gad7Total } from "@/lib/gad7";
+import { Choice, DateField, MultiChoice, YesNoField } from "@/components/fields";
 import { ui, useLang } from "@/lib/i18n";
 import { PHQ9_INTRO, PHQ9_ITEMS, PHQ9_OPTIONS } from "@/lib/phq9";
 import {
   ageFromBirthDate,
   birthDateBounds,
   PRIOR_TREATMENTS,
+  PROBABILITY_OPTIONS,
   SEX_OPTIONS,
   useSession,
 } from "@/lib/session";
@@ -23,7 +16,7 @@ import questionnaireContent from "@/content/questionnaire.json";
 export const Route = createFileRoute("/fragebogen")({
   head: () => ({
     meta: [
-      { title: "Fragebogen – Depressions-Kompass" },
+      { title: "Fragebogen – Versorgungskompass" },
       { name: "description", content: questionnaireContent.phq9.intro.de },
     ],
   }),
@@ -58,20 +51,14 @@ function Questionnaire() {
         return session.phq.every((v) => v !== null);
       case "safety":
         return (
+          session.safety.past !== null &&
           session.safety.plan !== null &&
-          session.safety.canStaySafe !== null &&
-          session.safety.pastAttempt !== null &&
+          session.safety.probability !== null &&
+          session.safety.preventive !== null &&
           session.safety.familyHistory !== null
         );
       case "history":
-        return (
-          session.profile.priorEpisode !== null &&
-          session.profile.priorTreatment.length > 0 &&
-          session.profile.gad7Known !== null &&
-          (session.profile.gad7Known === "yes"
-            ? session.profile.gad7Score !== null
-            : !session.profile.gad7FillNow || gad7Total(session.profile.gad7Answers) !== null)
-        );
+        return session.profile.priorEpisode !== null && session.profile.priorTreatment.length > 0;
       default:
         return false;
     }
@@ -87,12 +74,6 @@ function Questionnaire() {
     }
     setIndex((i) => i + 1);
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const setGad7Answer = (idx: number, value: number) => {
-    const answers = [...session.profile.gad7Answers];
-    answers[idx] = value;
-    updateProfile({ gad7Answers: answers });
   };
 
   const toggleTreatment = (id: string) => {
@@ -112,8 +93,11 @@ function Questionnaire() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
       <div className="mb-8">
-        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          {tr(ui.step)} {index + 1} {tr(ui.of)} {total}
+        <p
+          key={index}
+          className="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
+        >
+          {`${tr(ui.step)} ${index + 1} ${tr(ui.of)} ${total}`}
         </p>
         <div
           className="mt-2 h-1 w-full overflow-hidden rounded-sm bg-secondary"
@@ -180,19 +164,29 @@ function Questionnaire() {
         <div className="space-y-3">
           <p className="text-sm leading-relaxed text-muted-foreground">{tr(q.safety.intro)}</p>
           <YesNoField
+            label={q.safety.questions.past}
+            value={session.safety.past}
+            onChange={(v) => updateSafety({ past: v })}
+          />
+          <YesNoField
             label={q.safety.questions.plan}
             value={session.safety.plan}
             onChange={(v) => updateSafety({ plan: v })}
           />
+          <div className="space-y-2 rounded-md border border-border px-3.5 py-2.5">
+            <p className="text-sm">{tr(q.safety.questions.probability)}</p>
+            <Choice
+              name="safety-probability"
+              columns={3}
+              options={PROBABILITY_OPTIONS}
+              value={session.safety.probability}
+              onChange={(v) => updateSafety({ probability: v })}
+            />
+          </div>
           <YesNoField
-            label={q.safety.questions.canStaySafe}
-            value={session.safety.canStaySafe}
-            onChange={(v) => updateSafety({ canStaySafe: v })}
-          />
-          <YesNoField
-            label={q.safety.questions.pastAttempt}
-            value={session.safety.pastAttempt}
-            onChange={(v) => updateSafety({ pastAttempt: v })}
+            label={q.safety.questions.preventive}
+            value={session.safety.preventive}
+            onChange={(v) => updateSafety({ preventive: v })}
           />
           <YesNoField
             label={q.safety.questions.familyHistory}
@@ -225,64 +219,6 @@ function Questionnaire() {
               onToggle={toggleTreatment}
             />
           </fieldset>
-          <YesNoField
-            label={q.profile.gad7.knownQuestion}
-            value={session.profile.gad7Known}
-            onChange={(v) =>
-              updateProfile({
-                gad7Known: v,
-                gad7Score: v === "no" ? null : session.profile.gad7Score,
-              })
-            }
-          />
-          {session.profile.gad7Known === "yes" && (
-            <NumberField
-              label={q.profile.gad7.scoreQuestion}
-              hint={q.profile.gad7.scoreHint}
-              min={0}
-              max={21}
-              value={session.profile.gad7Score}
-              onChange={(v) => updateProfile({ gad7Score: v })}
-            />
-          )}
-          {session.profile.gad7Known === "no" && (
-            <div className="surface-card p-5">
-              <div className="flex items-center justify-between gap-3">
-                <span className="text-sm">{tr(q.profile.gad7.fillNowQuestion)}</span>
-                <Toggle
-                  label={q.profile.gad7.fillNowQuestion}
-                  checked={session.profile.gad7FillNow}
-                  onChange={(v) =>
-                    updateProfile({
-                      gad7FillNow: v,
-                      ...(v ? {} : { gad7Answers: Array<number | null>(7).fill(null) }),
-                    })
-                  }
-                />
-              </div>
-              {session.profile.gad7FillNow && (
-                <div className="mt-5 space-y-5">
-                  <p className="text-sm text-muted-foreground">{tr(GAD7_INTRO)}</p>
-                  {GAD7_ITEMS.map((item, idx) => (
-                    <fieldset
-                      key={idx}
-                      className="border-t border-border pt-4 first:border-t-0 first:pt-0"
-                    >
-                      <legend className="mb-3 block text-sm font-medium">
-                        {idx + 1}. {tr(item)}
-                      </legend>
-                      <Choice
-                        name={`gad7-${idx}`}
-                        options={GAD7_OPTIONS}
-                        value={session.profile.gad7Answers[idx] as 0 | 1 | 2 | 3 | null}
-                        onChange={(v) => setGad7Answer(idx, v)}
-                      />
-                    </fieldset>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
         </div>
       )}
 

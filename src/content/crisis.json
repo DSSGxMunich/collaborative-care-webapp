@@ -1,29 +1,38 @@
 {
   "title": { "de": "Soforthilfe", "en": "Urgent help" },
   "intro": {
-    "de": "Wenn Sie daran denken, sich das Leben zu nehmen, oder das Gefühl haben, sich nicht schützen zu können: Holen Sie sich jetzt Hilfe. Diese Stellen sind kostenlos, vertraulich und erfahren im Umgang mit solchen Situationen.",
-    "en": "If you are thinking about ending your life, or feel unable to keep yourself safe: get help now. These services are free, confidential and experienced with such situations."
+    "de": "Wenn Sie daran denken, sich das Leben zu nehmen, oder das Gefühl haben, sich nicht schützen zu können: Holen Sie sich jetzt Hilfe. Alle diese Nummern sind kostenlos erreichbar.",
+    "en": "If you are thinking about ending your life, or feel unable to keep yourself safe: get help now. All of these numbers are free to call."
   },
   "contacts": [
     {
       "name": { "de": "Notruf", "en": "Emergency services" },
       "detail": "112",
-      "note": { "de": "Bei akuter Lebensgefahr", "en": "In acute danger to life" }
+      "note": {
+        "de": "Rettungsdienst bei akuter Lebensgefahr",
+        "en": "Ambulance, in acute danger to life"
+      }
     },
     {
       "name": { "de": "Telefonseelsorge", "en": "Telephone counselling" },
-      "detail": "0800 111 0 111 / 0800 111 0 222",
+      "detail": "0800 111 0 111 / 0800 111 0 222 / 116 123",
       "note": { "de": "Kostenlos, rund um die Uhr, anonym", "en": "Free, 24/7, anonymous" }
     },
     {
       "name": { "de": "Ärztlicher Bereitschaftsdienst", "en": "Out-of-hours medical service" },
       "detail": "116 117",
-      "note": { "de": "Außerhalb der Praxiszeiten", "en": "Outside practice opening hours" }
+      "note": {
+        "de": "Wenn die Praxis geschlossen ist, rund um die Uhr",
+        "en": "When your practice is closed, 24/7"
+      }
     },
     {
       "name": { "de": "Info-Telefon Depression", "en": "Depression information line" },
       "detail": "0800 33 44 533",
-      "note": { "de": "Deutsche Depressionshilfe", "en": "German Depression Aid" }
+      "note": {
+        "de": "Stiftung Deutsche Depressionshilfe · Mo, Di, Do 13–17 Uhr; Mi, Fr 8:30–12:30 Uhr · Information, kein Krisendienst",
+        "en": "German Depression Aid Foundation · Mon, Tue, Thu 1–5 pm; Wed, Fri 8:30 am–12:30 pm · information, not a crisis service"
+      }
     }
   ],
   "helpNowTitle": { "de": "Was jetzt hilft", "en": "What helps right now" },

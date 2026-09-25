@@ -1,12 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
-import { effectiveGad7Score } from "@/lib/gad7";
+import { CareRanking } from "@/components/CareRanking";
 import { fill, ui, useLang } from "@/lib/i18n";
 import { PHQ9_ITEMS, SEVERITY_LABEL } from "@/lib/phq9";
 import { assessRisk } from "@/lib/safety";
 import { MODEL_META } from "@/lib/model";
+import { generatePraxisPdf } from "@/lib/pdf";
 import { usePrediction } from "@/lib/usePrediction";
-import { ageFromBirthDate, PRIOR_TREATMENTS, SEX_OPTIONS } from "@/lib/session";
+import {
+  ageFromBirthDate,
+  PRIOR_TREATMENTS,
+  PROBABILITY_OPTIONS,
+  SEX_OPTIONS,
+} from "@/lib/session";
+import { chunk } from "@/lib/utils";
 import { WaitingBlocker } from "@/components/WaitingBlocker";
 import praxisContent from "@/content/praxis.json";
 import resultsContent from "@/content/results.json";
@@ -14,7 +20,7 @@ import resultsContent from "@/content/results.json";
 export const Route = createFileRoute("/praxis")({
   head: () => ({
     meta: [
-      { title: "Kurzbefund für die Praxis – Depressions-Kompass" },
+      { title: "Kurzbefund für die Praxis – Versorgungskompass" },
       { name: "description", content: praxisContent.subtitle.de },
     ],
   }),
@@ -24,12 +30,9 @@ export const Route = createFileRoute("/praxis")({
 const c = praxisContent;
 const r = resultsContent;
 
-type ScenarioTab = "single" | "combo";
-
 function Clinician() {
   const { tr } = useLang();
   const p = usePrediction();
-  const [tab, setTab] = useState<ScenarioTab>("single");
 
   if (!p.hydrated) return <div className="mx-auto max-w-3xl px-4 py-16" />;
 
@@ -56,15 +59,38 @@ function Clinician() {
   const risk = assessRisk(p.session);
   const yesNo = (v: "yes" | "no" | null) => (v ? tr(v === "yes" ? ui.yes : ui.no) : "–");
 
-  const rows: { label: string; value: string }[] = [
+  /** Badge tone per RiskLevel — "minimal" gets no badge (plain row, like everything else). */
+  const RISK_TONE: Record<typeof risk, "warning" | "destructive" | undefined> = {
+    minimal: undefined,
+    lower: "warning",
+    higher: "destructive",
+  };
+
+  const rows: { label: string; value: string; tone?: "warning" | "destructive" | undefined }[] = [
+    { label: tr(c.rows.riskAssessment), value: tr(c.riskFlag[risk]), tone: RISK_TONE[risk] },
     { label: tr(c.rows.phq9Total), value: `${p.baseline}/27` },
     { label: tr(c.rows.severity), value: tr(SEVERITY_LABEL[p.severity]) },
     { label: tr(c.rows.suicidality), value: `${p.session.phq[8] ?? 0}/3` },
-    { label: tr(c.rows.riskAssessment), value: tr(c.riskFlag[risk]) },
-    { label: tr(c.rows.planPrep), value: yesNo(safety.plan) },
-    { label: tr(c.rows.canStaySafe), value: yesNo(safety.canStaySafe) },
-    { label: tr(c.rows.pastAttempt), value: yesNo(safety.pastAttempt) },
-    { label: tr(c.rows.familyHistory), value: yesNo(safety.familyHistory) },
+    { label: tr(c.rows.past), value: yesNo(safety.past) },
+    { label: tr(c.rows.plan), value: yesNo(safety.plan) },
+    {
+      label: tr(c.rows.probability),
+      value:
+        safety.probability !== null
+          ? tr(
+              PROBABILITY_OPTIONS.find((o) => o.value === safety.probability)?.label ?? {
+                de: "–",
+                en: "–",
+              },
+            )
+          : "–",
+    },
+    { label: tr(c.rows.preventive), value: yesNo(safety.preventive) },
+    {
+      label: tr(c.rows.familyHistory),
+      value: yesNo(safety.familyHistory),
+      tone: safety.familyHistory === "yes" ? "warning" : undefined,
+    },
     {
       label: tr(c.rows.age),
       value: profile.birthDate ? ageFromBirthDate(profile.birthDate).toFixed(2) : "–",
@@ -84,27 +110,92 @@ function Clinician() {
           .join(", ") || "–",
     },
     {
-      label: tr(c.rows.gad7),
-      value: (() => {
-        const score = effectiveGad7Score(profile);
-        return score !== null ? `${score}/21` : tr(c.rows.gad7Assumed);
-      })(),
-    },
-    {
       label: tr(c.rows.riskScore),
       value: p.predictors.find((row) => row.id === "riskScore")?.value ?? "–",
     },
   ];
 
-  const round1 = (x: number) => Number(x.toFixed(1));
-  const usualEndpoint =
-    p.scenarios.find((s) => s.id === "usualCare")?.expectedEndpoint ?? p.baseline;
-
   /** Usual care keeps its own label; a package's label is its active components joined together. */
-  const careOptionLabel = (scenario: (typeof p.scenarios)[number]) =>
+  const careComponentLabel = (scenario: (typeof p.scenarios)[number]) =>
     scenario.id === "usualCare"
       ? tr(r.scenarios.usualCare.label)
       : scenario.components.map((id) => tr(r.components[id].short)).join(" + ");
+
+  /** Same components as careComponentLabel, grouped at most 2 per line so a 3-4 component package doesn't run on into one long string in the table cell. */
+  const careComponentLabelLines = (scenario: (typeof p.scenarios)[number]): string[] =>
+    scenario.id === "usualCare"
+      ? [tr(r.scenarios.usualCare.label)]
+      : chunk(
+          scenario.components.map((id) => tr(r.components[id].short)),
+          2,
+        ).map((group) => group.join(" + "));
+
+  /** Every row is a single component added alone, so it always has one unambiguous explanation to show. */
+  const careComponentDescription = (scenario: (typeof p.scenarios)[number]): string | undefined => {
+    const [id] = scenario.components;
+    return id !== undefined && scenario.components.length === 1
+      ? tr(r.components[id].description)
+      : undefined;
+  };
+
+  /** A component is flagged "likely to help" when its expected outcome beats the patient's own baseline — no magnitude shown, just the direction. */
+  const isHelpful = (scenario: (typeof p.scenarios)[number]) =>
+    scenario.expectedEndpoint < p.baseline;
+
+  const rankedScenarios = p.scenarios.filter((s) => s.id !== "usualCare");
+  const usualCareScenario = p.scenarios.find((s) => s.id === "usualCare");
+
+  /** e.g. "9.2 (7.1–11.4)": expected 12-month PHQ-9 and its 95% credible interval. */
+  const formatEndpoint = (scenario: (typeof p.scenarios)[number]) => {
+    const f = (x: number) => x.toFixed(1);
+    return `${f(scenario.expectedEndpoint)} (${f(scenario.endpointRange[0])}–${f(scenario.endpointRange[1])})`;
+  };
+
+  const scenarioTableRows = (scenarios: typeof p.scenarios) =>
+    scenarios.map((scenario) => {
+      const isUsualCare = scenario.id === "usualCare";
+      const rank = isUsualCare ? "–" : String(rankedScenarios.indexOf(scenario) + 1);
+      return {
+        label: careComponentLabel(scenario),
+        description: isUsualCare
+          ? tr(r.scenarios.usualCare.description)
+          : careComponentDescription(scenario),
+        rank,
+        endpoint: formatEndpoint(scenario),
+        note: !isUsualCare && isHelpful(scenario) ? tr(c.table.better) : "–",
+      };
+    });
+
+  const downloadPdf = () => {
+    const [riskRow, ...restRows] = rows;
+    generatePraxisPdf({
+      filenamePrefix: tr({ de: "kurzbefund-praxis", en: "clinical-summary" }),
+      title: tr(c.title),
+      subtitle: tr(c.subtitle),
+      riskLabel: riskRow?.label ?? "",
+      riskValue: riskRow?.value ?? "",
+      riskTone: riskRow?.tone,
+      summaryHeading: tr(c.summary),
+      rows: restRows,
+      phq9Heading: tr(c.phq9ItemProfile),
+      phq9Items: PHQ9_ITEMS.map((item, i) => ({
+        index: i + 1,
+        label: tr(item),
+        value: p.session.phq[i] ?? 0,
+      })),
+      modelHeading: tr(c.modelEstimates),
+      tableHeaders: {
+        careComponent: tr(c.table.careComponent),
+        rank: tr(c.table.rank),
+        endpoint: tr(c.table.endpoint),
+        note: tr(c.table.note),
+      },
+      scenarioTables: [
+        { heading: tr(r.scenarioTabs.single), rows: scenarioTableRows(p.scenarios) },
+      ],
+      footer: fill(tr(c.footer), { version: MODEL_META.version }),
+    });
+  };
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
@@ -115,8 +206,8 @@ function Clinician() {
         </div>
         <button
           type="button"
-          onClick={() => window.print()}
-          className="rounded-md border border-border px-3.5 py-2 text-sm font-medium hover:bg-secondary"
+          onClick={downloadPdf}
+          className="rounded-md border border-border px-3.5 py-2 text-sm font-medium hover:bg-secondary print:hidden"
         >
           {tr(c.print)}
         </button>
@@ -129,7 +220,22 @@ function Clinician() {
             {rows.map((row) => (
               <div key={row.label} className="flex justify-between gap-4 py-2">
                 <dt className="text-muted-foreground">{row.label}</dt>
-                <dd className="text-right font-medium">{row.value}</dd>
+                <dd className="text-right">
+                  {row.tone ? (
+                    <span
+                      className={[
+                        "rounded-md border px-2 py-0.5 text-xs font-semibold",
+                        row.tone === "destructive"
+                          ? "border-destructive/40 bg-destructive-soft text-destructive"
+                          : "border-warning/40 bg-warning-soft text-warning",
+                      ].join(" ")}
+                    >
+                      {row.value}
+                    </span>
+                  ) : (
+                    <span className="font-medium">{row.value}</span>
+                  )}
+                </dd>
               </div>
             ))}
           </dl>
@@ -167,56 +273,43 @@ function Clinician() {
 
       <section className="mt-8">
         <h2 className="text-base font-semibold">{tr(c.modelEstimates)}</h2>
+        <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+          {tr(c.modelEstimatesIntro)}
+        </p>
 
-        <div className="mt-3 inline-flex rounded-md border border-border p-0.5 text-sm">
-          {(["single", "combo"] as const).map((t) => (
-            <button
-              key={t}
-              type="button"
-              onClick={() => setTab(t)}
-              aria-pressed={tab === t}
-              className={[
-                "rounded-[5px] px-3 py-1.5 font-medium transition-colors",
-                tab === t
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:text-foreground",
-              ].join(" ")}
-            >
-              {tr(r.scenarioTabs[t])}
-            </button>
-          ))}
-        </div>
-
-        <div className="mt-3 overflow-x-auto rounded-md border border-border">
-          <table className="w-full min-w-[26rem] text-sm">
-            <thead>
-              <tr className="text-left text-xs uppercase tracking-wide text-muted-foreground">
-                <th className="px-4 py-2.5 font-medium">{tr(c.table.careOption)}</th>
-                <th className="px-4 py-2.5 font-medium">{tr(c.table.endpoint)}</th>
-                <th className="px-4 py-2.5 font-medium">{tr(c.table.delta)}</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {(tab === "single" ? p.singleScenarios : p.scenarios).map((scenario) => {
-                const delta = round1(usualEndpoint - scenario.expectedEndpoint);
-                return (
-                  <tr key={scenario.id}>
-                    <td className="px-4 py-2.5 font-medium">{careOptionLabel(scenario)}</td>
-                    <td className="px-4 py-2.5">
-                      {scenario.expectedEndpoint}{" "}
-                      <span className="text-xs text-muted-foreground">
-                        ({scenario.endpointRange[0]}–{scenario.endpointRange[1]})
-                      </span>
-                    </td>
-                    <td className="px-4 py-2.5">
-                      {scenario.id === "usualCare" ? "–" : delta > 0 ? `-${delta}` : `+${-delta}`}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        {usualCareScenario && (
+          <div className="mt-4">
+            <CareRanking
+              compact
+              usualCare={usualCareScenario}
+              ranked={rankedScenarios}
+              labelLines={careComponentLabelLines}
+              description={careComponentDescription}
+              helpful={isHelpful}
+              usualCareDescription={tr(r.scenarios.usualCare.description)}
+              helpfulSectionLabel={tr(c.ranking.helpfulSection)}
+              otherSectionLabel={tr(c.ranking.otherSection)}
+              rankAriaLabel={(rank, total) => fill(tr(c.ranking.rankAria), { rank, total })}
+              outcome={{
+                baseline: p.baseline,
+                todayLabel: fill(tr(c.outcome.today), { baseline: p.baseline }),
+                lowLabel: tr(c.outcome.fewer),
+                highLabel: tr(c.outcome.more),
+                ticks: [0, 5, 10, 15, 20, 27],
+                legend: {
+                  expected: tr(c.outcome.expected),
+                  helpful: tr(c.outcome.helpful),
+                  interval: tr(c.outcome.interval),
+                  today: tr(c.outcome.todayLine),
+                  scale: tr(c.outcome.scale),
+                },
+                formatValue: formatEndpoint,
+                expectedLabel: (s) =>
+                  fill(tr(c.outcome.expectedHover), { value: formatEndpoint(s) }),
+              }}
+            />
+          </div>
+        )}
         <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
           {fill(tr(c.footer), { version: MODEL_META.version })}
         </p>
