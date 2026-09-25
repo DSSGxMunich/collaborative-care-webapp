@@ -14,20 +14,24 @@
   "blocked": {
     "title": { "de": "Danke — fast geschafft", "en": "Thank you — almost done" },
     "body": {
-      "de": "Ihre Antworten sind gespeichert. Bitte warten Sie, bis Sie mit Ihrer Ärztin oder Ihrem Arzt zusammensitzen — die Auswertung besprechen Sie gemeinsam im Termin.",
-      "en": "Your answers are saved. Please wait until you're sitting down with your GP — you'll go through the results together during your appointment."
+      "de": "Ihre Antworten sind gespeichert. Geben Sie Ihrer Ärztin oder Ihrem Arzt diesen Code, damit die Auswertung freigeschaltet werden kann.",
+      "en": "Your answers are saved. Give your GP this code so they can unlock your results."
     },
-    "waitingNote": {
-      "de": "Sie müssen jetzt nichts weiter tun. Zeigen Sie diesen Bildschirm Ihrer Ärztin oder Ihrem Arzt, wenn Sie aufgerufen werden.",
-      "en": "There's nothing more to do right now. Show this screen to your GP when you're called in."
+    "codeLabel": { "de": "Ihr Code", "en": "Your code" },
+    "codeHint": {
+      "de": "Der Code wird aus Ihren Antworten erzeugt. Ändert sich an den Antworten etwas, ändert sich auch der Code.",
+      "en": "This code is generated from your answers. If anything about them changes, the code changes too."
     },
-    "continueWithGp": {
-      "de": "Meine Ärztin/mein Arzt ist jetzt da — weiter",
-      "en": "My GP is here now — continue"
+    "gpLabel": { "de": "Für die Praxis", "en": "For the practice" },
+    "gpPrompt": {
+      "de": "Code eingeben, um die Auswertung freizuschalten",
+      "en": "Enter the code to unlock the results"
     },
-    "continueHint": {
-      "de": "Bitte nur mit Ihrer Ärztin/Ihrem Arzt zusammen fortfahren.",
-      "en": "Please only continue once your GP is with you."
+    "codePlaceholder": { "de": "Code", "en": "Code" },
+    "unlockButton": { "de": "Freischalten", "en": "Unlock" },
+    "codeMismatch": {
+      "de": "Der Code stimmt nicht überein. Bitte erneut versuchen.",
+      "en": "That code doesn't match. Please try again."
     },
     "seeSupport": { "de": "Angebote vor Ort ansehen", "en": "See local support" },
     "backHome": { "de": "Zur Startseite", "en": "Back to start" }
