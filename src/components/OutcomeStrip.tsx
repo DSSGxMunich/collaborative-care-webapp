@@ -39,14 +39,17 @@ export function OutcomeStrip({
   baseline,
   todayLabel,
   expectedLabel,
+  reference = false,
 }: {
   scenario: Scenario;
   baseline: number;
   todayLabel: string;
   expectedLabel: string;
+  /** Usual care, the comparison: never gets the green "likely to help" tone. */
+  reference?: boolean;
 }) {
   const [low, high] = scenario.endpointRange;
-  const t = tone(scenario.expectedEndpoint < baseline);
+  const t = tone(!reference && scenario.expectedEndpoint < baseline);
   const cap = `absolute top-1/2 h-2 w-0.5 -translate-x-1/2 -translate-y-1/2 rounded-full ${t.bar}`;
   return (
     <div aria-hidden className="relative h-4">

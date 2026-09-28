@@ -129,13 +129,20 @@
   "scenarios": {
     "usualCare": {
       "label": {
-        "de": "Übliche hausärztliche Versorgung",
+        "de": "Übliche hausärztliche Versorgung – zum Vergleich",
         "en": "Usual care from your GP — for comparison"
       },
-      "short": { "de": "Übliche Versorgung", "en": "Usual care from your GP — for comparison" },
+      "short": {
+        "de": "Übliche hausärztliche Versorgung – zum Vergleich",
+        "en": "Usual care from your GP — for comparison"
+      },
       "description": {
-        "de": "Die übliche Behandlung, die eine Hausarztpraxis bei depressiven Beschwerden anbietet. Dazu können Termine bei Ihrer Hausärztin/Ihrem Hausarzt, eine medikamentöse Behandlung oder eine Überweisung an andere Fachpersonen gehören. Die tatsächlich angebotene Versorgung kann sich zwischen Hausarztpraxen unterscheiden und von der Versorgung abweichen, die Sie aktuell erhalten.",
-        "en": "The usual treatment provided by a GP practice for depressive symptoms. This may include appointments with your GP, medication or referral to other healthcare professionals. The exact care provided can vary between GP practices and may differ from the care you currently receive."
+        "de": "Die übliche Behandlung, die eine Hausarztpraxis bei depressiven Beschwerden anbietet. Dazu können Termine bei Ihrer Hausärztin/Ihrem Hausarzt, eine medikamentöse Behandlung oder eine Überweisung an andere Fachpersonen gehören.",
+        "en": "The usual treatment provided by a GP practice for depressive symptoms. This may include appointments with your GP, medication or referral to other healthcare professionals."
+      },
+      "note": {
+        "de": "* Die tatsächlich angebotene Versorgung kann sich zwischen Hausarztpraxen unterscheiden und von der Versorgung abweichen, die Sie aktuell erhalten.",
+        "en": "* The exact care provided can vary between GP practices and may differ from the care you currently receive."
       }
     }
   },

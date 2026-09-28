@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CareRanking } from "@/components/CareRanking";
+import { ExamplePopover } from "@/components/ExamplePopover";
 import { InfoTooltip } from "@/components/InfoTooltip";
 import { fill, ui, useLang } from "@/lib/i18n";
 import { PHQ9_MAX } from "@/components/OutcomeStrip";
@@ -64,7 +65,7 @@ function CurrentScore({ score, severity }: { score: number; severity: Severity }
       </p>
 
       {/* The scale is decorative: every fact on it is also stated in text above/below. */}
-      <div aria-hidden className="mt-8 max-w-md">
+      <div aria-hidden className="mt-8">
         <div className="relative">
           {/* Near either end, anchor the label to the marker's inner side so it stays inside the scale. */}
           <div
@@ -257,7 +258,7 @@ function Results() {
       return {
         label: scenarioLabel(scenario),
         description: isUsualCare
-          ? tr(r.scenarios.usualCare.description)
+          ? `${tr(r.scenarios.usualCare.description)} ${tr(r.scenarios.usualCare.note)}`
           : scenarioDescription(scenario),
         rank,
         note: !isUsualCare && isHelpful(scenario) ? tr(r.legend.better) : "–",
@@ -281,7 +282,14 @@ function Results() {
         note: tr(r.pdf.table.note),
       },
       scenarioTables: [
-        { heading: tr(r.scenarioTabs.single), rows: scenarioTableRows(p.scenarios) },
+        {
+          heading: tr(r.scenarioTabs.single),
+          // Usual care last, as the comparison row, matching the page.
+          rows: scenarioTableRows([
+            ...rankedScenarios,
+            ...(usualCareScenario ? [usualCareScenario] : []),
+          ]),
+        },
       ],
       predictorsHeading: tr(r.aboutEstimates.heading),
       predictorsBody: [r.aboutEstimates.research, r.aboutEstimates.ranking, r.predictorsNote]
@@ -345,9 +353,19 @@ function Results() {
                 description={scenarioDescription}
                 helpful={isHelpful}
                 usualCareDescription={tr(r.scenarios.usualCare.description)}
+                usualCareNote={tr(r.scenarios.usualCare.note)}
                 helpfulSectionLabel={tr(r.ranking.helpfulSection)}
                 otherSectionLabel={tr(r.ranking.otherSection)}
                 rankAriaLabel={(rank, total) => fill(tr(r.ranking.rankAria), { rank, total })}
+                example={() => (
+                  <ExamplePopover
+                    buttonLabel="Example from a study"
+                    heading="How this looked in a study"
+                    text="[PLACEHOLDER — real text from the team] In one of the studies, a psychiatrist met the care manager once a week to review all patients on the list and suggested changes to treatment where symptoms were not improving. Patients did not need to see the psychiatrist themselves."
+                    source="[Placeholder source: Study name, country, year]"
+                    closeLabel="Close"
+                  />
+                )}
                 outcome={{
                   baseline: p.baseline,
                   todayLabel: tr(r.legend.today),
@@ -370,7 +388,7 @@ function Results() {
         {/* ---------------- About these estimates: research basis + inputs ---------------- */}
         <section className="mt-10">
           <h2 className="text-lg font-semibold">{tr(r.aboutEstimates.heading)}</h2>
-          <div className="mt-1.5 max-w-xl space-y-2 text-sm leading-relaxed text-muted-foreground">
+          <div className="mt-1.5 space-y-2 text-sm leading-relaxed text-muted-foreground">
             <p>{tr(r.aboutEstimates.research)}</p>
             <p>{tr(r.aboutEstimates.ranking)}</p>
             <p>{tr(r.predictorsNote)}</p>

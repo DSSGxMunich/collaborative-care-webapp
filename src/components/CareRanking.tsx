@@ -43,8 +43,9 @@ function Track({ paddingX, children }: { paddingX: string; children: ReactNode }
  * GPs on /praxis) asked for the same thing after testing: the raw numbers
  * (e.g. "9.2 (7.1–11.4)") read as more precise than the model actually is,
  * and are harder to act on than a plain "this tends to help more" order.
- * Usual care stays a separate reference block, outside the numbered list,
- * since it isn't itself "ranked" against the other components.
+ * Usual care stays a separate reference block after the numbered list,
+ * since it isn't itself "ranked" against the other components: it's the
+ * comparison every component is measured against.
  *
  * "Likely to help" used to be a badge repeated on every row — with most or
  * all components clearing that bar, it stopped being a signal and became
@@ -64,12 +65,16 @@ export function CareRanking({
   description,
   helpful,
   usualCareDescription,
+  usualCareNote,
   helpfulSectionLabel,
   otherSectionLabel,
   rankAriaLabel,
   outcome,
+  example,
   compact = false,
 }: {
+  /** Optional "example from a study" control rendered under each ranked row. */
+  example?: (scenario: Scenario) => ReactNode;
   usualCare: Scenario;
   ranked: Scenario[];
   labelLines: (scenario: Scenario) => string[];
@@ -77,6 +82,8 @@ export function CareRanking({
   helpful: (scenario: Scenario) => boolean;
   /** What "usual care" itself means. */
   usualCareDescription?: string;
+  /** Footnote under usual care's description (e.g. "care varies between practices"). */
+  usualCareNote?: string;
   helpfulSectionLabel: string;
   otherSectionLabel: string;
   rankAriaLabel: (rank: number, total: number) => string;
@@ -90,31 +97,7 @@ export function CareRanking({
 
   return (
     <div>
-      <div className={`rounded-md border border-border bg-secondary/50 ${rowPaddingY}`}>
-        <div className={rowPaddingX}>
-          <LabelWithValue
-            lines={[labelLines(usualCare).join(" ")]}
-            value={outcome.formatValue?.(usualCare)}
-          />
-          {usualCareDescription ? (
-            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-              {usualCareDescription}
-            </p>
-          ) : null}
-        </div>
-        <div className="mt-2.5">
-          <Track paddingX={rowPaddingX}>
-            <OutcomeStrip
-              scenario={usualCare}
-              baseline={outcome.baseline}
-              todayLabel={outcome.todayLabel}
-              expectedLabel={outcome.expectedLabel(usualCare)}
-            />
-          </Track>
-        </div>
-      </div>
-
-      <ol className="mt-4 divide-y divide-border rounded-md border border-border">
+      <ol className="divide-y divide-border rounded-md border border-border">
         {ranked.map((scenario, index) => {
           const rank = index + 1;
           const desc = description(scenario);
@@ -150,6 +133,7 @@ export function CareRanking({
                   {desc ? (
                     <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{desc}</p>
                   ) : null}
+                  {example ? <div className="mt-1.5">{example(scenario)}</div> : null}
                   <div className="mt-2.5">
                     <OutcomeStrip
                       scenario={scenario}
@@ -164,6 +148,43 @@ export function CareRanking({
           );
         })}
       </ol>
+
+      {/*
+       * Usual care: the comparison, not a ranked option. It sits after the
+       * list in its own dashed box with no rank badge (its name already says
+       * "for comparison", so the box needs no extra header), but keeps the same
+       * padding and empty rank column as the rows above, so its strip lines
+       * up with theirs on the shared 0–27 scale.
+       */}
+      <div className="mt-3 rounded-md border border-dashed border-muted-foreground/50 bg-secondary/40">
+        <div className={rowPaddingY}>
+          <Track paddingX={rowPaddingX}>
+            <LabelWithValue
+              lines={[labelLines(usualCare).join(" ")]}
+              value={outcome.formatValue?.(usualCare)}
+            />
+            {usualCareDescription ? (
+              <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
+                {usualCareDescription}
+              </p>
+            ) : null}
+            {usualCareNote ? (
+              <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                {usualCareNote}
+              </p>
+            ) : null}
+            <div className="mt-2.5">
+              <OutcomeStrip
+                reference
+                scenario={usualCare}
+                baseline={outcome.baseline}
+                todayLabel={outcome.todayLabel}
+                expectedLabel={outcome.expectedLabel(usualCare)}
+              />
+            </div>
+          </Track>
+        </div>
+      </div>
 
       <div className="mt-1.5 border-x border-transparent">
         <Track paddingX={rowPaddingX}>
