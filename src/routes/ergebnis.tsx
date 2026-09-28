@@ -3,7 +3,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { CareRanking } from "@/components/CareRanking";
 import { InfoTooltip } from "@/components/InfoTooltip";
 import { fill, ui, useLang } from "@/lib/i18n";
-import { SEVERITY_LABEL, SEVERITY_RANGE } from "@/lib/phq9";
+import { PHQ9_MAX } from "@/components/OutcomeStrip";
+import { SEVERITY_LABEL, SEVERITY_RANGE, type Severity } from "@/lib/phq9";
 import type { Scenario } from "@/lib/model";
 import { generateResultsPdf } from "@/lib/pdf";
 import { usePrediction } from "@/lib/usePrediction";
@@ -23,6 +24,80 @@ export const Route = createFileRoute("/ergebnis")({
 });
 
 const r = resultsContent;
+
+/** Where the PHQ-9 severity bands start (0–4, 5–9, 10–14, 15–19, 20–27). */
+const SEVERITY_CUTOFFS = [5, 10, 15, 20];
+
+/**
+ * Today's PHQ-9 score, read top to bottom: the number, its severity band,
+ * then a 0–27 scale with a marker. The scale says "lower is better" three
+ * ways at once (end labels, an arrow sentence, and a green → red fill), so
+ * nobody reads a high score as a good one.
+ */
+function CurrentScore({ score, severity }: { score: number; severity: Severity }) {
+  const { tr } = useLang();
+  const c = r.currentScore;
+  const pos = `${(Math.min(PHQ9_MAX, Math.max(0, score)) / PHQ9_MAX) * 100}%`;
+
+  return (
+    <div className="mt-6 border-b border-border pb-5">
+      <div className="flex items-center gap-1.5">
+        <p className="text-sm text-muted-foreground">{tr(c.label)}</p>
+        <InfoTooltip
+          description={tr(c.info)}
+          ariaLabel={tr(c.infoAria)}
+          panelClassName="w-72"
+          triggerClassName="flex h-4 w-4 shrink-0 cursor-help items-center justify-center rounded-full border border-muted-foreground/60 text-[10px] font-semibold leading-none text-muted-foreground hover:border-muted-foreground hover:text-foreground"
+        >
+          <span aria-hidden="true">i</span>
+        </InfoTooltip>
+      </div>
+      <p className="mt-1 flex items-baseline gap-2">
+        <span className="text-4xl font-semibold tabular-nums leading-none">{score}</span>
+        <span className="text-sm text-muted-foreground">{tr(c.outOf27)}</span>
+      </p>
+      <p className="mt-2 text-sm font-medium">
+        {tr(SEVERITY_LABEL[severity])}{" "}
+        <span className="whitespace-nowrap font-normal text-muted-foreground">
+          {fill(tr(c.range), { range: SEVERITY_RANGE[severity] })}
+        </span>
+      </p>
+
+      {/* The scale is decorative: every fact on it is also stated in text above/below. */}
+      <div aria-hidden className="mt-8 max-w-md">
+        <div className="relative">
+          {/* Near either end, anchor the label to the marker's inner side so it stays inside the scale. */}
+          <div
+            className={`absolute bottom-full mb-1.5 ${score <= 2 ? "" : score >= PHQ9_MAX - 2 ? "-translate-x-full" : "-translate-x-1/2"}`}
+            style={{ left: pos }}
+          >
+            <span className="whitespace-nowrap text-xs font-semibold tabular-nums">
+              {fill(tr(c.you), { score })}
+            </span>
+          </div>
+          <div className="relative h-2 overflow-hidden rounded-full bg-linear-to-r from-success/55 via-warning/50 to-destructive/55">
+            {SEVERITY_CUTOFFS.map((t) => (
+              <span
+                key={t}
+                className="absolute inset-y-0 w-0.5 bg-background"
+                style={{ left: `${(t / PHQ9_MAX) * 100}%` }}
+              />
+            ))}
+          </div>
+          <span
+            className="absolute top-1/2 h-4 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-foreground ring-2 ring-background"
+            style={{ left: pos }}
+          />
+        </div>
+        <div className="mt-1.5 flex justify-between gap-4 text-[11px] text-muted-foreground">
+          <span>{tr(c.min)}</span>
+          <span className="text-right">{tr(c.max)}</span>
+        </div>
+      </div>
+      <p className="mt-2 text-xs text-muted-foreground">← {tr(c.direction)}</p>
+    </div>
+  );
+}
 /**
  * The trial-eligibility disclaimer, now placed above the results in reading
  * order rather than beside them in a sidebar. Sitting first doesn't mean
@@ -194,9 +269,9 @@ function Results() {
       filenamePrefix: tr({ de: "meine-auswertung", en: "my-results" }),
       title: tr(r.title),
       subtitle: tr(r.pdf.subtitle),
-      baselineLabel: `${r.phq9Label} ${tr(r.of27)}`,
-      baselineValue: `${p.baseline}/27`,
-      severityValue: `${tr(SEVERITY_LABEL[p.severity])} · ${tr(r.range)} ${SEVERITY_RANGE[p.severity]}`,
+      baselineLabel: tr(r.currentScore.label),
+      baselineValue: `${p.baseline} ${tr(r.currentScore.outOf27)}`,
+      severityValue: `${tr(SEVERITY_LABEL[p.severity])} ${fill(tr(r.currentScore.range), { range: SEVERITY_RANGE[p.severity] })}`,
       scenariosHeading: tr(r.whatCanBeExpected),
       scenariosBody: tr(r.whatCanBeExpectedBody),
       modelHeading: tr(r.whatCanBeExpected),
@@ -250,17 +325,7 @@ function Results() {
           </button>
         </div>
 
-        <div className="mt-6 flex items-baseline gap-3 border-b border-border pb-4">
-          <span className="text-4xl font-semibold tabular-nums leading-none">{p.baseline}</span>
-          <div className="text-sm">
-            <p className="text-muted-foreground">
-              {r.phq9Label} {tr(r.of27)}
-            </p>
-            <p className="font-medium">
-              {tr(SEVERITY_LABEL[p.severity])} · {tr(r.range)} {SEVERITY_RANGE[p.severity]}
-            </p>
-          </div>
-        </div>
+        <CurrentScore score={p.baseline} severity={p.severity} />
 
         {/* ---------------- The result: ranked care components ---------------- */}
         <section className="mt-8">

@@ -63,19 +63,31 @@
     ],
     "severity": {
       "minimal": {
-        "label": { "de": "Minimale Symptome", "en": "Minimal symptoms" },
+        "label": { "de": "Minimale depressive Symptome", "en": "Minimal depressive symptoms" },
         "range": "0–4"
       },
-      "mild": { "label": { "de": "Leichte Symptome", "en": "Mild symptoms" }, "range": "5–9" },
+      "mild": {
+        "label": { "de": "Leichte depressive Symptome", "en": "Mild depressive symptoms" },
+        "range": "5–9"
+      },
       "moderate": {
-        "label": { "de": "Mittelgradige Symptome", "en": "Moderate symptoms" },
+        "label": {
+          "de": "Mittelgradige depressive Symptome",
+          "en": "Moderate depressive symptoms"
+        },
         "range": "10–14"
       },
       "moderatelySevere": {
-        "label": { "de": "Mittelgradig bis schwere Symptome", "en": "Moderately severe symptoms" },
+        "label": {
+          "de": "Mittelschwere bis schwere depressive Symptome",
+          "en": "Moderately severe depressive symptoms"
+        },
         "range": "15–19"
       },
-      "severe": { "label": { "de": "Schwere Symptome", "en": "Severe symptoms" }, "range": "20–27" }
+      "severe": {
+        "label": { "de": "Schwere depressive Symptome", "en": "Severe depressive symptoms" },
+        "range": "20–27"
+      }
     }
   },
   "safety": {

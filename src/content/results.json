@@ -79,9 +79,29 @@
       "en": "Hide details"
     }
   },
-  "phq9Label": "PHQ-9",
-  "of27": { "de": "von 27 Punkten", "en": "of 27 points" },
-  "range": { "de": "Bereich", "en": "Range" },
+  "currentScore": {
+    "label": { "de": "Ihr aktueller PHQ-9-Wert", "en": "Your current PHQ-9 score" },
+    "outOf27": { "de": "von 27 Punkten", "en": "out of 27 points" },
+    "range": { "de": "(Wertebereich: {range} Punkte)", "en": "(score range: {range} points)" },
+    "info": {
+      "de": "Der PHQ-9-Wert gibt die Beschwerden wieder, die Sie für die letzten zwei Wochen angegeben haben. Er allein stellt keine Diagnose – diese kann nur im Gespräch mit Ihrer Hausarztpraxis oder einer Fachperson gestellt werden.",
+      "en": "The PHQ-9 score reflects the symptoms you reported for the past two weeks. On its own, it does not establish a diagnosis – that can only be made in a conversation with your GP or another healthcare professional."
+    },
+    "infoAria": { "de": "Was bedeutet dieser Wert?", "en": "What does this score mean?" },
+    "you": { "de": "Sie: {score}", "en": "You: {score}" },
+    "min": {
+      "de": "0: keine depressiven Beschwerden angegeben",
+      "en": "0: no depressive symptoms reported"
+    },
+    "max": {
+      "de": "27: höchstmöglicher Beschwerdewert",
+      "en": "27: highest possible symptom score"
+    },
+    "direction": {
+      "de": "Niedrigere Werte bedeuten weniger depressive Beschwerden",
+      "en": "Lower scores mean fewer depressive symptoms"
+    }
+  },
   "legend": {
     "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
     "expected": { "de": "Erwarteter Wert nach 12 Monaten", "en": "Expected result at 12 months" },
