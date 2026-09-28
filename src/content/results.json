@@ -106,6 +106,10 @@
     "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
     "expected": { "de": "Erwarteter Wert nach 12 Monaten", "en": "Expected result at 12 months" },
     "helpful": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
+    "reference": {
+      "de": "Übliche Versorgung (zum Vergleich)",
+      "en": "Usual care (for comparison)"
+    },
     "interval": { "de": "Unsicherheitsbereich", "en": "Range of uncertainty" },
     "today": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" },
     "scale": {
@@ -121,6 +125,7 @@
       "en": "Likely to help more than your current care"
     },
     "otherSection": { "de": "Weitere Bausteine", "en": "Other components" },
+    "comparisonSection": { "de": "Zum Vergleich", "en": "For comparison" },
     "rankAria": {
       "de": "Platz {rank} von {total} — nach erwartetem Nutzen gereiht, hilfreichster Baustein zuerst",
       "en": "Rank {rank} of {total} — ordered by expected benefit, most helpful care component first"
@@ -129,13 +134,20 @@
   "scenarios": {
     "usualCare": {
       "label": {
-        "de": "Übliche hausärztliche Versorgung",
+        "de": "Übliche hausärztliche Versorgung – zum Vergleich",
         "en": "Usual care from your GP — for comparison"
       },
-      "short": { "de": "Übliche Versorgung", "en": "Usual care from your GP — for comparison" },
+      "short": {
+        "de": "Übliche hausärztliche Versorgung – zum Vergleich",
+        "en": "Usual care from your GP — for comparison"
+      },
       "description": {
-        "de": "Die übliche Behandlung, die eine Hausarztpraxis bei depressiven Beschwerden anbietet. Dazu können Termine bei Ihrer Hausärztin/Ihrem Hausarzt, eine medikamentöse Behandlung oder eine Überweisung an andere Fachpersonen gehören. Die tatsächlich angebotene Versorgung kann sich zwischen Hausarztpraxen unterscheiden und von der Versorgung abweichen, die Sie aktuell erhalten.",
-        "en": "The usual treatment provided by a GP practice for depressive symptoms. This may include appointments with your GP, medication or referral to other healthcare professionals. The exact care provided can vary between GP practices and may differ from the care you currently receive."
+        "de": "Die übliche Behandlung, die eine Hausarztpraxis bei depressiven Beschwerden anbietet. Dazu können Termine bei Ihrer Hausärztin/Ihrem Hausarzt, eine medikamentöse Behandlung oder eine Überweisung an andere Fachpersonen gehören.",
+        "en": "The usual treatment provided by a GP practice for depressive symptoms. This may include appointments with your GP, medication or referral to other healthcare professionals."
+      },
+      "note": {
+        "de": "* Die tatsächlich angebotene Versorgung kann sich zwischen Hausarztpraxen unterscheiden und von der Versorgung abweichen, die Sie aktuell erhalten.",
+        "en": "* The exact care provided can vary between GP practices and may differ from the care you currently receive."
       }
     }
   },
