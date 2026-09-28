@@ -1,4 +1,6 @@
 import { Link } from "@tanstack/react-router";
+import { LockIcon } from "@/components/icons";
+import { EmptyState } from "@/components/PageHero";
 import { useLang } from "@/lib/i18n";
 import { useSession } from "@/lib/session";
 import { computeUnlockCode } from "@/lib/unlockCode";
@@ -8,12 +10,11 @@ const w = wartezimmerContent;
 
 /**
  * The waiting-room results gate. Shown on /warten right after the
- * questionnaire, and also on /ergebnis and /praxis if someone navigates
- * there directly (e.g. via the nav bar) before a GP has unlocked results —
- * see the mode/unlocked check in each of those routes. The code itself is
- * only entered on the home page's "For the practice" card (see
- * src/routes/index.tsx) — a GP arriving here is pointed back there, rather
- * than this page duplicating the same unlock form.
+ * questionnaire, and also on /ergebnis if someone navigates there directly
+ * before a GP has unlocked results. The code itself is only entered on the
+ * "For the practice" page (src/routes/praxis.tsx, via GpUnlockCard) — a GP
+ * arriving here is pointed there, rather than this page duplicating the
+ * same unlock form.
  */
 export function WaitingBlocker() {
   const { tr } = useLang();
@@ -21,15 +22,16 @@ export function WaitingBlocker() {
   const code = computeUnlockCode(session);
 
   return (
-    <div className="mx-auto max-w-xl px-4 py-12">
-      <h1 className="text-2xl font-semibold">{tr(w.blocked.title)}</h1>
-      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{tr(w.blocked.body)}</p>
-
-      <div className="mt-6 rounded-md border border-border bg-secondary p-5 text-center">
+    <EmptyState
+      icon={<LockIcon className="h-6 w-6" />}
+      title={tr(w.blocked.title)}
+      body={tr(w.blocked.body)}
+    >
+      <div className="rounded-xl bg-brand-soft p-5">
         <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
           {tr(w.blocked.codeLabel)}
         </p>
-        <p className="mt-2 font-mono text-3xl font-semibold tracking-[0.3em]">{code}</p>
+        <p className="mt-2 font-mono text-4xl font-bold tracking-[0.3em]">{code}</p>
         <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
           {tr(w.blocked.codeHint)}
         </p>
@@ -39,7 +41,7 @@ export function WaitingBlocker() {
         {tr(w.blocked.unlockInstructions)}
       </p>
 
-      <div className="mt-8 space-y-2.5">
+      <div className="mt-6 space-y-2.5">
         <Link
           to="/angebote"
           className="block w-full rounded-md border border-border px-4 py-2.5 text-center text-sm font-medium hover:bg-secondary"
@@ -53,6 +55,6 @@ export function WaitingBlocker() {
           {tr(w.blocked.backHome)}
         </Link>
       </div>
-    </div>
+    </EmptyState>
   );
 }

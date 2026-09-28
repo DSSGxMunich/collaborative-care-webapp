@@ -13,14 +13,16 @@ import {
   SEX_OPTIONS,
 } from "@/lib/session";
 import { chunk } from "@/lib/utils";
-import { WaitingBlocker } from "@/components/WaitingBlocker";
+import { GpUnlockCard } from "@/components/GpUnlockCard";
+import { DownloadIcon, StethoscopeIcon } from "@/components/icons";
+import { EmptyState, PageBody, PageHero } from "@/components/PageHero";
 import praxisContent from "@/content/praxis.json";
 import resultsContent from "@/content/results.json";
 
 export const Route = createFileRoute("/praxis")({
   head: () => ({
     meta: [
-      { title: "Kurzbefund für die Praxis – Versorgungskompass" },
+      { title: "Kurzbefund für die Praxis | Versorgungskompass" },
       { name: "description", content: praxisContent.subtitle.de },
     ],
   }),
@@ -38,21 +40,36 @@ function Clinician() {
 
   if (!p.complete) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-16 text-center">
-        <h1 className="text-xl font-semibold">{tr(ui.nav.clinician)}</h1>
-        <p className="mt-3 text-sm text-muted-foreground">{tr(ui.noData)}</p>
+      <EmptyState
+        icon={<StethoscopeIcon className="h-6 w-6" />}
+        title={tr(ui.nav.clinician)}
+        body={tr(ui.noData)}
+      >
         <Link
           to="/fragebogen"
-          className="mt-6 inline-flex rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+          className="inline-flex rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
         >
           {tr(ui.buttons.start)}
         </Link>
-      </div>
+      </EmptyState>
     );
   }
 
+  // Waiting-room answers stay locked until the GP enters the patient's code
+  // here — this page ("For the practice") is where that code is entered.
   if (p.session.mode === "waitingRoom" && !p.session.unlocked) {
-    return <WaitingBlocker />;
+    return (
+      <>
+        <PageHero
+          icon={<StethoscopeIcon className="h-6 w-6" />}
+          title={tr(c.title)}
+          intro={tr(c.subtitle)}
+        />
+        <PageBody>
+          <GpUnlockCard />
+        </PageBody>
+      </>
+    );
   }
 
   const { profile, safety } = p.session;
@@ -193,10 +210,10 @@ function Clinician() {
       scenarioTables: [
         {
           heading: tr(r.scenarioTabs.single),
-          // Usual care last, as the comparison row, matching the page.
+          // Usual care first, as the comparison row, matching the page.
           rows: scenarioTableRows([
-            ...rankedScenarios,
             ...(usualCareScenario ? [usualCareScenario] : []),
+            ...rankedScenarios,
           ]),
         },
       ],
@@ -205,119 +222,127 @@ function Clinician() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold">{tr(c.title)}</h1>
-          <p className="mt-1.5 text-sm text-muted-foreground">{tr(c.subtitle)}</p>
-        </div>
+    <>
+      <PageHero
+        icon={<StethoscopeIcon className="h-6 w-6" />}
+        title={tr(c.title)}
+        intro={tr(c.subtitle)}
+      >
         <button
           type="button"
           onClick={downloadPdf}
-          className="rounded-md border border-border px-3.5 py-2 text-sm font-medium hover:bg-secondary print:hidden"
+          className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2 text-sm font-medium hover:bg-secondary print:hidden"
         >
+          <DownloadIcon className="h-4 w-4" />
           {tr(c.print)}
         </button>
-      </div>
-
-      <section className="mt-8 grid gap-6 md:grid-cols-2">
-        <div>
-          <h2 className="text-base font-semibold">{tr(c.summary)}</h2>
-          <dl className="mt-3 divide-y divide-border text-sm">
-            {rows.map((row) => (
-              <div key={row.label} className="flex justify-between gap-4 py-2">
-                <dt className="text-muted-foreground">{row.label}</dt>
-                <dd className="text-right">
-                  {row.tone ? (
-                    <span
-                      className={[
-                        "rounded-md border px-2 py-0.5 text-xs font-semibold",
-                        row.tone === "destructive"
-                          ? "border-destructive/40 bg-destructive-soft text-destructive"
-                          : "border-warning/40 bg-warning-soft text-warning",
-                      ].join(" ")}
-                    >
-                      {row.value}
-                    </span>
-                  ) : (
-                    <span className="font-medium">{row.value}</span>
-                  )}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-
-        <div>
-          <h2 className="text-base font-semibold">{tr(c.phq9ItemProfile)}</h2>
-          <ul className="mt-4 space-y-2 text-sm">
-            {PHQ9_ITEMS.map((item, i) => {
-              const v = p.session.phq[i] ?? 0;
-              return (
-                <li key={i} className="flex items-center gap-3">
-                  <span className="w-5 shrink-0 text-xs text-muted-foreground">{i + 1}</span>
-                  <span className="flex-1 truncate" title={tr(item)}>
-                    {tr(item)}
-                  </span>
-                  <span className="flex gap-0.5" aria-label={`${v}/3`}>
-                    {[0, 1, 2].map((step) => (
+      </PageHero>
+      <PageBody>
+        <section className="grid gap-6 md:grid-cols-2">
+          <div className="panel p-6">
+            <h2 className="text-base font-semibold">{tr(c.summary)}</h2>
+            <dl className="mt-3 divide-y divide-border text-sm">
+              {rows.map((row) => (
+                <div key={row.label} className="flex justify-between gap-4 py-2">
+                  <dt className="shrink-0 text-muted-foreground">{row.label}</dt>
+                  <dd className="text-right">
+                    {row.tone ? (
                       <span
-                        key={step}
-                        aria-hidden
                         className={[
-                          "h-4 w-2 rounded-sm",
-                          step < v ? (i === 8 ? "bg-destructive" : "bg-primary") : "bg-secondary",
+                          "inline-block rounded-md border px-2 py-0.5 text-left text-xs font-semibold leading-snug",
+                          row.tone === "destructive"
+                            ? "border-destructive/40 bg-destructive-soft text-destructive"
+                            : "border-warning/40 bg-warning-soft text-warning",
                         ].join(" ")}
-                      />
-                    ))}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </section>
-
-      <section className="mt-8">
-        <h2 className="text-base font-semibold">{tr(c.modelEstimates)}</h2>
-        <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-          {tr(c.modelEstimatesIntro)}
-        </p>
-
-        {usualCareScenario && (
-          <div className="mt-4">
-            <CareRanking
-              usualCare={usualCareScenario}
-              ranked={rankedScenarios}
-              labelLines={careComponentLabelLines}
-              description={careComponentDescription}
-              helpful={isHelpful}
-              usualCareDescription={tr(r.scenarios.usualCare.description)}
-              usualCareNote={tr(r.scenarios.usualCare.note)}
-              helpfulSectionLabel={tr(c.ranking.helpfulSection)}
-              otherSectionLabel={tr(c.ranking.otherSection)}
-              rankAriaLabel={(rank, total) => fill(tr(c.ranking.rankAria), { rank, total })}
-              outcome={{
-                baseline: p.baseline,
-                todayLabel: tr(c.outcome.todayLine),
-                expectedLabel: () => tr(c.outcome.expected),
-                lowLabel: tr(c.outcome.fewer),
-                highLabel: tr(c.outcome.more),
-                legend: {
-                  expected: tr(c.outcome.expected),
-                  helpful: tr(c.outcome.helpful),
-                  interval: tr(c.outcome.interval),
-                  today: tr(c.outcome.todayLine),
-                  scale: tr(c.outcome.scale),
-                },
-              }}
-            />
+                      >
+                        {row.value}
+                      </span>
+                    ) : (
+                      <span className="font-medium">{row.value}</span>
+                    )}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
-        )}
-        <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-          {fill(tr(c.footer), { version: MODEL_META.version })}
-        </p>
-      </section>
-    </div>
+
+          <div className="panel p-6">
+            <h2 className="text-base font-semibold">{tr(c.phq9ItemProfile)}</h2>
+            <ul className="mt-4 space-y-2 text-sm">
+              {PHQ9_ITEMS.map((item, i) => {
+                const v = p.session.phq[i] ?? 0;
+                // Item 9 (suicidality) is drawn in red so it stands out.
+                const filled = i === 8 ? "bg-destructive" : "bg-primary";
+                return (
+                  <li key={i} className="flex items-center gap-3">
+                    <span className="w-5 shrink-0 text-xs text-muted-foreground">{i + 1}</span>
+                    <span className="flex-1 truncate" title={tr(item)}>
+                      {tr(item)}
+                    </span>
+                    <span className="flex gap-0.5" aria-label={`${v}/3`}>
+                      {[0, 1, 2].map((step) => (
+                        <span
+                          key={step}
+                          aria-hidden
+                          className={[
+                            "h-4 w-2 rounded-sm",
+                            step < v ? filled : "bg-secondary",
+                          ].join(" ")}
+                        />
+                      ))}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </section>
+
+        <section className="panel mt-6 p-6">
+          <h2 className="text-base font-semibold">{tr(c.modelEstimates)}</h2>
+          <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+            {tr(c.modelEstimatesIntro)}
+          </p>
+
+          {usualCareScenario && (
+            <div className="mt-4">
+              <CareRanking
+                compact
+                usualCare={usualCareScenario}
+                ranked={rankedScenarios}
+                labelLines={careComponentLabelLines}
+                description={careComponentDescription}
+                helpful={isHelpful}
+                usualCareDescription={tr(r.scenarios.usualCare.description)}
+                usualCareNote={tr(r.scenarios.usualCare.note)}
+                helpfulSectionLabel={tr(c.ranking.helpfulSection)}
+                otherSectionLabel={tr(c.ranking.otherSection)}
+                rankAriaLabel={(rank, total) => fill(tr(c.ranking.rankAria), { rank, total })}
+                outcome={{
+                  baseline: p.baseline,
+                  todayLabel: fill(tr(c.outcome.today), { baseline: p.baseline }),
+                  lowLabel: tr(c.outcome.fewer),
+                  highLabel: tr(c.outcome.more),
+                  ticks: [0, 5, 10, 15, 20, 27],
+                  legend: {
+                    expected: tr(c.outcome.expected),
+                    helpful: tr(c.outcome.helpful),
+                    interval: tr(c.outcome.interval),
+                    today: tr(c.outcome.todayLine),
+                    scale: tr(c.outcome.scale),
+                  },
+                  formatValue: formatEndpoint,
+                  expectedLabel: (s) =>
+                    fill(tr(c.outcome.expectedHover), { value: formatEndpoint(s) }),
+                }}
+              />
+            </div>
+          )}
+          <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+            {fill(tr(c.footer), { version: MODEL_META.version })}
+          </p>
+        </section>
+      </PageBody>
+    </>
   );
 }

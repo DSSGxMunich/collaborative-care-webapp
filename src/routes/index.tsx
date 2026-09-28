@@ -1,9 +1,20 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
-import { InfoTooltip } from "@/components/InfoTooltip";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { CrisisNote } from "@/components/CrisisNote";
+import { HomeIllustration } from "@/components/HomeIllustration";
+import {
+  ArrowIcon,
+  ChairIcon,
+  ChartIcon,
+  ChatIcon,
+  ClipboardIcon,
+  ClockIcon,
+  DatabaseIcon,
+  PeopleIcon,
+  ShieldIcon,
+} from "@/components/icons";
+import { IconTile } from "@/components/PageHero";
 import { useLang, ui } from "@/lib/i18n";
 import { useSession } from "@/lib/session";
-import { computeUnlockCode, normalizeUnlockCode } from "@/lib/unlockCode";
 import home from "@/content/home.json";
 
 export const Route = createFileRoute("/")({
@@ -18,61 +29,12 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-type GpUnlockError = "mismatch" | "noSession" | null;
-
-function GpUnlockCard() {
-  const { tr } = useLang();
-  const navigate = useNavigate();
-  const { session, update } = useSession();
-  const [code, setCode] = useState("");
-  const [error, setError] = useState<GpUnlockError>(null);
-  const g = home.entries.gp;
-
-  const tryUnlock = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (session.mode !== "waitingRoom" || !session.completedAt) {
-      setError("noSession");
-      return;
-    }
-    if (normalizeUnlockCode(code) === computeUnlockCode(session)) {
-      update({ unlocked: true });
-      navigate({ to: "/ergebnis" });
-    } else {
-      setError("mismatch");
-    }
-  };
-
-  return (
-    <div className="rounded-md border border-border p-5">
-      <h3 className="text-sm font-semibold">{tr(g.title)}</h3>
-      <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{tr(g.body)}</p>
-      <form onSubmit={tryUnlock} className="mt-4 flex gap-2">
-        <input
-          value={code}
-          onChange={(e) => {
-            setCode(e.target.value);
-            setError(null);
-          }}
-          placeholder={tr(g.codePlaceholder)}
-          autoComplete="off"
-          maxLength={8}
-          className="w-32 rounded-md border border-input bg-background px-2.5 py-2 text-sm font-mono uppercase tracking-widest outline-none focus:border-primary"
-        />
-        <button
-          type="submit"
-          className="rounded-md border border-border px-4 py-2 text-sm font-medium hover:bg-secondary"
-        >
-          {tr(g.unlockButton)}
-        </button>
-      </form>
-      {error && (
-        <p className="mt-2 text-xs text-destructive">
-          {tr(error === "noSession" ? g.noSession : g.codeMismatch)}
-        </p>
-      )}
-    </div>
-  );
-}
+/** The icon and the small "meta" icon for each "How this works" step. */
+const STEP_ICONS = [
+  { Icon: ClipboardIcon, Meta: ClockIcon },
+  { Icon: ChartIcon, Meta: DatabaseIcon },
+  { Icon: ChatIcon, Meta: ShieldIcon },
+] as const;
 
 function Index() {
   const { tr } = useLang();
@@ -80,83 +42,123 @@ function Index() {
   const e = home.entries;
 
   return (
-    <div className="mx-auto max-w-xl px-4 py-16 sm:py-24">
-      <div className="flex items-center gap-1.5">
-        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-          {tr(ui.researchPrototype)}
-        </p>
-        <InfoTooltip
-          description={tr(home.prototypeInfo.note)}
-          ariaLabel={tr(ui.moreInfo)}
-          panelClassName="w-72"
-          triggerClassName="flex h-4 w-4 shrink-0 cursor-help items-center justify-center rounded-full border border-muted-foreground/60 text-[10px] font-semibold leading-none text-muted-foreground hover:border-muted-foreground hover:text-foreground"
-        >
-          <span aria-hidden="true">?</span>
-        </InfoTooltip>
-      </div>
-      <h1 className="mt-3 text-balance-tight text-2xl font-semibold leading-snug sm:text-3xl">
-        {tr(home.title)}
-      </h1>
-      <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{tr(home.body)}</p>
-
-      <div className="mt-8 border-t border-border pt-6">
-        <h2 className="text-sm font-semibold">{tr(home.about.heading)}</h2>
-        <ul className="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
-          {home.about.items.map((item, i) => (
-            <li key={i}>{tr(item)}</li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="mt-8 border-t border-border pt-6">
-        <h2 className="text-sm font-semibold">{tr(e.heading)}</h2>
-
-        <div className="mt-4 space-y-4">
-          <div className="rounded-md border border-border p-5">
-            <h3 className="text-sm font-semibold">{tr(e.together.title)}</h3>
-            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-              {tr(e.together.body)}
+    <div>
+      {/* Hero: what this is, in one glance */}
+      <section className="bg-brand-soft">
+        <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 pb-14 pt-24 sm:px-8 lg:grid-cols-[1.1fr_1fr] lg:pb-20 lg:pt-20">
+          <div>
+            <h1 className="text-balance-tight text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl">
+              {tr(home.title)}
+            </h1>
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+              {tr(home.body)}
             </p>
-            <Link
-              to="/fragebogen"
-              onClick={() => update({ mode: "clinic", unlocked: false })}
-              className="mt-4 inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
-            >
-              {tr(e.together.cta)}
-            </Link>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <a
+                href="#start"
+                className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground"
+              >
+                {tr(home.heroCta)}
+                <ArrowIcon className="h-4 w-4" />
+              </a>
+              <Link
+                to="/methodology"
+                className="inline-flex items-center rounded-md border border-border bg-card px-5 py-2.5 text-sm font-medium hover:bg-secondary"
+              >
+                {tr(home.heroSecondary)}
+              </Link>
+            </div>
           </div>
-
-          <div className="rounded-md border border-border p-5">
-            <h3 className="text-sm font-semibold">{tr(e.waitingRoom.title)}</h3>
-            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-              {tr(e.waitingRoom.body)}
-            </p>
-            <Link
-              to="/wartezimmer"
-              className="mt-4 inline-flex items-center justify-center rounded-md border border-border px-4 py-2 text-sm font-medium hover:bg-secondary"
-            >
-              {tr(e.waitingRoom.cta)}
-            </Link>
-          </div>
-
-          <GpUnlockCard />
+          <HomeIllustration className="mx-auto w-full max-w-md lg:max-w-none" />
         </div>
+      </section>
 
-        <p className="mt-4 text-xs text-muted-foreground">{tr(ui.noAnswersLeaveDevice)}</p>
-      </div>
+      {/* How this works: three numbered steps */}
+      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-8">
+        <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">{tr(home.about.heading)}</h2>
+        <ol className="mt-10 grid gap-10 md:grid-cols-3 md:gap-8">
+          {home.about.items.map((item, i) => {
+            const { Icon: StepIcon, Meta } = STEP_ICONS[i % STEP_ICONS.length]!;
+            return (
+              <li key={i} className="flex gap-4">
+                <span
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-secondary text-lg font-semibold"
+                  aria-hidden="true"
+                >
+                  {i + 1}
+                </span>
+                <div>
+                  <IconTile>
+                    <StepIcon className="h-6 w-6" />
+                  </IconTile>
+                  <h3 className="mt-3 text-lg font-semibold leading-snug">{tr(item.title)}</h3>
+                  <p className="mt-1.5 flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <Meta className="h-4 w-4 shrink-0" />
+                    {tr(item.meta)}
+                  </p>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {tr(item.body)}
+                  </p>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      </section>
 
-      <div className="mt-8 border-t border-border pt-6">
-        <h2 className="text-sm font-semibold text-destructive">{tr(home.crisisTitle)}</h2>
-        <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-          {tr(home.crisisBody)}
-        </p>
-        <Link
-          to="/soforthilfe"
-          className="mt-3 inline-flex text-sm font-medium text-destructive underline underline-offset-2"
-        >
-          {tr(home.crisisLink)}
-        </Link>
-      </div>
+      {/* Get started: two ways in */}
+      <section id="start" className="scroll-mt-6 border-t border-border bg-brand-soft">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-8">
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">{tr(e.heading)}</h2>
+          <p className="mt-2 text-sm text-muted-foreground">{tr(e.intro)}</p>
+
+          <div className="mt-8 grid gap-5 md:grid-cols-2">
+            <div className="panel flex flex-col p-6">
+              <IconTile>
+                <PeopleIcon className="h-6 w-6" />
+              </IconTile>
+              <h3 className="mt-4 text-lg font-semibold">{tr(e.together.title)}</h3>
+              <p className="mt-1.5 flex-1 text-sm leading-relaxed text-muted-foreground">
+                {tr(e.together.body)}
+              </p>
+              <Link
+                to="/fragebogen"
+                onClick={() => update({ mode: "clinic", unlocked: false })}
+                className="mt-5 inline-flex items-center justify-center gap-2 self-start rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+              >
+                {tr(e.together.cta)}
+                <ArrowIcon className="h-4 w-4" />
+              </Link>
+            </div>
+
+            <div className="panel flex flex-col p-6">
+              <IconTile>
+                <ChairIcon className="h-6 w-6" />
+              </IconTile>
+              <h3 className="mt-4 text-lg font-semibold">{tr(e.waitingRoom.title)}</h3>
+              <p className="mt-1.5 flex-1 text-sm leading-relaxed text-muted-foreground">
+                {tr(e.waitingRoom.body)}
+              </p>
+              <Link
+                to="/wartezimmer"
+                className="mt-5 inline-flex items-center justify-center gap-2 self-start rounded-md border border-border px-4 py-2 text-sm font-medium hover:bg-secondary"
+              >
+                {tr(e.waitingRoom.cta)}
+                <ArrowIcon className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+
+          <p className="mt-5 flex items-center gap-1.5 text-xs text-muted-foreground">
+            <ShieldIcon className="h-4 w-4 shrink-0" />
+            {tr(ui.noAnswersLeaveDevice)}
+          </p>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 pt-12 sm:px-8">
+        <CrisisNote />
+      </section>
     </div>
   );
 }

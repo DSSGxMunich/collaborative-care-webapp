@@ -2,7 +2,9 @@ import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CareRanking } from "@/components/CareRanking";
 import { ExamplePopover } from "@/components/ExamplePopover";
+import { ChartIcon, DownloadIcon } from "@/components/icons";
 import { InfoTooltip } from "@/components/InfoTooltip";
+import { EmptyState, PageBody, PageHero } from "@/components/PageHero";
 import { fill, ui, useLang } from "@/lib/i18n";
 import { PHQ9_MAX } from "@/components/OutcomeStrip";
 import { SEVERITY_LABEL, SEVERITY_RANGE, type Severity } from "@/lib/phq9";
@@ -17,7 +19,7 @@ import resultsContent from "@/content/results.json";
 export const Route = createFileRoute("/ergebnis")({
   head: () => ({
     meta: [
-      { title: "Ihre Auswertung – Versorgungskompass" },
+      { title: "Ihre Auswertung | Versorgungskompass" },
       { name: "description", content: resultsContent.title.de },
     ],
   }),
@@ -41,7 +43,7 @@ function CurrentScore({ score, severity }: { score: number; severity: Severity }
   const pos = `${(Math.min(PHQ9_MAX, Math.max(0, score)) / PHQ9_MAX) * 100}%`;
 
   return (
-    <div className="mt-6 border-b border-border pb-5">
+    <div className="panel mt-6 p-6">
       <div className="flex items-center gap-1.5">
         <p className="text-sm text-muted-foreground">{tr(c.label)}</p>
         <InfoTooltip
@@ -118,7 +120,7 @@ function DisclaimerCard() {
   const { tr } = useLang();
   const [expanded, setExpanded] = useState(false);
   return (
-    <div className="rounded-md border border-warning/30 bg-warning-soft p-4">
+    <div className="rounded-xl border border-warning/30 bg-warning-soft p-5">
       <h2 className="text-sm font-semibold">{tr(r.prototypeNote.heading)}</h2>
       <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
         {tr(r.prototypeNote.intro)}
@@ -170,16 +172,15 @@ function Results() {
 
   if (!p.complete) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-16 text-center">
-        <h1 className="text-xl font-semibold">{tr(r.title)}</h1>
-        <p className="mt-3 text-sm text-muted-foreground">{tr(ui.noData)}</p>
+      <EmptyState icon={<ChartIcon className="h-6 w-6" />} title={tr(r.title)}>
+        <p className="text-sm text-muted-foreground">{tr(ui.noData)}</p>
         <Link
           to="/fragebogen"
           className="mt-6 inline-flex rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
         >
           {tr(ui.buttons.start)}
         </Link>
-      </div>
+      </EmptyState>
     );
   }
 
@@ -189,11 +190,12 @@ function Results() {
 
   if (!revealed) {
     return (
-      <div className="mx-auto max-w-xl px-4 py-12">
-        <h1 className="text-2xl font-semibold">{tr(r.thankYou.title)}</h1>
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{tr(r.thankYou.body)}</p>
-
-        <div className="mt-6 space-y-2.5">
+      <EmptyState
+        icon={<ChartIcon className="h-6 w-6" />}
+        title={tr(r.thankYou.title)}
+        body={tr(r.thankYou.body)}
+      >
+        <div className="space-y-2.5">
           <button
             type="button"
             onClick={() => setRevealed(true)}
@@ -209,7 +211,7 @@ function Results() {
           </Link>
           <p className="pt-1 text-xs text-muted-foreground">{tr(r.thankYou.privacyNote)}</p>
         </div>
-      </div>
+      </EmptyState>
     );
   }
 
@@ -284,10 +286,10 @@ function Results() {
       scenarioTables: [
         {
           heading: tr(r.scenarioTabs.single),
-          // Usual care last, as the comparison row, matching the page.
+          // Usual care first, as the comparison row, matching the page.
           rows: scenarioTableRows([
-            ...rankedScenarios,
             ...(usualCareScenario ? [usualCareScenario] : []),
+            ...rankedScenarios,
           ]),
         },
       ],
@@ -320,25 +322,24 @@ function Results() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10">
-      <DisclaimerCard />
-
-      <div className="mt-8">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <h1 className="text-2xl font-semibold">{tr(r.title)}</h1>
-          <button
-            type="button"
-            onClick={downloadPdf}
-            className="rounded-md border border-border px-3.5 py-2 text-sm font-medium hover:bg-secondary print:hidden"
-          >
-            {tr(r.actions.downloadPdf)}
-          </button>
-        </div>
+    <>
+      <PageHero icon={<ChartIcon className="h-6 w-6" />} title={tr(r.title)}>
+        <button
+          type="button"
+          onClick={downloadPdf}
+          className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2 text-sm font-medium hover:bg-secondary print:hidden"
+        >
+          <DownloadIcon className="h-4 w-4" />
+          {tr(r.actions.downloadPdf)}
+        </button>
+      </PageHero>
+      <PageBody>
+        <DisclaimerCard />
 
         <CurrentScore score={p.baseline} severity={p.severity} />
 
         {/* ---------------- The result: ranked care components ---------------- */}
-        <section className="mt-8">
+        <section className="panel mt-6 p-6">
           <h2 className="text-lg font-semibold">{tr(r.whatCanBeExpected)}</h2>
           <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
             {tr(r.whatCanBeExpectedBody)}
@@ -361,7 +362,7 @@ function Results() {
                   <ExamplePopover
                     buttonLabel="Example from a study"
                     heading="How this looked in a study"
-                    text="[PLACEHOLDER — real text from the team] In one of the studies, a psychiatrist met the care manager once a week to review all patients on the list and suggested changes to treatment where symptoms were not improving. Patients did not need to see the psychiatrist themselves."
+                    text="[PLACEHOLDER: real text from the team] In one of the studies, a psychiatrist met the care manager once a week to review all patients on the list and suggested changes to treatment where symptoms were not improving. Patients did not need to see the psychiatrist themselves."
                     source="[Placeholder source: Study name, country, year]"
                     closeLabel="Close"
                   />
@@ -386,9 +387,20 @@ function Results() {
         </section>
 
         {/* ---------------- About these estimates: research basis + inputs ---------------- */}
-        <section className="mt-10">
+        <section className="panel mt-6 p-6">
           <h2 className="text-lg font-semibold">{tr(r.aboutEstimates.heading)}</h2>
-          <div className="mt-1.5 space-y-2 text-sm leading-relaxed text-muted-foreground">
+          {/* The three facts behind every estimate, at a glance. */}
+          <dl className="mt-4 grid gap-4 sm:grid-cols-3">
+            {r.aboutEstimates.facts.map((fact, i) => (
+              <div key={i} className="border-t-2 border-primary pt-2">
+                <dt className="font-serif text-2xl font-medium text-primary">{tr(fact.value)}</dt>
+                <dd className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                  {tr(fact.label)}
+                </dd>
+              </div>
+            ))}
+          </dl>
+          <div className="mt-5 space-y-2 text-sm leading-relaxed text-muted-foreground">
             <p>{tr(r.aboutEstimates.research)}</p>
             <p>{tr(r.aboutEstimates.ranking)}</p>
             <p>{tr(r.predictorsNote)}</p>
@@ -429,7 +441,7 @@ function Results() {
           </Link>
         </section>
 
-        <div className="mt-10 flex flex-wrap gap-2">
+        <div className="mt-8 flex flex-wrap gap-2">
           <Link
             to="/praxis"
             className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
@@ -443,7 +455,7 @@ function Results() {
             {tr(r.actions.localSupport)}
           </Link>
         </div>
-      </div>
-    </div>
+      </PageBody>
+    </>
   );
 }

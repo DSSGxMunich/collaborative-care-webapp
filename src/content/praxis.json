@@ -5,14 +5,28 @@
     "en": "Completed by the patient. All entries are self-report and do not replace clinical assessment."
   },
   "print": { "de": "PDF herunterladen", "en": "Download PDF" },
+  "unlock": {
+    "title": { "de": "Code eingeben", "en": "Enter code" },
+    "body": {
+      "de": "Ihre Patientin/Ihr Patient hat den Fragebogen im Wartezimmer ausgefüllt? Geben Sie hier den Code von ihrem Bildschirm ein, um die Auswertung gemeinsam zu öffnen.",
+      "en": "Did your patient fill in the questionnaire in the waiting room? Enter the code shown on their screen to open the results together."
+    },
+    "codePlaceholder": { "de": "Code", "en": "Code" },
+    "unlockButton": { "de": "Freischalten", "en": "Unlock" },
+    "codeMismatch": {
+      "de": "Der Code stimmt nicht überein. Bitte erneut versuchen.",
+      "en": "That code doesn't match. Please try again."
+    },
+    "noSession": {
+      "de": "Auf diesem Gerät liegt aktuell kein wartender Fragebogen vor.",
+      "en": "There's no waiting-room questionnaire on this device right now."
+    }
+  },
   "riskFlagLabel": { "de": "Risikoflag", "en": "Risk flag" },
   "riskFlag": {
-    "minimal": { "de": "minimal — kein akuter Hinweis", "en": "minimal — no acute indication" },
-    "lower": {
-      "de": "niedriger — zeitnahe Abklärung empfohlen",
-      "en": "lower — timely review recommended"
-    },
-    "higher": { "de": "höher — dringender Handlungsbedarf", "en": "higher — urgent action needed" }
+    "minimal": { "de": "Minimal", "en": "Minimal" },
+    "lower": { "de": "Niedriger", "en": "Lower" },
+    "higher": { "de": "Höher", "en": "Higher" }
   },
   "riskAdvice": {
     "de": "Suizidalität explizit ansprechen, Sicherheitsplan und Erreichbarkeit klären, ggf. fachpsychiatrische Mitbeurteilung veranlassen.",
@@ -25,7 +39,7 @@
     "en": "Estimated symptom scores (PHQ-9 score development) after 12 months with different care options"
   },
   "modelEstimatesIntro": {
-    "de": "Niedrigere Werte bedeuten weniger depressive Beschwerden. Es handelt sich um Schätzungen auf Grundlage früherer Forschungsdaten und der Angaben im Fragebogen – die Beschwerden können sich individuell anders entwickeln. Die Bausteine sind, zusätzlich zur üblichen Versorgung, vom für diese:n Patient:in wahrscheinlich hilfreichsten bis zum am wenigsten hilfreichen gereiht.",
+    "de": "Niedrigere Werte bedeuten weniger depressive Beschwerden. Es handelt sich um Schätzungen auf Grundlage früherer Forschungsdaten und der Angaben im Fragebogen. Die Beschwerden können sich individuell anders entwickeln. Die Bausteine sind, zusätzlich zur üblichen Versorgung, vom für diese:n Patient:in wahrscheinlich hilfreichsten bis zum am wenigsten hilfreichen gereiht.",
     "en": "Lower scores mean fewer depressive symptoms. These are estimates based on past research data and the information entered in the questionnaire, and the patient's symptoms may develop differently. Components are ranked, on top of usual care, from what's likely to help this patient most to the least."
   },
   "ranking": {
@@ -35,8 +49,8 @@
     },
     "otherSection": { "de": "Weitere Bausteine", "en": "Other components" },
     "rankAria": {
-      "de": "Rang {rank} von {total} — nach erwartetem Zusatznutzen gereiht",
-      "en": "Rank {rank} of {total} — ranked by expected added benefit"
+      "de": "Rang {rank} von {total}, nach erwartetem Zusatznutzen gereiht",
+      "en": "Rank {rank} of {total}, ranked by expected added benefit"
     }
   },
   "outcome": {
@@ -63,7 +77,7 @@
     "phq9Total": { "de": "PHQ-9 Summenwert", "en": "PHQ-9 total" },
     "severity": { "de": "Schweregrad", "en": "Severity" },
     "suicidality": { "de": "Suizidalität (Item 9)", "en": "Suicidality (item 9)" },
-    "riskAssessment": { "de": "Risikoeinschätzung", "en": "Risk assessment" },
+    "riskAssessment": { "de": "P4-Suizidscreening", "en": "P4 suicide screening" },
     "past": {
       "de": "Selbstverletzung/Suizidversuch (jemals)",
       "en": "Self-harm/suicide attempt (ever)"

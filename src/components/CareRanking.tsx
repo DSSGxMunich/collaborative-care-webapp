@@ -43,7 +43,7 @@ function Track({ paddingX, children }: { paddingX: string; children: ReactNode }
  * GPs on /praxis) asked for the same thing after testing: the raw numbers
  * (e.g. "9.2 (7.1–11.4)") read as more precise than the model actually is,
  * and are harder to act on than a plain "this tends to help more" order.
- * Usual care stays a separate reference block after the numbered list,
+ * Usual care stays a separate reference block above the numbered list,
  * since it isn't itself "ranked" against the other components: it's the
  * comparison every component is measured against.
  *
@@ -97,6 +97,44 @@ export function CareRanking({
 
   return (
     <div>
+      {/*
+       * Usual care: the comparison, not a ranked option. It sits above the
+       * list, so the reference comes first, in its own dashed box with no
+       * rank badge (its name already says
+       * "for comparison", so the box needs no extra header), but keeps the same
+       * padding and empty rank column as the rows below, so its strip lines
+       * up with theirs on the shared 0–27 scale.
+       */}
+      <div className="mb-3 rounded-md border border-dashed border-muted-foreground/50 bg-secondary/40">
+        <div className={rowPaddingY}>
+          <Track paddingX={rowPaddingX}>
+            <LabelWithValue
+              lines={[labelLines(usualCare).join(" ")]}
+              value={outcome.formatValue?.(usualCare)}
+            />
+            {usualCareDescription ? (
+              <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
+                {usualCareDescription}
+              </p>
+            ) : null}
+            {usualCareNote ? (
+              <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                {usualCareNote}
+              </p>
+            ) : null}
+            <div className="mt-2.5">
+              <OutcomeStrip
+                reference
+                scenario={usualCare}
+                baseline={outcome.baseline}
+                todayLabel={outcome.todayLabel}
+                expectedLabel={outcome.expectedLabel(usualCare)}
+              />
+            </div>
+          </Track>
+        </div>
+      </div>
+
       <ol className="divide-y divide-border rounded-md border border-border">
         {ranked.map((scenario, index) => {
           const rank = index + 1;
@@ -148,43 +186,6 @@ export function CareRanking({
           );
         })}
       </ol>
-
-      {/*
-       * Usual care: the comparison, not a ranked option. It sits after the
-       * list in its own dashed box with no rank badge (its name already says
-       * "for comparison", so the box needs no extra header), but keeps the same
-       * padding and empty rank column as the rows above, so its strip lines
-       * up with theirs on the shared 0–27 scale.
-       */}
-      <div className="mt-3 rounded-md border border-dashed border-muted-foreground/50 bg-secondary/40">
-        <div className={rowPaddingY}>
-          <Track paddingX={rowPaddingX}>
-            <LabelWithValue
-              lines={[labelLines(usualCare).join(" ")]}
-              value={outcome.formatValue?.(usualCare)}
-            />
-            {usualCareDescription ? (
-              <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
-                {usualCareDescription}
-              </p>
-            ) : null}
-            {usualCareNote ? (
-              <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
-                {usualCareNote}
-              </p>
-            ) : null}
-            <div className="mt-2.5">
-              <OutcomeStrip
-                reference
-                scenario={usualCare}
-                baseline={outcome.baseline}
-                todayLabel={outcome.todayLabel}
-                expectedLabel={outcome.expectedLabel(usualCare)}
-              />
-            </div>
-          </Track>
-        </div>
-      </div>
 
       <div className="mt-1.5 border-x border-transparent">
         <Track paddingX={rowPaddingX}>
