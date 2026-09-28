@@ -258,7 +258,7 @@ function Results() {
       return {
         label: scenarioLabel(scenario),
         description: isUsualCare
-          ? tr(r.scenarios.usualCare.description)
+          ? `${tr(r.scenarios.usualCare.description)} ${tr(r.scenarios.usualCare.note)}`
           : scenarioDescription(scenario),
         rank,
         note: !isUsualCare && isHelpful(scenario) ? tr(r.legend.better) : "–",
@@ -282,7 +282,14 @@ function Results() {
         note: tr(r.pdf.table.note),
       },
       scenarioTables: [
-        { heading: tr(r.scenarioTabs.single), rows: scenarioTableRows(p.scenarios) },
+        {
+          heading: tr(r.scenarioTabs.single),
+          // Usual care last, as the comparison row, matching the page.
+          rows: scenarioTableRows([
+            ...rankedScenarios,
+            ...(usualCareScenario ? [usualCareScenario] : []),
+          ]),
+        },
       ],
       predictorsHeading: tr(r.aboutEstimates.heading),
       predictorsBody: [r.aboutEstimates.research, r.aboutEstimates.ranking, r.predictorsNote]
@@ -346,8 +353,10 @@ function Results() {
                 description={scenarioDescription}
                 helpful={isHelpful}
                 usualCareDescription={tr(r.scenarios.usualCare.description)}
+                usualCareNote={tr(r.scenarios.usualCare.note)}
                 helpfulSectionLabel={tr(r.ranking.helpfulSection)}
                 otherSectionLabel={tr(r.ranking.otherSection)}
+                comparisonSectionLabel={tr(r.ranking.comparisonSection)}
                 rankAriaLabel={(rank, total) => fill(tr(r.ranking.rankAria), { rank, total })}
                 example={() => (
                   <ExamplePopover
@@ -367,6 +376,7 @@ function Results() {
                   legend: {
                     expected: tr(r.legend.expected),
                     helpful: tr(r.legend.helpful),
+                    reference: tr(r.legend.reference),
                     interval: tr(r.legend.interval),
                     today: tr(r.legend.today),
                     scale: tr(r.legend.scale),

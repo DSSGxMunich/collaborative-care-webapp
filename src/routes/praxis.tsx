@@ -158,7 +158,7 @@ function Clinician() {
       return {
         label: careComponentLabel(scenario),
         description: isUsualCare
-          ? tr(r.scenarios.usualCare.description)
+          ? `${tr(r.scenarios.usualCare.description)} ${tr(r.scenarios.usualCare.note)}`
           : careComponentDescription(scenario),
         rank,
         endpoint: formatEndpoint(scenario),
@@ -191,7 +191,14 @@ function Clinician() {
         note: tr(c.table.note),
       },
       scenarioTables: [
-        { heading: tr(r.scenarioTabs.single), rows: scenarioTableRows(p.scenarios) },
+        {
+          heading: tr(r.scenarioTabs.single),
+          // Usual care last, as the comparison row, matching the page.
+          rows: scenarioTableRows([
+            ...rankedScenarios,
+            ...(usualCareScenario ? [usualCareScenario] : []),
+          ]),
+        },
       ],
       footer: fill(tr(c.footer), { version: MODEL_META.version }),
     });
@@ -287,8 +294,10 @@ function Clinician() {
               description={careComponentDescription}
               helpful={isHelpful}
               usualCareDescription={tr(r.scenarios.usualCare.description)}
+              usualCareNote={tr(r.scenarios.usualCare.note)}
               helpfulSectionLabel={tr(c.ranking.helpfulSection)}
               otherSectionLabel={tr(c.ranking.otherSection)}
+              comparisonSectionLabel={tr(c.ranking.comparisonSection)}
               rankAriaLabel={(rank, total) => fill(tr(c.ranking.rankAria), { rank, total })}
               outcome={{
                 baseline: p.baseline,
@@ -299,6 +308,7 @@ function Clinician() {
                 legend: {
                   expected: tr(c.outcome.expected),
                   helpful: tr(c.outcome.helpful),
+                  reference: tr(c.outcome.reference),
                   interval: tr(c.outcome.interval),
                   today: tr(c.outcome.todayLine),
                   scale: tr(c.outcome.scale),
