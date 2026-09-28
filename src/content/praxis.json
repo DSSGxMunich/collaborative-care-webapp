@@ -34,7 +34,6 @@
       "en": "Likely to help more than usual care"
     },
     "otherSection": { "de": "Weitere Bausteine", "en": "Other components" },
-    "comparisonSection": { "de": "Zum Vergleich", "en": "For comparison" },
     "rankAria": {
       "de": "Rang {rank} von {total} — nach erwartetem Zusatznutzen gereiht",
       "en": "Rank {rank} of {total} — ranked by expected added benefit"
@@ -52,10 +51,6 @@
       "en": "Expected PHQ-9 at 12 mo.: {value}"
     },
     "helpful": { "de": "Niedriger als heute", "en": "Lower than today" },
-    "reference": {
-      "de": "Übliche Versorgung (zum Vergleich)",
-      "en": "Usual care (for comparison)"
-    },
     "interval": { "de": "95 %-Kredibilitätsintervall", "en": "95% credible interval" },
     "scale": {
       "de": "PHQ-9-Skala 0–27, niedriger = besser",

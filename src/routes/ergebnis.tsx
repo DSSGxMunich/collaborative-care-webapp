@@ -356,7 +356,6 @@ function Results() {
                 usualCareNote={tr(r.scenarios.usualCare.note)}
                 helpfulSectionLabel={tr(r.ranking.helpfulSection)}
                 otherSectionLabel={tr(r.ranking.otherSection)}
-                comparisonSectionLabel={tr(r.ranking.comparisonSection)}
                 rankAriaLabel={(rank, total) => fill(tr(r.ranking.rankAria), { rank, total })}
                 example={() => (
                   <ExamplePopover
@@ -376,7 +375,6 @@ function Results() {
                   legend: {
                     expected: tr(r.legend.expected),
                     helpful: tr(r.legend.helpful),
-                    reference: tr(r.legend.reference),
                     interval: tr(r.legend.interval),
                     today: tr(r.legend.today),
                     scale: tr(r.legend.scale),

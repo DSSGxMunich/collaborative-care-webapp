@@ -21,14 +21,6 @@ const tone = (improved: boolean) =>
     : { dot: "border-primary", bar: "bg-primary/35" };
 
 /**
- * Usual care is the comparison, not an option: it gets a grey diamond
- * (a rotated square) instead of a dot, and never the green "improved" tone.
- */
-const REFERENCE_TONE = { dot: "border-muted-foreground", bar: "bg-muted-foreground/30" };
-const DOT_SHAPE = "h-2.5 w-2.5 rounded-full";
-const DIAMOND_SHAPE = "h-2 w-2 rotate-45 rounded-[1px]";
-
-/**
  * One row's forest-plot-style strip: a dot at the expected 12-month PHQ-9,
  * a bar for its 95% credible interval, and a vertical line at the patient's
  * PHQ-9 today. It shows no numbers itself. Whether numbers appear is up to
@@ -53,11 +45,11 @@ export function OutcomeStrip({
   baseline: number;
   todayLabel: string;
   expectedLabel: string;
-  /** Draw as the comparison row (usual care): grey diamond, no "improved" color. */
+  /** Usual care, the comparison: never gets the green "likely to help" tone. */
   reference?: boolean;
 }) {
   const [low, high] = scenario.endpointRange;
-  const t = reference ? REFERENCE_TONE : tone(scenario.expectedEndpoint < baseline);
+  const t = tone(!reference && scenario.expectedEndpoint < baseline);
   const cap = `absolute top-1/2 h-2 w-0.5 -translate-x-1/2 -translate-y-1/2 rounded-full ${t.bar}`;
   return (
     <div aria-hidden className="relative h-4">
@@ -81,7 +73,7 @@ export function OutcomeStrip({
         style={{ left: `${pct(scenario.expectedEndpoint)}%` }}
       >
         <span
-          className={`${reference ? DIAMOND_SHAPE : DOT_SHAPE} border-2 bg-card transition-transform group-hover:scale-125 ${t.dot}`}
+          className={`h-2.5 w-2.5 rounded-full border-2 bg-card transition-transform group-hover:scale-125 ${t.dot}`}
         />
         <HoverTip>{expectedLabel}</HoverTip>
       </div>
@@ -143,7 +135,6 @@ export function ScaleAxis({
 export type OutcomeLegendLabels = {
   expected: string;
   helpful: string;
-  reference: string;
   interval: string;
   today: string;
   scale: string;
@@ -166,10 +157,6 @@ export function OutcomeLegend({ labels }: { labels: OutcomeLegendLabels }) {
       {item(
         <span className="h-3 w-3 shrink-0 rounded-full border-2 border-success bg-card" />,
         labels.helpful,
-      )}
-      {item(
-        <span className="mx-0.5 h-2.5 w-2.5 shrink-0 rotate-45 rounded-[1px] border-2 border-muted-foreground bg-card" />,
-        labels.reference,
       )}
       {item(<span className="h-0.5 w-4 shrink-0 rounded-full bg-primary/35" />, labels.interval)}
       {item(<span className="h-3 w-0 shrink-0 border-l-2 border-foreground/70" />, labels.today)}

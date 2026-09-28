@@ -297,7 +297,6 @@ function Clinician() {
               usualCareNote={tr(r.scenarios.usualCare.note)}
               helpfulSectionLabel={tr(c.ranking.helpfulSection)}
               otherSectionLabel={tr(c.ranking.otherSection)}
-              comparisonSectionLabel={tr(c.ranking.comparisonSection)}
               rankAriaLabel={(rank, total) => fill(tr(c.ranking.rankAria), { rank, total })}
               outcome={{
                 baseline: p.baseline,
@@ -308,7 +307,6 @@ function Clinician() {
                 legend: {
                   expected: tr(c.outcome.expected),
                   helpful: tr(c.outcome.helpful),
-                  reference: tr(c.outcome.reference),
                   interval: tr(c.outcome.interval),
                   today: tr(c.outcome.todayLine),
                   scale: tr(c.outcome.scale),

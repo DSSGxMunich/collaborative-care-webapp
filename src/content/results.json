@@ -106,10 +106,6 @@
     "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
     "expected": { "de": "Erwarteter Wert nach 12 Monaten", "en": "Expected result at 12 months" },
     "helpful": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
-    "reference": {
-      "de": "Übliche Versorgung (zum Vergleich)",
-      "en": "Usual care (for comparison)"
-    },
     "interval": { "de": "Unsicherheitsbereich", "en": "Range of uncertainty" },
     "today": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" },
     "scale": {
@@ -125,7 +121,6 @@
       "en": "Likely to help more than your current care"
     },
     "otherSection": { "de": "Weitere Bausteine", "en": "Other components" },
-    "comparisonSection": { "de": "Zum Vergleich", "en": "For comparison" },
     "rankAria": {
       "de": "Platz {rank} von {total} — nach erwartetem Nutzen gereiht, hilfreichster Baustein zuerst",
       "en": "Rank {rank} of {total} — ordered by expected benefit, most helpful care component first"
