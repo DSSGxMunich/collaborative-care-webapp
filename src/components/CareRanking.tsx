@@ -68,8 +68,11 @@ export function CareRanking({
   otherSectionLabel,
   rankAriaLabel,
   outcome,
+  example,
   compact = false,
 }: {
+  /** Optional "example from a study" control rendered under each ranked row. */
+  example?: (scenario: Scenario) => ReactNode;
   usualCare: Scenario;
   ranked: Scenario[];
   labelLines: (scenario: Scenario) => string[];
@@ -150,6 +153,7 @@ export function CareRanking({
                   {desc ? (
                     <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{desc}</p>
                   ) : null}
+                  {example ? <div className="mt-1.5">{example(scenario)}</div> : null}
                   <div className="mt-2.5">
                     <OutcomeStrip
                       scenario={scenario}
