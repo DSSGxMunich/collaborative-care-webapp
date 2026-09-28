@@ -8,11 +8,12 @@
   "unlock": {
     "title": { "de": "Code eingeben", "en": "Enter code" },
     "body": {
-      "de": "Ihre Patientin/Ihr Patient hat den Fragebogen im Wartezimmer ausgefüllt? Geben Sie hier den Code von ihrem Bildschirm ein, um die Auswertung gemeinsam zu öffnen.",
-      "en": "Did your patient fill in the questionnaire in the waiting room? Enter the code shown on their screen to open the results together."
+      "de": "Ihre Patientin/Ihr Patient hat den Fragebogen im Wartezimmer ausgefüllt? Geben Sie hier den Code von ihrem Bildschirm ein. Damit werden der Kurzbefund für die Praxis und die Patientenergebnisse freigeschaltet.",
+      "en": "Did your patient fill in the questionnaire in the waiting room? Enter the code shown on their screen to unlock both this practice report and the patient's results."
     },
     "codePlaceholder": { "de": "Code", "en": "Code" },
-    "unlockButton": { "de": "Freischalten", "en": "Unlock" },
+    "unlockPraxis": { "de": "Kurzbefund öffnen", "en": "Open practice report" },
+    "unlockResults": { "de": "Patientenergebnisse öffnen", "en": "Open patient results" },
     "codeMismatch": {
       "de": "Der Code stimmt nicht überein. Bitte erneut versuchen.",
       "en": "That code doesn't match. Please try again."

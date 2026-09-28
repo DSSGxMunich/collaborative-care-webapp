@@ -9,10 +9,15 @@ import praxisContent from "@/content/praxis.json";
 
 type GpUnlockError = "mismatch" | "noSession" | null;
 
+/** Where to go once the code matches: stay on the practice report, or open the patient's results. */
+type UnlockTarget = "praxis" | "ergebnis";
+
 /**
  * The GP-side half of the waiting-room gate: the patient's screen
  * (WaitingBlocker) shows a code, and the GP types it in here — on the
- * "For the practice" page (src/routes/praxis.tsx) — to unlock the results.
+ * "For the practice" page (src/routes/praxis.tsx). One code unlocks both
+ * the practice report and the patient's results (they share
+ * session.unlocked); the two buttons only decide which one opens first.
  */
 export function GpUnlockCard() {
   const { tr } = useLang();
@@ -22,15 +27,15 @@ export function GpUnlockCard() {
   const [error, setError] = useState<GpUnlockError>(null);
   const g = praxisContent.unlock;
 
-  const tryUnlock = (e: React.FormEvent) => {
-    e.preventDefault();
+  const tryUnlock = (target: UnlockTarget) => {
     if (session.mode !== "waitingRoom" || !session.completedAt) {
       setError("noSession");
       return;
     }
     if (normalizeUnlockCode(code) === computeUnlockCode(session)) {
       update({ unlocked: true });
-      navigate({ to: "/ergebnis" });
+      // /praxis re-renders into the report on its own once unlocked.
+      if (target === "ergebnis") navigate({ to: "/ergebnis" });
     } else {
       setError("mismatch");
     }
@@ -45,7 +50,14 @@ export function GpUnlockCard() {
         <h2 className="text-lg font-semibold">{tr(g.title)}</h2>
       </div>
       <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{tr(g.body)}</p>
-      <form onSubmit={tryUnlock} className="mt-4 flex gap-2">
+      <form
+        onSubmit={(e) => {
+          // Enter in the code field opens the practice report — the page the GP is already on.
+          e.preventDefault();
+          tryUnlock("praxis");
+        }}
+        className="mt-4 flex flex-wrap gap-2"
+      >
         <input
           value={code}
           onChange={(e) => {
@@ -62,7 +74,14 @@ export function GpUnlockCard() {
           type="submit"
           className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
         >
-          {tr(g.unlockButton)}
+          {tr(g.unlockPraxis)}
+        </button>
+        <button
+          type="button"
+          onClick={() => tryUnlock("ergebnis")}
+          className="rounded-md border border-border bg-card px-4 py-2 text-sm font-medium hover:bg-secondary"
+        >
+          {tr(g.unlockResults)}
         </button>
       </form>
       {error && (
