@@ -254,7 +254,6 @@ function Clinician() {
                             ? "border-destructive/40 bg-destructive-soft text-destructive"
                             : "border-warning/40 bg-warning-soft text-warning",
                         ].join(" ")}
-<<<<<<< HEAD
                       >
                         {row.value}
                       </span>
@@ -265,52 +264,6 @@ function Clinician() {
                 </div>
               ))}
             </dl>
-=======
-                      />
-                    ))}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </section>
-
-      <section className="mt-8">
-        <h2 className="text-base font-semibold">{tr(c.modelEstimates)}</h2>
-        <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-          {tr(c.modelEstimatesIntro)}
-        </p>
-
-        {usualCareScenario && (
-          <div className="mt-4">
-            <CareRanking
-              usualCare={usualCareScenario}
-              ranked={rankedScenarios}
-              labelLines={careComponentLabelLines}
-              description={careComponentDescription}
-              helpful={isHelpful}
-              usualCareDescription={tr(r.scenarios.usualCare.description)}
-              usualCareNote={tr(r.scenarios.usualCare.note)}
-              helpfulSectionLabel={tr(c.ranking.helpfulSection)}
-              otherSectionLabel={tr(c.ranking.otherSection)}
-              rankAriaLabel={(rank, total) => fill(tr(c.ranking.rankAria), { rank, total })}
-              outcome={{
-                baseline: p.baseline,
-                todayLabel: tr(c.outcome.todayLine),
-                expectedLabel: () => tr(c.outcome.expected),
-                lowLabel: tr(c.outcome.fewer),
-                highLabel: tr(c.outcome.more),
-                legend: {
-                  expected: tr(c.outcome.expected),
-                  helpful: tr(c.outcome.helpful),
-                  interval: tr(c.outcome.interval),
-                  today: tr(c.outcome.todayLine),
-                  scale: tr(c.outcome.scale),
-                },
-              }}
-            />
->>>>>>> 84d25f1 (Remove PHQ-9 numbers from the practice page ranking)
           </div>
 
           <div className="panel p-6">
