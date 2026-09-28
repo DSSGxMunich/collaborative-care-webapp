@@ -159,7 +159,7 @@ export function CareRanking({
         className="mt-3 rounded-md border border-dashed border-muted-foreground/50 bg-secondary/40"
       >
         <p
-          className={`${rowPaddingX} pt-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground`}
+          className={`${rowPaddingX} pt-2 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/80`}
         >
           {comparisonSectionLabel}
         </p>
