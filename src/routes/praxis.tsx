@@ -244,12 +244,12 @@ function Clinician() {
             <dl className="mt-3 divide-y divide-border text-sm">
               {rows.map((row) => (
                 <div key={row.label} className="flex justify-between gap-4 py-2">
-                  <dt className="text-muted-foreground">{row.label}</dt>
+                  <dt className="shrink-0 text-muted-foreground">{row.label}</dt>
                   <dd className="text-right">
                     {row.tone ? (
                       <span
                         className={[
-                          "rounded-md border px-2 py-0.5 text-xs font-semibold",
+                          "inline-block rounded-md border px-2 py-0.5 text-left text-xs font-semibold leading-snug",
                           row.tone === "destructive"
                             ? "border-destructive/40 bg-destructive-soft text-destructive"
                             : "border-warning/40 bg-warning-soft text-warning",

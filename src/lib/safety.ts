@@ -7,11 +7,15 @@ import type { Session } from "./session";
  * Bair, Theobald & Williams, 2010, Prim Care Companion J Clin Psychiatry
  * 12(6)) — classified purely from the four P4 answers (past/plan/
  * probability/preventive), independent of PHQ-9. As with the rest of this
- * file's P4 adaptation (see session.tsx), the exact "minimal/lower/higher"
- * thresholds here are this app's implementation of that scheme as
- * specified during development, not independently re-verified against the
- * original paper's PDF (network access to the primary source was blocked
- * this session) — flag for review against the source paper.
+ * file's P4 adaptation (see session.tsx). The rules below match the
+ * paper's published definitions: minimal = no past attempt, no plan and
+ * "not at all likely"; lower = past attempt and/or plan, but "not at all
+ * likely" and a preventive factor present; higher = "somewhat" or "very
+ * likely" and/or no preventive factor.
+ *
+ * The level is a screening result that prompts a clinical conversation,
+ * not a prediction: NICE NG225 advises against using low/medium/high
+ * stratification to predict suicide or to decide who gets treatment.
  */
 export type RiskLevel = "minimal" | "lower" | "higher";
 

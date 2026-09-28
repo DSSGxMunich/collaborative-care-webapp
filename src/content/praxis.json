@@ -24,12 +24,18 @@
   },
   "riskFlagLabel": { "de": "Risikoflag", "en": "Risk flag" },
   "riskFlag": {
-    "minimal": { "de": "minimal: kein akuter Hinweis", "en": "minimal: no acute indication" },
-    "lower": {
-      "de": "niedriger: zeitnahe Abklärung empfohlen",
-      "en": "lower: timely review recommended"
+    "minimal": {
+      "de": "Minimal: keine Risikofaktoren angegeben. Bei jedem Kontakt erneut erfragen.",
+      "en": "Minimal: no risk factors reported. Keep asking at each contact."
     },
-    "higher": { "de": "höher: dringender Handlungsbedarf", "en": "higher: urgent action needed" }
+    "lower": {
+      "de": "Niedriger, aber Risikofaktoren vorhanden: heute ansprechen und Sicherheitsplan vereinbaren.",
+      "en": "Lower, but risk factors present: discuss today and agree a safety plan."
+    },
+    "higher": {
+      "de": "Höher: vor Verlassen der Praxis abklären; bei akuter Gefahr Krisendienst oder Psychiatrie einbeziehen.",
+      "en": "Higher: assess before the patient leaves; involve crisis or psychiatric services if acute."
+    }
   },
   "riskAdvice": {
     "de": "Suizidalität explizit ansprechen, Sicherheitsplan und Erreichbarkeit klären, ggf. fachpsychiatrische Mitbeurteilung veranlassen.",
@@ -80,7 +86,7 @@
     "phq9Total": { "de": "PHQ-9 Summenwert", "en": "PHQ-9 total" },
     "severity": { "de": "Schweregrad", "en": "Severity" },
     "suicidality": { "de": "Suizidalität (Item 9)", "en": "Suicidality (item 9)" },
-    "riskAssessment": { "de": "Risikoeinschätzung", "en": "Risk assessment" },
+    "riskAssessment": { "de": "P4-Suizidscreening", "en": "P4 suicide screening" },
     "past": {
       "de": "Selbstverletzung/Suizidversuch (jemals)",
       "en": "Self-harm/suicide attempt (ever)"
