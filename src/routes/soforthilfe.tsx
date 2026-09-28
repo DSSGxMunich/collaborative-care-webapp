@@ -7,7 +7,7 @@ import crisisContent from "@/content/crisis.json";
 export const Route = createFileRoute("/soforthilfe")({
   head: () => ({
     meta: [
-      { title: "Soforthilfe und Krisenkontakte – Versorgungskompass" },
+      { title: "Soforthilfe und Krisenkontakte | Versorgungskompass" },
       { name: "description", content: crisisContent.intro.de },
     ],
   }),

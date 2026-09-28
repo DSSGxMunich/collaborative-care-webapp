@@ -24,12 +24,12 @@
   },
   "riskFlagLabel": { "de": "Risikoflag", "en": "Risk flag" },
   "riskFlag": {
-    "minimal": { "de": "minimal — kein akuter Hinweis", "en": "minimal — no acute indication" },
+    "minimal": { "de": "minimal: kein akuter Hinweis", "en": "minimal: no acute indication" },
     "lower": {
-      "de": "niedriger — zeitnahe Abklärung empfohlen",
-      "en": "lower — timely review recommended"
+      "de": "niedriger: zeitnahe Abklärung empfohlen",
+      "en": "lower: timely review recommended"
     },
-    "higher": { "de": "höher — dringender Handlungsbedarf", "en": "higher — urgent action needed" }
+    "higher": { "de": "höher: dringender Handlungsbedarf", "en": "higher: urgent action needed" }
   },
   "riskAdvice": {
     "de": "Suizidalität explizit ansprechen, Sicherheitsplan und Erreichbarkeit klären, ggf. fachpsychiatrische Mitbeurteilung veranlassen.",
@@ -42,7 +42,7 @@
     "en": "Estimated symptom scores (PHQ-9 score development) after 12 months with different care options"
   },
   "modelEstimatesIntro": {
-    "de": "Niedrigere Werte bedeuten weniger depressive Beschwerden. Es handelt sich um Schätzungen auf Grundlage früherer Forschungsdaten und der Angaben im Fragebogen – die Beschwerden können sich individuell anders entwickeln. Die Bausteine sind, zusätzlich zur üblichen Versorgung, vom für diese:n Patient:in wahrscheinlich hilfreichsten bis zum am wenigsten hilfreichen gereiht.",
+    "de": "Niedrigere Werte bedeuten weniger depressive Beschwerden. Es handelt sich um Schätzungen auf Grundlage früherer Forschungsdaten und der Angaben im Fragebogen. Die Beschwerden können sich individuell anders entwickeln. Die Bausteine sind, zusätzlich zur üblichen Versorgung, vom für diese:n Patient:in wahrscheinlich hilfreichsten bis zum am wenigsten hilfreichen gereiht.",
     "en": "Lower scores mean fewer depressive symptoms. These are estimates based on past research data and the information entered in the questionnaire, and the patient's symptoms may develop differently. Components are ranked, on top of usual care, from what's likely to help this patient most to the least."
   },
   "ranking": {
@@ -52,8 +52,8 @@
     },
     "otherSection": { "de": "Weitere Bausteine", "en": "Other components" },
     "rankAria": {
-      "de": "Rang {rank} von {total} — nach erwartetem Zusatznutzen gereiht",
-      "en": "Rank {rank} of {total} — ranked by expected added benefit"
+      "de": "Rang {rank} von {total}, nach erwartetem Zusatznutzen gereiht",
+      "en": "Rank {rank} of {total}, ranked by expected added benefit"
     }
   },
   "outcome": {

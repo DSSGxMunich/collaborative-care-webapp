@@ -19,7 +19,7 @@ import resultsContent from "@/content/results.json";
 export const Route = createFileRoute("/ergebnis")({
   head: () => ({
     meta: [
-      { title: "Ihre Auswertung – Versorgungskompass" },
+      { title: "Ihre Auswertung | Versorgungskompass" },
       { name: "description", content: resultsContent.title.de },
     ],
   }),
@@ -362,7 +362,7 @@ function Results() {
                   <ExamplePopover
                     buttonLabel="Example from a study"
                     heading="How this looked in a study"
-                    text="[PLACEHOLDER — real text from the team] In one of the studies, a psychiatrist met the care manager once a week to review all patients on the list and suggested changes to treatment where symptoms were not improving. Patients did not need to see the psychiatrist themselves."
+                    text="[PLACEHOLDER: real text from the team] In one of the studies, a psychiatrist met the care manager once a week to review all patients on the list and suggested changes to treatment where symptoms were not improving. Patients did not need to see the psychiatrist themselves."
                     source="[Placeholder source: Study name, country, year]"
                     closeLabel="Close"
                   />

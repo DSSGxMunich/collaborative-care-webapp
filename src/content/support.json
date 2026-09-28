@@ -6,8 +6,8 @@
   },
   "locationLabel": { "de": "Ort, Postleitzahl oder Straße", "en": "Town, postcode or street" },
   "locationHint": {
-    "de": "Wird nur genutzt, um Suchlinks vorzubereiten — die Eingabe verlässt dieses Gerät nicht.",
-    "en": "Only used to prepare search links — your entry does not leave this device."
+    "de": "Wird nur genutzt, um Suchlinks vorzubereiten. Die Eingabe verlässt dieses Gerät nicht.",
+    "en": "Only used to prepare search links. Your entry does not leave this device."
   },
   "locationPlaceholder": { "de": "z. B. 37073 oder Göttingen", "en": "e.g. 37073 or Göttingen" },
   "searchInPlace": { "de": "In {place} suchen", "en": "Search in {place}" },

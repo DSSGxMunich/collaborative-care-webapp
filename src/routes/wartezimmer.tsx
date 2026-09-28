@@ -9,7 +9,7 @@ import wartezimmerContent from "@/content/wartezimmer.json";
 export const Route = createFileRoute("/wartezimmer")({
   head: () => ({
     meta: [
-      { title: "Wartezimmer – Depressions-Kompass" },
+      { title: "Wartezimmer | Depressions-Kompass" },
       { name: "description", content: wartezimmerContent.start.body.de },
     ],
   }),

@@ -9,7 +9,7 @@ import methodologyContent from "@/content/methodology.json";
 export const Route = createFileRoute("/methodology")({
   head: () => ({
     meta: [
-      { title: "Methodik – Versorgungskompass" },
+      { title: "Methodik | Versorgungskompass" },
       { name: "description", content: methodologyContent.intro.de },
     ],
   }),

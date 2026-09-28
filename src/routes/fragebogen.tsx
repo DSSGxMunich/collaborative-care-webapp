@@ -18,7 +18,7 @@ import questionnaireContent from "@/content/questionnaire.json";
 export const Route = createFileRoute("/fragebogen")({
   head: () => ({
     meta: [
-      { title: "Fragebogen – Versorgungskompass" },
+      { title: "Fragebogen | Versorgungskompass" },
       { name: "description", content: questionnaireContent.phq9.intro.de },
     ],
   }),

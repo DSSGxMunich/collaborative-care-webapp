@@ -2,8 +2,8 @@
   "thankYou": {
     "title": { "de": "Danke für Ihre Antworten", "en": "Thank you for your answers" },
     "body": {
-      "de": "Sie entscheiden selbst, ob Sie Ihre persönliche Auswertung jetzt sehen möchten. Manche Menschen finden Zahlen zu ihrer Situation hilfreich, andere empfinden sie als belastend. Beides ist in Ordnung — Sie können die Auswertung auch später oder gemeinsam mit Ihrer Ärztin oder Ihrem Arzt ansehen.",
-      "en": "You decide whether you want to see your personal results now. Some people find numbers about their situation helpful, others find them distressing. Both are fine — you can also look at the results later or together with your doctor."
+      "de": "Sie entscheiden selbst, ob Sie Ihre persönliche Auswertung jetzt sehen möchten. Manche Menschen finden Zahlen zu ihrer Situation hilfreich, andere empfinden sie als belastend. Beides ist in Ordnung. Sie können die Auswertung auch später oder gemeinsam mit Ihrer Ärztin oder Ihrem Arzt ansehen.",
+      "en": "You decide whether you want to see your personal results now. Some people find numbers about their situation helpful, others find them distressing. Both are fine. You can also look at the results later or together with your doctor."
     },
     "seeResults": { "de": "Ergebnis jetzt ansehen", "en": "See result now" },
     "seeSupport": { "de": "Angebote vor Ort ansehen", "en": "See local support" },
@@ -84,8 +84,8 @@
     "outOf27": { "de": "von 27 Punkten", "en": "out of 27 points" },
     "range": { "de": "(Wertebereich: {range} Punkte)", "en": "(score range: {range} points)" },
     "info": {
-      "de": "Der PHQ-9-Wert gibt die Beschwerden wieder, die Sie für die letzten zwei Wochen angegeben haben. Er allein stellt keine Diagnose – diese kann nur im Gespräch mit Ihrer Hausarztpraxis oder einer Fachperson gestellt werden.",
-      "en": "The PHQ-9 score reflects the symptoms you reported for the past two weeks. On its own, it does not establish a diagnosis – that can only be made in a conversation with your GP or another healthcare professional."
+      "de": "Der PHQ-9-Wert gibt die Beschwerden wieder, die Sie für die letzten zwei Wochen angegeben haben. Er allein stellt keine Diagnose. Diese kann nur im Gespräch mit Ihrer Hausarztpraxis oder einer Fachperson gestellt werden.",
+      "en": "The PHQ-9 score reflects the symptoms you reported for the past two weeks. On its own, it does not establish a diagnosis. That can only be made in a conversation with your GP or another healthcare professional."
     },
     "infoAria": { "de": "Was bedeutet dieser Wert?", "en": "What does this score mean?" },
     "you": { "de": "Sie: {score}", "en": "You: {score}" },
@@ -122,19 +122,19 @@
     },
     "otherSection": { "de": "Weitere Bausteine", "en": "Other components" },
     "rankAria": {
-      "de": "Platz {rank} von {total} — nach erwartetem Nutzen gereiht, hilfreichster Baustein zuerst",
-      "en": "Rank {rank} of {total} — ordered by expected benefit, most helpful care component first"
+      "de": "Platz {rank} von {total}, nach erwartetem Nutzen gereiht, hilfreichster Baustein zuerst",
+      "en": "Rank {rank} of {total}, ordered by expected benefit, most helpful care component first"
     }
   },
   "scenarios": {
     "usualCare": {
       "label": {
-        "de": "Übliche hausärztliche Versorgung – zum Vergleich",
-        "en": "Usual care from your GP — for comparison"
+        "de": "Übliche hausärztliche Versorgung (zum Vergleich)",
+        "en": "Usual care from your GP (for comparison)"
       },
       "short": {
-        "de": "Übliche hausärztliche Versorgung – zum Vergleich",
-        "en": "Usual care from your GP — for comparison"
+        "de": "Übliche hausärztliche Versorgung (zum Vergleich)",
+        "en": "Usual care from your GP (for comparison)"
       },
       "description": {
         "de": "Die übliche Behandlung, die eine Hausarztpraxis bei depressiven Beschwerden anbietet. Dazu können Termine bei Ihrer Hausärztin/Ihrem Hausarzt, eine medikamentöse Behandlung oder eine Überweisung an andere Fachpersonen gehören.",
@@ -149,7 +149,7 @@
   "components": {
     "specialistInvolvement": {
       "label": {
-        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Einbindung einer Fachärztin/eines Facharztes oder Psychologin/Psychologen",
+        "de": "[Entwurf: fachliche/UX-Prüfung ausstehend] Einbindung einer Fachärztin/eines Facharztes oder Psychologin/Psychologen",
         "en": "Specialist advice for your care team"
       },
       "short": {
@@ -163,7 +163,7 @@
     },
     "psychologicalTreatment": {
       "label": {
-        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Beratung oder Psychotherapie",
+        "de": "[Entwurf: fachliche/UX-Prüfung ausstehend] Beratung oder Psychotherapie",
         "en": "Brief counselling: up to 8 sessions"
       },
       "short": {
@@ -171,13 +171,13 @@
         "en": "Brief counselling: up to 8 sessions"
       },
       "description": {
-        "de": "In diesen Gesprächen geht es um Ihre Beschwerden und Wege, damit umzugehen — von kurzer Beratung bis zu strukturierter Psychotherapie über mehrere Sitzungen. Kann auch zusätzlich zu einer Medikation erfolgen.",
+        "de": "In diesen Gesprächen geht es um Ihre Beschwerden und Wege, damit umzugehen, von kurzer Beratung bis zu strukturierter Psychotherapie über mehrere Sitzungen. Kann auch zusätzlich zu einer Medikation erfolgen.",
         "en": "These conversations focus on your symptoms and ways to manage them. Counselling may also be provided alongside medication."
       }
     },
     "goalSetting": {
       "label": {
-        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Gemeinsam festgelegte Behandlungsziele",
+        "de": "[Entwurf: fachliche/UX-Prüfung ausstehend] Gemeinsam festgelegte Behandlungsziele",
         "en": "Agreeing on your personal treatment goals"
       },
       "short": {
@@ -219,7 +219,7 @@
     },
     "regularPatientReview": {
       "label": {
-        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Regelmäßige Verlaufskontrollen",
+        "de": "[Entwurf: fachliche/UX-Prüfung ausstehend] Regelmäßige Verlaufskontrollen",
         "en": "Regular team reviews of your treatment"
       },
       "short": {
@@ -227,13 +227,13 @@
         "en": "Regular team reviews of your treatment"
       },
       "description": {
-        "de": "Ihr Behandlungsteam plant feste, wiederkehrende Termine, um Ihren Verlauf zu besprechen — unabhängig davon, ob es Ihnen gerade besser oder schlechter geht.",
+        "de": "Ihr Behandlungsteam plant feste, wiederkehrende Termine, um Ihren Verlauf zu besprechen, unabhängig davon, ob es Ihnen gerade besser oder schlechter geht.",
         "en": "Your care team meets or checks in at planned intervals to review how your treatment is going and whether anything needs to change."
       }
     },
     "copingStrategies": {
       "label": {
-        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Vermittlung von Bewältigungsstrategien",
+        "de": "[Entwurf: fachliche/UX-Prüfung ausstehend] Vermittlung von Bewältigungsstrategien",
         "en": "Learning ways to manage depressive symptoms"
       },
       "short": {
@@ -275,7 +275,7 @@
     },
     "communityCulturalBg": {
       "label": {
-        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Berücksichtigung von Gemeinschaft und kulturellem Hintergrund",
+        "de": "[Entwurf: fachliche/UX-Prüfung ausstehend] Berücksichtigung von Gemeinschaft und kulturellem Hintergrund",
         "en": "Taking your community and cultural background into account"
       },
       "short": {
@@ -315,8 +315,8 @@
         "en": "Please read: about distressing thoughts"
       },
       "message": {
-        "de": "Sie haben angegeben, dass Sie an einzelnen Tagen Gedanken hatten, lieber tot zu sein oder sich Leid zuzufügen. Solche Gedanken sind bei Depressionen häufig und behandelbar. Bitte sprechen Sie sie bei Ihrem nächsten Termin an — und melden Sie sich früher, wenn sie stärker werden.",
-        "en": "You reported that on some days you had thoughts of being better off dead or of hurting yourself. Such thoughts are common in depression and can be treated. Please mention them at your next appointment — and get in touch sooner if they get stronger."
+        "de": "Sie haben angegeben, dass Sie an einzelnen Tagen Gedanken hatten, lieber tot zu sein oder sich Leid zuzufügen. Solche Gedanken sind bei Depressionen häufig und behandelbar. Bitte sprechen Sie sie bei Ihrem nächsten Termin an. Melden Sie sich früher, wenn sie stärker werden.",
+        "en": "You reported that on some days you had thoughts of being better off dead or of hurting yourself. Such thoughts are common in depression and can be treated. Please mention them at your next appointment, and get in touch sooner if they get stronger."
       }
     },
     "advisory": {
@@ -349,14 +349,14 @@
     "en": "Your estimated symptom scores (PHQ-9 score development) after 12 months with different care options"
   },
   "whatCanBeExpectedBody": {
-    "de": "Niedrigere Werte bedeuten weniger depressive Beschwerden. Es handelt sich um Schätzungen auf Grundlage früherer Forschungsdaten und Ihrer Angaben – Ihre eigenen Beschwerden können sich anders entwickeln.",
+    "de": "Niedrigere Werte bedeuten weniger depressive Beschwerden. Es handelt sich um Schätzungen auf Grundlage früherer Forschungsdaten und Ihrer Angaben. Ihre eigenen Beschwerden können sich anders entwickeln.",
     "en": "Lower scores mean fewer depressive symptoms. These are estimates based on past research data and the information you entered, and your own symptoms may develop differently."
   },
   "aboutEstimates": {
     "heading": { "de": "Über diese Schätzungen", "en": "About these estimates" },
     "research": {
-      "de": "Die Schätzungen stammen aus einem Forschungsmodell, das auf Daten aus 12 klinischen Studien zur kollaborativen Depressionsversorgung beruht. Es betrachtet, wie es Menschen mit einer ähnlichen Ausgangslage nach 12 Monaten ging – mit der üblichen Versorgung und mit jedem zusätzlichen Versorgungsbaustein.",
-      "en": "The estimates come from a research model built on data from 12 clinical studies of collaborative depression care. It looks at how people with a similar starting point were doing after 12 months – with usual care, and with each additional care component."
+      "de": "Die Schätzungen stammen aus einem Forschungsmodell, das auf Daten aus 12 klinischen Studien zur kollaborativen Depressionsversorgung beruht. Es betrachtet, wie es Menschen mit einer ähnlichen Ausgangslage nach 12 Monaten ging: mit der üblichen Versorgung und mit jedem zusätzlichen Versorgungsbaustein.",
+      "en": "The estimates come from a research model built on data from 12 clinical studies of collaborative depression care. It looks at how people with a similar starting point were doing after 12 months: with usual care, and with each additional care component."
     },
     "ranking": {
       "de": "Die Versorgungsbausteine sind vom wahrscheinlich hilfreichsten bis zum am wenigsten hilfreichen geordnet. Das Modell ist ein Forschungsprototyp und nicht klinisch validiert.",

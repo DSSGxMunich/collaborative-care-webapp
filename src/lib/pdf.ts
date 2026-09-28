@@ -258,7 +258,7 @@ export function generatePraxisPdf(input: PraxisPdfInput): void {
     }
     doc.setFont("helvetica", "bold");
     doc.setFontSize(12);
-    doc.text(pdfSafe(`${input.modelHeading} — ${table.heading}`), MARGIN, y);
+    doc.text(pdfSafe(`${input.modelHeading}: ${table.heading}`), MARGIN, y);
     y += 4;
     y = drawScenarioTable(doc, y, input.tableHeaders, table.rows) + 8;
   }
@@ -302,7 +302,7 @@ export function generateResultsPdf(input: ResultsPdfInput): void {
 
   // Baseline banner — plain, no risk tone (this page never shows the patient a risk flag).
   const bannerText = pdfSafe(
-    `${input.baselineLabel}: ${input.baselineValue} — ${input.severityValue}`,
+    `${input.baselineLabel}: ${input.baselineValue}, ${input.severityValue}`,
   );
   doc.setFontSize(11);
   doc.setFont("helvetica", "bold");
@@ -333,7 +333,7 @@ export function generateResultsPdf(input: ResultsPdfInput): void {
     doc.setFont("helvetica", "bold");
     doc.setFontSize(10.5);
     doc.setTextColor(20, 20, 20);
-    doc.text(pdfSafe(`${input.modelHeading} — ${table.heading}`), MARGIN, y);
+    doc.text(pdfSafe(`${input.modelHeading}: ${table.heading}`), MARGIN, y);
     y += 4;
     y = drawScenarioTable(doc, y, input.tableHeaders, table.rows) + 8;
   }

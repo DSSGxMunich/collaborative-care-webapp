@@ -7,7 +7,7 @@ import faqContent from "@/content/faq.json";
 export const Route = createFileRoute("/faq")({
   head: () => ({
     meta: [
-      { title: "Häufige Fragen – Versorgungskompass" },
+      { title: "Häufige Fragen | Versorgungskompass" },
       { name: "description", content: faqContent.intro.de },
     ],
   }),
