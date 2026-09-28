@@ -33,10 +33,10 @@ export function CompassMark({ className = "h-7 w-7" }: { className?: string }) {
  */
 const FAVICON_SVG =
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">' +
-  '<path d="M22.5 4.74A13 13 0 1 0 27.26 9.5" fill="none" stroke="#165343" stroke-width="3.2" stroke-linecap="round"/>' +
+  '<path d="M22.5 4.74A13 13 0 1 0 27.26 9.5" fill="none" stroke="#2b6c50" stroke-width="3.2" stroke-linecap="round"/>' +
   '<g transform="rotate(45 16 16)">' +
-  '<path d="M16 3.5L19.4 16H12.6Z" fill="#d66e4e"/>' +
-  '<path d="M16 22L19.4 16H12.6Z" fill="#165343"/>' +
+  '<path d="M16 3.5L19.4 16H12.6Z" fill="#dd6d49"/>' +
+  '<path d="M16 22L19.4 16H12.6Z" fill="#2b6c50"/>' +
   "</g></svg>";
 
 /** Inline data URI, so the icon works under any deploy base path (no /favicon.ico request). */
