@@ -65,7 +65,7 @@ function CurrentScore({ score, severity }: { score: number; severity: Severity }
       </p>
 
       {/* The scale is decorative: every fact on it is also stated in text above/below. */}
-      <div aria-hidden className="mt-8 max-w-md">
+      <div aria-hidden className="mt-8">
         <div className="relative">
           {/* Near either end, anchor the label to the marker's inner side so it stays inside the scale. */}
           <div
@@ -388,7 +388,7 @@ function Results() {
         {/* ---------------- About these estimates: research basis + inputs ---------------- */}
         <section className="mt-10">
           <h2 className="text-lg font-semibold">{tr(r.aboutEstimates.heading)}</h2>
-          <div className="mt-1.5 max-w-xl space-y-2 text-sm leading-relaxed text-muted-foreground">
+          <div className="mt-1.5 space-y-2 text-sm leading-relaxed text-muted-foreground">
             <p>{tr(r.aboutEstimates.research)}</p>
             <p>{tr(r.aboutEstimates.ranking)}</p>
             <p>{tr(r.predictorsNote)}</p>
