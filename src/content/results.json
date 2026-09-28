@@ -354,6 +354,29 @@
   },
   "aboutEstimates": {
     "heading": { "de": "Über diese Schätzungen", "en": "About these estimates" },
+    "facts": [
+      {
+        "value": { "de": "12", "en": "12" },
+        "label": {
+          "de": "randomisierte kontrollierte Studien zur strukturierten Depressionsversorgung",
+          "en": "randomised controlled trials of structured depression care"
+        }
+      },
+      {
+        "value": { "de": "10", "en": "10" },
+        "label": {
+          "de": "Versorgungsbausteine, jeweils zusätzlich zur üblichen Versorgung verglichen",
+          "en": "care components, each compared on top of usual care"
+        }
+      },
+      {
+        "value": { "de": "12 Monate", "en": "12 months" },
+        "label": {
+          "de": "nach Beginn: auf diesen Zeitpunkt beziehen sich die Schätzungen",
+          "en": "after the start: the point in time the estimates refer to"
+        }
+      }
+    ],
     "research": {
       "de": "Die Schätzungen stammen aus einem Forschungsmodell, das auf Daten aus 12 klinischen Studien zur kollaborativen Depressionsversorgung beruht. Es betrachtet, wie es Menschen mit einer ähnlichen Ausgangslage nach 12 Monaten ging: mit der üblichen Versorgung und mit jedem zusätzlichen Versorgungsbaustein.",
       "en": "The estimates come from a research model built on data from 12 clinical studies of collaborative depression care. It looks at how people with a similar starting point were doing after 12 months: with usual care, and with each additional care component."

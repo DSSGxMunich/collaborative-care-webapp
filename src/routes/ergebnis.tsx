@@ -286,10 +286,10 @@ function Results() {
       scenarioTables: [
         {
           heading: tr(r.scenarioTabs.single),
-          // Usual care last, as the comparison row, matching the page.
+          // Usual care first, as the comparison row, matching the page.
           rows: scenarioTableRows([
-            ...rankedScenarios,
             ...(usualCareScenario ? [usualCareScenario] : []),
+            ...rankedScenarios,
           ]),
         },
       ],
@@ -389,7 +389,18 @@ function Results() {
         {/* ---------------- About these estimates: research basis + inputs ---------------- */}
         <section className="panel mt-6 p-6">
           <h2 className="text-lg font-semibold">{tr(r.aboutEstimates.heading)}</h2>
-          <div className="mt-1.5 space-y-2 text-sm leading-relaxed text-muted-foreground">
+          {/* The three facts behind every estimate, at a glance. */}
+          <dl className="mt-4 grid gap-4 sm:grid-cols-3">
+            {r.aboutEstimates.facts.map((fact, i) => (
+              <div key={i} className="border-t-2 border-primary pt-2">
+                <dt className="font-serif text-2xl font-medium text-primary">{tr(fact.value)}</dt>
+                <dd className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                  {tr(fact.label)}
+                </dd>
+              </div>
+            ))}
+          </dl>
+          <div className="mt-5 space-y-2 text-sm leading-relaxed text-muted-foreground">
             <p>{tr(r.aboutEstimates.research)}</p>
             <p>{tr(r.aboutEstimates.ranking)}</p>
             <p>{tr(r.predictorsNote)}</p>

@@ -210,10 +210,10 @@ function Clinician() {
       scenarioTables: [
         {
           heading: tr(r.scenarioTabs.single),
-          // Usual care last, as the comparison row, matching the page.
+          // Usual care first, as the comparison row, matching the page.
           rows: scenarioTableRows([
-            ...rankedScenarios,
             ...(usualCareScenario ? [usualCareScenario] : []),
+            ...rankedScenarios,
           ]),
         },
       ],
