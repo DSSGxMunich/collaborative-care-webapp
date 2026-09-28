@@ -79,9 +79,29 @@
       "en": "Hide details"
     }
   },
-  "phq9Label": "PHQ-9",
-  "of27": { "de": "von 27 Punkten", "en": "of 27 points" },
-  "range": { "de": "Bereich", "en": "Range" },
+  "currentScore": {
+    "label": { "de": "Ihr aktueller PHQ-9-Wert", "en": "Your current PHQ-9 score" },
+    "outOf27": { "de": "von 27 Punkten", "en": "out of 27 points" },
+    "range": { "de": "(Wertebereich: {range} Punkte)", "en": "(score range: {range} points)" },
+    "info": {
+      "de": "Der PHQ-9-Wert gibt die Beschwerden wieder, die Sie für die letzten zwei Wochen angegeben haben. Er allein stellt keine Diagnose – diese kann nur im Gespräch mit Ihrer Hausarztpraxis oder einer Fachperson gestellt werden.",
+      "en": "The PHQ-9 score reflects the symptoms you reported for the past two weeks. On its own, it does not establish a diagnosis – that can only be made in a conversation with your GP or another healthcare professional."
+    },
+    "infoAria": { "de": "Was bedeutet dieser Wert?", "en": "What does this score mean?" },
+    "you": { "de": "Sie: {score}", "en": "You: {score}" },
+    "min": {
+      "de": "0: keine depressiven Beschwerden angegeben",
+      "en": "0: no depressive symptoms reported"
+    },
+    "max": {
+      "de": "27: höchstmöglicher Beschwerdewert",
+      "en": "27: highest possible symptom score"
+    },
+    "direction": {
+      "de": "Niedrigere Werte bedeuten weniger depressive Beschwerden",
+      "en": "Lower scores mean fewer depressive symptoms"
+    }
+  },
   "legend": {
     "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
     "expected": { "de": "Erwarteter Wert nach 12 Monaten", "en": "Expected result at 12 months" },
@@ -318,16 +338,24 @@
     "notProvided": { "de": "keine Angabe", "en": "not provided" }
   },
   "whatCanBeExpected": {
-    "de": "Was Ihnen am ehesten helfen könnte",
-    "en": "What is most likely to help you"
+    "de": "Ihre geschätzten Beschwerdewerte (Entwicklung des PHQ-9-Werts) nach 12 Monaten mit verschiedenen Versorgungsangeboten",
+    "en": "Your estimated symptom scores (PHQ-9 score development) after 12 months with different care options"
   },
   "whatCanBeExpectedBody": {
-    "de": "Sie sehen hier eine Rangfolge von Versorgungsbausteinen – vom wahrscheinlich hilfreichsten bis zum am wenigsten hilfreichen.",
-    "en": "You'll see a ranking of care components here, from what's likely to be most helpful to the least."
+    "de": "Niedrigere Werte bedeuten weniger depressive Beschwerden. Es handelt sich um Schätzungen auf Grundlage früherer Forschungsdaten und Ihrer Angaben – Ihre eigenen Beschwerden können sich anders entwickeln.",
+    "en": "Lower scores mean fewer depressive symptoms. These are estimates based on past research data and the information you entered, and your own symptoms may develop differently."
   },
-  "whatInfluences": {
-    "de": "Was beeinflusst diese Schätzung?",
-    "en": "What influences this estimate?"
+  "aboutEstimates": {
+    "heading": { "de": "Über diese Schätzungen", "en": "About these estimates" },
+    "research": {
+      "de": "Die Schätzungen stammen aus einem Forschungsmodell, das auf Daten aus 12 klinischen Studien zur kollaborativen Depressionsversorgung beruht. Es betrachtet, wie es Menschen mit einer ähnlichen Ausgangslage nach 12 Monaten ging – mit der üblichen Versorgung und mit jedem zusätzlichen Versorgungsbaustein.",
+      "en": "The estimates come from a research model built on data from 12 clinical studies of collaborative depression care. It looks at how people with a similar starting point were doing after 12 months – with usual care, and with each additional care component."
+    },
+    "ranking": {
+      "de": "Die Versorgungsbausteine sind vom wahrscheinlich hilfreichsten bis zum am wenigsten hilfreichen geordnet. Das Modell ist ein Forschungsprototyp und nicht klinisch validiert.",
+      "en": "Care components are listed from the one most likely to help to the least. The model is a research prototype and has not been clinically validated."
+    },
+    "methodologyLink": { "de": "Mehr zur Methodik", "en": "More about the method" }
   },
   "actions": {
     "clinicianSummary": {

@@ -17,7 +17,6 @@ import { Route as FragebogenRouteImport } from './routes/fragebogen'
 import { Route as MethodologyRouteImport } from './routes/methodology'
 import { Route as PraxisRouteImport } from './routes/praxis'
 import { Route as SoforthilfeRouteImport } from './routes/soforthilfe'
-import { Route as StartRouteImport } from './routes/start'
 import { Route as WartenRouteImport } from './routes/warten'
 import { Route as WartezimmerRouteImport } from './routes/wartezimmer'
 
@@ -61,11 +60,6 @@ const SoforthilfeRoute = SoforthilfeRouteImport.update({
   path: '/soforthilfe',
   getParentRoute: () => rootRouteImport,
 } as any)
-const StartRoute = StartRouteImport.update({
-  id: '/start',
-  path: '/start',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const WartenRoute = WartenRouteImport.update({
   id: '/warten',
   path: '/warten',
@@ -86,7 +80,6 @@ export interface FileRoutesByFullPath {
   '/methodology': typeof MethodologyRoute
   '/praxis': typeof PraxisRoute
   '/soforthilfe': typeof SoforthilfeRoute
-  '/start': typeof StartRoute
   '/warten': typeof WartenRoute
   '/wartezimmer': typeof WartezimmerRoute
 }
@@ -99,7 +92,6 @@ export interface FileRoutesByTo {
   '/methodology': typeof MethodologyRoute
   '/praxis': typeof PraxisRoute
   '/soforthilfe': typeof SoforthilfeRoute
-  '/start': typeof StartRoute
   '/warten': typeof WartenRoute
   '/wartezimmer': typeof WartezimmerRoute
 }
@@ -113,7 +105,6 @@ export interface FileRoutesById {
   '/methodology': typeof MethodologyRoute
   '/praxis': typeof PraxisRoute
   '/soforthilfe': typeof SoforthilfeRoute
-  '/start': typeof StartRoute
   '/warten': typeof WartenRoute
   '/wartezimmer': typeof WartezimmerRoute
 }
@@ -128,7 +119,6 @@ export interface FileRouteTypes {
     | '/methodology'
     | '/praxis'
     | '/soforthilfe'
-    | '/start'
     | '/warten'
     | '/wartezimmer'
   fileRoutesByTo: FileRoutesByTo
@@ -141,7 +131,6 @@ export interface FileRouteTypes {
     | '/methodology'
     | '/praxis'
     | '/soforthilfe'
-    | '/start'
     | '/warten'
     | '/wartezimmer'
   id:
@@ -154,7 +143,6 @@ export interface FileRouteTypes {
     | '/methodology'
     | '/praxis'
     | '/soforthilfe'
-    | '/start'
     | '/warten'
     | '/wartezimmer'
   fileRoutesById: FileRoutesById
@@ -168,7 +156,6 @@ export interface RootRouteChildren {
   MethodologyRoute: typeof MethodologyRoute
   PraxisRoute: typeof PraxisRoute
   SoforthilfeRoute: typeof SoforthilfeRoute
-  StartRoute: typeof StartRoute
   WartenRoute: typeof WartenRoute
   WartezimmerRoute: typeof WartezimmerRoute
 }
@@ -231,13 +218,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SoforthilfeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/start': {
-      id: '/start'
-      path: '/start'
-      fullPath: '/start'
-      preLoaderRoute: typeof StartRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/warten': {
       id: '/warten'
       path: '/warten'
@@ -264,7 +244,6 @@ const rootRouteChildren: RootRouteChildren = {
   MethodologyRoute: MethodologyRoute,
   PraxisRoute: PraxisRoute,
   SoforthilfeRoute: SoforthilfeRoute,
-  StartRoute: StartRoute,
   WartenRoute: WartenRoute,
   WartezimmerRoute: WartezimmerRoute,
 }

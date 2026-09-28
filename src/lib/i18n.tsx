@@ -71,7 +71,7 @@ export const ui = uiContent as {
     | "crisis",
     L
   >;
-  buttons: Record<"start" | "enter" | "continue" | "back" | "finish", L>;
+  buttons: Record<"start" | "continue" | "back" | "finish", L>;
   step: L;
   of: L;
   yes: L;
