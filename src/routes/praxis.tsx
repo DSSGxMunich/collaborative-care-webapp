@@ -287,7 +287,6 @@ function Clinician() {
         {usualCareScenario && (
           <div className="mt-4">
             <CareRanking
-              compact
               usualCare={usualCareScenario}
               ranked={rankedScenarios}
               labelLines={careComponentLabelLines}
@@ -300,10 +299,10 @@ function Clinician() {
               rankAriaLabel={(rank, total) => fill(tr(c.ranking.rankAria), { rank, total })}
               outcome={{
                 baseline: p.baseline,
-                todayLabel: fill(tr(c.outcome.today), { baseline: p.baseline }),
+                todayLabel: tr(c.outcome.todayLine),
+                expectedLabel: () => tr(c.outcome.expected),
                 lowLabel: tr(c.outcome.fewer),
                 highLabel: tr(c.outcome.more),
-                ticks: [0, 5, 10, 15, 20, 27],
                 legend: {
                   expected: tr(c.outcome.expected),
                   helpful: tr(c.outcome.helpful),
@@ -311,9 +310,6 @@ function Clinician() {
                   today: tr(c.outcome.todayLine),
                   scale: tr(c.outcome.scale),
                 },
-                formatValue: formatEndpoint,
-                expectedLabel: (s) =>
-                  fill(tr(c.outcome.expectedHover), { value: formatEndpoint(s) }),
               }}
             />
           </div>
