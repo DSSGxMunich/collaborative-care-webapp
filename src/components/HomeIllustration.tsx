@@ -119,7 +119,9 @@ function Bubble({ cx, cy, children }: { cx: number; cy: number; children: React.
     <g transform={`translate(${cx} ${cy})`}>
       <path d="M-14 30 L-8 46 L6 34 Z" fill="var(--card)" />
       <circle r="36" fill="var(--card)" />
-      <g stroke="var(--primary)" strokeWidth="3.5">{children}</g>
+      <g stroke="var(--primary)" strokeWidth="3.5">
+        {children}
+      </g>
     </g>
   );
 }
