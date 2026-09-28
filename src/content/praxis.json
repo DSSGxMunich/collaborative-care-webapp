@@ -24,18 +24,9 @@
   },
   "riskFlagLabel": { "de": "Risikoflag", "en": "Risk flag" },
   "riskFlag": {
-    "minimal": {
-      "de": "Minimal: keine Risikofaktoren angegeben. Bei jedem Kontakt erneut erfragen.",
-      "en": "Minimal: no risk factors reported. Keep asking at each contact."
-    },
-    "lower": {
-      "de": "Niedriger, aber Risikofaktoren vorhanden: heute ansprechen und Sicherheitsplan vereinbaren.",
-      "en": "Lower, but risk factors present: discuss today and agree a safety plan."
-    },
-    "higher": {
-      "de": "Höher: vor Verlassen der Praxis abklären; bei akuter Gefahr Krisendienst oder Psychiatrie einbeziehen.",
-      "en": "Higher: assess before the patient leaves; involve crisis or psychiatric services if acute."
-    }
+    "minimal": { "de": "Minimal", "en": "Minimal" },
+    "lower": { "de": "Niedriger", "en": "Lower" },
+    "higher": { "de": "Höher", "en": "Higher" }
   },
   "riskAdvice": {
     "de": "Suizidalität explizit ansprechen, Sicherheitsplan und Erreichbarkeit klären, ggf. fachpsychiatrische Mitbeurteilung veranlassen.",
