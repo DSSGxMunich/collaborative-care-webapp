@@ -42,6 +42,19 @@
   --color-warning-soft: var(--warning-soft);
   --color-success: var(--success);
   --color-success-soft: var(--success-soft);
+  --color-illus-green: var(--illus-green);
+  --color-illus-green-soft: var(--illus-green-soft);
+  --color-illus-lilac: var(--illus-lilac);
+  --color-illus-lilac-soft: var(--illus-lilac-soft);
+  --color-illus-amber: var(--illus-amber);
+  --color-illus-amber-soft: var(--illus-amber-soft);
+  --color-illus-sky: var(--illus-sky);
+  --color-illus-sky-soft: var(--illus-sky-soft);
+  --color-illus-paper: var(--illus-paper);
+  --color-illus-accent: var(--illus-accent);
+  --color-hero: var(--hero);
+  --color-prototype: var(--prototype);
+  --color-prototype-foreground: var(--prototype-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -82,6 +95,25 @@
 
   --chart-1: oklch(0.28 0.03 260);
   --chart-2: oklch(0.62 0.02 260);
+
+  /* Landing-page illustration + step icons only (src/routes/index.tsx).
+     Soft, low-chroma pastels so the page feels warm without competing with
+     the ink accent used for actions. */
+  --illus-green: oklch(0.5 0.09 160);
+  --illus-green-soft: oklch(0.9 0.04 160);
+  --illus-lilac: oklch(0.55 0.08 295);
+  --illus-lilac-soft: oklch(0.88 0.04 295);
+  --illus-amber: oklch(0.62 0.13 70);
+  --illus-amber-soft: oklch(0.9 0.08 80);
+  --illus-sky: oklch(0.55 0.09 240);
+  --illus-sky-soft: oklch(0.88 0.05 240);
+  --illus-paper: oklch(0.97 0.015 85);
+  --illus-accent: oklch(0.66 0.17 40);
+  --hero: oklch(0.975 0.008 120);
+
+  /* "Research prototype" corner flag: amber reads as "caution", not alarm. */
+  --prototype: oklch(0.83 0.13 80);
+  --prototype-foreground: oklch(0.25 0.04 70);
 }
 
 .dark {
@@ -107,6 +139,19 @@
   --ring: oklch(0.85 0.02 260);
   --chart-1: oklch(0.85 0.02 260);
   --chart-2: oklch(0.55 0.02 260);
+  --illus-green: oklch(0.72 0.09 160);
+  --illus-green-soft: oklch(0.32 0.04 160);
+  --illus-lilac: oklch(0.75 0.08 295);
+  --illus-lilac-soft: oklch(0.32 0.04 295);
+  --illus-amber: oklch(0.8 0.12 75);
+  --illus-amber-soft: oklch(0.34 0.05 75);
+  --illus-sky: oklch(0.75 0.09 240);
+  --illus-sky-soft: oklch(0.32 0.04 240);
+  --illus-paper: oklch(0.3 0.01 85);
+  --illus-accent: oklch(0.72 0.15 40);
+  --hero: oklch(0.19 0.005 120);
+  --prototype: oklch(0.78 0.13 80);
+  --prototype-foreground: oklch(0.2 0.03 70);
 }
 
 @layer base {

@@ -13,7 +13,7 @@ import {
   SEX_OPTIONS,
 } from "@/lib/session";
 import { chunk } from "@/lib/utils";
-import { WaitingBlocker } from "@/components/WaitingBlocker";
+import { GpUnlockCard } from "@/components/GpUnlockCard";
 import praxisContent from "@/content/praxis.json";
 import resultsContent from "@/content/results.json";
 
@@ -51,8 +51,18 @@ function Clinician() {
     );
   }
 
+  // Waiting-room answers stay locked until the GP enters the patient's code
+  // here — this page ("For the practice") is where that code is entered.
   if (p.session.mode === "waitingRoom" && !p.session.unlocked) {
-    return <WaitingBlocker />;
+    return (
+      <div className="mx-auto max-w-xl px-4 py-12">
+        <h1 className="text-2xl font-semibold">{tr(c.title)}</h1>
+        <p className="mt-1.5 text-sm text-muted-foreground">{tr(c.subtitle)}</p>
+        <div className="mt-6">
+          <GpUnlockCard />
+        </div>
+      </div>
+    );
   }
 
   const { profile, safety } = p.session;

@@ -9,11 +9,10 @@ const w = wartezimmerContent;
 /**
  * The waiting-room results gate. Shown on /warten right after the
  * questionnaire, and also on /ergebnis and /praxis if someone navigates
- * there directly (e.g. via the nav bar) before a GP has unlocked results —
- * see the mode/unlocked check in each of those routes. The code itself is
- * only entered on the home page's "For the practice" card (see
- * src/routes/index.tsx) — a GP arriving here is pointed back there, rather
- * than this page duplicating the same unlock form.
+ * there directly before a GP has unlocked results. The code itself is only
+ * entered on the "For the practice" page (src/routes/praxis.tsx, via
+ * GpUnlockCard) — a GP arriving here is pointed there, rather than this page
+ * duplicating the same unlock form.
  */
 export function WaitingBlocker() {
   const { tr } = useLang();

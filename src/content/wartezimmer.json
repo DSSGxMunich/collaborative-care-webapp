@@ -23,8 +23,8 @@
       "en": "This code is generated from your answers. If anything about them changes, the code changes too."
     },
     "unlockInstructions": {
-      "de": "Ihre Ärztin oder Ihr Arzt öffnet die Startseite auf diesem Gerät und gibt den Code dort unter „Für die Praxis“ ein.",
-      "en": "Your GP opens this device's home page and enters the code there under “For the practice”."
+      "de": "Ihre Ärztin oder Ihr Arzt öffnet auf diesem Gerät „Für die Praxis“ im Menü und gibt den Code dort ein.",
+      "en": "Your GP opens “For the practice” in the menu on this device and enters the code there."
     },
     "seeSupport": { "de": "Angebote vor Ort ansehen", "en": "See local support" },
     "backHome": { "de": "Zur Startseite", "en": "Back to start" }
