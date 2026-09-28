@@ -283,8 +283,10 @@ function Results() {
       scenarioTables: [
         { heading: tr(r.scenarioTabs.single), rows: scenarioTableRows(p.scenarios) },
       ],
-      predictorsHeading: tr(r.whatInfluences),
-      predictorsBody: tr(r.predictorsNote),
+      predictorsHeading: tr(r.aboutEstimates.heading),
+      predictorsBody: [r.aboutEstimates.research, r.aboutEstimates.ranking, r.predictorsNote]
+        .map((text) => tr(text))
+        .join(" "),
       predictorRows: [
         { label: tr(r.predictors.baseline.label), value: `${p.baseline}/27` },
         {
@@ -365,12 +367,14 @@ function Results() {
           )}
         </section>
 
-        {/* ---------------- What influences the estimate ---------------- */}
+        {/* ---------------- About these estimates: research basis + inputs ---------------- */}
         <section className="mt-10">
-          <h2 className="text-lg font-semibold">{tr(r.whatInfluences)}</h2>
-          <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            {tr(r.predictorsNote)}
-          </p>
+          <h2 className="text-lg font-semibold">{tr(r.aboutEstimates.heading)}</h2>
+          <div className="mt-1.5 max-w-xl space-y-2 text-sm leading-relaxed text-muted-foreground">
+            <p>{tr(r.aboutEstimates.research)}</p>
+            <p>{tr(r.aboutEstimates.ranking)}</p>
+            <p>{tr(r.predictorsNote)}</p>
+          </div>
 
           <dl className="mt-4 divide-y divide-border border-y border-border text-sm">
             <div className="flex justify-between gap-4 py-2">
@@ -399,6 +403,12 @@ function Results() {
               </dd>
             </div>
           </dl>
+          <Link
+            to="/methodology"
+            className="mt-3 inline-flex text-sm font-medium underline underline-offset-2"
+          >
+            {tr(r.aboutEstimates.methodologyLink)}
+          </Link>
         </section>
 
         <div className="mt-10 flex flex-wrap gap-2">
