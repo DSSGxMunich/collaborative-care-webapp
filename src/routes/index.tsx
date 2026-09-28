@@ -1,7 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { CrisisNote } from "@/components/CrisisNote";
 import { HomeIllustration } from "@/components/HomeIllustration";
-import { PrototypeCorner } from "@/components/PrototypeCorner";
+import {
+  ArrowIcon,
+  ChairIcon,
+  ChartIcon,
+  ChatIcon,
+  ClipboardIcon,
+  ClockIcon,
+  DatabaseIcon,
+  PeopleIcon,
+  ShieldIcon,
+} from "@/components/icons";
+import { IconTile } from "@/components/PageHero";
 import { useLang, ui } from "@/lib/i18n";
 import { useSession } from "@/lib/session";
 import home from "@/content/home.json";
@@ -18,93 +29,11 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-/* ---------- Small line icons (24×24, stroke = currentColor) ---------- */
-
-function Icon({ children, className = "h-5 w-5" }: { children: ReactNode; className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      className={className}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.75"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      focusable="false"
-    >
-      {children}
-    </svg>
-  );
-}
-
-const ClipboardIcon = (p: { className?: string }) => (
-  <Icon {...p}>
-    <rect x="5" y="4" width="14" height="17" rx="2" />
-    <path d="M9 4V3h6v1" />
-    <path d="M8.5 10h7M8.5 13.5h7M8.5 17h4" />
-  </Icon>
-);
-const ChartIcon = (p: { className?: string }) => (
-  <Icon {...p}>
-    <rect x="4" y="12" width="4" height="8" rx="1" />
-    <rect x="10" y="8" width="4" height="12" rx="1" />
-    <rect x="16" y="4" width="4" height="16" rx="1" />
-  </Icon>
-);
-const ChatIcon = (p: { className?: string }) => (
-  <Icon {...p}>
-    <path d="M4 5h11a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H9l-4 3v-3H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" />
-    <path d="M17 9h3a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-1v2.5L16 18h-3" />
-  </Icon>
-);
-const ClockIcon = (p: { className?: string }) => (
-  <Icon {...p}>
-    <circle cx="12" cy="12" r="9" />
-    <path d="M12 7v5l3 2" />
-  </Icon>
-);
-const DatabaseIcon = (p: { className?: string }) => (
-  <Icon {...p}>
-    <ellipse cx="12" cy="6" rx="7" ry="3" />
-    <path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6" />
-    <path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6" />
-  </Icon>
-);
-const ShieldIcon = (p: { className?: string }) => (
-  <Icon {...p}>
-    <path d="M12 3 5 6v5c0 4.5 3 8.3 7 10 4-1.7 7-5.5 7-10V6l-7-3Z" />
-    <path d="m9 12 2 2 4-4" />
-  </Icon>
-);
-const PeopleIcon = (p: { className?: string }) => (
-  <Icon {...p}>
-    <circle cx="9" cy="8" r="3" />
-    <path d="M3 20v-1a6 6 0 0 1 12 0v1" />
-    <circle cx="17" cy="9" r="2.5" />
-    <path d="M17 14a5 5 0 0 1 4 5v1" />
-  </Icon>
-);
-const ChairIcon = (p: { className?: string }) => (
-  <Icon {...p}>
-    <path d="M7 3h10v9H7z" />
-    <path d="M5 12h14v3H5z" />
-    <path d="M7 15v6M17 15v6" />
-  </Icon>
-);
-const ArrowIcon = (p: { className?: string }) => (
-  <Icon {...p}>
-    <path d="M5 12h14M13 6l6 6-6 6" />
-  </Icon>
-);
-
-/* ---------- Page ---------- */
-
-/** One colour pair (soft background + strong ink) per "How this works" step. */
+/** One tone + icon pair per "How this works" step. */
 const STEP_STYLES = [
-  { tone: "bg-illus-green-soft text-illus-green", Icon: ClipboardIcon, Meta: ClockIcon },
-  { tone: "bg-illus-sky-soft text-illus-sky", Icon: ChartIcon, Meta: DatabaseIcon },
-  { tone: "bg-illus-amber-soft text-illus-amber", Icon: ChatIcon, Meta: ShieldIcon },
+  { tone: "green", Icon: ClipboardIcon, Meta: ClockIcon },
+  { tone: "sky", Icon: ChartIcon, Meta: DatabaseIcon },
+  { tone: "amber", Icon: ChatIcon, Meta: ShieldIcon },
 ] as const;
 
 function Index() {
@@ -113,9 +42,7 @@ function Index() {
   const e = home.entries;
 
   return (
-    <div className="relative">
-      <PrototypeCorner />
-
+    <div>
       {/* Hero: what this is, in one glance */}
       <section className="bg-hero">
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 pb-14 pt-24 sm:px-8 lg:grid-cols-[1.1fr_1fr] lg:pb-20 lg:pt-20">
@@ -161,11 +88,9 @@ function Index() {
                   {i + 1}
                 </span>
                 <div>
-                  <span
-                    className={`flex h-11 w-11 items-center justify-center rounded-xl ${tone}`}
-                  >
+                  <IconTile tone={tone}>
                     <StepIcon className="h-6 w-6" />
-                  </span>
+                  </IconTile>
                   <h3 className="mt-3 text-lg font-semibold leading-snug">{tr(item.title)}</h3>
                   <p className="mt-1.5 flex items-center gap-1.5 text-xs text-muted-foreground">
                     <Meta className="h-4 w-4 shrink-0" />
@@ -188,10 +113,10 @@ function Index() {
           <p className="mt-2 text-sm text-muted-foreground">{tr(e.intro)}</p>
 
           <div className="mt-8 grid gap-5 md:grid-cols-2">
-            <div className="flex flex-col rounded-xl border border-border bg-card p-6 shadow-sm">
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-illus-green-soft text-illus-green">
+            <div className="panel flex flex-col p-6">
+              <IconTile tone="green">
                 <PeopleIcon className="h-6 w-6" />
-              </span>
+              </IconTile>
               <h3 className="mt-4 text-lg font-semibold">{tr(e.together.title)}</h3>
               <p className="mt-1.5 flex-1 text-sm leading-relaxed text-muted-foreground">
                 {tr(e.together.body)}
@@ -206,10 +131,10 @@ function Index() {
               </Link>
             </div>
 
-            <div className="flex flex-col rounded-xl border border-border bg-card p-6 shadow-sm">
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-illus-lilac-soft text-illus-lilac">
+            <div className="panel flex flex-col p-6">
+              <IconTile tone="lilac">
                 <ChairIcon className="h-6 w-6" />
-              </span>
+              </IconTile>
               <h3 className="mt-4 text-lg font-semibold">{tr(e.waitingRoom.title)}</h3>
               <p className="mt-1.5 flex-1 text-sm leading-relaxed text-muted-foreground">
                 {tr(e.waitingRoom.body)}
@@ -231,18 +156,8 @@ function Index() {
         </div>
       </section>
 
-      {/* Crisis */}
       <section className="mx-auto max-w-6xl px-4 pt-12 sm:px-8">
-        <div className="rounded-xl border border-destructive/30 bg-destructive-soft p-6">
-          <h2 className="text-base font-semibold text-destructive">{tr(home.crisisTitle)}</h2>
-          <p className="mt-1.5 text-sm leading-relaxed text-foreground/80">{tr(home.crisisBody)}</p>
-          <Link
-            to="/soforthilfe"
-            className="mt-3 inline-flex text-sm font-medium text-destructive underline underline-offset-2"
-          >
-            {tr(home.crisisLink)}
-          </Link>
-        </div>
+        <CrisisNote />
       </section>
     </div>
   );

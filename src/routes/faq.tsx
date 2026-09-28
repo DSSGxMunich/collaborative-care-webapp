@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { ChevronIcon, HelpIcon } from "@/components/icons";
+import { PageBody, PageHero } from "@/components/PageHero";
 import { useLang, type L } from "@/lib/i18n";
 import faqContent from "@/content/faq.json";
 
@@ -25,29 +27,38 @@ const f = faqContent as { title: L; intro: L; items: FaqItem[] };
 function Faq() {
   const { tr } = useLang();
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10">
-      <h1 className="text-2xl font-semibold">{tr(f.title)}</h1>
-      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{tr(f.intro)}</p>
-
-      <dl className="mt-6 divide-y divide-border border-y border-border">
-        {f.items.map((item) => (
-          <div key={item.id} className="py-4">
-            <dt className="text-sm font-semibold">{tr(item.question)}</dt>
-            <dd className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-              {tr(item.answer)}
-              {item.link && (
-                <>
-                  {" "}
-                  <Link to={item.link.to} className="text-primary underline underline-offset-2">
-                    {tr(item.link.label)}
-                  </Link>
-                  {item.linkSuffix && <> {tr(item.linkSuffix)}</>}
-                </>
-              )}
-            </dd>
-          </div>
-        ))}
-      </dl>
-    </div>
+    <>
+      <PageHero
+        icon={<HelpIcon className="h-6 w-6" />}
+        tone="amber"
+        title={tr(f.title)}
+        intro={tr(f.intro)}
+      />
+      <PageBody>
+        {/* Native <details> accordions: keyboard- and screen-reader-friendly with no JS. */}
+        <div className="space-y-3">
+          {f.items.map((item) => (
+            <details key={item.id} className="panel group p-0">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-base font-semibold [&::-webkit-details-marker]:hidden">
+                {tr(item.question)}
+                <ChevronIcon className="h-5 w-5 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
+              </summary>
+              <p className="px-5 pb-5 text-sm leading-relaxed text-muted-foreground">
+                {tr(item.answer)}
+                {item.link && (
+                  <>
+                    {" "}
+                    <Link to={item.link.to} className="text-primary underline underline-offset-2">
+                      {tr(item.link.label)}
+                    </Link>
+                    {item.linkSuffix && <> {tr(item.linkSuffix)}</>}
+                  </>
+                )}
+              </p>
+            </details>
+          ))}
+        </div>
+      </PageBody>
+    </>
   );
 }

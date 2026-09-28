@@ -1,5 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { LockIcon } from "@/components/icons";
+import { IconTile } from "@/components/PageHero";
 import { useLang } from "@/lib/i18n";
 import { useSession } from "@/lib/session";
 import { computeUnlockCode, normalizeUnlockCode } from "@/lib/unlockCode";
@@ -35,9 +37,14 @@ export function GpUnlockCard() {
   };
 
   return (
-    <div className="rounded-lg border border-border bg-card p-6">
-      <h2 className="text-base font-semibold">{tr(g.title)}</h2>
-      <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{tr(g.body)}</p>
+    <div className="panel max-w-xl p-6">
+      <div className="flex items-center gap-3">
+        <IconTile tone="lilac">
+          <LockIcon className="h-5 w-5" />
+        </IconTile>
+        <h2 className="text-lg font-semibold">{tr(g.title)}</h2>
+      </div>
+      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{tr(g.body)}</p>
       <form onSubmit={tryUnlock} className="mt-4 flex gap-2">
         <input
           value={code}

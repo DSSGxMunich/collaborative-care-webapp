@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { ClipboardIcon } from "@/components/icons";
+import { EmptyState } from "@/components/PageHero";
 import { ui, useLang } from "@/lib/i18n";
 import { usePrediction } from "@/lib/usePrediction";
 import { WaitingBlocker } from "@/components/WaitingBlocker";
@@ -21,16 +23,18 @@ function Waiting() {
 
   if (!p.complete) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-16 text-center">
-        <h1 className="text-xl font-semibold">{tr(w.blocked.title)}</h1>
-        <p className="mt-3 text-sm text-muted-foreground">{tr(ui.noData)}</p>
+      <EmptyState
+        icon={<ClipboardIcon className="h-6 w-6" />}
+        title={tr(w.blocked.title)}
+        body={tr(ui.noData)}
+      >
         <Link
           to="/fragebogen"
-          className="mt-6 inline-flex rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+          className="inline-flex rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
         >
           {tr(ui.buttons.start)}
         </Link>
-      </div>
+      </EmptyState>
     );
   }
 

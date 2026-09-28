@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import katex from "katex";
 import "katex/dist/katex.css";
+import { BookIcon } from "@/components/icons";
+import { PageBody, PageHero } from "@/components/PageHero";
 import { useLang } from "@/lib/i18n";
 import methodologyContent from "@/content/methodology.json";
 
@@ -20,7 +22,7 @@ function LatexBlock({ tex }: { tex: string }) {
   const html = katex.renderToString(tex, { throwOnError: false, displayMode: true });
   return (
     <div
-      className="overflow-x-auto rounded-md border border-border bg-muted/50 p-4"
+      className="overflow-x-auto rounded-lg border border-border bg-hero p-4"
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );
@@ -29,28 +31,41 @@ function LatexBlock({ tex }: { tex: string }) {
 function Methodology() {
   const { tr } = useLang();
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10">
-      <h1 className="text-2xl font-semibold">{tr(m.title)}</h1>
-      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{tr(m.intro)}</p>
-
-      <div className="mt-8 space-y-10">
-        {m.sections.map((section) => (
-          <section key={section.id}>
-            <h2 className="text-lg font-semibold">{tr(section.heading)}</h2>
-            <div className="mt-2 space-y-3">
-              {section.body.map((paragraph, i) =>
-                "latex" in paragraph && paragraph.latex ? (
-                  <LatexBlock key={i} tex={tr(paragraph)} />
-                ) : (
-                  <p key={i} className="text-sm leading-relaxed text-muted-foreground">
-                    {tr(paragraph)}
-                  </p>
-                ),
-              )}
-            </div>
-          </section>
-        ))}
-      </div>
-    </div>
+    <>
+      <PageHero
+        icon={<BookIcon className="h-6 w-6" />}
+        tone="sky"
+        title={tr(m.title)}
+        intro={tr(m.intro)}
+      />
+      <PageBody>
+        <ol className="space-y-6">
+          {m.sections.map((section, i) => (
+            <li key={section.id} className="panel flex gap-4 p-6">
+              <span
+                aria-hidden="true"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-illus-sky-soft text-sm font-semibold text-illus-sky"
+              >
+                {i + 1}
+              </span>
+              <section className="min-w-0 flex-1">
+                <h2 className="text-lg font-semibold leading-snug">{tr(section.heading)}</h2>
+                <div className="mt-2 space-y-3">
+                  {section.body.map((paragraph, j) =>
+                    "latex" in paragraph && paragraph.latex ? (
+                      <LatexBlock key={j} tex={tr(paragraph)} />
+                    ) : (
+                      <p key={j} className="text-sm leading-relaxed text-muted-foreground">
+                        {tr(paragraph)}
+                      </p>
+                    ),
+                  )}
+                </div>
+              </section>
+            </li>
+          ))}
+        </ol>
+      </PageBody>
+    </>
   );
 }

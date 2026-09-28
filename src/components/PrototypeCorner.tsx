@@ -4,7 +4,8 @@ import home from "@/content/home.json";
 
 /**
  * A triangular "Research prototype" flag pinned to the top-right corner of
- * the page (the parent must be `relative`). The explanation lives in its
+ * every page — rendered once in the root layout's `relative` <main>
+ * (src/routes/__root.tsx). The explanation lives in its
  * hover/focus tooltip, so the caveat is always visible without taking up
  * room in the page copy.
  *

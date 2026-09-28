@@ -12,6 +12,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { LanguageProvider, useLang, ui } from "../lib/i18n";
 import { SessionProvider } from "../lib/session";
+import { PrototypeCorner } from "../components/PrototypeCorner";
 
 function NotFoundComponent() {
   return (
@@ -276,7 +277,10 @@ function RootComponent() {
           ) : (
             <div className="flex min-h-screen flex-col">
               <SiteHeader />
-              <main className="flex-1">
+              {/* `relative` anchors the "Research prototype" corner flag to the
+                  top-right of the page content (just below the header). */}
+              <main className="relative flex-1">
+                <PrototypeCorner />
                 {/* Required: nested routes render here. */}
                 <Outlet />
               </main>
