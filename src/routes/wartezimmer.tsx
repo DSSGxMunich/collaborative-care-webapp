@@ -32,7 +32,6 @@ function WaitingRoomStart() {
     <>
       <PageHero
         icon={<ChairIcon className="h-6 w-6" />}
-        tone="lilac"
         title={tr(w.start.title)}
         intro={tr(w.start.body)}
       >

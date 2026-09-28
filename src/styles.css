@@ -5,11 +5,17 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Design system: minimal.
- * Near-monochrome (off-white / near-black), one restrained ink accent for
- * actions and links, red reserved strictly for crisis/destructive states.
- * Small radii, 1px borders, no glow shadows, no decorative color. All
- * colours are oklch tokens — never hardcode colours in components.
+ * Design system: one brand colour, used the same way everywhere.
+ *
+ * - Pine green (--primary) is the brand: logo ring, buttons, links,
+ *   progress, active states. --brand-strong for headings, --brand-soft
+ *   for tinted page bands and selected states.
+ * - Coral (--accent) is the compass needle. Keep it rare: the logo, the
+ *   landing illustration, and at most one small highlight per screen.
+ * - Red (--destructive) is reserved strictly for crisis/urgent states,
+ *   amber (--prototype) for the research-prototype flag.
+ * - Everything else is warm neutral. All colours are oklch tokens — never
+ *   hardcode colours in components.
  *
  * Outcome direction (better/worse than a reference PHQ-9 value) uses a
  * muted green/amber pair (--success / --warning), never --destructive —
@@ -31,6 +37,10 @@
   --color-card-foreground: var(--card-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-soft: var(--brand-soft);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -42,17 +52,6 @@
   --color-warning-soft: var(--warning-soft);
   --color-success: var(--success);
   --color-success-soft: var(--success-soft);
-  --color-illus-green: var(--illus-green);
-  --color-illus-green-soft: var(--illus-green-soft);
-  --color-illus-lilac: var(--illus-lilac);
-  --color-illus-lilac-soft: var(--illus-lilac-soft);
-  --color-illus-amber: var(--illus-amber);
-  --color-illus-amber-soft: var(--illus-amber-soft);
-  --color-illus-sky: var(--illus-sky);
-  --color-illus-sky-soft: var(--illus-sky-soft);
-  --color-illus-paper: var(--illus-paper);
-  --color-illus-accent: var(--illus-accent);
-  --color-hero: var(--hero);
   --color-prototype: var(--prototype);
   --color-prototype-foreground: var(--prototype-foreground);
   --color-border: var(--border);
@@ -64,20 +63,25 @@
 :root {
   --radius: 0.375rem;
 
-  --background: oklch(0.995 0 0);
-  --foreground: oklch(0.18 0 0);
+  --background: oklch(0.985 0.008 90);
+  --foreground: oklch(0.22 0.02 165);
 
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0 0);
+  --card-foreground: oklch(0.22 0.02 165);
 
-  --primary: oklch(0.28 0.03 260);
+  --primary: oklch(0.38 0.07 165);
   --primary-foreground: oklch(0.99 0 0);
+  --brand-strong: oklch(0.3 0.06 165);
+  --brand-soft: oklch(0.94 0.03 160);
 
-  --secondary: oklch(0.965 0 0);
-  --secondary-foreground: oklch(0.24 0 0);
+  --accent: oklch(0.66 0.15 38);
+  --accent-soft: oklch(0.95 0.035 45);
 
-  --muted: oklch(0.965 0 0);
-  --muted-foreground: oklch(0.46 0 0);
+  --secondary: oklch(0.955 0.01 160);
+  --secondary-foreground: oklch(0.26 0.02 165);
+
+  --muted: oklch(0.955 0.01 160);
+  --muted-foreground: oklch(0.47 0.015 165);
 
   --destructive: oklch(0.5 0.19 25);
   --destructive-foreground: oklch(0.99 0 0);
@@ -89,44 +93,33 @@
   --success: oklch(0.45 0.1 145);
   --success-soft: oklch(0.95 0.035 145);
 
-  --border: oklch(0.89 0 0);
-  --input: oklch(0.85 0 0);
-  --ring: oklch(0.28 0.03 260);
-
-  --chart-1: oklch(0.28 0.03 260);
-  --chart-2: oklch(0.62 0.02 260);
-
-  /* Landing-page illustration + step icons only (src/routes/index.tsx).
-     Soft, low-chroma pastels so the page feels warm without competing with
-     the ink accent used for actions. */
-  --illus-green: oklch(0.5 0.09 160);
-  --illus-green-soft: oklch(0.9 0.04 160);
-  --illus-lilac: oklch(0.55 0.08 295);
-  --illus-lilac-soft: oklch(0.88 0.04 295);
-  --illus-amber: oklch(0.62 0.13 70);
-  --illus-amber-soft: oklch(0.9 0.08 80);
-  --illus-sky: oklch(0.55 0.09 240);
-  --illus-sky-soft: oklch(0.88 0.05 240);
-  --illus-paper: oklch(0.97 0.015 85);
-  --illus-accent: oklch(0.66 0.17 40);
-  --hero: oklch(0.975 0.008 120);
-
   /* "Research prototype" corner flag: amber reads as "caution", not alarm. */
   --prototype: oklch(0.83 0.13 80);
   --prototype-foreground: oklch(0.25 0.04 70);
+
+  --border: oklch(0.89 0.01 160);
+  --input: oklch(0.85 0.012 160);
+  --ring: oklch(0.38 0.07 165);
+
+  --chart-1: oklch(0.38 0.07 165);
+  --chart-2: oklch(0.65 0.04 165);
 }
 
 .dark {
-  --background: oklch(0.16 0 0);
-  --foreground: oklch(0.96 0 0);
-  --card: oklch(0.2 0 0);
-  --card-foreground: oklch(0.96 0 0);
-  --primary: oklch(0.85 0.02 260);
-  --primary-foreground: oklch(0.16 0 0);
-  --secondary: oklch(0.26 0 0);
-  --secondary-foreground: oklch(0.96 0 0);
-  --muted: oklch(0.26 0 0);
-  --muted-foreground: oklch(0.68 0 0);
+  --background: oklch(0.18 0.01 165);
+  --foreground: oklch(0.95 0.01 165);
+  --card: oklch(0.22 0.012 165);
+  --card-foreground: oklch(0.95 0.01 165);
+  --primary: oklch(0.78 0.09 165);
+  --primary-foreground: oklch(0.18 0.01 165);
+  --brand-strong: oklch(0.88 0.06 165);
+  --brand-soft: oklch(0.3 0.04 165);
+  --accent: oklch(0.74 0.14 40);
+  --accent-soft: oklch(0.32 0.05 40);
+  --secondary: oklch(0.27 0.012 165);
+  --secondary-foreground: oklch(0.95 0.01 165);
+  --muted: oklch(0.27 0.012 165);
+  --muted-foreground: oklch(0.72 0.015 165);
   --destructive: oklch(0.62 0.18 25);
   --destructive-foreground: oklch(0.16 0 0);
   --destructive-soft: oklch(0.28 0.06 22);
@@ -134,24 +127,13 @@
   --warning-soft: oklch(0.28 0.05 80);
   --success: oklch(0.75 0.11 145);
   --success-soft: oklch(0.28 0.05 145);
-  --border: oklch(1 0 0 / 14%);
-  --input: oklch(1 0 0 / 18%);
-  --ring: oklch(0.85 0.02 260);
-  --chart-1: oklch(0.85 0.02 260);
-  --chart-2: oklch(0.55 0.02 260);
-  --illus-green: oklch(0.72 0.09 160);
-  --illus-green-soft: oklch(0.32 0.04 160);
-  --illus-lilac: oklch(0.75 0.08 295);
-  --illus-lilac-soft: oklch(0.32 0.04 295);
-  --illus-amber: oklch(0.8 0.12 75);
-  --illus-amber-soft: oklch(0.34 0.05 75);
-  --illus-sky: oklch(0.75 0.09 240);
-  --illus-sky-soft: oklch(0.32 0.04 240);
-  --illus-paper: oklch(0.3 0.01 85);
-  --illus-accent: oklch(0.72 0.15 40);
-  --hero: oklch(0.19 0.005 120);
   --prototype: oklch(0.78 0.13 80);
   --prototype-foreground: oklch(0.2 0.03 70);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 18%);
+  --ring: oklch(0.78 0.09 165);
+  --chart-1: oklch(0.78 0.09 165);
+  --chart-2: oklch(0.55 0.04 165);
 }
 
 @layer base {
@@ -171,6 +153,12 @@
   h3,
   h4 {
     letter-spacing: -0.01em;
+  }
+
+  /* Page and section titles carry the brand; utilities (e.g. text-destructive) still win. */
+  h1,
+  h2 {
+    color: var(--color-brand-strong);
   }
 }
 

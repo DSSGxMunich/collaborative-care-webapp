@@ -28,12 +28,7 @@ function Faq() {
   const { tr } = useLang();
   return (
     <>
-      <PageHero
-        icon={<HelpIcon className="h-6 w-6" />}
-        tone="amber"
-        title={tr(f.title)}
-        intro={tr(f.intro)}
-      />
+      <PageHero icon={<HelpIcon className="h-6 w-6" />} title={tr(f.title)} intro={tr(f.intro)} />
       <PageBody>
         {/* Native <details> accordions: keyboard- and screen-reader-friendly with no JS. */}
         <div className="space-y-3">

@@ -22,7 +22,7 @@ function LatexBlock({ tex }: { tex: string }) {
   const html = katex.renderToString(tex, { throwOnError: false, displayMode: true });
   return (
     <div
-      className="overflow-x-auto rounded-lg border border-border bg-hero p-4"
+      className="overflow-x-auto rounded-lg border border-border bg-muted p-4"
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );
@@ -32,19 +32,14 @@ function Methodology() {
   const { tr } = useLang();
   return (
     <>
-      <PageHero
-        icon={<BookIcon className="h-6 w-6" />}
-        tone="sky"
-        title={tr(m.title)}
-        intro={tr(m.intro)}
-      />
+      <PageHero icon={<BookIcon className="h-6 w-6" />} title={tr(m.title)} intro={tr(m.intro)} />
       <PageBody>
         <ol className="space-y-6">
           {m.sections.map((section, i) => (
             <li key={section.id} className="panel flex gap-4 p-6">
               <span
                 aria-hidden="true"
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-illus-sky-soft text-sm font-semibold text-illus-sky"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-soft text-sm font-semibold text-primary"
               >
                 {i + 1}
               </span>

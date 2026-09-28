@@ -26,12 +26,7 @@ function Support() {
 
   return (
     <>
-      <PageHero
-        icon={<MapPinIcon className="h-6 w-6" />}
-        tone="green"
-        title={tr(s.title)}
-        intro={tr(s.intro)}
-      >
+      <PageHero icon={<MapPinIcon className="h-6 w-6" />} title={tr(s.title)} intro={tr(s.intro)}>
         <div className="panel max-w-xl p-5">
           <label htmlFor="place" className="text-sm font-semibold">
             {tr(s.locationLabel)}
@@ -61,7 +56,7 @@ function Support() {
                   <p className="mt-1.5 flex-1 text-sm leading-relaxed text-muted-foreground">
                     {tr(offer.body)}
                   </p>
-                  <p className="mt-3 rounded-lg bg-hero px-3 py-2 text-sm">
+                  <p className="mt-3 rounded-lg bg-muted px-3 py-2 text-sm">
                     <span className="font-medium">{tr(s.whereToFind)}: </span>
                     {tr(offer.route)}
                   </p>

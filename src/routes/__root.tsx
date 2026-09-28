@@ -12,6 +12,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { LanguageProvider, useLang, ui } from "../lib/i18n";
 import { SessionProvider } from "../lib/session";
+import { CompassMark, FAVICON_HREF } from "../components/CompassMark";
 import { PrototypeCorner } from "../components/PrototypeCorner";
 
 function NotFoundComponent() {
@@ -82,11 +83,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      // Explicit no-op icon: without this, browsers fall back to requesting
-      // /favicon.ico at the domain root (outside our base path) whenever no
-      // <link rel="icon"> is present, which can flash a stale/unrelated
-      // cached icon before resolving to nothing.
-      { rel: "icon", href: "data:," },
+      // The compass mark, inlined as a data URI: without an explicit icon,
+      // browsers fall back to requesting /favicon.ico at the domain root
+      // (outside our base path), which can flash a stale/unrelated cached icon.
+      { rel: "icon", type: "image/svg+xml", href: FAVICON_HREF },
     ],
   }),
   shellComponent: RootShell,
@@ -142,7 +142,11 @@ function SiteHeader() {
   return (
     <header className="border-b border-border print:hidden">
       <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-5 gap-y-2 px-4 py-3">
-        <Link to="/" className="shrink-0 text-sm font-semibold">
+        <Link
+          to="/"
+          className="flex shrink-0 items-center gap-2 text-sm font-semibold text-brand-strong"
+        >
+          <CompassMark className="h-7 w-7" />
           {tr(ui.appName)}
         </Link>
         <nav className="flex flex-wrap gap-x-4 gap-y-1 text-sm">

@@ -172,7 +172,7 @@ function Results() {
 
   if (!p.complete) {
     return (
-      <EmptyState icon={<ChartIcon className="h-6 w-6" />} tone="sky" title={tr(r.title)}>
+      <EmptyState icon={<ChartIcon className="h-6 w-6" />} title={tr(r.title)}>
         <p className="text-sm text-muted-foreground">{tr(ui.noData)}</p>
         <Link
           to="/fragebogen"
@@ -192,7 +192,6 @@ function Results() {
     return (
       <EmptyState
         icon={<ChartIcon className="h-6 w-6" />}
-        tone="sky"
         title={tr(r.thankYou.title)}
         body={tr(r.thankYou.body)}
       >
@@ -324,7 +323,7 @@ function Results() {
 
   return (
     <>
-      <PageHero icon={<ChartIcon className="h-6 w-6" />} tone="sky" title={tr(r.title)}>
+      <PageHero icon={<ChartIcon className="h-6 w-6" />} title={tr(r.title)}>
         <button
           type="button"
           onClick={downloadPdf}

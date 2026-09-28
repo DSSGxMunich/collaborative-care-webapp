@@ -24,11 +24,10 @@ export function WaitingBlocker() {
   return (
     <EmptyState
       icon={<LockIcon className="h-6 w-6" />}
-      tone="lilac"
       title={tr(w.blocked.title)}
       body={tr(w.blocked.body)}
     >
-      <div className="rounded-xl bg-illus-lilac-soft p-5">
+      <div className="rounded-xl bg-brand-soft p-5">
         <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
           {tr(w.blocked.codeLabel)}
         </p>

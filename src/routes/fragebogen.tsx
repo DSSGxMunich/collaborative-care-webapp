@@ -94,10 +94,10 @@ function Questionnaire() {
 
   return (
     <>
-      <section className="border-b border-border bg-hero">
+      <section className="border-b border-border bg-brand-soft">
         <div className="mx-auto max-w-3xl px-4 pb-8 pt-12 sm:px-8">
           <div className="flex items-center gap-3">
-            <IconTile tone="green">
+            <IconTile>
               <ClipboardIcon className="h-5 w-5" />
             </IconTile>
             <p
@@ -109,14 +109,14 @@ function Questionnaire() {
           </div>
           <h1 className="mt-4 text-3xl font-bold tracking-tight">{tr(ui.nav.questionnaire)}</h1>
           <div
-            className="mt-5 h-2 w-full overflow-hidden rounded-full bg-illus-green-soft"
+            className="mt-5 h-2 w-full overflow-hidden rounded-full bg-card"
             role="progressbar"
             aria-valuemin={1}
             aria-valuemax={total}
             aria-valuenow={index + 1}
           >
             <div
-              className="h-full rounded-full bg-illus-green transition-all duration-300"
+              className="h-full rounded-full bg-primary transition-all duration-300"
               style={{ width: `${((index + 1) / total) * 100}%` }}
             />
           </div>

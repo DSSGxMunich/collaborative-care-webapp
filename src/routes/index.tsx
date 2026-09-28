@@ -29,11 +29,11 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-/** One tone + icon pair per "How this works" step. */
-const STEP_STYLES = [
-  { tone: "green", Icon: ClipboardIcon, Meta: ClockIcon },
-  { tone: "sky", Icon: ChartIcon, Meta: DatabaseIcon },
-  { tone: "amber", Icon: ChatIcon, Meta: ShieldIcon },
+/** The icon and the small "meta" icon for each "How this works" step. */
+const STEP_ICONS = [
+  { Icon: ClipboardIcon, Meta: ClockIcon },
+  { Icon: ChartIcon, Meta: DatabaseIcon },
+  { Icon: ChatIcon, Meta: ShieldIcon },
 ] as const;
 
 function Index() {
@@ -44,7 +44,7 @@ function Index() {
   return (
     <div>
       {/* Hero: what this is, in one glance */}
-      <section className="bg-hero">
+      <section className="bg-brand-soft">
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 pb-14 pt-24 sm:px-8 lg:grid-cols-[1.1fr_1fr] lg:pb-20 lg:pt-20">
           <div>
             <h1 className="text-balance-tight text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl">
@@ -78,7 +78,7 @@ function Index() {
         <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">{tr(home.about.heading)}</h2>
         <ol className="mt-10 grid gap-10 md:grid-cols-3 md:gap-8">
           {home.about.items.map((item, i) => {
-            const { tone, Icon: StepIcon, Meta } = STEP_STYLES[i % STEP_STYLES.length]!;
+            const { Icon: StepIcon, Meta } = STEP_ICONS[i % STEP_ICONS.length]!;
             return (
               <li key={i} className="flex gap-4">
                 <span
@@ -88,7 +88,7 @@ function Index() {
                   {i + 1}
                 </span>
                 <div>
-                  <IconTile tone={tone}>
+                  <IconTile>
                     <StepIcon className="h-6 w-6" />
                   </IconTile>
                   <h3 className="mt-3 text-lg font-semibold leading-snug">{tr(item.title)}</h3>
@@ -107,14 +107,14 @@ function Index() {
       </section>
 
       {/* Get started: two ways in */}
-      <section id="start" className="scroll-mt-6 border-t border-border bg-hero">
+      <section id="start" className="scroll-mt-6 border-t border-border bg-brand-soft">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-8">
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">{tr(e.heading)}</h2>
           <p className="mt-2 text-sm text-muted-foreground">{tr(e.intro)}</p>
 
           <div className="mt-8 grid gap-5 md:grid-cols-2">
             <div className="panel flex flex-col p-6">
-              <IconTile tone="green">
+              <IconTile>
                 <PeopleIcon className="h-6 w-6" />
               </IconTile>
               <h3 className="mt-4 text-lg font-semibold">{tr(e.together.title)}</h3>
@@ -132,7 +132,7 @@ function Index() {
             </div>
 
             <div className="panel flex flex-col p-6">
-              <IconTile tone="lilac">
+              <IconTile>
                 <ChairIcon className="h-6 w-6" />
               </IconTile>
               <h3 className="mt-4 text-lg font-semibold">{tr(e.waitingRoom.title)}</h3>

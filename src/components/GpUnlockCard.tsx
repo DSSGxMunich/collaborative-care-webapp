@@ -39,7 +39,7 @@ export function GpUnlockCard() {
   return (
     <div className="panel max-w-xl p-6">
       <div className="flex items-center gap-3">
-        <IconTile tone="lilac">
+        <IconTile>
           <LockIcon className="h-5 w-5" />
         </IconTile>
         <h2 className="text-lg font-semibold">{tr(g.title)}</h2>
