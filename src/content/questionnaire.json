@@ -182,13 +182,16 @@
     }
   },
   "stepTitles": {
-    "basics": { "de": "Zuerst ein wenig zu Ihnen", "en": "First, a little about you" },
+    "basics": { "de": "Einige Angaben zu Ihnen", "en": "A few details about you" },
     "phq9": {
-      "de": "Wie waren Ihre letzten zwei Wochen?",
-      "en": "How have the last two weeks been?"
+      "de": "Ihr Befinden in den letzten zwei Wochen",
+      "en": "How you have been feeling recently"
     },
-    "safety": { "de": "Wir möchten, dass Sie sicher sind", "en": "Looking out for you" },
-    "history": { "de": "Ihr bisheriger Weg", "en": "Your journey so far" }
+    "safety": { "de": "Ihre Sicherheit und Ihr Wohlbefinden", "en": "Your safety and wellbeing" },
+    "history": {
+      "de": "Ihre bisherigen Erfahrungen mit Depression",
+      "en": "Your previous experience with depression"
+    }
   },
   "pleaseAnswerAll": { "de": "Bitte alle Fragen beantworten", "en": "Please answer all questions" },
   "showCrisisContacts": { "de": "Krisenkontakte anzeigen", "en": "Show crisis contacts" }
