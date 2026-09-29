@@ -14,17 +14,17 @@
   "blocked": {
     "title": { "de": "Danke, fast geschafft", "en": "Thank you, almost done" },
     "body": {
-      "de": "Ihre Antworten sind gespeichert. Geben Sie Ihrer Ärztin oder Ihrem Arzt diesen Code, damit die Auswertung freigeschaltet werden kann.",
-      "en": "Your answers are saved. Give your GP this code so they can unlock your results."
+      "de": "Ihre Antworten sind gespeichert. Nennen oder zeigen Sie Ihrer Ärztin oder Ihrem Arzt diesen Code, damit Sie die Auswertung gemeinsam öffnen können.",
+      "en": "Your answers are saved. Tell or show your GP this code so you can open your results together."
     },
     "codeLabel": { "de": "Ihr Code", "en": "Your code" },
     "codeHint": {
-      "de": "Der Code wird aus Ihren Antworten erzeugt. Ändert sich an den Antworten etwas, ändert sich auch der Code.",
-      "en": "This code is generated from your answers. If anything about them changes, the code changes too."
+      "de": "Der Code enthält Ihre Antworten. Geben Sie ihn nur an Ihr Praxisteam weiter.",
+      "en": "This code contains your answers. Only share it with your practice team."
     },
     "unlockInstructions": {
-      "de": "Ihre Ärztin oder Ihr Arzt öffnet auf diesem Gerät „Praxis“ im Menü und gibt den Code dort ein.",
-      "en": "Your GP opens “Practice” in the menu on this device and enters the code there."
+      "de": "Ihre Ärztin oder Ihr Arzt gibt den Code unter „Praxis“ ein – auf dem eigenen Computer oder auf diesem Gerät.",
+      "en": "Your GP enters the code under “Practice”, on their own computer or on this device."
     },
     "seeSupport": { "de": "Angebote vor Ort ansehen", "en": "See local support" },
     "backHome": { "de": "Zur Startseite", "en": "Back to start" }

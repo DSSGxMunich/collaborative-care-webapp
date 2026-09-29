@@ -4,36 +4,38 @@ import { LockIcon } from "@/components/icons";
 import { IconTile } from "@/components/PageHero";
 import { useLang } from "@/lib/i18n";
 import { useSession } from "@/lib/session";
-import { computeUnlockCode, normalizeUnlockCode } from "@/lib/unlockCode";
+import { CODE_LENGTH, decodeAnswers } from "@/lib/unlockCode";
 import praxisContent from "@/content/praxis.json";
-
-type GpUnlockError = "mismatch" | "noSession" | null;
 
 /**
  * The GP-side half of the waiting-room gate: the patient's screen
  * (WaitingBlocker) shows a code, and the GP types it in here — on the
- * "Practice" page (src/routes/praxis.tsx) — to unlock the results.
+ * "Practice" page (src/routes/praxis.tsx) — on any device. The code carries
+ * the answers themselves (see unlockCode.ts), so entering it replaces
+ * whatever session this device held with the patient's, already unlocked.
  */
 export function GpUnlockCard() {
   const { tr } = useLang();
   const navigate = useNavigate();
-  const { session, update } = useSession();
+  const { update } = useSession();
   const [code, setCode] = useState("");
-  const [error, setError] = useState<GpUnlockError>(null);
+  const [invalid, setInvalid] = useState(false);
   const g = praxisContent.unlock;
 
   const tryUnlock = (e: React.FormEvent) => {
     e.preventDefault();
-    if (session.mode !== "waitingRoom" || !session.completedAt) {
-      setError("noSession");
+    const answers = decodeAnswers(code);
+    if (!answers) {
+      setInvalid(true);
       return;
     }
-    if (normalizeUnlockCode(code) === computeUnlockCode(session)) {
-      update({ unlocked: true });
-      navigate({ to: "/ergebnis" });
-    } else {
-      setError("mismatch");
-    }
+    update({
+      ...answers,
+      completedAt: new Date().toISOString(),
+      mode: "waitingRoom",
+      unlocked: true,
+    });
+    navigate({ to: "/ergebnis" });
   };
 
   return (
@@ -50,13 +52,14 @@ export function GpUnlockCard() {
           value={code}
           onChange={(e) => {
             setCode(e.target.value);
-            setError(null);
+            setInvalid(false);
           }}
           placeholder={tr(g.codePlaceholder)}
           aria-label={tr(g.codePlaceholder)}
           autoComplete="off"
-          maxLength={8}
-          className="w-32 rounded-md border border-input bg-background px-2.5 py-2 text-sm font-mono uppercase tracking-widest outline-none focus:border-primary"
+          // Room for the dashes of a formatted code ("7K3M-Q9XA-4TR").
+          maxLength={CODE_LENGTH + 4}
+          className="w-44 rounded-md border border-input bg-background px-2.5 py-2 text-sm font-mono uppercase tracking-widest outline-none focus:border-primary"
         />
         <button
           type="submit"
@@ -65,11 +68,7 @@ export function GpUnlockCard() {
           {tr(g.unlockButton)}
         </button>
       </form>
-      {error && (
-        <p className="mt-2 text-xs text-destructive">
-          {tr(error === "noSession" ? g.noSession : g.codeMismatch)}
-        </p>
-      )}
+      {invalid && <p className="mt-2 text-xs text-destructive">{tr(g.codeInvalid)}</p>}
     </div>
   );
 }
