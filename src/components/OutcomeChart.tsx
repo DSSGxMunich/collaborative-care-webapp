@@ -53,6 +53,10 @@ export type OutcomeChartLabels = {
  * uncertainty is the main visual and overlap between options is easy to
  * see. The patient's score today is one line through every row.
  *
+ * A thin line under each row runs across both the label and the track, so
+ * it's clear where one option ends and the next begins, even when a label
+ * wraps onto several lines.
+ *
  * The drawing is aria-hidden. Each row carries a screen-reader sentence
  * with the same information in words.
  */
@@ -98,7 +102,11 @@ export function OutcomeChart({
             return (
               <li
                 key={s.id}
-                className={isUsualCare ? "border-b border-dashed border-border pb-1 mb-1" : ""}
+                className={
+                  isUsualCare
+                    ? "mb-1 border-b border-dashed border-border pb-1"
+                    : "border-b border-border last:border-b-0"
+                }
               >
                 <Row
                   labelSlot={
