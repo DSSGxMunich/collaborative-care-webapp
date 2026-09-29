@@ -94,12 +94,16 @@ function Questionnaire() {
 
   return (
     <>
-      <PageHero icon={<ClipboardIcon className="h-6 w-6" />} title={tr(ui.nav.questionnaire)}>
+      <PageHero
+        icon={<ClipboardIcon className="h-6 w-6" />}
+        title={tr(q.stepTitles[key])}
+        {...(key === "safety" ? { intro: tr(q.safety.intro) } : {})}
+      >
         <p
           key={index}
           className="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
         >
-          {`${tr(ui.step)} ${index + 1} ${tr(ui.of)} ${total}`}
+          {`${tr(ui.nav.questionnaire)} · ${tr(ui.step)} ${index + 1} ${tr(ui.of)} ${total}`}
         </p>
         <div
           className="mt-3 h-2 w-full overflow-hidden rounded-full bg-card"
@@ -118,9 +122,6 @@ function Questionnaire() {
       <PageBody>
         {key === "basics" && (
           <div className="space-y-6">
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              {tr(q.profile.sectionIntro)}
-            </p>
             <DateField
               label={q.profile.age.question}
               min={dateBounds.min}
@@ -165,7 +166,6 @@ function Questionnaire() {
 
         {key === "safety" && (
           <div className="space-y-3">
-            <p className="text-sm leading-relaxed text-muted-foreground">{tr(q.safety.intro)}</p>
             <YesNoField
               label={q.safety.questions.past}
               value={session.safety.past}
@@ -201,9 +201,6 @@ function Questionnaire() {
 
         {key === "history" && (
           <div className="space-y-6">
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              {tr(q.profile.historyIntro)}
-            </p>
             <YesNoField
               label={q.profile.priorEpisode.question}
               value={session.profile.priorEpisode}

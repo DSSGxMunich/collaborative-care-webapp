@@ -8,19 +8,16 @@
   "unlock": {
     "title": { "de": "Code eingeben", "en": "Enter code" },
     "body": {
-      "de": "Ihre Patientin/Ihr Patient hat den Fragebogen im Wartezimmer ausgefüllt? Geben Sie hier den Code von ihrem Bildschirm ein, um die Auswertung gemeinsam zu öffnen.",
-      "en": "Did your patient fill in the questionnaire in the waiting room? Enter the code shown on their screen to open the results together."
+      "de": "Hat Ihre Patientin/Ihr Patient den Fragebogen im Wartezimmer oder auf dem eigenen Handy ausgefüllt? Geben Sie den Code ein, den sie/er Ihnen nennt oder zeigt, um die Auswertung gemeinsam zu öffnen.",
+      "en": "Did your patient fill in the questionnaire in the waiting room or on their phone? Enter the code they tell or show you to open the results together."
     },
     "codePlaceholder": { "de": "Code", "en": "Code" },
     "unlockButton": { "de": "Freischalten", "en": "Unlock" },
-    "codeMismatch": {
-      "de": "Der Code stimmt nicht überein. Bitte erneut versuchen.",
-      "en": "That code doesn't match. Please try again."
+    "codeInvalid": {
+      "de": "Dieser Code ist ungültig. Bitte prüfen Sie ihn auf Tippfehler.",
+      "en": "That code isn't valid. Please check it for typos."
     },
-    "noSession": {
-      "de": "Auf diesem Gerät liegt aktuell kein wartender Fragebogen vor.",
-      "en": "There's no waiting-room questionnaire on this device right now."
-    }
+    "noCode": { "de": "Kein Code?", "en": "No code?" }
   },
   "riskFlagLabel": { "de": "Risikoflag", "en": "Risk flag" },
   "riskFlag": {
@@ -109,7 +106,7 @@
     "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" }
   },
   "footer": {
-    "de": "Dieser Kurzbefund stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Bausteine sind nach erwartetem Zusatznutzen gereiht. Die Einschätzungen sind nicht klinisch validiert. Alle Angaben bleiben in der Browser-Sitzung des Patienten.",
-    "en": "This report comes from a research prototype built on a component network meta-analysis (10 components, 12 studies). Components are ranked by expected added benefit. These assessments haven't been clinically validated. Everything entered stays in the patient's browser session."
+    "de": "Dieser Kurzbefund stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Bausteine sind nach erwartetem Zusatznutzen gereiht. Die Einschätzungen sind nicht klinisch validiert. Alle Angaben bleiben in dieser Browser-Sitzung und werden nicht übertragen.",
+    "en": "This report comes from a research prototype built on a component network meta-analysis (10 components, 12 studies). Components are ranked by expected added benefit. These assessments haven't been clinically validated. Everything entered stays in this browser session and is not transmitted."
   }
 }
