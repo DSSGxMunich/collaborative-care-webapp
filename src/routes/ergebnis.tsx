@@ -5,7 +5,7 @@ import { ChartIcon, DownloadIcon } from "@/components/icons";
 import { InfoTooltip } from "@/components/InfoTooltip";
 import { EmptyState, PageBody, PageHero } from "@/components/PageHero";
 import { fill, ui, useLang } from "@/lib/i18n";
-import { PHQ9_MAX } from "@/components/OutcomeStrip";
+import { PHQ9_MAX, ScoreStrip } from "@/components/OutcomeStrip";
 import { SEVERITY_LABEL, SEVERITY_RANGE, type Severity } from "@/lib/phq9";
 import type { Scenario } from "@/lib/model";
 import { generateResultsPdf } from "@/lib/pdf";
@@ -86,18 +86,12 @@ function CurrentScore({ score, severity }: { score: number; severity: Severity }
               {fill(tr(c.you), { score })}
             </span>
           </div>
-          <div className="flex h-2 gap-0.5">
-            {(Object.keys(SEVERITY_BANDS) as Severity[]).map((sev) => (
-              <span
-                key={sev}
-                className={`h-full rounded-full ${sev === severity ? "bg-foreground/70" : "bg-muted-foreground/20"}`}
-                style={{ width: scalePos(SEVERITY_BANDS[sev].to - SEVERITY_BANDS[sev].from) }}
-              />
-            ))}
-          </div>
-          <span
-            className="absolute top-1/2 h-4 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-foreground ring-2 ring-background"
-            style={{ left: scalePos(score) }}
+          <ScoreStrip
+            score={score}
+            band={band}
+            cutoffs={Object.values(SEVERITY_BANDS)
+              .slice(1)
+              .map((b) => b.from)}
           />
         </div>
         {/*

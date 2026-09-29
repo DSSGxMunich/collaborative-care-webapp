@@ -15,6 +15,9 @@ const pct = (x: number) => (Math.min(PHQ9_MAX, Math.max(0, x)) / PHQ9_MAX) * 100
  * (green); worse or unchanged stays neutral, so a patient isn't shown a
  * warning color for an option that simply doesn't help.
  */
+/** The patient's PHQ-9 today: the same thin dark line on every scale, so it reads as "you" everywhere. */
+const TODAY_LINE = "h-full w-0.5 bg-foreground/70";
+
 const tone = (improved: boolean) =>
   improved
     ? { dot: "border-success", bar: "bg-success/35" }
@@ -64,7 +67,7 @@ export function OutcomeStrip({
         className="group absolute -top-1 -bottom-1 z-10 flex w-4 -translate-x-1/2 justify-center"
         style={{ left: `${pct(baseline)}%` }}
       >
-        <span className="h-full w-0.5 bg-foreground/70 group-hover:bg-foreground" />
+        <span className={`${TODAY_LINE} group-hover:bg-foreground`} />
         <HoverTip>{todayLabel}</HoverTip>
       </div>
       {/* After the today line in the DOM, so the dot wins where the two overlap. */}
@@ -76,6 +79,45 @@ export function OutcomeStrip({
           className={`h-2.5 w-2.5 rounded-full border-2 bg-card transition-transform group-hover:scale-125 ${t.dot}`}
         />
         <HoverTip>{expectedLabel}</HoverTip>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Today's score on its own, drawn with the same parts as OutcomeStrip (the
+ * thin 0–27 line and the today line) so the two read as the same scale.
+ * Small ticks mark where the severity bands start, and the patient's own
+ * band is shaded like an interval bar, in neutral grey rather than a color.
+ */
+export function ScoreStrip({
+  score,
+  band,
+  cutoffs,
+}: {
+  score: number;
+  band: { from: number; to: number };
+  cutoffs: number[];
+}) {
+  return (
+    <div aria-hidden className="relative h-4">
+      <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-border" />
+      {cutoffs.map((c) => (
+        <span
+          key={c}
+          className="absolute top-1/2 h-2 w-px -translate-y-1/2 bg-border"
+          style={{ left: `${pct(c)}%` }}
+        />
+      ))}
+      <div
+        className="absolute top-1/2 h-0.5 -translate-y-1/2 rounded-full bg-muted-foreground/35"
+        style={{ left: `${pct(band.from)}%`, width: `${pct(band.to) - pct(band.from)}%` }}
+      />
+      <div
+        className="absolute -top-1 -bottom-1 flex w-4 -translate-x-1/2 justify-center"
+        style={{ left: `${pct(score)}%` }}
+      >
+        <span className={TODAY_LINE} />
       </div>
     </div>
   );
