@@ -121,6 +121,7 @@
       "en": "Likely to help more than your current care"
     },
     "otherSection": { "de": "Weitere Bausteine", "en": "Other components" },
+    "comparisonLabel": { "de": "Zum Vergleich", "en": "For comparison" },
     "rankAria": {
       "de": "Platz {rank} von {total}, nach erwartetem Nutzen gereiht, hilfreichster Baustein zuerst",
       "en": "Rank {rank} of {total}, ordered by expected benefit, most helpful care component first"
@@ -129,12 +130,12 @@
   "scenarios": {
     "usualCare": {
       "label": {
-        "de": "Übliche hausärztliche Versorgung (zum Vergleich)",
-        "en": "Usual care from your GP (for comparison)"
+        "de": "Übliche hausärztliche Versorgung",
+        "en": "Usual care from your GP"
       },
       "short": {
-        "de": "Übliche hausärztliche Versorgung (zum Vergleich)",
-        "en": "Usual care from your GP (for comparison)"
+        "de": "Übliche hausärztliche Versorgung",
+        "en": "Usual care from your GP"
       },
       "description": {
         "de": "Die übliche Behandlung, die eine Hausarztpraxis bei depressiven Beschwerden anbietet. Dazu können Termine bei Ihrer Hausärztin/Ihrem Hausarzt, eine medikamentöse Behandlung oder eine Überweisung an andere Fachpersonen gehören.",

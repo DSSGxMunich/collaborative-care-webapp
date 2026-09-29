@@ -68,6 +68,7 @@ export function CareRanking({
   usualCareNote,
   helpfulSectionLabel,
   otherSectionLabel,
+  comparisonLabel,
   rankAriaLabel,
   outcome,
   example,
@@ -86,6 +87,8 @@ export function CareRanking({
   usualCareNote?: string;
   helpfulSectionLabel: string;
   otherSectionLabel: string;
+  /** Eyebrow on the usual-care box, naming its role ("For comparison") apart from its name. */
+  comparisonLabel: string;
   rankAriaLabel: (rank: number, total: number) => string;
   outcome: OutcomeDisplay;
   compact?: boolean;
@@ -100,13 +103,18 @@ export function CareRanking({
       {/*
        * Usual care: the comparison, not a ranked option. It sits above the
        * list, so the reference comes first, in its own dashed box with no
-       * rank badge (its name already says
-       * "for comparison", so the box needs no extra header), but keeps the same
-       * padding and empty rank column as the rows below, so its strip lines
-       * up with theirs on the shared 0–27 scale.
+       * rank badge. Its role ("For comparison") is an eyebrow in the same
+       * style as the section headers below, kept out of its name. It keeps
+       * the same padding and empty rank column as the rows below, so its
+       * strip lines up with theirs on the shared 0–27 scale.
        */}
       <div className="mb-3 rounded-md border border-dashed border-muted-foreground/50 bg-secondary/40">
-        <div className={rowPaddingY}>
+        <p
+          className={`${rowPaddingX} pt-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground`}
+        >
+          {comparisonLabel}
+        </p>
+        <div className={compact ? "pb-2.5 pt-1" : "pb-3.5 pt-1.5"}>
           <Track paddingX={rowPaddingX}>
             <LabelWithValue
               lines={[labelLines(usualCare).join(" ")]}
