@@ -141,15 +141,25 @@ function SiteHeader() {
 
   return (
     <header className="border-b border-border print:hidden">
-      <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-5 gap-y-2 px-4 py-3">
-        <Link
-          to="/"
-          className="flex shrink-0 items-center gap-2 text-sm font-semibold text-brand-strong"
-        >
-          <CompassMark className="h-7 w-7" />
-          {tr(ui.appName)}
-        </Link>
-        <nav className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
+      {/* Same column as PageHero/PageBody (max-w-4xl, px-4 sm:px-8), so the
+          header's left and right edges line up with the page text below. */}
+      <div className="mx-auto max-w-4xl space-y-2 px-4 py-3 sm:px-8">
+        <div className="flex items-center justify-between gap-4">
+          <Link
+            to="/"
+            className="flex shrink-0 items-center gap-2 text-sm font-semibold text-brand-strong"
+          >
+            <CompassMark className="h-7 w-7" />
+            {tr(ui.appName)}
+          </Link>
+          <div className="flex shrink-0 items-center gap-4">
+            <Link to="/soforthilfe" className="text-sm font-medium text-destructive">
+              {tr(ui.nav.crisis)}
+            </Link>
+            <LanguageToggle />
+          </div>
+        </div>
+        <nav className="flex flex-wrap gap-x-5 gap-y-1 text-sm">
           {navItems.map((item) => (
             <Link
               key={item.to}
@@ -161,12 +171,6 @@ function SiteHeader() {
             </Link>
           ))}
         </nav>
-        <div className="flex shrink-0 items-center gap-4">
-          <Link to="/soforthilfe" className="text-sm font-medium text-destructive">
-            {tr(ui.nav.crisis)}
-          </Link>
-          <LanguageToggle />
-        </div>
       </div>
     </header>
   );
