@@ -39,13 +39,14 @@
     "en": "Estimated symptom scores (PHQ-9 score development) after 12 months with different care options"
   },
   "modelEstimatesIntro": {
-    "de": "Niedrigere Werte bedeuten weniger depressive Beschwerden. Es handelt sich um Schätzungen auf Grundlage früherer Forschungsdaten und der Angaben im Fragebogen. Die Beschwerden können sich individuell anders entwickeln. Die Bausteine sind, zusätzlich zur üblichen Versorgung, vom für diese:n Patient:in wahrscheinlich hilfreichsten bis zum am wenigsten hilfreichen gereiht.",
-    "en": "Lower scores mean fewer depressive symptoms. These are estimates based on past research data and the information entered in the questionnaire, and the patient's symptoms may develop differently. Components are ranked, on top of usual care, from what's likely to help this patient most to the least."
+    "de": "Niedriger = weniger Beschwerden. Bausteine zusätzlich zur üblichen Versorgung, gereiht vom für diese:n Patient:in wahrscheinlich hilfreichsten an.",
+    "en": "Lower = fewer symptoms. Components on top of usual care, ranked from most likely to help this patient."
   },
   "modelEstimatesCaveat": {
-    "de": "Keiner dieser Bausteine wurde in den zugrunde liegenden Studien allein erprobt: Jede Studie testete ein Paket aus mehreren Bausteinen. Die Einzelschätzungen entstehen, indem das Modell (additive Komponenten-NMA) die Paketeffekte auf die Bausteine aufteilt. Sie hängen daher an der Additivitätsannahme (keine Wechselwirkungen), an wenigen Studien pro Baustein und daran, dass Bausteine häufig gemeinsam vorkommen. Einzelne Schätzungen sind klinisch unplausibel (z. B. scheinbar ungünstige Effekte regelmäßiger Verlaufskontrollen), was eher auf Konfundierung zwischen Studien als auf echten Schaden hindeutet. Bitte als Hypothesen für die gemeinsame Entscheidung lesen: Rangfolge und Richtung sind aussagekräftiger als einzelne Zahlen, und ein Baustein sollte nicht allein aufgrund dieser Schätzung angeboten oder weggelassen werden.",
-    "en": "None of these components was tested on its own in the underlying trials: every trial tested a package of several components. The single-component estimates come from the model (an additive component NMA) splitting the package effects across components. They therefore rest on the additivity assumption (no interactions), on few trials per component, and on components that often occur together. Some estimates are clinically implausible (e.g. apparently unfavourable effects of regular patient review), which more likely reflects confounding between trials than real harm. Read them as hypotheses for shared decision-making: the ranking and direction are more informative than any single number, and no component should be offered or withheld on the basis of this estimate alone."
+    "de": "Die Bausteine wurden nur in Kombination erprobt; Einzelschätzungen sind modellbasiert.",
+    "en": "Components were only trial-tested in combination; single estimates are model-based."
   },
+  "modelEstimatesCaveatLink": { "de": "Wie verlässlich?", "en": "How reliable?" },
   "ranking": {
     "helpfulSection": {
       "de": "Wahrscheinlich hilfreicher als die übliche Versorgung",

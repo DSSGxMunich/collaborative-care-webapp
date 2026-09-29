@@ -350,9 +350,15 @@ function Results() {
           <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
             {tr(r.whatCanBeExpectedBody)}
           </p>
-          {/* Components were only trial-tested in packages; say so before the ranking. */}
-          <p className="mt-3 rounded-md border-l-4 border-primary bg-secondary/60 px-3 py-2 text-sm leading-relaxed">
-            {tr(r.ranking.combinedNote)}
+          <p className="mt-1.5 text-xs text-muted-foreground">
+            {tr(r.ranking.combinedNote)}{" "}
+            <Link
+              to="/methodology"
+              hash="singleComponents"
+              className="font-medium text-foreground underline underline-offset-2"
+            >
+              {tr(r.ranking.combinedNoteLink)}
+            </Link>
           </p>
 
           {usualCareScenario && (

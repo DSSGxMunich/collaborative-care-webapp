@@ -298,9 +298,15 @@ function Clinician() {
           <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
             {tr(c.modelEstimatesIntro)}
           </p>
-          {/* Components were only trial-tested in packages; say how to use single estimates. */}
-          <p className="mt-3 rounded-md border-l-4 border-primary bg-secondary/60 px-3 py-2 text-xs leading-relaxed">
-            {tr(c.modelEstimatesCaveat)}
+          <p className="mt-1.5 text-xs text-muted-foreground">
+            {tr(c.modelEstimatesCaveat)}{" "}
+            <Link
+              to="/methodology"
+              hash="singleComponents"
+              className="font-medium text-foreground underline underline-offset-2"
+            >
+              {tr(c.modelEstimatesCaveatLink)}
+            </Link>
           </p>
 
           {usualCareScenario && (
