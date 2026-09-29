@@ -235,8 +235,8 @@
       },
       "example": {
         "text": {
-          "de": "In einer Studie mit Menschen mit Herzschwäche wählte jede Patientin und jeder Patient gemeinsam mit einer Pflegekraft aus, an welchem Beschwerdebild zuerst gearbeitet werden sollte: Schmerzen, Atemnot, Erschöpfung oder Depression. Die Behandlung begann dann mit dem gewählten Beschwerdebild.",
-          "en": "In a study with people living with heart failure, each patient chose together with a nurse which symptom to work on first: pain, breathlessness, tiredness or depression. Care then started with the symptom they had chosen."
+          "de": "In einer Studie mit Menschen mit Herzschwäche entschied jede Patientin und jeder Patient gemeinsam mit einer Pflegekraft, ob zuerst an Schmerzen, Atemnot, Erschöpfung oder Depression gearbeitet werden sollte. Die Behandlung begann dann mit dem gewählten Beschwerdebild.",
+          "en": "In a study with people living with heart failure, each patient decided together with a nurse whether to work on pain, breathlessness, tiredness or depression first. Care then started with the symptom they had chosen."
         },
         "source": {
           "de": "Bekelman et al., USA, 2018",
@@ -307,8 +307,8 @@
       },
       "example": {
         "text": {
-          "de": "Medizinische Fachangestellte in deutschen Hausarztpraxen vermittelten Patientinnen und Patienten einfache, praktische Fertigkeiten: Techniken zum Lösen von Problemen, Entspannungsübungen und Übungen zur Stärkung des Selbstvertrauens. Ziel war, dass die Patientinnen und Patienten besser für sich sorgen und ihre Beschwerden im Alltag bewältigen können.",
-          "en": "Practice nurses in German GP practices taught patients simple, practical skills: ways to solve problems, relaxation exercises and activities to build self-confidence. The aim was to help patients look after themselves and manage their symptoms in daily life."
+          "de": "Medizinische Fachangestellte in deutschen Hausarztpraxen vermittelten Patientinnen und Patienten einfache, praktische Fertigkeiten wie Techniken zum Lösen von Problemen, Entspannungsübungen und Übungen zur Stärkung des Selbstvertrauens. Ziel war, dass die Patientinnen und Patienten besser für sich sorgen und ihre Beschwerden im Alltag bewältigen können.",
+          "en": "Practice nurses in German GP practices taught patients simple, practical skills such as problem solving, relaxation exercises and activities to build self-confidence. The aim was to help patients look after themselves and manage their symptoms in daily life."
         },
         "source": {
           "de": "Zimmermann et al., Deutschland, 2016",
