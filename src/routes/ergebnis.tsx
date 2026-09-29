@@ -164,7 +164,7 @@ function DisclaimerCard() {
 }
 
 function Results() {
-  const { tr } = useLang();
+  const { tr, lang } = useLang();
   const p = usePrediction();
   const [revealed, setRevealed] = useState(false);
 
@@ -264,11 +264,14 @@ function Results() {
           : scenarioDescription(scenario),
         rank,
         note: !isUsualCare && isHelpful(scenario) ? tr(r.legend.better) : "–",
+        helpful: !isUsualCare && isHelpful(scenario),
       };
     });
 
   const downloadPdf = () => {
     generateResultsPdf({
+      appName: tr(ui.appName),
+      lang,
       filenamePrefix: tr({ de: "meine-auswertung", en: "my-results" }),
       title: tr(r.title),
       subtitle: tr(r.pdf.subtitle),
@@ -277,7 +280,6 @@ function Results() {
       severityValue: `${tr(SEVERITY_LABEL[p.severity])} ${fill(tr(r.currentScore.range), { range: SEVERITY_RANGE[p.severity] })}`,
       scenariosHeading: tr(r.whatCanBeExpected),
       scenariosBody: tr(r.whatCanBeExpectedBody),
-      modelHeading: tr(r.whatCanBeExpected),
       tableHeaders: {
         careComponent: tr(r.pdf.table.careComponent),
         rank: tr(r.pdf.table.rank),

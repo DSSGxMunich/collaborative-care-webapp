@@ -33,7 +33,7 @@ const c = praxisContent;
 const r = resultsContent;
 
 function Clinician() {
-  const { tr } = useLang();
+  const { tr, lang } = useLang();
   const p = usePrediction();
 
   if (!p.hydrated) return <div className="mx-auto max-w-3xl px-4 py-16" />;
@@ -173,12 +173,15 @@ function Clinician() {
           : careComponentDescription(scenario),
         rank,
         note: !isUsualCare && isHelpful(scenario) ? tr(c.table.better) : "–",
+        helpful: !isUsualCare && isHelpful(scenario),
       };
     });
 
   const downloadPdf = () => {
     const [riskRow, ...restRows] = rows;
     generatePraxisPdf({
+      appName: tr(ui.appName),
+      lang,
       filenamePrefix: tr({ de: "kurzbefund-praxis", en: "clinical-summary" }),
       title: tr(c.title),
       subtitle: tr(c.subtitle),
