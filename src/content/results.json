@@ -125,6 +125,11 @@
     "rankAria": {
       "de": "Platz {rank} von {total}, nach erwartetem Nutzen gereiht, hilfreichster Baustein zuerst",
       "en": "Rank {rank} of {total}, ordered by expected benefit, most helpful care component first"
+    },
+    "example": {
+      "button": { "de": "Beispiel aus einer Studie", "en": "Example from a study" },
+      "heading": { "de": "So sah das in einer Studie aus", "en": "How this looked in a study" },
+      "close": { "de": "Schließen", "en": "Close" }
     }
   },
   "scenarios": {
@@ -160,6 +165,16 @@
       "description": {
         "de": "Eine Fachärztin/ein Facharzt oder eine Psychologin/ein Psychologe begleitet oder berät bei Ihrer Behandlung, zusätzlich zu Ihrer Hausarztpraxis.",
         "en": "A psychiatrist or psychologist advises your care team. You do not need a separate appointment with this specialist for the team to receive this advice."
+      },
+      "example": {
+        "text": {
+          "de": "Speziell geschulte Pflegekräfte begleiteten Patientinnen und Patienten in der Hausarztpraxis. Alle zwei Wochen besprachen sie mit einem Team aus Psychiater, Psychologin und Hausarzt neue Patientinnen und Patienten sowie den Verlauf der übrigen. Der Psychiater prüfte Wahl und Dosis der Medikamente und schlug Änderungen vor, die die Pflegekraft dann mit der Hausarztpraxis und der Patientin bzw. dem Patienten besprach.",
+          "en": "Specially trained nurses supported patients in their GP practice. Every two weeks, they met with a psychiatrist, a psychologist and a family doctor to go through new patients and how the others were doing. The psychiatrist checked the choice and dose of medication and suggested changes, which the nurse then discussed with the GP and the patient."
+        },
+        "source": {
+          "de": "Katon et al., USA, 2004",
+          "en": "Katon et al., USA, 2004"
+        }
       }
     },
     "psychologicalTreatment": {
@@ -174,6 +189,16 @@
       "description": {
         "de": "In diesen Gesprächen geht es um Ihre Beschwerden und Wege, damit umzugehen, von kurzer Beratung bis zu strukturierter Psychotherapie über mehrere Sitzungen. Kann auch zusätzlich zu einer Medikation erfolgen.",
         "en": "These conversations focus on your symptoms and ways to manage them. Counselling may also be provided alongside medication."
+      },
+      "example": {
+        "text": {
+          "de": "Zusätzlich zur Unterstützung bei ihrer antidepressiven Medikation erhielten Patientinnen und Patienten eine kurze Beratung, die ihnen half, für sie wertvolle Aktivitäten zu planen. Eine Fallmanagerin bzw. ein Fallmanager meldete sich innerhalb von 3 Monaten bis zu 10-mal, meist telefonisch, fragte nach dem Befinden und gab der Hausarztpraxis schriftlich Rückmeldung. Fachleute begleiteten die Fallmanager wöchentlich in Supervision.",
+          "en": "Alongside support with their antidepressant medication, patients received brief counselling that helped them plan activities they value. A care manager contacted them up to 10 times over 3 months, mostly by phone, checked how they were doing and sent written feedback to their GP. Specialists supervised the care managers every week."
+        },
+        "source": {
+          "de": "Richards et al., Großbritannien, 2008",
+          "en": "Richards et al., UK, 2008"
+        }
       }
     },
     "goalSetting": {
@@ -188,6 +213,16 @@
       "description": {
         "de": "Sie legen gemeinsam mit Ihrem Behandlungsteam konkrete Ziele für Ihre Behandlung fest.",
         "en": "You discuss what you would like treatment to help you change. You and your care team agree on specific goals."
+      },
+      "example": {
+        "text": {
+          "de": "Eine Fallmanagerin bzw. ein Fallmanager stellte die Situation jeder Patientin und jedes Patienten in einer wöchentlichen Fallbesprechung einem Psychiater und einer Hausärztin vor. Gemeinsam erarbeitete das Team Behandlungsempfehlungen, die zu den Erfahrungen, den aktuellen Behandlungswünschen und dem Versicherungsschutz der Person passten. In den folgenden Besprechungen wurde das Team jeweils über den weiteren Verlauf informiert.",
+          "en": "A care manager presented each patient's situation to a psychiatrist and a GP at a weekly case review. Together, the team drew up treatment recommendations that fit the patient's experiences, current treatment preferences and insurance cover. At each later review, the team was updated on how the patient was doing."
+        },
+        "source": {
+          "de": "Rollman et al., USA, 2009",
+          "en": "Rollman et al., USA, 2009"
+        }
       }
     },
     "patientPreference": {
@@ -202,6 +237,16 @@
       "description": {
         "de": "Sie besprechen gemeinsam, welche Behandlung Sie bevorzugen und was Ihnen wichtig ist. Ihre Wünsche werden bei der Planung Ihrer Versorgung berücksichtigt.",
         "en": "You discuss which treatment you would prefer and what matters to you. Your preferences are considered when planning your care."
+      },
+      "example": {
+        "text": {
+          "de": "In einer Studie mit Menschen mit Herzschwäche wählte jede Patientin und jeder Patient gemeinsam mit einer Pflegekraft aus, an welchem Beschwerdebild zuerst gearbeitet werden sollte: Schmerzen, Atemnot, Erschöpfung oder Depression. Die Behandlung begann dann mit dem gewählten Beschwerdebild.",
+          "en": "In a study with people living with heart failure, each patient chose together with a nurse which symptom to work on first: pain, breathlessness, tiredness or depression. Care then started with the symptom they had chosen."
+        },
+        "source": {
+          "de": "Bekelman et al., USA, 2018",
+          "en": "Bekelman et al., USA, 2018"
+        }
       }
     },
     "automatedFollowUp": {
@@ -216,6 +261,16 @@
       "description": {
         "de": "Ein System unterstützt Ihr Behandlungsteam dabei, den Überblick über Ihre Nachsorge zu behalten. Es kann zum Beispiel erinnern, wenn ein Kontakt ansteht, oder Hinweise geben, wenn sich Ihre Beschwerden verschlechtern könnten. Das bedeutet keine durchgehende Überwachung und keine Garantie für eine sofortige Reaktion.",
         "en": "A system that helps your care team to keep track of your follow-up care. For example, it can remind the team when contact is due or flag signs that your symptoms may be getting worse. This does not mean continuous monitoring or guarantee an immediate response."
+      },
+      "example": {
+        "text": {
+          "de": "Jeden Monat prüfte eine Depressions-Fachkraft automatisch erfasste Apothekendaten, aus denen hervorging, ob Patientinnen und Patienten ihre Antidepressiva-Rezepte eingelöst hatten. Wiesen diese Daten oder ein per Post verschickter Fragebogen darauf hin, dass jemand noch Beschwerden hatte oder die Medikamente abgesetzt hatte, informierte die Fachkraft die Hausarztpraxis und rief die Person an.",
+          "en": "Every month, a depression specialist reviewed automatically collected pharmacy data showing whether patients had refilled their antidepressant prescriptions. If this data or a questionnaire sent by post suggested that a patient still had symptoms or had stopped their medication, the specialist alerted the GP and phoned the patient."
+        },
+        "source": {
+          "de": "Katon et al., USA, 2001",
+          "en": "Katon et al., USA, 2001"
+        }
       }
     },
     "regularPatientReview": {
@@ -230,6 +285,16 @@
       "description": {
         "de": "Ihr Behandlungsteam plant feste, wiederkehrende Termine, um Ihren Verlauf zu besprechen, unabhängig davon, ob es Ihnen gerade besser oder schlechter geht.",
         "en": "Your care team meets or checks in at planned intervals to review how your treatment is going and whether anything needs to change."
+      },
+      "example": {
+        "text": {
+          "de": "Fallmanagerinnen und Fallmanager besprachen Patientinnen und Patienten in einer wöchentlichen Supervision, vor allem neue Patienten, Personen mit einem Risiko, sich oder anderen zu schaden, Personen ohne Besserung und Personen, die Termine verpasst hatten. Zusätzlich wurde jeder einzelne Fall einmal im Monat besprochen.",
+          "en": "Care managers discussed patients in weekly supervision, especially new patients, those at risk of harming themselves or others, those who were not improving and those who had missed appointments. In addition, every patient's case was reviewed once a month."
+        },
+        "source": {
+          "de": "Coventry et al., Großbritannien, 2015",
+          "en": "Coventry et al., UK, 2015"
+        }
       }
     },
     "copingStrategies": {
@@ -244,6 +309,16 @@
       "description": {
         "de": "Sie lernen konkrete Strategien, um mit Ihren Beschwerden im Alltag umzugehen.",
         "en": "You learn and practise ways to manage your symptoms in daily life. You discuss which approaches suit your situation."
+      },
+      "example": {
+        "text": {
+          "de": "Medizinische Fachangestellte in deutschen Hausarztpraxen vermittelten Patientinnen und Patienten einfache, praktische Fertigkeiten: Techniken zum Lösen von Problemen, Entspannungsübungen und Übungen zur Stärkung des Selbstvertrauens. Ziel war, dass die Patientinnen und Patienten besser für sich sorgen und ihre Beschwerden im Alltag bewältigen können.",
+          "en": "Practice nurses in German GP practices taught patients simple, practical skills: ways to solve problems, relaxation exercises and activities to build self-confidence. The aim was to help patients look after themselves and manage their symptoms in daily life."
+        },
+        "source": {
+          "de": "Zimmermann et al., Deutschland, 2016",
+          "en": "Zimmermann et al., Germany, 2016"
+        }
       }
     },
     "relapsePrevention": {
@@ -258,6 +333,16 @@
       "description": {
         "de": "Gemeinsam mit Ihrem Behandlungsteam oder Ihrer Ärztin/Ihrem Arzt erstellen Sie einen Plan, um gesund zu bleiben und frühe Warnzeichen zu erkennen. Der Plan beschreibt, was Sie tun können und an wen Sie sich wenden, falls Beschwerden zurückkehren.",
         "en": "Together with your care partner or doctor, you make a plan for staying well and recognizing early warning signs to look out for. Your plan explains what you can do and whom to contact if symptoms return."
+      },
+      "example": {
+        "text": {
+          "de": "Sobald eine Patientin oder ein Patient die Behandlungsziele erreicht hatte, erstellte sie bzw. er gemeinsam mit der Pflegekraft einen Plan, um gesund zu bleiben. Er umfasste Wege zum Stressabbau, persönliche Ziele, die Fortführung der Medikation und frühe Warnzeichen dafür, dass die Depression zurückkehren könnte.",
+          "en": "Once a patient had reached their treatment goals, they and the nurse drew up a plan to stay well. It covered ways to reduce stress, personal goals, continuing medication, and the early warning signs that depression might be coming back."
+        },
+        "source": {
+          "de": "Katon et al., USA, 2010",
+          "en": "Katon et al., USA, 2010"
+        }
       }
     },
     "familyInvolvement": {
@@ -272,6 +357,16 @@
       "description": {
         "de": "Mit Ihrem Einverständnis werden Familienmitglieder oder Freunde in Ihre Versorgung einbezogen. Gemeinsam besprechen Sie, wie sie Sie unterstützen können.",
         "en": "With your agreement, family members or friends are involved in your care. You discuss together how they can support you."
+      },
+      "example": {
+        "text": {
+          "de": "Pflegekräfte in Hausarztpraxen boten Patientinnen und Patienten persönliche Unterstützung und Informationen zu Themen wie der Behandlung, den Beziehungen zu Familie und Freunden sowie dem Selbstwertgefühl. Familienmitglieder und Freunde wurden ermutigt, sich aktiv an der Behandlung zu beteiligen.",
+          "en": "Nurses in GP practices offered patients personal support and information on topics such as their treatment, relationships with family and friends, and self-esteem. Family members and friends were encouraged to take an active part in the treatment."
+        },
+        "source": {
+          "de": "Aragonès et al., Spanien, 2012",
+          "en": "Aragonès et al., Spain, 2012"
+        }
       }
     },
     "communityCulturalBg": {
@@ -286,6 +381,16 @@
       "description": {
         "de": "Ihre Versorgung wird an Ihr kulturelles und soziales Umfeld angepasst.",
         "en": "Your care considers support available in your community or your cultural background. This may include support groups, social services, or values and ways of life that matter to you."
+      },
+      "example": {
+        "text": {
+          "de": "Lotsinnen und Lotsen halfen Patientinnen und Patienten, passende Gesundheits-, Sozial- und Gemeindeangebote zu finden und Kontakt aufzunehmen. Die Unterstützung gab es online, telefonisch, per App oder vor Ort in der eigenen Gemeinde.",
+          "en": "Care navigators helped patients find and connect with suitable health, social and community services. Support was offered online, by phone, through an app, or in person in the patient's local community."
+        },
+        "source": {
+          "de": "Fletcher et al., Australien, 2021",
+          "en": "Fletcher et al., Australia, 2021"
+        }
       }
     }
   },
