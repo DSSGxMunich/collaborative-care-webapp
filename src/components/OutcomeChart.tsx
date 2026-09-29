@@ -8,6 +8,8 @@ import { severityFor, type Severity } from "@/lib/phq9";
  * than they are.
  */
 const PHQ9_MAX = 27;
+/** Axis numbers: each severity band's first score, plus the top of the scale. */
+const TICKS = [0, 5, 10, 15, 20, PHQ9_MAX];
 const pct = (x: number) => (Math.min(PHQ9_MAX, Math.max(0, x)) / PHQ9_MAX) * 100;
 
 /**
@@ -33,16 +35,19 @@ export type OutcomeChartLabels = {
   today: string;
   fewer: string;
   more: string;
+  /** Axis caption, e.g. "PHQ-9 score (0–27)". */
+  axis: string;
   legend: { helpful: string; other: string; usualCare: string; range: string; today: string };
 };
 
 /**
  * All care options on one shared chart: usual care first, then the single
  * components in the order given. Each row shows a soft band for the range
- * the 12-month PHQ-9 is expected to fall in, and a dot at its centre. It
- * shows no numbers. Instead the axis is shaded into the five PHQ-9 severity
- * bands, so a row reads as "people like you tended to end up around
- * 'moderate'" rather than as a precise score.
+ * the 12-month PHQ-9 is expected to fall in, and a dot at its centre. The
+ * only numbers are on the 0–27 PHQ-9 axis; the rows themselves show none.
+ * The axis is also shaded into the five PHQ-9 severity bands, so a row reads
+ * as "people like you tended to end up around 'moderate'" rather than as a
+ * precise score.
  *
  * The range is drawn as a gradient that fades towards its ends, so the
  * uncertainty is the main visual and overlap between options is easy to
@@ -122,12 +127,24 @@ export function OutcomeChart({
         </ul>
 
         <Row labelSlot={null}>
-          <div
-            aria-hidden
-            className="mt-1.5 flex justify-between gap-3 text-[11px] text-muted-foreground"
-          >
-            <span>← {labels.fewer}</span>
-            <span className="text-right">{labels.more} →</span>
+          <div aria-hidden className="text-[11px] text-muted-foreground">
+            <div className="relative h-5 border-t border-border tabular-nums">
+              {TICKS.map((t) => (
+                <span
+                  key={t}
+                  className={`absolute top-0 flex flex-col ${t === 0 ? "items-start" : t === PHQ9_MAX ? "-translate-x-full items-end" : "-translate-x-1/2 items-center"}`}
+                  style={{ left: `${pct(t)}%` }}
+                >
+                  <span className="h-1 w-px bg-border" />
+                  {t}
+                </span>
+              ))}
+            </div>
+            <div className="mt-0.5 flex justify-between gap-3">
+              <span>← {labels.fewer}</span>
+              <span className="text-center font-medium text-foreground/80">{labels.axis}</span>
+              <span className="text-right">{labels.more} →</span>
+            </div>
           </div>
         </Row>
       </div>

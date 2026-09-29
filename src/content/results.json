@@ -501,6 +501,7 @@
     },
     "mostLikely": { "de": "Am ehesten: {band}", "en": "Most likely: {band}" },
     "today": { "de": "Heute", "en": "Today" },
+    "axis": { "de": "PHQ-9-Wert (0–27)", "en": "PHQ-9 score (0–27)" },
     "legend": {
       "other": { "de": "Weitere Option", "en": "Other option" },
       "usualCare": { "de": "Übliche Versorgung (Vergleich)", "en": "Usual care (for comparison)" },
@@ -513,8 +514,12 @@
       "en": "What these care components mean"
     },
     "body": {
-      "de": "Eine kurze Erklärung zu jedem Baustein und ein Beispiel, wie er in einer Studie umgesetzt wurde.",
-      "en": "A short explanation of each component, and an example of how it was put into practice in a study."
+      "de": "In derselben Reihenfolge wie in der Grafik oben, beginnend mit der Option, die möglicherweise den größten Nutzen bietet. Zu jedem Baustein gibt es eine kurze Erklärung und ein Beispiel aus einer Studie.",
+      "en": "In the same order as the chart above, starting with the option that may offer the most benefit. Each one comes with a short explanation and an example from a study."
+    },
+    "rankAria": {
+      "de": "Platz {rank} von {total}:",
+      "en": "Rank {rank} of {total}:"
     }
   }
 }
