@@ -422,8 +422,8 @@
     "notProvided": { "de": "keine Angabe", "en": "not provided" }
   },
   "whatCanBeExpected": {
-    "de": "Geschätzte Beschwerden nach 12 Monaten",
-    "en": "Estimated symptoms after 12 months"
+    "de": "Mögliche Entwicklung über 12 Monate",
+    "en": "Possible development over 12 months"
   },
   "whatCanBeExpectedBody": {
     "de": "Niedrigere Werte bedeuten weniger depressive Beschwerden. Es handelt sich um Schätzungen auf Grundlage früherer Forschungsdaten und Ihrer Angaben. Ihre eigenen Beschwerden können sich anders entwickeln.",
