@@ -439,8 +439,7 @@
         "label": {
           "de": "Die Studien haben die Versorgungsbausteine in Kombination erprobt; hier wird jeder einzeln geschätzt.",
           "en": "The trials tested the care components in combination; here each one is estimated on its own."
-        },
-        "methodologyHash": "singleComponents"
+        }
       },
       {
         "value": { "de": "12 Monate", "en": "12 months" },
@@ -458,7 +457,7 @@
       "de": "Die Versorgungsbausteine sind vom wahrscheinlich hilfreichsten bis zum am wenigsten hilfreichen geordnet. Das Modell ist ein Forschungsprototyp und nicht klinisch validiert.",
       "en": "Care components are listed from the one most likely to help to the least. The model is a research prototype and has not been clinically validated."
     },
-    "learnMore": { "de": "Mehr erfahren →", "en": "Learn more →" }
+    "methodologyLink": { "de": "Mehr zur Methodik", "en": "More about the method" }
   },
   "actions": {
     "clinicianSummary": {
