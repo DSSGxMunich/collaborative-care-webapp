@@ -161,7 +161,7 @@ export function Toggle({
       onClick={() => onChange(!checked)}
       className={[
         "relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors",
-        checked ? "bg-primary" : "bg-secondary",
+        checked ? "bg-primary" : "bg-secondary ring-1 ring-inset ring-input",
       ].join(" ")}
     >
       <span

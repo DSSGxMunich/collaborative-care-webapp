@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ExamplePopover } from "@/components/ExamplePopover";
+import { Toggle } from "@/components/fields";
 import { OutcomeChart } from "@/components/OutcomeChart";
 import { fill, useLang } from "@/lib/i18n";
 import { beatsUsualCare, type Scenario } from "@/lib/model";
@@ -20,13 +21,16 @@ const bySeverity = (f: (s: Severity) => string) =>
  * Methodology page, linked rather than repeated here.
  *
  * Two parts: first all options on one chart (OutcomeChart), then what each
- * component means, with a study example, numbered in the chart's order.
+ * component means, numbered in the chart's order. One switch in that
+ * list's header shows every component's study example inline at once,
+ * rather than repeating a button on each of the 10 rows.
  * Usual care is left out of that list: the chart already shows it as the
  * reference row. Keeping the explanations out of the
  * chart keeps the chart short enough to compare at a glance.
  */
 export function CareOptions({ baseline, scenarios }: { baseline: number; scenarios: Scenario[] }) {
   const { tr } = useLang();
+  const [showExamples, setShowExamples] = useState(false);
   const usualCare = scenarios.find((s) => s.id === "usualCare");
   const ranked = scenarios.filter((s) => s.id !== "usualCare");
 
@@ -80,7 +84,17 @@ export function CareOptions({ baseline, scenarios }: { baseline: number; scenari
       </section>
 
       <section className="panel mt-6 p-6">
-        <h2 className="text-lg font-semibold">{tr(r.componentGuide.heading)}</h2>
+        <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
+          <h2 className="text-lg font-semibold">{tr(r.componentGuide.heading)}</h2>
+          <div className="flex items-center gap-2.5 text-sm font-medium">
+            <span aria-hidden>{tr(r.componentGuide.showExamples)}</span>
+            <Toggle
+              checked={showExamples}
+              onChange={setShowExamples}
+              label={r.componentGuide.showExamples}
+            />
+          </div>
+        </div>
         <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
           {tr(r.componentGuide.body)}
         </p>
@@ -108,14 +122,14 @@ export function CareOptions({ baseline, scenarios }: { baseline: number; scenari
                   <dd className="mt-1 text-sm leading-relaxed text-muted-foreground">
                     {tr(component.description)}
                   </dd>
-                  <dd className="mt-2">
-                    <ExamplePopover
-                      buttonLabel={tr(r.ranking.example.button)}
-                      text={tr(component.example.text)}
-                      source={tr(component.example.source)}
-                      closeLabel={tr(r.ranking.example.close)}
-                    />
-                  </dd>
+                  {showExamples ? (
+                    <dd className="mt-2.5 border-l-2 border-primary/40 pl-3 text-sm leading-relaxed">
+                      {tr(component.example.text)}
+                      <span className="mt-1 block text-xs text-muted-foreground">
+                        {tr(component.example.source)}
+                      </span>
+                    </dd>
+                  ) : null}
                 </div>
               </div>
             );

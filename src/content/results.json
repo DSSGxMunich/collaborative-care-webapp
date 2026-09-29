@@ -97,10 +97,6 @@
   },
   "ranking": {
     "comparisonLabel": { "de": "Zum Vergleich", "en": "For comparison" },
-    "example": {
-      "button": { "de": "So sah das in einer Studie aus", "en": "How this looked in a study" },
-      "close": { "de": "Schließen", "en": "Close" }
-    },
     "combinedNote": {
       "de": "In den Studien wurden diese Bausteine nur in Kombination erprobt. Die einzelnen Werte sind daraus berechnet.",
       "en": "In the studies, these components were only tested in combination. The individual scores are calculated from those results."
@@ -514,9 +510,10 @@
       "en": "What these care components mean"
     },
     "body": {
-      "de": "In derselben Reihenfolge wie in der Grafik oben, beginnend mit der Option, die möglicherweise den größten Nutzen bietet. Zu jedem Baustein gibt es eine kurze Erklärung und ein Beispiel aus einer Studie.",
-      "en": "In the same order as the chart above, starting with the option that may offer the most benefit. Each one comes with a short explanation and an example from a study."
+      "de": "In derselben Reihenfolge wie in der Grafik oben, beginnend mit der Option, die möglicherweise den größten Nutzen bietet. Mit den Studienbeispielen sehen Sie, wie jeder Baustein in der Praxis umgesetzt wurde.",
+      "en": "In the same order as the chart above, starting with the option that may offer the most benefit. Turn on study examples to see how each one was put into practice."
     },
+    "showExamples": { "de": "Studienbeispiele anzeigen", "en": "Show study examples" },
     "rankAria": {
       "de": "Platz {rank} von {total}:",
       "en": "Rank {rank} of {total}:"
