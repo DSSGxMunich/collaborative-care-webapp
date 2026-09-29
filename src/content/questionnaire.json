@@ -128,14 +128,6 @@
     "whyShown": { "de": "Warum wird das angezeigt?", "en": "Why is this shown?" }
   },
   "profile": {
-    "sectionIntro": {
-      "de": "Fangen wir mit ein paar kurzen Angaben zu Ihnen an.",
-      "en": "Let's start with a few quick questions about you."
-    },
-    "historyIntro": {
-      "de": "Noch ein paar Fragen zu Ihrer Vorgeschichte.",
-      "en": "A few more questions about your history."
-    },
     "age": {
       "question": { "de": "Wann sind Sie geboren?", "en": "When were you born?" },
       "underageWarning": {

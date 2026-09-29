@@ -108,6 +108,11 @@ function Questionnaire() {
             </p>
           </div>
           <h1 className="mt-4 text-3xl font-bold tracking-tight">{tr(q.stepTitles[key])}</h1>
+          {key === "safety" && (
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              {tr(q.safety.intro)}
+            </p>
+          )}
           <div
             className="mt-5 h-2 w-full overflow-hidden rounded-full bg-card"
             role="progressbar"
@@ -126,9 +131,6 @@ function Questionnaire() {
       <div className="mx-auto max-w-3xl px-4 py-10 sm:px-8">
         {key === "basics" && (
           <div className="space-y-6">
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              {tr(q.profile.sectionIntro)}
-            </p>
             <DateField
               label={q.profile.age.question}
               min={dateBounds.min}
@@ -173,7 +175,6 @@ function Questionnaire() {
 
         {key === "safety" && (
           <div className="space-y-3">
-            <p className="text-sm leading-relaxed text-muted-foreground">{tr(q.safety.intro)}</p>
             <YesNoField
               label={q.safety.questions.past}
               value={session.safety.past}
@@ -209,9 +210,6 @@ function Questionnaire() {
 
         {key === "history" && (
           <div className="space-y-6">
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              {tr(q.profile.historyIntro)}
-            </p>
             <YesNoField
               label={q.profile.priorEpisode.question}
               value={session.profile.priorEpisode}
