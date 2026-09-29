@@ -1,8 +1,8 @@
 import { useEffect, useId, useRef, useState } from "react";
 
 /**
- * A click-to-open popover showing how a care component looked in a real
- * study. Unlike InfoTooltip (hover/focus, for one sentence), this holds a
+ * A click-to-open popover showing how a care component looked in one or
+ * more real studies, each with its source. Unlike InfoTooltip (hover/focus, for one sentence), this holds a
  * few sentences plus a source, so it opens on click/tap and stays open
  * until the reader closes it (✕, Esc, or a click outside). It has no
  * visible heading: the button's own label already says what it shows, so
@@ -13,13 +13,11 @@ import { useEffect, useId, useRef, useState } from "react";
  */
 export function ExamplePopover({
   buttonLabel,
-  text,
-  source,
+  examples,
   closeLabel,
 }: {
   buttonLabel: string;
-  text: string;
-  source?: string | undefined;
+  examples: { text: string; source: string }[];
   closeLabel: string;
 }) {
   const [open, setOpen] = useState(false);
@@ -58,18 +56,22 @@ export function ExamplePopover({
           aria-label={buttonLabel}
           className="fixed inset-x-0 bottom-0 z-30 rounded-t-xl border border-border bg-card p-4 text-sm shadow-lg sm:absolute sm:inset-x-auto sm:bottom-auto sm:left-0 sm:top-full sm:mt-2 sm:w-96 sm:rounded-md"
         >
-          <div className="flex items-start justify-between gap-3">
-            <p className="leading-relaxed">{text}</p>
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              aria-label={closeLabel}
-              className="-m-1 rounded p-1 text-muted-foreground hover:text-foreground"
-            >
-              ✕
-            </button>
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            aria-label={closeLabel}
+            className="absolute right-3 top-3 z-10 rounded p-1 text-muted-foreground hover:text-foreground"
+          >
+            ✕
+          </button>
+          <div className="max-h-[60vh] divide-y divide-border overflow-y-auto pr-7">
+            {examples.map((example, i) => (
+              <div key={i} className="py-3 first:pt-0 last:pb-0">
+                <p className="leading-relaxed">{example.text}</p>
+                <p className="mt-2 text-xs text-muted-foreground">{example.source}</p>
+              </div>
+            ))}
           </div>
-          {source ? <p className="mt-2 text-xs text-muted-foreground">{source}</p> : null}
         </div>
       )}
     </span>
