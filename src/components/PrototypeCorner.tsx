@@ -12,6 +12,8 @@ import home from "@/content/home.json";
  * The triangle is a square button cut with `clip-path`, which also clips
  * its hit area to the triangle. The label is centred on a point along the
  * corner's diagonal and rotated 45° so it runs parallel to the long edge.
+ * It sits close to the long edge, where the triangle is widest, so the
+ * longer German label ("FORSCHUNGS-") fits without being clipped.
  */
 export function PrototypeCorner() {
   const { tr } = useLang();
@@ -23,7 +25,7 @@ export function PrototypeCorner() {
         panelClassName="w-72"
         triggerClassName="relative block h-28 w-28 cursor-help bg-prototype text-prototype-foreground shadow-sm outline-none [clip-path:polygon(0_0,100%_0,100%_100%)] hover:brightness-95 focus-visible:brightness-90"
       >
-        <span className="absolute left-[70%] top-[30%] -translate-x-1/2 -translate-y-1/2 rotate-45 whitespace-pre-line text-center text-[10px] font-bold uppercase leading-tight tracking-wider">
+        <span className="absolute left-[62%] top-[38%] -translate-x-1/2 -translate-y-1/2 rotate-45 whitespace-pre-line text-center text-[10px] font-bold uppercase leading-tight tracking-wide">
           {tr(home.prototypeInfo.corner)}
         </span>
       </InfoTooltip>
