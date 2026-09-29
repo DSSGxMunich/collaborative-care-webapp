@@ -56,7 +56,7 @@ export function PageHero({
 }) {
   return (
     <section className="border-b border-border bg-brand-soft print:border-none print:bg-transparent">
-      <div className="mx-auto max-w-4xl px-4 pb-10 pt-12 sm:px-8 sm:pt-14 print:p-0">
+      <div className="mx-auto max-w-5xl px-4 pb-10 pt-12 sm:px-8 sm:pt-14 print:p-0">
         <div className="flex print:hidden">
           <IconTile tone={tone} size="lg">
             {icon}
@@ -114,5 +114,5 @@ export function PageBody({
   children: ReactNode;
   className?: string;
 }) {
-  return <div className={`mx-auto max-w-4xl px-4 py-10 sm:px-8 ${className}`}>{children}</div>;
+  return <div className={`mx-auto max-w-5xl px-4 py-10 sm:px-8 ${className}`}>{children}</div>;
 }
