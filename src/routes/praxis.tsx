@@ -311,6 +311,7 @@ function Clinician() {
                 usualCareNote={tr(r.scenarios.usualCare.note)}
                 helpfulSectionLabel={tr(c.ranking.helpfulSection)}
                 otherSectionLabel={tr(c.ranking.otherSection)}
+                comparisonLabel={tr(c.ranking.comparisonLabel)}
                 rankAriaLabel={(rank, total) => fill(tr(c.ranking.rankAria), { rank, total })}
                 outcome={{
                   baseline: p.baseline,

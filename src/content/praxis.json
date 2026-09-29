@@ -48,6 +48,7 @@
       "en": "Likely to help more than usual care"
     },
     "otherSection": { "de": "Weitere Bausteine", "en": "Other components" },
+    "comparisonLabel": { "de": "Zum Vergleich", "en": "For comparison" },
     "rankAria": {
       "de": "Rang {rank} von {total}, nach erwartetem Zusatznutzen gereiht",
       "en": "Rank {rank} of {total}, ranked by expected added benefit"
