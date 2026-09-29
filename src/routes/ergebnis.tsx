@@ -335,7 +335,7 @@ function Results() {
           <dl className="mt-4 grid gap-4 sm:grid-cols-3">
             {r.aboutEstimates.facts.map((fact, i) => (
               <div key={i} className="border-t-2 border-primary pt-2">
-                <dt className="font-serif text-2xl font-medium text-primary">{tr(fact.value)}</dt>
+                <dt className="text-2xl font-semibold text-primary">{tr(fact.value)}</dt>
                 <dd className="mt-1 text-xs leading-relaxed text-muted-foreground">
                   {tr(fact.label)}
                 </dd>
