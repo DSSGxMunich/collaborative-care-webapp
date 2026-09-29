@@ -6,7 +6,7 @@ import { InfoTooltip } from "@/components/InfoTooltip";
 import { EmptyState, PageBody, PageHero } from "@/components/PageHero";
 import { fill, ui, useLang } from "@/lib/i18n";
 import { SEVERITY_LABEL, SEVERITY_RANGE, type Severity } from "@/lib/phq9";
-import type { Scenario } from "@/lib/model";
+import { beatsUsualCare, type Scenario } from "@/lib/model";
 import { generateResultsPdf } from "@/lib/pdf";
 import { usePrediction } from "@/lib/usePrediction";
 import { ageFromBirthDate, SEX_OPTIONS } from "@/lib/session";
@@ -190,8 +190,7 @@ function Results() {
       : undefined;
   };
 
-  /** A component is flagged "likely to help" when its expected outcome beats the patient's own baseline — no magnitude shown, just the direction. */
-  const isHelpful = (scenario: Scenario) => scenario.expectedEndpoint < p.baseline;
+  const isHelpful = beatsUsualCare(activeScenarios, p.baseline);
 
   const rankedScenarios = activeScenarios.filter((s) => s.id !== "usualCare");
   const usualCareScenario = activeScenarios.find((s) => s.id === "usualCare");
@@ -335,6 +334,8 @@ function Results() {
               </dd>
             </div>
           </dl>
+          {/* The section's only Methodology link: one general link under all
+              three facts, rather than one fact linking to its own section. */}
           <Link
             to="/methodology"
             className="mt-3 inline-flex text-sm font-medium underline underline-offset-2"

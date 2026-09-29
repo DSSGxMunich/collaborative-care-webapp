@@ -90,33 +90,13 @@
     "infoAria": { "de": "Was bedeutet dieser Wert?", "en": "What does this score mean?" }
   },
   "legend": {
-    "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
-    "expected": { "de": "Erwarteter Wert nach 12 Monaten", "en": "Expected result at 12 months" },
-    "interval": { "de": "Unsicherheitsbereich", "en": "Range of uncertainty" },
+    "better": { "de": "Möglicherweise zusätzlicher Nutzen", "en": "May offer additional benefit" },
     "today": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" },
     "fewer": { "de": "weniger Beschwerden", "en": "fewer symptoms" },
     "more": { "de": "mehr Beschwerden", "en": "more symptoms" }
   },
   "ranking": {
-    "helpfulSection": {
-      "de": "Wahrscheinlich hilfreicher als Ihre derzeitige Versorgung",
-      "en": "Likely to help more than your current care"
-    },
-    "otherSection": { "de": "Weitere Bausteine", "en": "Other components" },
-    "comparisonLabel": { "de": "Zum Vergleich", "en": "For comparison" },
-    "rankAria": {
-      "de": "Platz {rank} von {total}, nach erwartetem Nutzen gereiht, hilfreichster Baustein zuerst",
-      "en": "Rank {rank} of {total}, ordered by expected benefit, most helpful care component first"
-    },
-    "example": {
-      "button": { "de": "So sah das in einer Studie aus", "en": "How this looked in a study" },
-      "close": { "de": "Schließen", "en": "Close" }
-    },
-    "combinedNote": {
-      "de": "In den Studien wurden diese Bausteine nur in Kombination erprobt. Die einzelnen Werte sind daraus berechnet.",
-      "en": "In the studies, these components were only tested in combination. The individual scores are calculated from those results."
-    },
-    "combinedNoteLink": { "de": "Was das bedeutet", "en": "What this means" }
+    "comparisonLabel": { "de": "Zum Vergleich", "en": "For comparison" }
   },
   "scenarios": {
     "usualCare": {
@@ -437,8 +417,8 @@
     "notProvided": { "de": "keine Angabe", "en": "not provided" }
   },
   "whatCanBeExpected": {
-    "de": "Ihre geschätzten Beschwerdewerte (Entwicklung des PHQ-9-Werts) nach 12 Monaten mit verschiedenen Versorgungsangeboten",
-    "en": "Your estimated symptom scores (PHQ-9 score development) after 12 months with different care options"
+    "de": "Mögliche Entwicklung über 12 Monate",
+    "en": "Possible development over 12 months"
   },
   "whatCanBeExpectedBody": {
     "de": "Niedrigere Werte bedeuten weniger depressive Beschwerden. Es handelt sich um Schätzungen auf Grundlage früherer Forschungsdaten und Ihrer Angaben. Ihre eigenen Beschwerden können sich anders entwickeln.",
@@ -500,6 +480,38 @@
     "footer": {
       "de": "Dieser Ausdruck stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Die Bausteine wurden in den Studien nur in Kombinationen erprobt; die Einzelschätzungen sind eine statistische Aufteilung, keine Einzelstudienergebnisse. Bausteine sind nach erwartetem Nutzen gereiht, nicht nach exakten Zahlenwerten. Die Einschätzungen sind nicht klinisch validiert und ersetzen keine ärztliche Diagnose oder Behandlung.",
       "en": "This printout comes from a research prototype built on a component network meta-analysis (10 components, 12 trials). The components were only ever tested in combinations; single-component estimates are a statistical split, not results of single-component trials. Components are ranked by expected benefit, not exact numeric values. These assessments haven't been clinically validated and do not replace medical diagnosis or treatment."
+    }
+  },
+  "chart": {
+    "bands": {
+      "minimal": { "de": "minimal", "en": "minimal" },
+      "mild": { "de": "leicht", "en": "mild" },
+      "moderate": { "de": "mittel", "en": "moderate" },
+      "moderatelySevere": { "de": "mittel bis schwer", "en": "moderately severe" },
+      "severe": { "de": "schwer", "en": "severe" }
+    },
+    "mostLikely": { "de": "Am ehesten: {band}", "en": "Most likely: {band}" },
+    "today": { "de": "Heute", "en": "Today" },
+    "axis": { "de": "PHQ-9-Wert (0–27)", "en": "PHQ-9 score (0–27)" },
+    "legend": {
+      "other": { "de": "Weitere Option", "en": "Other option" },
+      "usualCare": { "de": "Übliche Versorgung (Vergleich)", "en": "Usual care (for comparison)" },
+      "range": { "de": "Wahrscheinlicher Bereich", "en": "Likely range" }
+    }
+  },
+  "componentGuide": {
+    "heading": {
+      "de": "Was diese Versorgungsbausteine bedeuten",
+      "en": "What these care components mean"
+    },
+    "body": {
+      "de": "In derselben Reihenfolge wie in der Grafik oben, beginnend mit der Option, die möglicherweise den größten Nutzen bietet. Mit den Studienbeispielen sehen Sie, wie jeder Baustein in der Praxis umgesetzt wurde.",
+      "en": "In the same order as the chart above, starting with the option that may offer the most benefit. Turn on study examples to see how each one was put into practice."
+    },
+    "showExamples": { "de": "Studienbeispiele anzeigen", "en": "Show study examples" },
+    "rankAria": {
+      "de": "Platz {rank} von {total}:",
+      "en": "Rank {rank} of {total}:"
     }
   }
 }
