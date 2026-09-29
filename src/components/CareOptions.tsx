@@ -61,13 +61,12 @@ export function CareOptions({ baseline, scenarios }: { baseline: number; scenari
             example={(scenario) => {
               const [id] = scenario.components;
               if (id === undefined) return null;
+              const study = r.components[id].example;
               return (
                 <ExamplePopover
                   buttonLabel={tr(r.ranking.example.button)}
-                  examples={r.components[id].examples.map((study) => ({
-                    text: tr(study.text),
-                    source: tr(study.source),
-                  }))}
+                  text={tr(study.text)}
+                  source={tr(study.source)}
                   closeLabel={tr(r.ranking.example.close)}
                 />
               );
