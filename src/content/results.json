@@ -83,9 +83,9 @@
   "of27": { "de": "von 27 Punkten", "en": "of 27 points" },
   "range": { "de": "Bereich", "en": "Range" },
   "legend": {
-    "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
+    "better": { "de": "Möglicherweise zusätzlicher Nutzen", "en": "May offer additional benefit" },
     "expected": { "de": "Erwarteter Wert nach 12 Monaten", "en": "Expected result at 12 months" },
-    "helpful": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
+    "helpful": { "de": "Möglicherweise zusätzlicher Nutzen", "en": "May offer additional benefit" },
     "interval": { "de": "Unsicherheitsbereich", "en": "Range of uncertainty" },
     "today": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" },
     "scale": {
@@ -116,6 +116,10 @@
       "description": {
         "de": "Die übliche Behandlung, die eine Hausarztpraxis bei depressiven Beschwerden anbietet. Dazu können Termine bei Ihrer Hausärztin/Ihrem Hausarzt, eine medikamentöse Behandlung oder eine Überweisung an andere Fachpersonen gehören. Die tatsächlich angebotene Versorgung kann sich zwischen Hausarztpraxen unterscheiden und von der Versorgung abweichen, die Sie aktuell erhalten.",
         "en": "The usual treatment provided by a GP practice for depressive symptoms. This may include appointments with your GP, medication or referral to other healthcare professionals. The exact care provided can vary between GP practices and may differ from the care you currently receive."
+      },
+      "example": {
+        "de": "Alle paar Wochen ein Termin in der Hausarztpraxis, um zu besprechen, wie es Ihnen geht – eventuell mit einem Rezept für ein Antidepressivum.",
+        "en": "An appointment with your GP every few weeks to check how you are doing, possibly with a prescription for an antidepressant."
       }
     }
   },
@@ -132,6 +136,10 @@
       "description": {
         "de": "Eine Fachärztin/ein Facharzt oder eine Psychologin/ein Psychologe begleitet oder berät bei Ihrer Behandlung, zusätzlich zu Ihrer Hausarztpraxis.",
         "en": "A psychiatrist or psychologist advises your care team. You do not need a separate appointment with this specialist for the team to receive this advice."
+      },
+      "example": {
+        "de": "Ihre Hausärztin bespricht Ihre Situation mit einem Psychiater, der vorschlägt, die Medikation anzupassen.",
+        "en": "Your GP talks your situation through with a psychiatrist, who suggests adjusting your medication."
       }
     },
     "psychologicalTreatment": {
@@ -146,6 +154,10 @@
       "description": {
         "de": "In diesen Gesprächen geht es um Ihre Beschwerden und Wege, damit umzugehen — von kurzer Beratung bis zu strukturierter Psychotherapie über mehrere Sitzungen. Kann auch zusätzlich zu einer Medikation erfolgen.",
         "en": "These conversations focus on your symptoms and ways to manage them. Counselling may also be provided alongside medication."
+      },
+      "example": {
+        "de": "Wöchentliche Gespräche mit einer geschulten Fachkraft, persönlich oder am Telefon, über das, was Sie belastet, und kleine Schritte, die Sie ausprobieren können.",
+        "en": "Weekly conversations with a trained counsellor, in person or by phone, about what is weighing on you and small steps you could try."
       }
     },
     "goalSetting": {
@@ -160,6 +172,10 @@
       "description": {
         "de": "Sie legen gemeinsam mit Ihrem Behandlungsteam konkrete Ziele für Ihre Behandlung fest.",
         "en": "You discuss what you would like treatment to help you change. You and your care team agree on specific goals."
+      },
+      "example": {
+        "de": "Sie vereinbaren ein Ziel wie „zweimal pro Woche mit einer Freundin spazieren gehen“ und schauen gemeinsam, wie es damit läuft.",
+        "en": "You agree on a goal such as “go for a walk with a friend twice a week” and check together how it is going."
       }
     },
     "patientPreference": {
@@ -174,6 +190,10 @@
       "description": {
         "de": "Sie besprechen gemeinsam, welche Behandlung Sie bevorzugen und was Ihnen wichtig ist. Ihre Wünsche werden bei der Planung Ihrer Versorgung berücksichtigt.",
         "en": "You discuss which treatment you would prefer and what matters to you. Your preferences are considered when planning your care."
+      },
+      "example": {
+        "de": "Sie sagen, dass Sie lieber zuerst Gespräche statt Medikamente ausprobieren möchten, und Ihr Behandlungsplan beginnt damit.",
+        "en": "You say you would rather try talking therapy before medication, and your treatment plan starts there."
       }
     },
     "automatedFollowUp": {
@@ -188,6 +208,10 @@
       "description": {
         "de": "Ein System unterstützt Ihr Behandlungsteam dabei, den Überblick über Ihre Nachsorge zu behalten. Es kann zum Beispiel erinnern, wenn ein Kontakt ansteht, oder Hinweise geben, wenn sich Ihre Beschwerden verschlechtern könnten. Das bedeutet keine durchgehende Überwachung und keine Garantie für eine sofortige Reaktion.",
         "en": "A system that helps your care team to keep track of your follow-up care. For example, it can remind the team when contact is due or flag signs that your symptoms may be getting worse. This does not mean continuous monitoring or guarantee an immediate response."
+      },
+      "example": {
+        "de": "Die Praxis bekommt eine Erinnerung, Sie anzurufen, wenn Sie sich vier Wochen lang nicht gemeldet haben.",
+        "en": "The practice gets a reminder to call you if you have not been in touch for four weeks."
       }
     },
     "regularPatientReview": {
@@ -202,6 +226,10 @@
       "description": {
         "de": "Ihr Behandlungsteam plant feste, wiederkehrende Termine, um Ihren Verlauf zu besprechen — unabhängig davon, ob es Ihnen gerade besser oder schlechter geht.",
         "en": "Your care team meets or checks in at planned intervals to review how your treatment is going and whether anything needs to change."
+      },
+      "example": {
+        "de": "Alle paar Wochen schaut sich das Team Ihre aktuellen Fragebogenwerte an und entscheidet, ob die Behandlung so bleibt oder angepasst wird.",
+        "en": "Every few weeks, the team looks at your latest questionnaire scores and decides whether to keep or change your treatment."
       }
     },
     "copingStrategies": {
@@ -216,6 +244,10 @@
       "description": {
         "de": "Sie lernen konkrete Strategien, um mit Ihren Beschwerden im Alltag umzugehen.",
         "en": "You learn and practise ways to manage your symptoms in daily life. You discuss which approaches suit your situation."
+      },
+      "example": {
+        "de": "Jeden Tag eine angenehme Aktivität einplanen oder sehr negative Gedanken bemerken und hinterfragen.",
+        "en": "Planning one enjoyable activity each day, or noticing and questioning very negative thoughts."
       }
     },
     "relapsePrevention": {
@@ -230,6 +262,10 @@
       "description": {
         "de": "Gemeinsam mit Ihrem Behandlungsteam oder Ihrer Ärztin/Ihrem Arzt erstellen Sie einen Plan, um gesund zu bleiben und frühe Warnzeichen zu erkennen. Der Plan beschreibt, was Sie tun können und an wen Sie sich wenden, falls Beschwerden zurückkehren.",
         "en": "Together with your care partner or doctor, you make a plan for staying well and recognizing early warning signs to look out for. Your plan explains what you can do and whom to contact if symptoms return."
+      },
+      "example": {
+        "de": "Eine schriftliche Notiz Ihrer persönlichen Warnzeichen, etwa eine Woche lang schlecht schlafen, und an wen Sie sich dann wenden.",
+        "en": "A written note of your personal warning signs, such as sleeping badly for a week, and whom to contact if they appear."
       }
     },
     "familyInvolvement": {
@@ -244,6 +280,10 @@
       "description": {
         "de": "Mit Ihrem Einverständnis werden Familienmitglieder oder Freunde in Ihre Versorgung einbezogen. Gemeinsam besprechen Sie, wie sie Sie unterstützen können.",
         "en": "With your agreement, family members or friends are involved in your care. You discuss together how they can support you."
+      },
+      "example": {
+        "de": "Ihr Partner kommt zu einem Termin mit, um mehr über Depression zu erfahren und wie er Sie unterstützen kann.",
+        "en": "Your partner comes along to an appointment to learn about depression and how to support you."
       }
     },
     "communityCulturalBg": {
@@ -258,6 +298,10 @@
       "description": {
         "de": "Ihre Versorgung wird an Ihr kulturelles und soziales Umfeld angepasst.",
         "en": "Your care considers support available in your community or your cultural background. This may include support groups, social services, or values and ways of life that matter to you."
+      },
+      "example": {
+        "de": "Kontakt zu einer Selbsthilfegruppe in Ihrer Nähe oder eine Behandlung in Ihrer Muttersprache.",
+        "en": "Being put in touch with a local support group, or receiving care in your own language."
       }
     }
   },
@@ -318,12 +362,12 @@
     "notProvided": { "de": "keine Angabe", "en": "not provided" }
   },
   "whatCanBeExpected": {
-    "de": "Was Ihnen am ehesten helfen könnte",
-    "en": "What is most likely to help you"
+    "de": "Optionen für das Gespräch mit Ihrer Ärztin oder Ihrem Arzt",
+    "en": "Options to discuss with your doctor"
   },
   "whatCanBeExpectedBody": {
-    "de": "Sie sehen hier eine Rangfolge von Versorgungsbausteinen – vom wahrscheinlich hilfreichsten bis zum am wenigsten hilfreichen.",
-    "en": "You'll see a ranking of care components here, from what's likely to be most helpful to the least."
+    "de": "Jede Zeile zeigt, wo die Beschwerden von Menschen mit ähnlichen Merkmalen nach 12 Monaten ungefähr lagen. Je breiter der Bereich, desto unsicherer die Schätzung. Was hilft, kann sich von Person zu Person unterscheiden.",
+    "en": "Each row shows roughly where symptoms were after 12 months for people with similar characteristics. The wider the band, the less certain the estimate. What helps can differ from person to person."
   },
   "whatInfluences": {
     "de": "Was beeinflusst diese Schätzung?",
@@ -351,5 +395,33 @@
       "de": "Dieser Ausdruck stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Bausteine sind nach erwartetem Nutzen gereiht, nicht nach exakten Zahlenwerten. Die Einschätzungen sind nicht klinisch validiert und ersetzen keine ärztliche Diagnose oder Behandlung.",
       "en": "This printout comes from a research prototype built on a component network meta-analysis (10 components, 12 trials). Components are ranked by expected benefit, not exact numeric values. These assessments haven't been clinically validated and do not replace medical diagnosis or treatment."
     }
+  },
+  "chart": {
+    "bands": {
+      "minimal": { "de": "minimal", "en": "minimal" },
+      "mild": { "de": "leicht", "en": "mild" },
+      "moderate": { "de": "mittel", "en": "moderate" },
+      "moderatelySevere": { "de": "mittel bis schwer", "en": "moderately severe" },
+      "severe": { "de": "schwer", "en": "severe" }
+    },
+    "mostLikely": { "de": "Am ehesten: {band}", "en": "Most likely: {band}" },
+    "today": { "de": "Heute", "en": "Today" },
+    "legend": {
+      "other": { "de": "Weitere Option", "en": "Other option" },
+      "usualCare": { "de": "Übliche Versorgung (Vergleich)", "en": "Usual care (for comparison)" },
+      "range": { "de": "Wahrscheinlicher Bereich", "en": "Likely range" },
+      "today": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" }
+    }
+  },
+  "componentGuide": {
+    "heading": {
+      "de": "Was diese Versorgungsbausteine bedeuten",
+      "en": "What these care components mean"
+    },
+    "body": {
+      "de": "Eine kurze Erklärung zu jedem Baustein, mit einem Beispiel, wie er im Alltag aussehen kann.",
+      "en": "A short explanation of each component, with an example of what it can look like in practice."
+    },
+    "example": { "de": "Zum Beispiel:", "en": "For example:" }
   }
 }

@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CareRanking } from "@/components/CareRanking";
+import { OutcomeChart } from "@/components/OutcomeChart";
 import { InfoTooltip } from "@/components/InfoTooltip";
-import { fill, ui, useLang } from "@/lib/i18n";
-import { SEVERITY_LABEL, SEVERITY_RANGE } from "@/lib/phq9";
+import { ui, useLang } from "@/lib/i18n";
+import { SEVERITY_LABEL, SEVERITY_RANGE, type Severity } from "@/lib/phq9";
 import type { Scenario } from "@/lib/model";
 import { generateResultsPdf } from "@/lib/pdf";
 import { usePrediction } from "@/lib/usePrediction";
 import { ageFromBirthDate, SEX_OPTIONS } from "@/lib/session";
-import { chunk } from "@/lib/utils";
 import resultsContent from "@/content/results.json";
 
 export const Route = createFileRoute("/ergebnis")({
@@ -22,6 +21,10 @@ export const Route = createFileRoute("/ergebnis")({
 });
 
 const r = resultsContent;
+
+const SEVERITIES: Severity[] = ["minimal", "mild", "moderate", "moderatelySevere", "severe"];
+const mapSeverity = (f: (s: Severity) => string) =>
+  Object.fromEntries(SEVERITIES.map((s) => [s, f(s)])) as Record<Severity, string>;
 /**
  * The trial-eligibility disclaimer, now placed above the results in reading
  * order rather than beside them in a sidebar. Sitting first doesn't mean
@@ -140,22 +143,6 @@ function Results() {
       ? tr(r.scenarios.usualCare.short)
       : scenario.components.map((id) => tr(r.components[id].short)).join(" + ");
 
-  /**
-   * Same components as scenarioLabel, but as an array of lines instead of
-   * one joined string, since CareRanking renders each line separately.
-   * Every scenario here has 0 or 1 component, so this always returns a
-   * single-element array — this chunking logic carries over from when
-   * packages could combine up to 4 components, but is harmless (and
-   * correct) for today's single-component-only scenarios.
-   */
-  const scenarioLabelLines = (scenario: Scenario): string[] =>
-    scenario.id === "usualCare"
-      ? [tr(r.scenarios.usualCare.short)]
-      : chunk(
-          scenario.components.map((id) => tr(r.components[id].short)),
-          2,
-        ).map((group) => group.join(" + "));
-
   /** Every row is a single component added alone, so it always has one unambiguous explanation to show. */
   const scenarioDescription = (scenario: Scenario): string | undefined => {
     const [id] = scenario.components;
@@ -266,33 +253,62 @@ function Results() {
 
           {usualCareScenario && (
             <div className="mt-5">
-              <CareRanking
+              <OutcomeChart
                 usualCare={usualCareScenario}
-                ranked={rankedScenarios}
-                labelLines={scenarioLabelLines}
-                description={scenarioDescription}
+                scenarios={rankedScenarios}
+                baseline={p.baseline}
+                label={scenarioLabel}
                 helpful={isHelpful}
-                usualCareDescription={tr(r.scenarios.usualCare.description)}
-                helpfulSectionLabel={tr(r.ranking.helpfulSection)}
-                otherSectionLabel={tr(r.ranking.otherSection)}
-                rankAriaLabel={(rank, total) => fill(tr(r.ranking.rankAria), { rank, total })}
-                outcome={{
-                  baseline: p.baseline,
-                  todayLabel: tr(r.legend.today),
-                  expectedLabel: () => tr(r.legend.expected),
-                  lowLabel: tr(r.legend.fewer),
-                  highLabel: tr(r.legend.more),
+                labels={{
+                  bands: mapSeverity((s) => tr(r.chart.bands[s])),
+                  severity: mapSeverity((s) => tr(SEVERITY_LABEL[s])),
+                  mostLikely: tr(r.chart.mostLikely),
+                  today: tr(r.chart.today),
+                  fewer: tr(r.legend.fewer),
+                  more: tr(r.legend.more),
                   legend: {
-                    expected: tr(r.legend.expected),
                     helpful: tr(r.legend.helpful),
-                    interval: tr(r.legend.interval),
-                    today: tr(r.legend.today),
-                    scale: tr(r.legend.scale),
+                    other: tr(r.chart.legend.other),
+                    usualCare: tr(r.chart.legend.usualCare),
+                    range: tr(r.chart.legend.range),
+                    today: tr(r.chart.legend.today),
                   },
                 }}
               />
             </div>
           )}
+        </section>
+
+        {/* ---------------- What each care component means ---------------- */}
+        <section className="mt-10">
+          <h2 className="text-lg font-semibold">{tr(r.componentGuide.heading)}</h2>
+          <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+            {tr(r.componentGuide.body)}
+          </p>
+          <dl className="mt-4 divide-y divide-border border-y border-border">
+            {[usualCareScenario, ...rankedScenarios].map((scenario) => {
+              if (!scenario) return null;
+              const content =
+                scenario.id === "usualCare"
+                  ? r.scenarios.usualCare
+                  : scenario.components[0] !== undefined
+                    ? r.components[scenario.components[0]]
+                    : undefined;
+              if (!content) return null;
+              return (
+                <div key={scenario.id} className="py-3.5">
+                  <dt className="text-sm font-medium">{scenarioLabel(scenario)}</dt>
+                  <dd className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                    {tr(content.description)}
+                  </dd>
+                  <dd className="mt-1.5 text-sm leading-relaxed">
+                    <span className="font-medium">{tr(r.componentGuide.example)}</span>{" "}
+                    {tr(content.example)}
+                  </dd>
+                </div>
+              );
+            })}
+          </dl>
         </section>
 
         {/* ---------------- What influences the estimate ---------------- */}
