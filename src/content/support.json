@@ -1,5 +1,5 @@
 {
-  "title": { "de": "Angebote vor Ort", "en": "Local support offers" },
+  "title": { "de": "Angebote vor Ort", "en": "Local support" },
   "intro": {
     "de": "Diese Kategorien niedrigschwelliger Unterstützung kommen bei Depressionen häufig infrage. Geben Sie Ort, Postleitzahl oder Straße ein, um gezielt nach Angeboten in Ihrer Nähe zu suchen.",
     "en": "These categories of low-threshold support are commonly relevant for depression. Enter a town, postcode or street to search for offers near you."
@@ -12,7 +12,6 @@
   "locationPlaceholder": { "de": "z. B. 37073 oder Göttingen", "en": "e.g. 37073 or Göttingen" },
   "searchInPlace": { "de": "In {place} suchen", "en": "Search in {place}" },
   "searchInArea": { "de": "In meiner Region suchen", "en": "Search in my area" },
-  "whereToFind": { "de": "Wo zu finden", "en": "Where to find it" },
   "categories": [
     {
       "id": "movement",
@@ -31,10 +30,15 @@
             "de": "Wöchentliche Gruppen in Sportvereinen, oft von den gesetzlichen Kassen als Präventionskurs bezuschusst (§ 20 SGB V).",
             "en": "Weekly groups at local sports clubs, usually subsidised by statutory health insurers as prevention courses (§ 20 SGB V)."
           },
-          "route": {
-            "de": "Kursangebote Ihrer Krankenkasse, Sportvereine am Wohnort",
-            "en": "Course catalogue of your health insurer, local sports clubs"
-          },
+          "links": [
+            {
+              "label": {
+                "de": "Kurssuche der Krankenkassen (ZPP)",
+                "en": "Health insurer course search (ZPP)"
+              },
+              "url": "https://portal.zentrale-pruefstelle-praevention.de/portfolio/gkv-sv/suche"
+            }
+          ],
           "searchTerm": {
             "de": "Bewegungsgruppe Präventionskurs",
             "en": "movement group prevention course"
@@ -50,10 +54,19 @@
             "de": "Gelenkschonende Gruppenangebote, geeignet bei Schmerzen oder eingeschränkter Beweglichkeit.",
             "en": "Joint-friendly group offers, suitable with pain or limited mobility."
           },
-          "route": {
-            "de": "Schwimmbäder, Volkshochschule, Krankenkasse",
-            "en": "Public pools, adult education centres, insurer"
-          },
+          "links": [
+            {
+              "label": { "de": "vhs-Kursfinder", "en": "Adult education course finder (vhs)" },
+              "url": "https://www.volkshochschule.de/kursfinder.php"
+            },
+            {
+              "label": {
+                "de": "Kurssuche der Krankenkassen (ZPP)",
+                "en": "Health insurer course search (ZPP)"
+              },
+              "url": "https://portal.zentrale-pruefstelle-praevention.de/portfolio/gkv-sv/suche"
+            }
+          ],
           "searchTerm": { "de": "Wassergymnastik Kurs", "en": "water gymnastics course" }
         }
       ]
@@ -69,10 +82,15 @@
             "de": "Austausch mit Menschen in ähnlicher Situation, kostenlos und ohne Anmeldung bei der Praxis.",
             "en": "Exchange with people in a similar situation, free of charge and without a referral."
           },
-          "route": {
-            "de": "NAKOS-Datenbank, Selbsthilfekontaktstelle im Landkreis",
-            "en": "NAKOS database, regional self-help contact point"
-          },
+          "links": [
+            {
+              "label": {
+                "de": "NAKOS: Selbsthilfekontaktstellen vor Ort",
+                "en": "NAKOS: local self-help contact points"
+              },
+              "url": "https://www.nakos.de/adressen/rot/"
+            }
+          ],
           "searchTerm": { "de": "Selbsthilfegruppe Depression", "en": "depression self-help group" }
         },
         {
@@ -85,10 +103,15 @@
             "de": "Regelmäßige, unverbindliche Treffen ohne therapeutischen Anspruch.",
             "en": "Regular, informal meet-ups without therapeutic claims."
           },
-          "route": {
-            "de": "Stadtteilzentren, Kirchengemeinden, Mehrgenerationenhäuser",
-            "en": "Neighbourhood centres, parishes, community centres"
-          },
+          "links": [
+            {
+              "label": {
+                "de": "Mehrgenerationenhaus in der Nähe",
+                "en": "Multi-generation houses near you"
+              },
+              "url": "https://www.mehrgenerationenhaeuser.de/mehrgenerationenhaeuser/haeuser-in-ihrer-naehe/"
+            }
+          ],
           "searchTerm": { "de": "Gesprächskreis Begegnungscafé", "en": "drop-in social café" }
         }
       ]
@@ -107,10 +130,15 @@
             "de": "Kostenlose Beratungsstellen der Wohlfahrtsverbände helfen bei Belastungen, die die Stimmung aufrechterhalten.",
             "en": "Free advice centres run by welfare organisations help with burdens that keep low mood going."
           },
-          "route": {
-            "de": "Caritas, Diakonie, AWO, Sozialamt der Gemeinde",
-            "en": "Caritas, Diakonie, AWO, municipal social services"
-          },
+          "links": [
+            {
+              "label": {
+                "de": "Caritas: Sozialberatung nach PLZ",
+                "en": "Caritas: social advice by postcode"
+              },
+              "url": "https://www.caritas.de/hilfeundberatung/onlineberatung/allgemeine-soziale-beratung/adressen"
+            }
+          ],
           "searchTerm": { "de": "Sozialberatung Beratungsstelle", "en": "social advice centre" }
         }
       ]
@@ -132,10 +160,12 @@
             "de": "Von der Praxis verordnungsfähige Programme gegen Depression, von der gesetzlichen Kasse bezahlt.",
             "en": "Programmes for depression that your practice can prescribe, covered by statutory insurance."
           },
-          "route": {
-            "de": "DiGA-Verzeichnis des BfArM, Verordnung in der Praxis",
-            "en": "BfArM DiGA directory, prescription at the practice"
-          },
+          "links": [
+            {
+              "label": { "de": "DiGA-Verzeichnis des BfArM", "en": "BfArM DiGA directory" },
+              "url": "https://diga.bfarm.de/"
+            }
+          ],
           "searchTerm": { "de": "DiGA Depression Verzeichnis", "en": "DiGA depression directory" }
         }
       ]
@@ -154,10 +184,15 @@
             "de": "Regelmäßige Treffen, gemeinsame Mahlzeiten und Ausflüge, häufig mit Fahrdienst.",
             "en": "Regular meet-ups, shared meals and outings, often with a transport service."
           },
-          "route": {
-            "de": "Gemeinde, Seniorenbüro, Kirchengemeinden",
-            "en": "Municipality, senior citizens' office, parishes"
-          },
+          "links": [
+            {
+              "label": {
+                "de": "Seniorenbüros nach Bundesland",
+                "en": "Senior offices by federal state"
+              },
+              "url": "https://seniorenbueros.org/seniorenbueros/standorte/"
+            }
+          ],
           "searchTerm": { "de": "Seniorentreff Begegnungsstätte", "en": "senior meeting point" }
         },
         {
@@ -170,10 +205,19 @@
             "de": "Tätigkeiten mit fester Zeitstruktur und Kontakt, niedrigschwellig und kostenfrei.",
             "en": "Activities with a fixed weekly structure and contact, low-threshold and free of charge."
           },
-          "route": {
-            "de": "Freiwilligenagentur, Stadtteilzentrum",
-            "en": "Volunteering agency, neighbourhood hub"
-          },
+          "links": [
+            {
+              "label": {
+                "de": "Freiwilligenagenturen (bagfa-Agenturatlas)",
+                "en": "Volunteer centres (bagfa atlas)"
+              },
+              "url": "https://bagfa.de/agenturatlas/"
+            },
+            {
+              "label": { "de": "Repair-Cafés in der Nähe", "en": "Repair caf\u00e9s near you" },
+              "url": "https://www.reparatur-initiativen.de/"
+            }
+          ],
           "searchTerm": {
             "de": "Freiwilligenagentur Gemeinschaftsgarten",
             "en": "volunteering community garden"
