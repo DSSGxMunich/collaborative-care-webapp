@@ -292,13 +292,28 @@ function Results() {
         {/* ---------------- About these estimates: research basis + inputs ---------------- */}
         <section className="panel mt-6 p-6">
           <h2 className="text-lg font-semibold">{tr(r.aboutEstimates.heading)}</h2>
-          {/* The three facts behind every estimate, at a glance. */}
+          {/* The three facts behind every estimate, at a glance. The components
+              fact links to Methodology for why single-component estimates come
+              from combination trials — kept here rather than above the chart,
+              where it didn't help during a consultation. */}
           <dl className="mt-4 grid gap-4 sm:grid-cols-3">
             {r.aboutEstimates.facts.map((fact, i) => (
               <div key={i} className="border-t-2 border-primary pt-2">
                 <dt className="text-2xl font-semibold text-primary">{tr(fact.value)}</dt>
                 <dd className="mt-1 text-xs leading-relaxed text-muted-foreground">
                   {tr(fact.label)}
+                  {"methodologyHash" in fact ? (
+                    <>
+                      {" "}
+                      <Link
+                        to="/methodology"
+                        hash={fact.methodologyHash}
+                        className="font-medium text-foreground underline underline-offset-2"
+                      >
+                        {tr(r.aboutEstimates.whatThisMeans)}
+                      </Link>
+                    </>
+                  ) : null}
                 </dd>
               </div>
             ))}

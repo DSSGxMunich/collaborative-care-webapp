@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "@tanstack/react-router";
 import { Toggle } from "@/components/fields";
 import { OutcomeChart } from "@/components/OutcomeChart";
 import { fill, useLang } from "@/lib/i18n";
@@ -45,16 +44,6 @@ export function CareOptions({ baseline, scenarios }: { baseline: number; scenari
     <>
       <section className="panel mt-6 p-6">
         <h2 className="text-lg font-semibold">{tr(r.whatCanBeExpected)}</h2>
-        <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-          {tr(r.ranking.combinedNote)}{" "}
-          <Link
-            to="/methodology"
-            hash="singleComponents"
-            className="font-medium text-foreground underline underline-offset-2"
-          >
-            {tr(r.ranking.combinedNoteLink)}
-          </Link>
-        </p>
 
         <div className="mt-5">
           <OutcomeChart
