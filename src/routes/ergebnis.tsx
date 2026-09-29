@@ -151,11 +151,18 @@ function Results() {
       : undefined;
   };
 
-  /** A component is flagged "likely to help" when its expected outcome beats the patient's own baseline — no magnitude shown, just the direction. */
-  const isHelpful = (scenario: Scenario) => scenario.expectedEndpoint < p.baseline;
-
   const rankedScenarios = activeScenarios.filter((s) => s.id !== "usualCare");
   const usualCareScenario = activeScenarios.find((s) => s.id === "usualCare");
+
+  /**
+   * A component is flagged "may offer additional benefit" when its expected
+   * outcome beats usual care's, not the patient's score today. With a high
+   * baseline, almost every option lands below today (scores drift down over
+   * 12 months either way), so comparing to today would mark nearly every
+   * row green, including ones expected to do worse than usual care.
+   */
+  const isHelpful = (scenario: Scenario) =>
+    scenario.expectedEndpoint < (usualCareScenario?.expectedEndpoint ?? p.baseline);
 
   const scenarioTableRows = (scenarios: Scenario[]) =>
     scenarios.map((scenario) => {
