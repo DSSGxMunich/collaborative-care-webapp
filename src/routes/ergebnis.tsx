@@ -5,7 +5,6 @@ import { ChartIcon, DownloadIcon } from "@/components/icons";
 import { InfoTooltip } from "@/components/InfoTooltip";
 import { EmptyState, PageBody, PageHero } from "@/components/PageHero";
 import { fill, ui, useLang } from "@/lib/i18n";
-import { PHQ9_MAX, ScoreStrip } from "@/components/OutcomeStrip";
 import { SEVERITY_LABEL, SEVERITY_RANGE, type Severity } from "@/lib/phq9";
 import type { Scenario } from "@/lib/model";
 import { generateResultsPdf } from "@/lib/pdf";
@@ -26,36 +25,14 @@ export const Route = createFileRoute("/ergebnis")({
 
 const r = resultsContent;
 
-/** The PHQ-9 severity bands (0–4, 5–9, 10–14, 15–19, 20–27), as [from, to) on the 0–27 scale. */
-const SEVERITY_BANDS: Record<Severity, { from: number; to: number }> = {
-  minimal: { from: 0, to: 5 },
-  mild: { from: 5, to: 10 },
-  moderate: { from: 10, to: 15 },
-  moderatelySevere: { from: 15, to: 20 },
-  severe: { from: 20, to: PHQ9_MAX },
-};
-
-/** Position on the 0–27 scale as a CSS percentage. */
-const scalePos = (v: number) => `${(Math.min(PHQ9_MAX, Math.max(0, v)) / PHQ9_MAX) * 100}%`;
-
 /**
- * Near either end, anchor a label to its inner side so it stays inside the
- * scale; otherwise center it on its position.
- */
-const edgeAnchor = (v: number, margin: number) =>
-  v <= margin ? "" : v >= PHQ9_MAX - margin ? "-translate-x-full" : "-translate-x-1/2";
-
-/**
- * Today's PHQ-9 score, shown once, on the scale rather than repeated as text
- * above it. The bar is neutral grey split into the five severity bands; only
- * the patient's own band is darkened and named underneath, so the card reads
- * without a green → red gradient. The end labels say which way is better.
+ * Today's PHQ-9 score as text only: the number, then its severity band.
+ * No scale here: the care-option strips below already place today's score
+ * on the 0–27 scale, so a second one on top only repeated it.
  */
 function CurrentScore({ score, severity }: { score: number; severity: Severity }) {
   const { tr } = useLang();
   const c = r.currentScore;
-  const band = SEVERITY_BANDS[severity];
-  const bandMid = (band.from + band.to) / 2;
 
   return (
     <div className="panel mt-6 p-6">
@@ -70,45 +47,16 @@ function CurrentScore({ score, severity }: { score: number; severity: Severity }
           <span aria-hidden="true">i</span>
         </InfoTooltip>
       </div>
-      {/* Screen readers get the score and band as one sentence; the scale itself is decorative. */}
-      <p className="sr-only">
-        {score} {tr(c.outOf27)}. {tr(SEVERITY_LABEL[severity])}{" "}
-        {fill(tr(c.range), { range: SEVERITY_RANGE[severity] })}
+      <p className="mt-1 flex items-baseline gap-2">
+        <span className="text-4xl font-semibold tabular-nums leading-none">{score}</span>
+        <span className="text-sm text-muted-foreground">{tr(c.outOf27)}</span>
       </p>
-
-      <div aria-hidden className="mt-10">
-        <div className="relative">
-          <div
-            className={`absolute bottom-full mb-1.5 ${edgeAnchor(score, 2)}`}
-            style={{ left: scalePos(score) }}
-          >
-            <span className="whitespace-nowrap text-sm font-semibold tabular-nums">
-              {fill(tr(c.you), { score })}
-            </span>
-          </div>
-          <ScoreStrip
-            score={score}
-            band={band}
-            cutoffs={Object.values(SEVERITY_BANDS)
-              .slice(1)
-              .map((b) => b.from)}
-          />
-        </div>
-        {/*
-         * Centered under the band, but sliding with it: at p% along the scale
-         * the label's own p% sits there, so it never overflows either edge.
-         */}
-        <p
-          className="mt-2 w-max max-w-full text-sm font-medium"
-          style={{ marginLeft: scalePos(bandMid), translate: `-${scalePos(bandMid)}` }}
-        >
-          {tr(SEVERITY_LABEL[severity])}
-        </p>
-        <div className="mt-1 flex justify-between gap-4 text-[11px] text-muted-foreground">
-          <span>{tr(c.min)}</span>
-          <span className="text-right">{tr(c.max)}</span>
-        </div>
-      </div>
+      <p className="mt-2 text-sm font-medium">
+        {tr(SEVERITY_LABEL[severity])}{" "}
+        <span className="whitespace-nowrap font-normal text-muted-foreground">
+          {fill(tr(c.range), { range: SEVERITY_RANGE[severity] })}
+        </span>
+      </p>
     </div>
   );
 }
