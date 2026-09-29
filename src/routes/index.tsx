@@ -45,7 +45,7 @@ function Index() {
     <div>
       {/* Hero: what this is, in one glance */}
       <section className="bg-brand-soft">
-        <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 pb-14 pt-24 sm:px-8 lg:grid-cols-[1.1fr_1fr] lg:pb-20 lg:pt-20">
+        <div className="mx-auto grid max-w-5xl items-center gap-10 px-4 pb-14 pt-24 sm:px-8 lg:grid-cols-[1.1fr_1fr] lg:pb-20 lg:pt-20">
           <div>
             <h1 className="text-balance-tight text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl">
               {tr(home.title)}
@@ -74,7 +74,7 @@ function Index() {
       </section>
 
       {/* How this works: three numbered steps */}
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-8">
+      <section className="mx-auto max-w-5xl px-4 py-16 sm:px-8">
         <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">{tr(home.about.heading)}</h2>
         <ol className="mt-10 grid gap-10 md:grid-cols-3 md:gap-8">
           {home.about.items.map((item, i) => {
@@ -108,7 +108,7 @@ function Index() {
 
       {/* Get started: two ways in */}
       <section id="start" className="scroll-mt-6 border-t border-border bg-brand-soft">
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-8">
+        <div className="mx-auto max-w-5xl px-4 py-16 sm:px-8">
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">{tr(e.heading)}</h2>
           <p className="mt-2 text-sm text-muted-foreground">{tr(e.intro)}</p>
 
@@ -156,7 +156,7 @@ function Index() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 pt-12 sm:px-8">
+      <section className="mx-auto max-w-5xl px-4 pt-12 sm:px-8">
         <CrisisNote />
       </section>
     </div>
