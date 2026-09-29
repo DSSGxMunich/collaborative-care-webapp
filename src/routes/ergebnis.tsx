@@ -263,7 +263,11 @@ function Results() {
           ? `${tr(r.scenarios.usualCare.description)} ${tr(r.scenarios.usualCare.note)}`
           : scenarioDescription(scenario),
         rank,
-        note: !isUsualCare && isHelpful(scenario) ? tr(r.legend.better) : "–",
+        note: isUsualCare
+          ? tr(r.ranking.comparisonLabel)
+          : isHelpful(scenario)
+            ? tr(r.legend.better)
+            : "–",
       };
     });
 
@@ -357,6 +361,7 @@ function Results() {
                 usualCareNote={tr(r.scenarios.usualCare.note)}
                 helpfulSectionLabel={tr(r.ranking.helpfulSection)}
                 otherSectionLabel={tr(r.ranking.otherSection)}
+                comparisonLabel={tr(r.ranking.comparisonLabel)}
                 rankAriaLabel={(rank, total) => fill(tr(r.ranking.rankAria), { rank, total })}
                 example={() => (
                   <ExamplePopover
