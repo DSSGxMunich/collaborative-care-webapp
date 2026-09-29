@@ -122,8 +122,8 @@
       "close": { "de": "Schließen", "en": "Close" }
     },
     "combinedNote": {
-      "de": "Schätzungen aus früheren Studien, in denen diese Bausteine gemeinsam statt einzeln erprobt wurden.",
-      "en": "Estimates from past studies, in which these components were tested together rather than one at a time."
+      "de": "In den Studien wurden diese Bausteine nur in Kombination erprobt. Die einzelnen Werte sind daraus berechnet.",
+      "en": "In the studies, these components were only tested in combination. The individual scores are calculated from those results."
     },
     "combinedNoteLink": { "de": "Was das bedeutet", "en": "What this means" }
   },
