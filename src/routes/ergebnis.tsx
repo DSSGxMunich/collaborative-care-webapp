@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CareRanking } from "@/components/CareRanking";
-import { ExamplePopover } from "@/components/ExamplePopover";
+import { CareOptions } from "@/components/CareOptions";
 import { ChartIcon, DownloadIcon } from "@/components/icons";
 import { InfoTooltip } from "@/components/InfoTooltip";
 import { EmptyState, PageBody, PageHero } from "@/components/PageHero";
@@ -12,7 +11,6 @@ import type { Scenario } from "@/lib/model";
 import { generateResultsPdf } from "@/lib/pdf";
 import { usePrediction } from "@/lib/usePrediction";
 import { ageFromBirthDate, SEX_OPTIONS } from "@/lib/session";
-import { chunk } from "@/lib/utils";
 import { WaitingBlocker } from "@/components/WaitingBlocker";
 import resultsContent from "@/content/results.json";
 
@@ -223,22 +221,6 @@ function Results() {
       ? tr(r.scenarios.usualCare.short)
       : scenario.components.map((id) => tr(r.components[id].short)).join(" + ");
 
-  /**
-   * Same components as scenarioLabel, but as an array of lines instead of
-   * one joined string, since CareRanking renders each line separately.
-   * Every scenario here has 0 or 1 component, so this always returns a
-   * single-element array — this chunking logic carries over from when
-   * packages could combine up to 4 components, but is harmless (and
-   * correct) for today's single-component-only scenarios.
-   */
-  const scenarioLabelLines = (scenario: Scenario): string[] =>
-    scenario.id === "usualCare"
-      ? [tr(r.scenarios.usualCare.short)]
-      : chunk(
-          scenario.components.map((id) => tr(r.components[id].short)),
-          2,
-        ).map((group) => group.join(" + "));
-
   /** Every row is a single component added alone, so it always has one unambiguous explanation to show. */
   const scenarioDescription = (scenario: Scenario): string | undefined => {
     const [id] = scenario.components;
@@ -345,68 +327,7 @@ function Results() {
         <CurrentScore score={p.baseline} severity={p.severity} />
 
         {/* ---------------- The result: ranked care components ---------------- */}
-        <section className="panel mt-6 p-6">
-          <h2 className="text-lg font-semibold">{tr(r.whatCanBeExpected)}</h2>
-          <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-            {tr(r.whatCanBeExpectedBody)}
-          </p>
-          <p className="mt-1.5 text-xs text-muted-foreground">
-            {tr(r.ranking.combinedNote)}{" "}
-            <Link
-              to="/methodology"
-              hash="singleComponents"
-              className="font-medium text-foreground underline underline-offset-2"
-            >
-              {tr(r.ranking.combinedNoteLink)}
-            </Link>
-          </p>
-
-          {usualCareScenario && (
-            <div className="mt-5">
-              <CareRanking
-                usualCare={usualCareScenario}
-                ranked={rankedScenarios}
-                labelLines={scenarioLabelLines}
-                description={scenarioDescription}
-                helpful={isHelpful}
-                usualCareDescription={tr(r.scenarios.usualCare.description)}
-                usualCareNote={tr(r.scenarios.usualCare.note)}
-                helpfulSectionLabel={tr(r.ranking.helpfulSection)}
-                otherSectionLabel={tr(r.ranking.otherSection)}
-                comparisonLabel={tr(r.ranking.comparisonLabel)}
-                rankAriaLabel={(rank, total) => fill(tr(r.ranking.rankAria), { rank, total })}
-                example={(scenario) => {
-                  const [id] = scenario.components;
-                  if (id === undefined) return null;
-                  const study = r.components[id].example;
-                  return (
-                    <ExamplePopover
-                      buttonLabel={tr(r.ranking.example.button)}
-                      heading={tr(r.ranking.example.heading)}
-                      text={tr(study.text)}
-                      source={tr(study.source)}
-                      closeLabel={tr(r.ranking.example.close)}
-                    />
-                  );
-                }}
-                outcome={{
-                  baseline: p.baseline,
-                  todayLabel: tr(r.legend.today),
-                  expectedLabel: () => tr(r.legend.expected),
-                  lowLabel: tr(r.legend.fewer),
-                  highLabel: tr(r.legend.more),
-                  legend: {
-                    expected: tr(r.legend.expected),
-                    helpful: tr(r.legend.helpful),
-                    interval: tr(r.legend.interval),
-                    today: tr(r.legend.today),
-                    scale: tr(r.legend.scale),
-                  },
-                }}
-              />
-            </div>
-          )}
-        </section>
+        <CareOptions baseline={p.baseline} scenarios={p.scenarios} />
 
         {/* ---------------- About these estimates: research basis + inputs ---------------- */}
         <section className="panel mt-6 p-6">

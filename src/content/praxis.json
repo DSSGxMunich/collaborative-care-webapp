@@ -38,47 +38,6 @@
     "de": "Geschätzte Beschwerdewerte (Entwicklung des PHQ-9-Werts) nach 12 Monaten mit verschiedenen Versorgungsangeboten",
     "en": "Estimated symptom scores (PHQ-9 score development) after 12 months with different care options"
   },
-  "modelEstimatesIntro": {
-    "de": "Niedriger = weniger Beschwerden. Bausteine zusätzlich zur üblichen Versorgung, gereiht vom für diese:n Patient:in wahrscheinlich hilfreichsten an.",
-    "en": "Lower = fewer symptoms. Components on top of usual care, ranked from most likely to help this patient."
-  },
-  "modelEstimatesCaveat": {
-    "de": "Die Bausteine wurden nur in Kombination erprobt; Einzelschätzungen sind modellbasiert.",
-    "en": "Components were only trial-tested in combination; single estimates are model-based."
-  },
-  "modelEstimatesCaveatLink": { "de": "Wie verlässlich?", "en": "How reliable?" },
-  "ranking": {
-    "helpfulSection": {
-      "de": "Wahrscheinlich hilfreicher als die übliche Versorgung",
-      "en": "Likely to help more than usual care"
-    },
-    "otherSection": { "de": "Weitere Bausteine", "en": "Other components" },
-    "comparisonLabel": { "de": "Zum Vergleich", "en": "For comparison" },
-    "rankAria": {
-      "de": "Rang {rank} von {total}, nach erwartetem Zusatznutzen gereiht",
-      "en": "Rank {rank} of {total}, ranked by expected added benefit"
-    }
-  },
-  "outcome": {
-    "today": { "de": "PHQ-9 heute ({baseline})", "en": "PHQ-9 today ({baseline})" },
-    "todayLine": { "de": "PHQ-9 heute", "en": "PHQ-9 today" },
-    "expected": {
-      "de": "Erwarteter PHQ-9 nach 12 Mo. (Mittelwert)",
-      "en": "Expected PHQ-9 at 12 mo. (mean)"
-    },
-    "expectedHover": {
-      "de": "Erwarteter PHQ-9 nach 12 Mo.: {value}",
-      "en": "Expected PHQ-9 at 12 mo.: {value}"
-    },
-    "helpful": { "de": "Niedriger als heute", "en": "Lower than today" },
-    "interval": { "de": "95 %-Kredibilitätsintervall", "en": "95% credible interval" },
-    "scale": {
-      "de": "PHQ-9-Skala 0–27, niedriger = besser",
-      "en": "PHQ-9 scale 0–27, lower = better"
-    },
-    "fewer": { "de": "weniger Beschwerden", "en": "fewer symptoms" },
-    "more": { "de": "mehr Beschwerden", "en": "more symptoms" }
-  },
   "rows": {
     "phq9Total": { "de": "PHQ-9 Summenwert", "en": "PHQ-9 total" },
     "severity": { "de": "Schweregrad", "en": "Severity" },
