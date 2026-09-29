@@ -27,20 +27,23 @@ function Support() {
   return (
     <>
       <PageHero icon={<MapPinIcon className="h-6 w-6" />} title={tr(s.title)} intro={tr(s.intro)}>
-        <div className="panel max-w-xl p-5">
-          <label htmlFor="place" className="text-sm font-semibold">
-            {tr(s.locationLabel)}
-          </label>
-          <p className="mt-1 text-xs text-muted-foreground">{tr(s.locationHint)}</p>
-          <div className="relative mt-3">
-            <SearchIcon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <input
-              id="place"
-              value={place}
-              onChange={(e) => setPlace(e.target.value.slice(0, 80))}
-              placeholder={tr(s.locationPlaceholder)}
-              className="w-full rounded-md border border-input bg-background py-2 pl-9 pr-3 text-sm outline-none focus:border-primary"
-            />
+        {/* Same grid as the offer cards below, so the box is exactly one card wide. */}
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="panel p-5">
+            <label htmlFor="place" className="text-sm font-semibold">
+              {tr(s.locationLabel)}
+            </label>
+            <p className="mt-1 text-xs text-muted-foreground">{tr(s.locationHint)}</p>
+            <div className="relative mt-3">
+              <SearchIcon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <input
+                id="place"
+                value={place}
+                onChange={(e) => setPlace(e.target.value.slice(0, 80))}
+                placeholder={tr(s.locationPlaceholder)}
+                className="w-full rounded-md border border-input bg-background py-2 pl-9 pr-3 text-sm outline-none focus:border-primary"
+              />
+            </div>
           </div>
         </div>
       </PageHero>
