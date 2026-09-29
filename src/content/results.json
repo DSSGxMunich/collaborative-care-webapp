@@ -457,24 +457,24 @@
     "heading": { "de": "Über diese Schätzungen", "en": "About these estimates" },
     "facts": [
       {
-        "value": { "de": "12", "en": "12" },
+        "value": { "de": "12 RCTs", "en": "12 RCTs" },
         "label": {
-          "de": "randomisierte kontrollierte Studien zur strukturierten Depressionsversorgung",
-          "en": "randomised controlled trials of structured depression care"
+          "de": "Randomisierte kontrollierte Studien zur kollaborativen Depressionsversorgung bilden die Grundlage dieser Schätzungen.",
+          "en": "Randomised controlled trials of collaborative depression care are the evidence behind these estimates."
         }
       },
       {
-        "value": { "de": "10", "en": "10" },
+        "value": { "de": "10 Bausteine", "en": "10 components" },
         "label": {
-          "de": "Versorgungsbausteine, in den Studien in verschiedenen Kombinationen erprobt, hier einzeln geschätzt",
-          "en": "care components, tested in different combinations in the studies and estimated one by one here"
+          "de": "Die Studien haben die Versorgungsbausteine in Kombination erprobt; hier wird jeder einzeln geschätzt.",
+          "en": "The trials tested the care components in combination; here each one is estimated on its own."
         }
       },
       {
         "value": { "de": "12 Monate", "en": "12 months" },
         "label": {
-          "de": "nach Beginn der Versorgung – auf diesen Zeitpunkt beziehen sich alle Schätzungen",
-          "en": "after starting care – the time point all estimates refer to"
+          "de": "Jede Schätzung gibt Ihren erwarteten PHQ-9-Wert 12 Monate nach Beginn der Versorgung an.",
+          "en": "Each estimate is your expected PHQ-9 score 12 months after care begins."
         }
       }
     ],
