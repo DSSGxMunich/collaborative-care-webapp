@@ -1,5 +1,5 @@
 {
-  "title": { "de": "Kurzbefund für die Praxis", "en": "Short report for the practice" },
+  "title": { "de": "Praxis-Kurzbefund", "en": "Practice report" },
   "subtitle": {
     "de": "Vom Patienten selbst ausgefüllt. Alle Angaben sind Selbstauskunft und ersetzen keine Diagnostik.",
     "en": "Completed by the patient. All entries are self-report and do not replace clinical assessment."
@@ -105,12 +105,11 @@
   "table": {
     "careComponent": { "de": "Versorgungsbaustein", "en": "Care component" },
     "rank": { "de": "Rang", "en": "Rank" },
-    "endpoint": { "de": "PHQ-9 12 Mo. (95%-KI)", "en": "PHQ-9 12 mo. (95% CI)" },
     "note": { "de": "Einschätzung", "en": "Assessment" },
     "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" }
   },
   "footer": {
-    "de": "Dieser Kurzbefund stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Bausteine sind nach erwartetem Zusatznutzen gereiht; die Werte zeigen den erwarteten PHQ-9 nach 12 Monaten mit 95 %-Posterior-Kredibilitätsintervall. Die Einschätzungen sind nicht klinisch validiert. Alle Angaben bleiben in der Browser-Sitzung des Patienten.",
-    "en": "This report comes from a research prototype built on a component network meta-analysis (10 components, 12 studies). Components are ranked by expected added benefit; values show the expected PHQ-9 at 12 months with its 95% posterior credible interval. These assessments haven't been clinically validated. Everything entered stays in the patient's browser session."
+    "de": "Dieser Kurzbefund stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Bausteine sind nach erwartetem Zusatznutzen gereiht. Die Einschätzungen sind nicht klinisch validiert. Alle Angaben bleiben in der Browser-Sitzung des Patienten.",
+    "en": "This report comes from a research prototype built on a component network meta-analysis (10 components, 12 studies). Components are ranked by expected added benefit. These assessments haven't been clinically validated. Everything entered stays in the patient's browser session."
   }
 }

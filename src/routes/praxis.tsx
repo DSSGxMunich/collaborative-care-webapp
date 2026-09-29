@@ -22,7 +22,7 @@ import resultsContent from "@/content/results.json";
 export const Route = createFileRoute("/praxis")({
   head: () => ({
     meta: [
-      { title: "Kurzbefund für die Praxis | Versorgungskompass" },
+      { title: "Praxis-Kurzbefund | Versorgungskompass" },
       { name: "description", content: praxisContent.subtitle.de },
     ],
   }),
@@ -33,7 +33,7 @@ const c = praxisContent;
 const r = resultsContent;
 
 function Clinician() {
-  const { tr } = useLang();
+  const { tr, lang } = useLang();
   const p = usePrediction();
 
   if (!p.hydrated) return <div className="mx-auto max-w-3xl px-4 py-16" />;
@@ -56,7 +56,7 @@ function Clinician() {
   }
 
   // Waiting-room answers stay locked until the GP enters the patient's code
-  // here — this page ("For the practice") is where that code is entered.
+  // here — this page ("Practice") is where that code is entered.
   if (p.session.mode === "waitingRoom" && !p.session.unlocked) {
     return (
       <>
@@ -162,12 +162,6 @@ function Clinician() {
   const rankedScenarios = p.scenarios.filter((s) => s.id !== "usualCare");
   const usualCareScenario = p.scenarios.find((s) => s.id === "usualCare");
 
-  /** e.g. "9.2 (7.1–11.4)": expected 12-month PHQ-9 and its 95% credible interval. */
-  const formatEndpoint = (scenario: (typeof p.scenarios)[number]) => {
-    const f = (x: number) => x.toFixed(1);
-    return `${f(scenario.expectedEndpoint)} (${f(scenario.endpointRange[0])}–${f(scenario.endpointRange[1])})`;
-  };
-
   const scenarioTableRows = (scenarios: typeof p.scenarios) =>
     scenarios.map((scenario) => {
       const isUsualCare = scenario.id === "usualCare";
@@ -178,14 +172,16 @@ function Clinician() {
           ? `${tr(r.scenarios.usualCare.description)} ${tr(r.scenarios.usualCare.note)}`
           : careComponentDescription(scenario),
         rank,
-        endpoint: formatEndpoint(scenario),
         note: !isUsualCare && isHelpful(scenario) ? tr(c.table.better) : "–",
+        helpful: !isUsualCare && isHelpful(scenario),
       };
     });
 
   const downloadPdf = () => {
     const [riskRow, ...restRows] = rows;
     generatePraxisPdf({
+      appName: tr(ui.appName),
+      lang,
       filenamePrefix: tr({ de: "kurzbefund-praxis", en: "clinical-summary" }),
       title: tr(c.title),
       subtitle: tr(c.subtitle),
@@ -204,7 +200,6 @@ function Clinician() {
       tableHeaders: {
         careComponent: tr(c.table.careComponent),
         rank: tr(c.table.rank),
-        endpoint: tr(c.table.endpoint),
         note: tr(c.table.note),
       },
       scenarioTables: [

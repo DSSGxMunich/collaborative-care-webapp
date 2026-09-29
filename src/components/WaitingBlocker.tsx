@@ -12,7 +12,7 @@ const w = wartezimmerContent;
  * The waiting-room results gate. Shown on /warten right after the
  * questionnaire, and also on /ergebnis if someone navigates there directly
  * before a GP has unlocked results. The code itself is only entered on the
- * "For the practice" page (src/routes/praxis.tsx, via GpUnlockCard) — a GP
+ * "Practice" page (src/routes/praxis.tsx, via GpUnlockCard) — a GP
  * arriving here is pointed there, rather than this page duplicating the
  * same unlock form.
  */
