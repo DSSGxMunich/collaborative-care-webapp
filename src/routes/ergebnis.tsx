@@ -64,9 +64,9 @@ function CurrentScore({ score, severity }: { score: number; severity: Severity }
         </span>
       </p>
 
-      {/* The scale is decorative: every fact on it is also stated in text above/below. */}
-      <div aria-hidden className="mt-8">
-        <div className="relative">
+      {/* The bar is decorative; its end labels below say which way is better. */}
+      <div className="mt-8">
+        <div aria-hidden className="relative">
           {/* Near either end, anchor the label to the marker's inner side so it stays inside the scale. */}
           <div
             className={`absolute bottom-full mb-1.5 ${score <= 2 ? "" : score >= PHQ9_MAX - 2 ? "-translate-x-full" : "-translate-x-1/2"}`}
@@ -95,7 +95,6 @@ function CurrentScore({ score, severity }: { score: number; severity: Severity }
           <span className="text-right">{tr(c.max)}</span>
         </div>
       </div>
-      <p className="mt-2 text-xs text-muted-foreground">← {tr(c.direction)}</p>
     </div>
   );
 }
@@ -344,8 +343,6 @@ function Results() {
             ))}
           </dl>
           <div className="mt-5 space-y-2 text-sm leading-relaxed text-muted-foreground">
-            <p>{tr(r.aboutEstimates.research)}</p>
-            <p>{tr(r.aboutEstimates.ranking)}</p>
             <p>{tr(r.predictorsNote)}</p>
           </div>
 

@@ -96,22 +96,13 @@
     "max": {
       "de": "27: höchstmöglicher Beschwerdewert",
       "en": "27: highest possible symptom score"
-    },
-    "direction": {
-      "de": "Niedrigere Werte bedeuten weniger depressive Beschwerden",
-      "en": "Lower scores mean fewer depressive symptoms"
     }
   },
   "legend": {
     "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
     "expected": { "de": "Erwarteter Wert nach 12 Monaten", "en": "Expected result at 12 months" },
-    "helpful": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
     "interval": { "de": "Unsicherheitsbereich", "en": "Range of uncertainty" },
     "today": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" },
-    "scale": {
-      "de": "PHQ-9-Skala 0–27, niedriger = weniger Beschwerden",
-      "en": "PHQ-9 scale 0–27, lower = fewer symptoms"
-    },
     "fewer": { "de": "weniger Beschwerden", "en": "fewer symptoms" },
     "more": { "de": "mehr Beschwerden", "en": "more symptoms" }
   },
@@ -132,8 +123,8 @@
       "close": { "de": "Schließen", "en": "Close" }
     },
     "combinedNote": {
-      "de": "Diese Bausteine wurden in Studien gemeinsam erprobt, nicht einzeln.",
-      "en": "These components were tested together in studies, not one at a time."
+      "de": "Schätzungen aus früheren Studien, in denen diese Bausteine gemeinsam statt einzeln erprobt wurden.",
+      "en": "Estimates from past studies, in which these components were tested together rather than one at a time."
     },
     "combinedNoteLink": { "de": "Was das bedeutet", "en": "What this means" }
   },

@@ -134,10 +134,8 @@ export function ScaleAxis({
 
 export type OutcomeLegendLabels = {
   expected: string;
-  helpful: string;
   interval: string;
   today: string;
-  scale: string;
 };
 
 /** Legend for OutcomeStrip. Each swatch uses the same classes as the strip itself. */
@@ -154,13 +152,8 @@ export function OutcomeLegend({ labels }: { labels: OutcomeLegendLabels }) {
         <span className="h-3 w-3 shrink-0 rounded-full border-2 border-primary bg-card" />,
         labels.expected,
       )}
-      {item(
-        <span className="h-3 w-3 shrink-0 rounded-full border-2 border-success bg-card" />,
-        labels.helpful,
-      )}
       {item(<span className="h-0.5 w-4 shrink-0 rounded-full bg-primary/35" />, labels.interval)}
       {item(<span className="h-3 w-0 shrink-0 border-l-2 border-foreground/70" />, labels.today)}
-      {item(null, labels.scale)}
     </div>
   );
 }

@@ -34,9 +34,6 @@ export function CareOptions({ baseline, scenarios }: { baseline: number; scenari
     <section className="panel mt-6 p-6">
       <h2 className="text-lg font-semibold">{tr(r.whatCanBeExpected)}</h2>
       <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-        {tr(r.whatCanBeExpectedBody)}
-      </p>
-      <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
         {tr(r.ranking.combinedNote)}{" "}
         <Link
           to="/methodology"
@@ -83,10 +80,8 @@ export function CareOptions({ baseline, scenarios }: { baseline: number; scenari
               highLabel: tr(r.legend.more),
               legend: {
                 expected: tr(r.legend.expected),
-                helpful: tr(r.legend.helpful),
                 interval: tr(r.legend.interval),
                 today: tr(r.legend.today),
-                scale: tr(r.legend.scale),
               },
             }}
           />
