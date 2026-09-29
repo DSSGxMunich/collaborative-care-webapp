@@ -87,16 +87,7 @@
       "de": "Der PHQ-9-Wert gibt die Beschwerden wieder, die Sie für die letzten zwei Wochen angegeben haben. Er allein stellt keine Diagnose. Diese kann nur im Gespräch mit Ihrer Hausarztpraxis oder einer Fachperson gestellt werden.",
       "en": "The PHQ-9 score reflects the symptoms you reported for the past two weeks. On its own, it does not establish a diagnosis. That can only be made in a conversation with your GP or another healthcare professional."
     },
-    "infoAria": { "de": "Was bedeutet dieser Wert?", "en": "What does this score mean?" },
-    "you": { "de": "Sie: {score}", "en": "You: {score}" },
-    "min": {
-      "de": "0: keine depressiven Beschwerden angegeben",
-      "en": "0: no depressive symptoms reported"
-    },
-    "max": {
-      "de": "27: höchstmöglicher Beschwerdewert",
-      "en": "27: highest possible symptom score"
-    }
+    "infoAria": { "de": "Was bedeutet dieser Wert?", "en": "What does this score mean?" }
   },
   "legend": {
     "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },

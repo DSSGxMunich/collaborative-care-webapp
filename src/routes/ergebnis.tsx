@@ -5,7 +5,6 @@ import { ChartIcon, DownloadIcon } from "@/components/icons";
 import { InfoTooltip } from "@/components/InfoTooltip";
 import { EmptyState, PageBody, PageHero } from "@/components/PageHero";
 import { fill, ui, useLang } from "@/lib/i18n";
-import { PHQ9_MAX } from "@/components/OutcomeStrip";
 import { SEVERITY_LABEL, SEVERITY_RANGE, type Severity } from "@/lib/phq9";
 import type { Scenario } from "@/lib/model";
 import { generateResultsPdf } from "@/lib/pdf";
@@ -26,19 +25,14 @@ export const Route = createFileRoute("/ergebnis")({
 
 const r = resultsContent;
 
-/** Where the PHQ-9 severity bands start (0–4, 5–9, 10–14, 15–19, 20–27). */
-const SEVERITY_CUTOFFS = [5, 10, 15, 20];
-
 /**
- * Today's PHQ-9 score, read top to bottom: the number, its severity band,
- * then a 0–27 scale with a marker. The scale says "lower is better" three
- * ways at once (end labels, an arrow sentence, and a green → red fill), so
- * nobody reads a high score as a good one.
+ * Today's PHQ-9 score as text only: the number, then its severity band.
+ * No scale here: the care-option strips below already place today's score
+ * on the 0–27 scale, so a second one on top only repeated it.
  */
 function CurrentScore({ score, severity }: { score: number; severity: Severity }) {
   const { tr } = useLang();
   const c = r.currentScore;
-  const pos = `${(Math.min(PHQ9_MAX, Math.max(0, score)) / PHQ9_MAX) * 100}%`;
 
   return (
     <div className="panel mt-6 p-6">
@@ -63,38 +57,6 @@ function CurrentScore({ score, severity }: { score: number; severity: Severity }
           {fill(tr(c.range), { range: SEVERITY_RANGE[severity] })}
         </span>
       </p>
-
-      {/* The bar is decorative; its end labels below say which way is better. */}
-      <div className="mt-8">
-        <div aria-hidden className="relative">
-          {/* Near either end, anchor the label to the marker's inner side so it stays inside the scale. */}
-          <div
-            className={`absolute bottom-full mb-1.5 ${score <= 2 ? "" : score >= PHQ9_MAX - 2 ? "-translate-x-full" : "-translate-x-1/2"}`}
-            style={{ left: pos }}
-          >
-            <span className="whitespace-nowrap text-xs font-semibold tabular-nums">
-              {fill(tr(c.you), { score })}
-            </span>
-          </div>
-          <div className="relative h-2 overflow-hidden rounded-full bg-linear-to-r from-success/55 via-warning/50 to-destructive/55">
-            {SEVERITY_CUTOFFS.map((t) => (
-              <span
-                key={t}
-                className="absolute inset-y-0 w-0.5 bg-background"
-                style={{ left: `${(t / PHQ9_MAX) * 100}%` }}
-              />
-            ))}
-          </div>
-          <span
-            className="absolute top-1/2 h-4 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-foreground ring-2 ring-background"
-            style={{ left: pos }}
-          />
-        </div>
-        <div className="mt-1.5 flex justify-between gap-4 text-[11px] text-muted-foreground">
-          <span>{tr(c.min)}</span>
-          <span className="text-right">{tr(c.max)}</span>
-        </div>
-      </div>
     </div>
   );
 }
