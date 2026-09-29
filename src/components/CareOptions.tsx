@@ -65,7 +65,6 @@ export function CareOptions({ baseline, scenarios }: { baseline: number; scenari
               return (
                 <ExamplePopover
                   buttonLabel={tr(r.ranking.example.button)}
-                  heading={tr(r.ranking.example.heading)}
                   text={tr(study.text)}
                   source={tr(study.source)}
                   closeLabel={tr(r.ranking.example.close)}

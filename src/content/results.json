@@ -118,8 +118,7 @@
       "en": "Rank {rank} of {total}, ordered by expected benefit, most helpful care component first"
     },
     "example": {
-      "button": { "de": "Beispiele aus den Studien", "en": "Examples from the studies" },
-      "heading": { "de": "So sah das in einer Studie aus", "en": "How this looked in a study" },
+      "button": { "de": "So sah das in einer Studie aus", "en": "How this looked in a study" },
       "close": { "de": "Schließen", "en": "Close" }
     },
     "combinedNote": {
