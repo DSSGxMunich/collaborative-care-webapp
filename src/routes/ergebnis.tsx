@@ -358,15 +358,20 @@ function Results() {
                 helpfulSectionLabel={tr(r.ranking.helpfulSection)}
                 otherSectionLabel={tr(r.ranking.otherSection)}
                 rankAriaLabel={(rank, total) => fill(tr(r.ranking.rankAria), { rank, total })}
-                example={() => (
-                  <ExamplePopover
-                    buttonLabel="Example from a study"
-                    heading="How this looked in a study"
-                    text="[PLACEHOLDER: real text from the team] In one of the studies, a psychiatrist met the care manager once a week to review all patients on the list and suggested changes to treatment where symptoms were not improving. Patients did not need to see the psychiatrist themselves."
-                    source="[Placeholder source: Study name, country, year]"
-                    closeLabel="Close"
-                  />
-                )}
+                example={(scenario) => {
+                  const [id] = scenario.components;
+                  if (id === undefined) return null;
+                  const study = r.components[id].example;
+                  return (
+                    <ExamplePopover
+                      buttonLabel={tr(r.ranking.example.button)}
+                      heading={tr(r.ranking.example.heading)}
+                      text={tr(study.text)}
+                      source={tr(study.source)}
+                      closeLabel={tr(r.ranking.example.close)}
+                    />
+                  );
+                }}
                 outcome={{
                   baseline: p.baseline,
                   todayLabel: tr(r.legend.today),
