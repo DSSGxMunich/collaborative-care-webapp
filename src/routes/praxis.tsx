@@ -14,7 +14,7 @@ import {
 } from "@/lib/session";
 import { GpUnlockCard } from "@/components/GpUnlockCard";
 import { DownloadIcon, StethoscopeIcon } from "@/components/icons";
-import { EmptyState, PageBody, PageHero } from "@/components/PageHero";
+import { PageBody, PageHero } from "@/components/PageHero";
 import praxisContent from "@/content/praxis.json";
 import resultsContent from "@/content/results.json";
 
@@ -37,26 +37,11 @@ function Clinician() {
 
   if (!p.hydrated) return <div className="mx-auto max-w-3xl px-4 py-16" />;
 
-  if (!p.complete) {
-    return (
-      <EmptyState
-        icon={<StethoscopeIcon className="h-6 w-6" />}
-        title={tr(ui.nav.clinician)}
-        body={tr(ui.noData)}
-      >
-        <Link
-          to="/fragebogen"
-          className="inline-flex rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
-        >
-          {tr(ui.buttons.start)}
-        </Link>
-      </EmptyState>
-    );
-  }
-
-  // Waiting-room answers stay locked until the GP enters the patient's code
-  // here — this page ("Practice") is where that code is entered.
-  if (p.session.mode === "waitingRoom" && !p.session.unlocked) {
+  // No answers on this device (typically the GP's own computer), or
+  // waiting-room answers still locked: this page ("Practice") is where the
+  // patient's code is entered. The code carries the answers, so it works here
+  // whether or not the patient filled in the questionnaire on this device.
+  if (!p.complete || (p.session.mode === "waitingRoom" && !p.session.unlocked)) {
     return (
       <>
         <PageHero
@@ -66,6 +51,17 @@ function Clinician() {
         />
         <PageBody>
           <GpUnlockCard />
+          {!p.complete && (
+            <p className="mt-4 text-sm text-muted-foreground">
+              {tr(c.unlock.noCode)}{" "}
+              <Link
+                to="/fragebogen"
+                className="font-medium text-primary underline underline-offset-2"
+              >
+                {tr(ui.buttons.start)}
+              </Link>
+            </p>
+          )}
         </PageBody>
       </>
     );
@@ -284,6 +280,11 @@ function Clinician() {
         </section>
 
         <CareOptions baseline={p.baseline} scenarios={p.scenarios} />
+
+        {/* The next patient's code can be entered straight from here. */}
+        <section className="mt-10 print:hidden">
+          <GpUnlockCard />
+        </section>
       </PageBody>
     </>
   );

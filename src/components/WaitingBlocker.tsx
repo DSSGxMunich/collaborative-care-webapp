@@ -3,7 +3,7 @@ import { LockIcon } from "@/components/icons";
 import { EmptyState } from "@/components/PageHero";
 import { useLang } from "@/lib/i18n";
 import { useSession } from "@/lib/session";
-import { computeUnlockCode } from "@/lib/unlockCode";
+import { encodeAnswers, formatUnlockCode } from "@/lib/unlockCode";
 import wartezimmerContent from "@/content/wartezimmer.json";
 
 const w = wartezimmerContent;
@@ -11,15 +11,17 @@ const w = wartezimmerContent;
 /**
  * The waiting-room results gate. Shown on /warten right after the
  * questionnaire, and also on /ergebnis if someone navigates there directly
- * before a GP has unlocked results. The code itself is only entered on the
- * "Practice" page (src/routes/praxis.tsx, via GpUnlockCard) — a GP
- * arriving here is pointed there, rather than this page duplicating the
- * same unlock form.
+ * before a GP has unlocked results. The code carries the answers (see
+ * unlockCode.ts), so the GP can enter it on the "Practice" page
+ * (src/routes/praxis.tsx, via GpUnlockCard) on their own computer or on this
+ * device — this page only shows it.
  */
 export function WaitingBlocker() {
   const { tr } = useLang();
   const { session } = useSession();
-  const code = computeUnlockCode(session);
+  // Only rendered once the questionnaire is complete, so this is never null
+  // in practice; the fallback keeps the page from breaking if it ever is.
+  const code = encodeAnswers(session);
 
   return (
     <EmptyState
@@ -31,7 +33,9 @@ export function WaitingBlocker() {
         <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
           {tr(w.blocked.codeLabel)}
         </p>
-        <p className="mt-2 font-mono text-4xl font-bold tracking-[0.3em]">{code}</p>
+        <p className="mt-2 whitespace-nowrap font-mono text-2xl font-bold tracking-[0.1em] sm:text-4xl sm:tracking-[0.15em]">
+          {code ? formatUnlockCode(code) : "–"}
+        </p>
         <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
           {tr(w.blocked.codeHint)}
         </p>

@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Choice, DateField, MultiChoice, YesNoField } from "@/components/fields";
 import { ClipboardIcon } from "@/components/icons";
-import { IconTile } from "@/components/PageHero";
+import { PageBody, PageHero } from "@/components/PageHero";
 import { ui, useLang } from "@/lib/i18n";
 import { PHQ9_INTRO, PHQ9_ITEMS, PHQ9_OPTIONS } from "@/lib/phq9";
 import {
@@ -94,41 +94,34 @@ function Questionnaire() {
 
   return (
     <>
-      <section className="border-b border-border bg-brand-soft">
-        <div className="mx-auto max-w-3xl px-4 pb-8 pt-12 sm:px-8">
-          <div className="flex items-center gap-3">
-            <IconTile>
-              <ClipboardIcon className="h-5 w-5" />
-            </IconTile>
-            <p
-              key={index}
-              className="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
-            >
-              {`${tr(ui.step)} ${index + 1} ${tr(ui.of)} ${total}`}
-            </p>
-          </div>
-          <h1 className="mt-4 text-3xl font-bold tracking-tight">{tr(ui.nav.questionnaire)}</h1>
+      <PageHero
+        icon={<ClipboardIcon className="h-6 w-6" />}
+        title={tr(q.stepTitles[key])}
+        {...(key === "safety" ? { intro: tr(q.safety.intro) } : {})}
+      >
+        <p
+          key={index}
+          className="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
+        >
+          {`${tr(ui.nav.questionnaire)} · ${tr(ui.step)} ${index + 1} ${tr(ui.of)} ${total}`}
+        </p>
+        <div
+          className="mt-3 h-2 w-full overflow-hidden rounded-full bg-card"
+          role="progressbar"
+          aria-valuemin={1}
+          aria-valuemax={total}
+          aria-valuenow={index + 1}
+        >
           <div
-            className="mt-5 h-2 w-full overflow-hidden rounded-full bg-card"
-            role="progressbar"
-            aria-valuemin={1}
-            aria-valuemax={total}
-            aria-valuenow={index + 1}
-          >
-            <div
-              className="h-full rounded-full bg-primary transition-all duration-300"
-              style={{ width: `${((index + 1) / total) * 100}%` }}
-            />
-          </div>
+            className="h-full rounded-full bg-primary transition-all duration-300"
+            style={{ width: `${((index + 1) / total) * 100}%` }}
+          />
         </div>
-      </section>
+      </PageHero>
 
-      <div className="mx-auto max-w-3xl px-4 py-10 sm:px-8">
+      <PageBody>
         {key === "basics" && (
           <div className="space-y-6">
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              {tr(q.profile.sectionIntro)}
-            </p>
             <DateField
               label={q.profile.age.question}
               min={dateBounds.min}
@@ -173,7 +166,6 @@ function Questionnaire() {
 
         {key === "safety" && (
           <div className="space-y-3">
-            <p className="text-sm leading-relaxed text-muted-foreground">{tr(q.safety.intro)}</p>
             <YesNoField
               label={q.safety.questions.past}
               value={session.safety.past}
@@ -209,9 +201,6 @@ function Questionnaire() {
 
         {key === "history" && (
           <div className="space-y-6">
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              {tr(q.profile.historyIntro)}
-            </p>
             <YesNoField
               label={q.profile.priorEpisode.question}
               value={session.profile.priorEpisode}
@@ -256,7 +245,7 @@ function Questionnaire() {
             </button>
           </div>
         </div>
-      </div>
+      </PageBody>
     </>
   );
 }
