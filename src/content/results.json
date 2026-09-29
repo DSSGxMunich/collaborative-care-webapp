@@ -473,8 +473,8 @@
       {
         "value": { "de": "12 Monate", "en": "12 months" },
         "label": {
-          "de": "nach Beginn: auf diesen Zeitpunkt beziehen sich die Schätzungen",
-          "en": "after the start: the point in time the estimates refer to"
+          "de": "nach Beginn der Versorgung – auf diesen Zeitpunkt beziehen sich alle Schätzungen",
+          "en": "after starting care – the time point all estimates refer to"
         }
       }
     ],
