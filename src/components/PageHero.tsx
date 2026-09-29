@@ -68,7 +68,7 @@ export function PageHero({
           {title}
         </h1>
         {intro && (
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">{intro}</p>
+          <p className="mt-4 text-base leading-relaxed text-muted-foreground">{intro}</p>
         )}
         {children && <div className="mt-6">{children}</div>}
       </div>
