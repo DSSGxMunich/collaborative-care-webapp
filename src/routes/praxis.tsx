@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CareRanking } from "@/components/CareRanking";
+import { CareOptions } from "@/components/CareOptions";
 import { fill, ui, useLang } from "@/lib/i18n";
 import { PHQ9_ITEMS, SEVERITY_LABEL } from "@/lib/phq9";
 import { assessRisk } from "@/lib/safety";
@@ -12,14 +12,16 @@ import {
   PROBABILITY_OPTIONS,
   SEX_OPTIONS,
 } from "@/lib/session";
-import { chunk } from "@/lib/utils";
+import { GpUnlockCard } from "@/components/GpUnlockCard";
+import { DownloadIcon, StethoscopeIcon } from "@/components/icons";
+import { PageBody, PageHero } from "@/components/PageHero";
 import praxisContent from "@/content/praxis.json";
 import resultsContent from "@/content/results.json";
 
 export const Route = createFileRoute("/praxis")({
   head: () => ({
     meta: [
-      { title: "Kurzbefund für die Praxis – Versorgungskompass" },
+      { title: "Praxis-Kurzbefund | Versorgungskompass" },
       { name: "description", content: praxisContent.subtitle.de },
     ],
   }),
@@ -30,23 +32,38 @@ const c = praxisContent;
 const r = resultsContent;
 
 function Clinician() {
-  const { tr } = useLang();
+  const { tr, lang } = useLang();
   const p = usePrediction();
 
   if (!p.hydrated) return <div className="mx-auto max-w-3xl px-4 py-16" />;
 
-  if (!p.complete) {
+  // No answers on this device (typically the GP's own computer), or
+  // waiting-room answers still locked: this page ("Practice") is where the
+  // patient's code is entered. The code carries the answers, so it works here
+  // whether or not the patient filled in the questionnaire on this device.
+  if (!p.complete || (p.session.mode === "waitingRoom" && !p.session.unlocked)) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-16 text-center">
-        <h1 className="text-xl font-semibold">{tr(ui.nav.clinician)}</h1>
-        <p className="mt-3 text-sm text-muted-foreground">{tr(ui.noData)}</p>
-        <Link
-          to="/fragebogen"
-          className="mt-6 inline-flex rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
-        >
-          {tr(ui.buttons.start)}
-        </Link>
-      </div>
+      <>
+        <PageHero
+          icon={<StethoscopeIcon className="h-6 w-6" />}
+          title={tr(c.title)}
+          intro={tr(c.subtitle)}
+        />
+        <PageBody>
+          <GpUnlockCard />
+          {!p.complete && (
+            <p className="mt-4 text-sm text-muted-foreground">
+              {tr(c.unlock.noCode)}{" "}
+              <Link
+                to="/fragebogen"
+                className="font-medium text-primary underline underline-offset-2"
+              >
+                {tr(ui.buttons.start)}
+              </Link>
+            </p>
+          )}
+        </PageBody>
+      </>
     );
   }
 
@@ -116,15 +133,6 @@ function Clinician() {
       ? tr(r.scenarios.usualCare.label)
       : scenario.components.map((id) => tr(r.components[id].short)).join(" + ");
 
-  /** Same components as careComponentLabel, grouped at most 2 per line so a 3-4 component package doesn't run on into one long string in the table cell. */
-  const careComponentLabelLines = (scenario: (typeof p.scenarios)[number]): string[] =>
-    scenario.id === "usualCare"
-      ? [tr(r.scenarios.usualCare.label)]
-      : chunk(
-          scenario.components.map((id) => tr(r.components[id].short)),
-          2,
-        ).map((group) => group.join(" + "));
-
   /** Every row is a single component added alone, so it always has one unambiguous explanation to show. */
   const careComponentDescription = (scenario: (typeof p.scenarios)[number]): string | undefined => {
     const [id] = scenario.components;
@@ -133,24 +141,12 @@ function Clinician() {
       : undefined;
   };
 
+  /** A component is flagged "likely to help" when its expected outcome beats the patient's own baseline — no magnitude shown, just the direction. */
+  const isHelpful = (scenario: (typeof p.scenarios)[number]) =>
+    scenario.expectedEndpoint < p.baseline;
+
   const rankedScenarios = p.scenarios.filter((s) => s.id !== "usualCare");
   const usualCareScenario = p.scenarios.find((s) => s.id === "usualCare");
-
-  /**
-   * A component is flagged "may offer additional benefit" when its expected
-   * outcome beats usual care's, not the patient's score today. With a high
-   * baseline, almost every option lands below today (scores drift down over
-   * 12 months either way), so comparing to today would mark nearly every
-   * row green, including ones expected to do worse than usual care.
-   */
-  const isHelpful = (scenario: (typeof p.scenarios)[number]) =>
-    scenario.expectedEndpoint < (usualCareScenario?.expectedEndpoint ?? p.baseline);
-
-  /** e.g. "9.2 (7.1–11.4)": expected 12-month PHQ-9 and its 95% credible interval. */
-  const formatEndpoint = (scenario: (typeof p.scenarios)[number]) => {
-    const f = (x: number) => x.toFixed(1);
-    return `${f(scenario.expectedEndpoint)} (${f(scenario.endpointRange[0])}–${f(scenario.endpointRange[1])})`;
-  };
 
   const scenarioTableRows = (scenarios: typeof p.scenarios) =>
     scenarios.map((scenario) => {
@@ -159,17 +155,19 @@ function Clinician() {
       return {
         label: careComponentLabel(scenario),
         description: isUsualCare
-          ? tr(r.scenarios.usualCare.description)
+          ? `${tr(r.scenarios.usualCare.description)} ${tr(r.scenarios.usualCare.note)}`
           : careComponentDescription(scenario),
         rank,
-        endpoint: formatEndpoint(scenario),
         note: !isUsualCare && isHelpful(scenario) ? tr(c.table.better) : "–",
+        helpful: !isUsualCare && isHelpful(scenario),
       };
     });
 
   const downloadPdf = () => {
     const [riskRow, ...restRows] = rows;
     generatePraxisPdf({
+      appName: tr(ui.appName),
+      lang,
       filenamePrefix: tr({ de: "kurzbefund-praxis", en: "clinical-summary" }),
       title: tr(c.title),
       subtitle: tr(c.subtitle),
@@ -188,133 +186,106 @@ function Clinician() {
       tableHeaders: {
         careComponent: tr(c.table.careComponent),
         rank: tr(c.table.rank),
-        endpoint: tr(c.table.endpoint),
         note: tr(c.table.note),
       },
       scenarioTables: [
-        { heading: tr(r.scenarioTabs.single), rows: scenarioTableRows(p.scenarios) },
+        {
+          heading: tr(r.scenarioTabs.single),
+          // Usual care first, as the comparison row, matching the page.
+          rows: scenarioTableRows([
+            ...(usualCareScenario ? [usualCareScenario] : []),
+            ...rankedScenarios,
+          ]),
+        },
       ],
       footer: fill(tr(c.footer), { version: MODEL_META.version }),
     });
   };
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold">{tr(c.title)}</h1>
-          <p className="mt-1.5 text-sm text-muted-foreground">{tr(c.subtitle)}</p>
-        </div>
+    <>
+      <PageHero
+        icon={<StethoscopeIcon className="h-6 w-6" />}
+        title={tr(c.title)}
+        intro={tr(c.subtitle)}
+      >
         <button
           type="button"
           onClick={downloadPdf}
-          className="rounded-md border border-border px-3.5 py-2 text-sm font-medium hover:bg-secondary print:hidden"
+          className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2 text-sm font-medium hover:bg-secondary print:hidden"
         >
+          <DownloadIcon className="h-4 w-4" />
           {tr(c.print)}
         </button>
-      </div>
-
-      <section className="mt-8 grid gap-6 md:grid-cols-2">
-        <div>
-          <h2 className="text-base font-semibold">{tr(c.summary)}</h2>
-          <dl className="mt-3 divide-y divide-border text-sm">
-            {rows.map((row) => (
-              <div key={row.label} className="flex justify-between gap-4 py-2">
-                <dt className="text-muted-foreground">{row.label}</dt>
-                <dd className="text-right">
-                  {row.tone ? (
-                    <span
-                      className={[
-                        "rounded-md border px-2 py-0.5 text-xs font-semibold",
-                        row.tone === "destructive"
-                          ? "border-destructive/40 bg-destructive-soft text-destructive"
-                          : "border-warning/40 bg-warning-soft text-warning",
-                      ].join(" ")}
-                    >
-                      {row.value}
-                    </span>
-                  ) : (
-                    <span className="font-medium">{row.value}</span>
-                  )}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-
-        <div>
-          <h2 className="text-base font-semibold">{tr(c.phq9ItemProfile)}</h2>
-          <ul className="mt-4 space-y-2 text-sm">
-            {PHQ9_ITEMS.map((item, i) => {
-              const v = p.session.phq[i] ?? 0;
-              return (
-                <li key={i} className="flex items-center gap-3">
-                  <span className="w-5 shrink-0 text-xs text-muted-foreground">{i + 1}</span>
-                  <span className="flex-1 truncate" title={tr(item)}>
-                    {tr(item)}
-                  </span>
-                  <span className="flex gap-0.5" aria-label={`${v}/3`}>
-                    {[0, 1, 2].map((step) => (
+      </PageHero>
+      <PageBody>
+        <section className="grid gap-6 md:grid-cols-2">
+          <div className="panel p-6">
+            <h2 className="text-base font-semibold">{tr(c.summary)}</h2>
+            <dl className="mt-3 divide-y divide-border text-sm">
+              {rows.map((row) => (
+                <div key={row.label} className="flex justify-between gap-4 py-2">
+                  <dt className="shrink-0 text-muted-foreground">{row.label}</dt>
+                  <dd className="text-right">
+                    {row.tone ? (
                       <span
-                        key={step}
-                        aria-hidden
                         className={[
-                          "h-4 w-2 rounded-sm",
-                          step < v ? (i === 8 ? "bg-destructive" : "bg-primary") : "bg-secondary",
+                          "inline-block rounded-md border px-2 py-0.5 text-left text-xs font-semibold leading-snug",
+                          row.tone === "destructive"
+                            ? "border-destructive/40 bg-destructive-soft text-destructive"
+                            : "border-warning/40 bg-warning-soft text-warning",
                         ].join(" ")}
-                      />
-                    ))}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </section>
-
-      <section className="mt-8">
-        <h2 className="text-base font-semibold">{tr(c.modelEstimates)}</h2>
-        <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-          {tr(c.modelEstimatesIntro)}
-        </p>
-
-        {usualCareScenario && (
-          <div className="mt-4">
-            <CareRanking
-              compact
-              usualCare={usualCareScenario}
-              ranked={rankedScenarios}
-              labelLines={careComponentLabelLines}
-              description={careComponentDescription}
-              helpful={isHelpful}
-              usualCareDescription={tr(r.scenarios.usualCare.description)}
-              helpfulSectionLabel={tr(c.ranking.helpfulSection)}
-              otherSectionLabel={tr(c.ranking.otherSection)}
-              rankAriaLabel={(rank, total) => fill(tr(c.ranking.rankAria), { rank, total })}
-              outcome={{
-                baseline: p.baseline,
-                todayLabel: fill(tr(c.outcome.today), { baseline: p.baseline }),
-                lowLabel: tr(c.outcome.fewer),
-                highLabel: tr(c.outcome.more),
-                ticks: [0, 5, 10, 15, 20, 27],
-                legend: {
-                  expected: tr(c.outcome.expected),
-                  helpful: tr(c.outcome.helpful),
-                  interval: tr(c.outcome.interval),
-                  today: tr(c.outcome.todayLine),
-                  scale: tr(c.outcome.scale),
-                },
-                formatValue: formatEndpoint,
-                expectedLabel: (s) =>
-                  fill(tr(c.outcome.expectedHover), { value: formatEndpoint(s) }),
-              }}
-            />
+                      >
+                        {row.value}
+                      </span>
+                    ) : (
+                      <span className="font-medium">{row.value}</span>
+                    )}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
-        )}
-        <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-          {fill(tr(c.footer), { version: MODEL_META.version })}
-        </p>
-      </section>
-    </div>
+
+          <div className="panel p-6">
+            <h2 className="text-base font-semibold">{tr(c.phq9ItemProfile)}</h2>
+            <ul className="mt-4 space-y-2 text-sm">
+              {PHQ9_ITEMS.map((item, i) => {
+                const v = p.session.phq[i] ?? 0;
+                // Item 9 (suicidality) is drawn in red so it stands out.
+                const filled = i === 8 ? "bg-destructive" : "bg-primary";
+                return (
+                  <li key={i} className="flex items-center gap-3">
+                    <span className="w-5 shrink-0 text-xs text-muted-foreground">{i + 1}</span>
+                    <span className="flex-1 truncate" title={tr(item)}>
+                      {tr(item)}
+                    </span>
+                    <span className="flex gap-0.5" aria-label={`${v}/3`}>
+                      {[0, 1, 2].map((step) => (
+                        <span
+                          key={step}
+                          aria-hidden
+                          className={[
+                            "h-4 w-2 rounded-sm",
+                            step < v ? filled : "bg-secondary",
+                          ].join(" ")}
+                        />
+                      ))}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </section>
+
+        <CareOptions baseline={p.baseline} scenarios={p.scenarios} />
+
+        {/* The next patient's code can be entered straight from here. */}
+        <section className="mt-10 print:hidden">
+          <GpUnlockCard />
+        </section>
+      </PageBody>
+    </>
   );
 }

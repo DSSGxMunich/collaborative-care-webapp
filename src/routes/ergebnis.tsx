@@ -1,19 +1,22 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { OutcomeChart } from "@/components/OutcomeChart";
+import { CareOptions } from "@/components/CareOptions";
+import { ChartIcon, DownloadIcon } from "@/components/icons";
 import { InfoTooltip } from "@/components/InfoTooltip";
-import { ui, useLang } from "@/lib/i18n";
+import { EmptyState, PageBody, PageHero } from "@/components/PageHero";
+import { fill, ui, useLang } from "@/lib/i18n";
 import { SEVERITY_LABEL, SEVERITY_RANGE, type Severity } from "@/lib/phq9";
 import type { Scenario } from "@/lib/model";
 import { generateResultsPdf } from "@/lib/pdf";
 import { usePrediction } from "@/lib/usePrediction";
 import { ageFromBirthDate, SEX_OPTIONS } from "@/lib/session";
+import { WaitingBlocker } from "@/components/WaitingBlocker";
 import resultsContent from "@/content/results.json";
 
 export const Route = createFileRoute("/ergebnis")({
   head: () => ({
     meta: [
-      { title: "Ihre Auswertung – Versorgungskompass" },
+      { title: "Ihre Auswertung | Versorgungskompass" },
       { name: "description", content: resultsContent.title.de },
     ],
   }),
@@ -22,9 +25,41 @@ export const Route = createFileRoute("/ergebnis")({
 
 const r = resultsContent;
 
-const SEVERITIES: Severity[] = ["minimal", "mild", "moderate", "moderatelySevere", "severe"];
-const mapSeverity = (f: (s: Severity) => string) =>
-  Object.fromEntries(SEVERITIES.map((s) => [s, f(s)])) as Record<Severity, string>;
+/**
+ * Today's PHQ-9 score as text only: the number, then its severity band.
+ * No scale here: the care-option strips below already place today's score
+ * on the 0–27 scale, so a second one on top only repeated it.
+ */
+function CurrentScore({ score, severity }: { score: number; severity: Severity }) {
+  const { tr } = useLang();
+  const c = r.currentScore;
+
+  return (
+    <div className="panel mt-6 p-6">
+      <div className="flex items-center gap-1.5">
+        <p className="text-sm text-muted-foreground">{tr(c.label)}</p>
+        <InfoTooltip
+          description={tr(c.info)}
+          ariaLabel={tr(c.infoAria)}
+          panelClassName="w-72"
+          triggerClassName="flex h-4 w-4 shrink-0 cursor-help items-center justify-center rounded-full border border-muted-foreground/60 text-[10px] font-semibold leading-none text-muted-foreground hover:border-muted-foreground hover:text-foreground"
+        >
+          <span aria-hidden="true">i</span>
+        </InfoTooltip>
+      </div>
+      <p className="mt-1 flex items-baseline gap-2">
+        <span className="text-4xl font-semibold tabular-nums leading-none">{score}</span>
+        <span className="text-sm text-muted-foreground">{tr(c.outOf27)}</span>
+      </p>
+      <p className="mt-2 text-sm font-medium">
+        {tr(SEVERITY_LABEL[severity])}{" "}
+        <span className="whitespace-nowrap font-normal text-muted-foreground">
+          {fill(tr(c.range), { range: SEVERITY_RANGE[severity] })}
+        </span>
+      </p>
+    </div>
+  );
+}
 /**
  * The trial-eligibility disclaimer, now placed above the results in reading
  * order rather than beside them in a sidebar. Sitting first doesn't mean
@@ -44,7 +79,7 @@ function DisclaimerCard() {
   const { tr } = useLang();
   const [expanded, setExpanded] = useState(false);
   return (
-    <div className="rounded-md border border-warning/30 bg-warning-soft p-4">
+    <div className="rounded-xl border border-warning/30 bg-warning-soft p-5">
       <h2 className="text-sm font-semibold">{tr(r.prototypeNote.heading)}</h2>
       <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
         {tr(r.prototypeNote.intro)}
@@ -88,7 +123,7 @@ function DisclaimerCard() {
 }
 
 function Results() {
-  const { tr } = useLang();
+  const { tr, lang } = useLang();
   const p = usePrediction();
   const [revealed, setRevealed] = useState(false);
 
@@ -96,26 +131,30 @@ function Results() {
 
   if (!p.complete) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-16 text-center">
-        <h1 className="text-xl font-semibold">{tr(r.title)}</h1>
-        <p className="mt-3 text-sm text-muted-foreground">{tr(ui.noData)}</p>
+      <EmptyState icon={<ChartIcon className="h-6 w-6" />} title={tr(r.title)}>
+        <p className="text-sm text-muted-foreground">{tr(ui.noData)}</p>
         <Link
           to="/fragebogen"
           className="mt-6 inline-flex rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
         >
           {tr(ui.buttons.start)}
         </Link>
-      </div>
+      </EmptyState>
     );
+  }
+
+  if (p.session.mode === "waitingRoom" && !p.session.unlocked) {
+    return <WaitingBlocker />;
   }
 
   if (!revealed) {
     return (
-      <div className="mx-auto max-w-xl px-4 py-12">
-        <h1 className="text-2xl font-semibold">{tr(r.thankYou.title)}</h1>
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{tr(r.thankYou.body)}</p>
-
-        <div className="mt-6 space-y-2.5">
+      <EmptyState
+        icon={<ChartIcon className="h-6 w-6" />}
+        title={tr(r.thankYou.title)}
+        body={tr(r.thankYou.body)}
+      >
+        <div className="space-y-2.5">
           <button
             type="button"
             onClick={() => setRevealed(true)}
@@ -131,7 +170,7 @@ function Results() {
           </Link>
           <p className="pt-1 text-xs text-muted-foreground">{tr(r.thankYou.privacyNote)}</p>
         </div>
-      </div>
+      </EmptyState>
     );
   }
 
@@ -151,18 +190,11 @@ function Results() {
       : undefined;
   };
 
+  /** A component is flagged "likely to help" when its expected outcome beats the patient's own baseline — no magnitude shown, just the direction. */
+  const isHelpful = (scenario: Scenario) => scenario.expectedEndpoint < p.baseline;
+
   const rankedScenarios = activeScenarios.filter((s) => s.id !== "usualCare");
   const usualCareScenario = activeScenarios.find((s) => s.id === "usualCare");
-
-  /**
-   * A component is flagged "may offer additional benefit" when its expected
-   * outcome beats usual care's, not the patient's score today. With a high
-   * baseline, almost every option lands below today (scores drift down over
-   * 12 months either way), so comparing to today would mark nearly every
-   * row green, including ones expected to do worse than usual care.
-   */
-  const isHelpful = (scenario: Scenario) =>
-    scenario.expectedEndpoint < (usualCareScenario?.expectedEndpoint ?? p.baseline);
 
   const scenarioTableRows = (scenarios: Scenario[]) =>
     scenarios.map((scenario) => {
@@ -171,34 +203,49 @@ function Results() {
       return {
         label: scenarioLabel(scenario),
         description: isUsualCare
-          ? tr(r.scenarios.usualCare.description)
+          ? `${tr(r.scenarios.usualCare.description)} ${tr(r.scenarios.usualCare.note)}`
           : scenarioDescription(scenario),
         rank,
-        note: !isUsualCare && isHelpful(scenario) ? tr(r.legend.better) : "–",
+        note: isUsualCare
+          ? tr(r.ranking.comparisonLabel)
+          : isHelpful(scenario)
+            ? tr(r.legend.better)
+            : "–",
+        helpful: !isUsualCare && isHelpful(scenario),
       };
     });
 
   const downloadPdf = () => {
     generateResultsPdf({
+      appName: tr(ui.appName),
+      lang,
       filenamePrefix: tr({ de: "meine-auswertung", en: "my-results" }),
       title: tr(r.title),
       subtitle: tr(r.pdf.subtitle),
-      baselineLabel: `${r.phq9Label} ${tr(r.of27)}`,
-      baselineValue: `${p.baseline}/27`,
-      severityValue: `${tr(SEVERITY_LABEL[p.severity])} · ${tr(r.range)} ${SEVERITY_RANGE[p.severity]}`,
+      baselineLabel: tr(r.currentScore.label),
+      baselineValue: `${p.baseline} ${tr(r.currentScore.outOf27)}`,
+      severityValue: `${tr(SEVERITY_LABEL[p.severity])} ${fill(tr(r.currentScore.range), { range: SEVERITY_RANGE[p.severity] })}`,
       scenariosHeading: tr(r.whatCanBeExpected),
       scenariosBody: tr(r.whatCanBeExpectedBody),
-      modelHeading: tr(r.whatCanBeExpected),
       tableHeaders: {
         careComponent: tr(r.pdf.table.careComponent),
         rank: tr(r.pdf.table.rank),
         note: tr(r.pdf.table.note),
       },
       scenarioTables: [
-        { heading: tr(r.scenarioTabs.single), rows: scenarioTableRows(p.scenarios) },
+        {
+          heading: tr(r.scenarioTabs.single),
+          // Usual care first, as the comparison row, matching the page.
+          rows: scenarioTableRows([
+            ...(usualCareScenario ? [usualCareScenario] : []),
+            ...rankedScenarios,
+          ]),
+        },
       ],
-      predictorsHeading: tr(r.whatInfluences),
-      predictorsBody: tr(r.predictorsNote),
+      predictorsHeading: tr(r.aboutEstimates.heading),
+      predictorsBody: [r.aboutEstimates.research, r.aboutEstimates.ranking, r.predictorsNote]
+        .map((text) => tr(text))
+        .join(" "),
       predictorRows: [
         { label: tr(r.predictors.baseline.label), value: `${p.baseline}/27` },
         {
@@ -224,106 +271,42 @@ function Results() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10">
-      <DisclaimerCard />
+    <>
+      <PageHero icon={<ChartIcon className="h-6 w-6" />} title={tr(r.title)}>
+        <button
+          type="button"
+          onClick={downloadPdf}
+          className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2 text-sm font-medium hover:bg-secondary print:hidden"
+        >
+          <DownloadIcon className="h-4 w-4" />
+          {tr(r.actions.downloadPdf)}
+        </button>
+      </PageHero>
+      <PageBody>
+        <DisclaimerCard />
 
-      <div className="mt-8">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <h1 className="text-2xl font-semibold">{tr(r.title)}</h1>
-          <button
-            type="button"
-            onClick={downloadPdf}
-            className="rounded-md border border-border px-3.5 py-2 text-sm font-medium hover:bg-secondary print:hidden"
-          >
-            {tr(r.actions.downloadPdf)}
-          </button>
-        </div>
-
-        <div className="mt-6 flex items-baseline gap-3 border-b border-border pb-4">
-          <span className="text-4xl font-semibold tabular-nums leading-none">{p.baseline}</span>
-          <div className="text-sm">
-            <p className="text-muted-foreground">
-              {r.phq9Label} {tr(r.of27)}
-            </p>
-            <p className="font-medium">
-              {tr(SEVERITY_LABEL[p.severity])} · {tr(r.range)} {SEVERITY_RANGE[p.severity]}
-            </p>
-          </div>
-        </div>
+        <CurrentScore score={p.baseline} severity={p.severity} />
 
         {/* ---------------- The result: ranked care components ---------------- */}
-        <section className="mt-8">
-          <h2 className="text-lg font-semibold">{tr(r.whatCanBeExpected)}</h2>
-          <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-            {tr(r.whatCanBeExpectedBody)}
-          </p>
+        <CareOptions baseline={p.baseline} scenarios={p.scenarios} />
 
-          {usualCareScenario && (
-            <div className="mt-5">
-              <OutcomeChart
-                usualCare={usualCareScenario}
-                scenarios={rankedScenarios}
-                baseline={p.baseline}
-                label={scenarioLabel}
-                helpful={isHelpful}
-                labels={{
-                  bands: mapSeverity((s) => tr(r.chart.bands[s])),
-                  severity: mapSeverity((s) => tr(SEVERITY_LABEL[s])),
-                  mostLikely: tr(r.chart.mostLikely),
-                  today: tr(r.chart.today),
-                  fewer: tr(r.legend.fewer),
-                  more: tr(r.legend.more),
-                  legend: {
-                    helpful: tr(r.legend.helpful),
-                    other: tr(r.chart.legend.other),
-                    usualCare: tr(r.chart.legend.usualCare),
-                    range: tr(r.chart.legend.range),
-                    today: tr(r.chart.legend.today),
-                  },
-                }}
-              />
-            </div>
-          )}
-        </section>
-
-        {/* ---------------- What each care component means ---------------- */}
-        <section className="mt-10">
-          <h2 className="text-lg font-semibold">{tr(r.componentGuide.heading)}</h2>
-          <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-            {tr(r.componentGuide.body)}
-          </p>
-          <dl className="mt-4 divide-y divide-border border-y border-border">
-            {[usualCareScenario, ...rankedScenarios].map((scenario) => {
-              if (!scenario) return null;
-              const content =
-                scenario.id === "usualCare"
-                  ? r.scenarios.usualCare
-                  : scenario.components[0] !== undefined
-                    ? r.components[scenario.components[0]]
-                    : undefined;
-              if (!content) return null;
-              return (
-                <div key={scenario.id} className="py-3.5">
-                  <dt className="text-sm font-medium">{scenarioLabel(scenario)}</dt>
-                  <dd className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                    {tr(content.description)}
-                  </dd>
-                  <dd className="mt-1.5 text-sm leading-relaxed">
-                    <span className="font-medium">{tr(r.componentGuide.example)}</span>{" "}
-                    {tr(content.example)}
-                  </dd>
-                </div>
-              );
-            })}
+        {/* ---------------- About these estimates: research basis + inputs ---------------- */}
+        <section className="panel mt-6 p-6">
+          <h2 className="text-lg font-semibold">{tr(r.aboutEstimates.heading)}</h2>
+          {/* The three facts behind every estimate, at a glance. */}
+          <dl className="mt-4 grid gap-4 sm:grid-cols-3">
+            {r.aboutEstimates.facts.map((fact, i) => (
+              <div key={i} className="border-t-2 border-primary pt-2">
+                <dt className="text-2xl font-semibold text-primary">{tr(fact.value)}</dt>
+                <dd className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                  {tr(fact.label)}
+                </dd>
+              </div>
+            ))}
           </dl>
-        </section>
-
-        {/* ---------------- What influences the estimate ---------------- */}
-        <section className="mt-10">
-          <h2 className="text-lg font-semibold">{tr(r.whatInfluences)}</h2>
-          <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            {tr(r.predictorsNote)}
-          </p>
+          <div className="mt-5 space-y-2 text-sm leading-relaxed text-muted-foreground">
+            <p>{tr(r.predictorsNote)}</p>
+          </div>
 
           <dl className="mt-4 divide-y divide-border border-y border-border text-sm">
             <div className="flex justify-between gap-4 py-2">
@@ -352,9 +335,15 @@ function Results() {
               </dd>
             </div>
           </dl>
+          <Link
+            to="/methodology"
+            className="mt-3 inline-flex text-sm font-medium underline underline-offset-2"
+          >
+            {tr(r.aboutEstimates.methodologyLink)}
+          </Link>
         </section>
 
-        <div className="mt-10 flex flex-wrap gap-2">
+        <div className="mt-8 flex flex-wrap gap-2">
           <Link
             to="/praxis"
             className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
@@ -368,7 +357,7 @@ function Results() {
             {tr(r.actions.localSupport)}
           </Link>
         </div>
-      </div>
-    </div>
+      </PageBody>
+    </>
   );
 }

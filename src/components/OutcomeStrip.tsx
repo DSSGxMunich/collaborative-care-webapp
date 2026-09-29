@@ -39,14 +39,17 @@ export function OutcomeStrip({
   baseline,
   todayLabel,
   expectedLabel,
+  reference = false,
 }: {
   scenario: Scenario;
   baseline: number;
   todayLabel: string;
   expectedLabel: string;
+  /** Usual care, the comparison: never gets the green "likely to help" tone. */
+  reference?: boolean;
 }) {
   const [low, high] = scenario.endpointRange;
-  const t = tone(scenario.expectedEndpoint < baseline);
+  const t = tone(!reference && scenario.expectedEndpoint < baseline);
   const cap = `absolute top-1/2 h-2 w-0.5 -translate-x-1/2 -translate-y-1/2 rounded-full ${t.bar}`;
   return (
     <div aria-hidden className="relative h-4">
@@ -131,10 +134,8 @@ export function ScaleAxis({
 
 export type OutcomeLegendLabels = {
   expected: string;
-  helpful: string;
   interval: string;
   today: string;
-  scale: string;
 };
 
 /** Legend for OutcomeStrip. Each swatch uses the same classes as the strip itself. */
@@ -151,13 +152,8 @@ export function OutcomeLegend({ labels }: { labels: OutcomeLegendLabels }) {
         <span className="h-3 w-3 shrink-0 rounded-full border-2 border-primary bg-card" />,
         labels.expected,
       )}
-      {item(
-        <span className="h-3 w-3 shrink-0 rounded-full border-2 border-success bg-card" />,
-        labels.helpful,
-      )}
       {item(<span className="h-0.5 w-4 shrink-0 rounded-full bg-primary/35" />, labels.interval)}
       {item(<span className="h-3 w-0 shrink-0 border-l-2 border-foreground/70" />, labels.today)}
-      {item(null, labels.scale)}
     </div>
   );
 }

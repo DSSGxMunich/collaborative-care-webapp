@@ -1,6 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Choice, DateField, MultiChoice, YesNoField } from "@/components/fields";
+import { ClipboardIcon } from "@/components/icons";
+import { PageBody, PageHero } from "@/components/PageHero";
 import { ui, useLang } from "@/lib/i18n";
 import { PHQ9_INTRO, PHQ9_ITEMS, PHQ9_OPTIONS } from "@/lib/phq9";
 import {
@@ -16,7 +18,7 @@ import questionnaireContent from "@/content/questionnaire.json";
 export const Route = createFileRoute("/fragebogen")({
   head: () => ({
     meta: [
-      { title: "Fragebogen – Versorgungskompass" },
+      { title: "Fragebogen | Versorgungskompass" },
       { name: "description", content: questionnaireContent.phq9.intro.de },
     ],
   }),
@@ -69,7 +71,7 @@ function Questionnaire() {
   const goNext = () => {
     if (isLast) {
       update({ completedAt: new Date().toISOString() });
-      navigate({ to: "/ergebnis" });
+      navigate({ to: session.mode === "waitingRoom" ? "/warten" : "/ergebnis" });
       return;
     }
     setIndex((i) => i + 1);
@@ -91,160 +93,159 @@ function Questionnaire() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10">
-      <div className="mb-8">
+    <>
+      <PageHero
+        icon={<ClipboardIcon className="h-6 w-6" />}
+        title={tr(q.stepTitles[key])}
+        {...(key === "safety" ? { intro: tr(q.safety.intro) } : {})}
+      >
         <p
           key={index}
           className="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
         >
-          {`${tr(ui.step)} ${index + 1} ${tr(ui.of)} ${total}`}
+          {`${tr(ui.nav.questionnaire)} · ${tr(ui.step)} ${index + 1} ${tr(ui.of)} ${total}`}
         </p>
         <div
-          className="mt-2 h-1 w-full overflow-hidden rounded-sm bg-secondary"
+          className="mt-3 h-2 w-full overflow-hidden rounded-full bg-card"
           role="progressbar"
           aria-valuemin={1}
           aria-valuemax={total}
           aria-valuenow={index + 1}
         >
           <div
-            className="h-full bg-primary transition-all duration-300"
+            className="h-full rounded-full bg-primary transition-all duration-300"
             style={{ width: `${((index + 1) / total) * 100}%` }}
           />
         </div>
-      </div>
+      </PageHero>
 
-      {key === "basics" && (
-        <div className="space-y-6">
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            {tr(q.profile.sectionIntro)}
-          </p>
-          <DateField
-            label={q.profile.age.question}
-            min={dateBounds.min}
-            max={dateBounds.max}
-            value={session.profile.birthDate}
-            onChange={(v) => updateProfile({ birthDate: v })}
-            {...(isUnderage ? { error: q.profile.age.underageWarning } : {})}
-          />
-          <fieldset className="surface-card p-5">
-            <legend className="mb-3 block text-base font-semibold">
-              {tr(q.profile.sex.question)}
-            </legend>
-            <Choice
-              name="sex"
-              columns={2}
-              options={SEX_OPTIONS}
-              value={session.profile.sex}
-              onChange={(v) => updateProfile({ sex: v })}
+      <PageBody>
+        {key === "basics" && (
+          <div className="space-y-6">
+            <DateField
+              label={q.profile.age.question}
+              min={dateBounds.min}
+              max={dateBounds.max}
+              value={session.profile.birthDate}
+              onChange={(v) => updateProfile({ birthDate: v })}
+              {...(isUnderage ? { error: q.profile.age.underageWarning } : {})}
             />
-          </fieldset>
-        </div>
-      )}
-
-      {key === "phq9" && (
-        <div className="space-y-6">
-          <h2 className="text-xl font-semibold leading-snug">{tr(PHQ9_INTRO)}</h2>
-          {PHQ9_ITEMS.map((item, idx) => (
-            <fieldset key={idx} className="surface-card p-5">
+            <fieldset className="surface-card p-5">
               <legend className="mb-3 block text-base font-semibold">
-                {idx + 1}. {tr(item)}
+                {tr(q.profile.sex.question)}
               </legend>
               <Choice
-                name={`phq-${idx}`}
-                options={PHQ9_OPTIONS}
-                value={session.phq[idx] as 0 | 1 | 2 | 3 | null}
-                onChange={(v) => setPhq(idx, v)}
+                name="sex"
+                columns={2}
+                options={SEX_OPTIONS}
+                value={session.profile.sex}
+                onChange={(v) => updateProfile({ sex: v })}
               />
             </fieldset>
-          ))}
-        </div>
-      )}
+          </div>
+        )}
 
-      {key === "safety" && (
-        <div className="space-y-3">
-          <p className="text-sm leading-relaxed text-muted-foreground">{tr(q.safety.intro)}</p>
-          <YesNoField
-            label={q.safety.questions.past}
-            value={session.safety.past}
-            onChange={(v) => updateSafety({ past: v })}
-          />
-          <YesNoField
-            label={q.safety.questions.plan}
-            value={session.safety.plan}
-            onChange={(v) => updateSafety({ plan: v })}
-          />
-          <div className="space-y-2 rounded-md border border-border px-3.5 py-2.5">
-            <p className="text-sm">{tr(q.safety.questions.probability)}</p>
-            <Choice
-              name="safety-probability"
-              columns={3}
-              options={PROBABILITY_OPTIONS}
-              value={session.safety.probability}
-              onChange={(v) => updateSafety({ probability: v })}
+        {key === "phq9" && (
+          <div className="space-y-6">
+            <h2 className="text-xl font-semibold leading-snug">{tr(PHQ9_INTRO)}</h2>
+            {PHQ9_ITEMS.map((item, idx) => (
+              <fieldset key={idx} className="surface-card p-5">
+                <legend className="mb-3 block text-base font-semibold">
+                  {idx + 1}. {tr(item)}
+                </legend>
+                <Choice
+                  name={`phq-${idx}`}
+                  options={PHQ9_OPTIONS}
+                  value={session.phq[idx] as 0 | 1 | 2 | 3 | null}
+                  onChange={(v) => setPhq(idx, v)}
+                />
+              </fieldset>
+            ))}
+          </div>
+        )}
+
+        {key === "safety" && (
+          <div className="space-y-3">
+            <YesNoField
+              label={q.safety.questions.past}
+              value={session.safety.past}
+              onChange={(v) => updateSafety({ past: v })}
+            />
+            <YesNoField
+              label={q.safety.questions.plan}
+              value={session.safety.plan}
+              onChange={(v) => updateSafety({ plan: v })}
+            />
+            <div className="space-y-2 rounded-md border border-border px-3.5 py-2.5">
+              <p className="text-sm">{tr(q.safety.questions.probability)}</p>
+              <Choice
+                name="safety-probability"
+                columns={3}
+                options={PROBABILITY_OPTIONS}
+                value={session.safety.probability}
+                onChange={(v) => updateSafety({ probability: v })}
+              />
+            </div>
+            <YesNoField
+              label={q.safety.questions.preventive}
+              value={session.safety.preventive}
+              onChange={(v) => updateSafety({ preventive: v })}
+            />
+            <YesNoField
+              label={q.safety.questions.familyHistory}
+              value={session.safety.familyHistory}
+              onChange={(v) => updateSafety({ familyHistory: v })}
             />
           </div>
-          <YesNoField
-            label={q.safety.questions.preventive}
-            value={session.safety.preventive}
-            onChange={(v) => updateSafety({ preventive: v })}
-          />
-          <YesNoField
-            label={q.safety.questions.familyHistory}
-            value={session.safety.familyHistory}
-            onChange={(v) => updateSafety({ familyHistory: v })}
-          />
-        </div>
-      )}
+        )}
 
-      {key === "history" && (
-        <div className="space-y-6">
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            {tr(q.profile.historyIntro)}
-          </p>
-          <YesNoField
-            label={q.profile.priorEpisode.question}
-            value={session.profile.priorEpisode}
-            onChange={(v) => updateProfile({ priorEpisode: v })}
-          />
-          <fieldset className="surface-card p-5">
-            <legend className="mb-1 block text-base font-semibold">
-              {tr(q.profile.priorTreatment.question)}
-            </legend>
-            <p className="mb-4 text-sm text-muted-foreground">
-              {tr(q.profile.priorTreatment.hint)}
-            </p>
-            <MultiChoice
-              options={PRIOR_TREATMENTS}
-              values={session.profile.priorTreatment}
-              onToggle={toggleTreatment}
+        {key === "history" && (
+          <div className="space-y-6">
+            <YesNoField
+              label={q.profile.priorEpisode.question}
+              value={session.profile.priorEpisode}
+              onChange={(v) => updateProfile({ priorEpisode: v })}
             />
-          </fieldset>
-        </div>
-      )}
+            <fieldset className="surface-card p-5">
+              <legend className="mb-1 block text-base font-semibold">
+                {tr(q.profile.priorTreatment.question)}
+              </legend>
+              <p className="mb-4 text-sm text-muted-foreground">
+                {tr(q.profile.priorTreatment.hint)}
+              </p>
+              <MultiChoice
+                options={PRIOR_TREATMENTS}
+                values={session.profile.priorTreatment}
+                onToggle={toggleTreatment}
+              />
+            </fieldset>
+          </div>
+        )}
 
-      <div className="mt-8 flex items-center justify-between gap-4">
-        <button
-          type="button"
-          onClick={() => setIndex((i) => Math.max(0, i - 1))}
-          disabled={index === 0}
-          className="rounded-md border border-border px-3.5 py-2 text-sm font-medium hover:bg-secondary disabled:opacity-40"
-        >
-          {tr(ui.buttons.back)}
-        </button>
-        <div className="flex items-center gap-3">
-          {!canContinue && (
-            <span className="text-xs text-muted-foreground">{tr(q.pleaseAnswerAll)}</span>
-          )}
+        <div className="mt-8 flex items-center justify-between gap-4">
           <button
             type="button"
-            onClick={goNext}
-            disabled={!canContinue}
-            className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-40"
+            onClick={() => setIndex((i) => Math.max(0, i - 1))}
+            disabled={index === 0}
+            className="rounded-md border border-border px-3.5 py-2 text-sm font-medium hover:bg-secondary disabled:opacity-40"
           >
-            {isLast ? tr(ui.buttons.finish) : tr(ui.buttons.continue)}
+            {tr(ui.buttons.back)}
           </button>
+          <div className="flex items-center gap-3">
+            {!canContinue && (
+              <span className="text-xs text-muted-foreground">{tr(q.pleaseAnswerAll)}</span>
+            )}
+            <button
+              type="button"
+              onClick={goNext}
+              disabled={!canContinue}
+              className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-40"
+            >
+              {isLast ? tr(ui.buttons.finish) : tr(ui.buttons.continue)}
+            </button>
+          </div>
         </div>
-      </div>
-    </div>
+      </PageBody>
+    </>
   );
 }

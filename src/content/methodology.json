@@ -27,15 +27,15 @@
       "body": [
         {
           "de": "Ein proportional-odds-Mischmodell (gefittet mit R, Paket ordinal, Funktion clmm, mit zufälligen Effekten je Studie) sagt aus Alter, Geschlecht und PHQ-9-Ausgangswert den Risikoscore für den erwarteten PHQ-9-Wert nach 12 Monaten unter üblicher Versorgung voraus, also ohne jeden zusätzlichen Versorgungsbaustein. GAD-7 wurde in diesem Refit als Prädiktor entfernt.",
-          "en": "A proportional-odds mixed model (fitted with R, package ordinal, function clmm, with per-study random effects) predicts a risk score for the expected 12 month PHQ 9 score under usual care. Usual care refers to the usual treatment provided by a GP practice for depressive symptoms, which may include appointments with the GP, medication, or referral to other healthcare professionals, without any added structured care component. The prediction uses age, sex and baseline PHQ 9 — GAD-7 was dropped as a predictor in this refit."
+          "en": "A proportional-odds mixed model (fitted with R, package ordinal, function clmm, with per-study random effects) predicts a risk score for the expected 12 month PHQ 9 score under usual care. Usual care refers to the usual treatment provided by a GP practice for depressive symptoms, which may include appointments with the GP, medication, or referral to other healthcare professionals, without any added structured care component. The prediction uses age, sex and baseline PHQ 9. GAD-7 was dropped as a predictor in this refit."
         },
         {
           "de": "Der Risikoscore ist kein Maß dafür, wie wahrscheinlich eine Person eine bestimmte Behandlung erhält; er ist keine Propensity Score im Sinne der Kausalanalyse. Das Modell schätzt nirgends eine Behandlungszuweisung; es sagt ausschließlich den erwarteten Symptomverlauf voraus und dient in Schritt 2 als Prognoseindex, der beeinflusst, wie stark ein Versorgungsbaustein wirkt.",
           "en": "The risk score is not a probability of receiving any particular treatment. The model estimates no treatment assignment anywhere; it predicts only the expected symptom course, and in Step 2 serves as a prognostic index that modulates how strongly a care component's effect acts."
         },
         {
-          "de": "Alter geht als natürlicher kubischer Spline mit 4 Knoten ein, um nichtlineare Zusammenhänge abzubilden. Der Risikoscore ist weiterhin ein erwarteter PHQ-9-Wert auf der 0–27-Skala (E[Y]), wie beim vorherigen Modell — hier jedoch als bevölkerungsgemittelte (marginale) Schätzung berechnet, die die zufälligen Studieneffekte (Achsenabschnitt und Steigung auf den PHQ-9-Ausgangswert) herausintegriert, statt sie auf null zu setzen. Er wird auf den Wertebereich begrenzt, auf dem Schritt 2 trainiert wurde, da außerhalb dieses Bereichs keine verlässliche Information vorliegt.",
-          "en": "Age enters as a natural cubic spline with 4 knots, to capture nonlinear relationships. The risk score is still an expected PHQ-9 value on the 0–27 scale (E[Y]), as in the previous model — but computed here as a population-averaged (marginal) estimate that integrates out the per-study random effects (intercept and slope on baseline PHQ-9) rather than setting them to zero. It's clamped to the range Step 2 was trained on, since no reliable information exists outside that range."
+          "de": "Alter geht als natürlicher kubischer Spline mit 4 Knoten ein, um nichtlineare Zusammenhänge abzubilden. Der Risikoscore ist weiterhin ein erwarteter PHQ-9-Wert auf der 0–27-Skala (E[Y]), wie beim vorherigen Modell, hier jedoch als bevölkerungsgemittelte (marginale) Schätzung berechnet, die die zufälligen Studieneffekte (Achsenabschnitt und Steigung auf den PHQ-9-Ausgangswert) herausintegriert, statt sie auf null zu setzen. Er wird auf den Wertebereich begrenzt, auf dem Schritt 2 trainiert wurde, da außerhalb dieses Bereichs keine verlässliche Information vorliegt.",
+          "en": "Age enters as a natural cubic spline with 4 knots, to capture nonlinear relationships. The risk score is still an expected PHQ-9 value on the 0–27 scale (E[Y]), as in the previous model, but computed here as a population-averaged (marginal) estimate that integrates out the per-study random effects (intercept and slope on baseline PHQ-9) rather than setting them to zero. It's clamped to the range Step 2 was trained on, since no reliable information exists outside that range."
         }
       ]
     },
@@ -65,7 +65,36 @@
         },
         {
           "de": "Nur additive Effekte, keine Interaktion zwischen Bausteinen: Der Effekt einer Kombination ist immer genau die Summe der Einzeleffekte ihrer Bausteine. Anders als im vorherigen Modell wird in diesem Refit keine bestimmte Kombination von Bausteinen als in den Studien erprobt ausgewiesen; die App zeigt daher jeden Baustein einzeln zur üblichen Versorgung hinzugefügt. Das ist die additive Formel auf einen einzelnen Baustein angewendet, keine erprobte Behandlungsoption.",
-          "en": "Additive effects only, no component-by-component interaction: a combination's effect is always exactly the sum of its components' individual effects. Unlike the previous model, this refit doesn't flag any specific combination of components as trial-tested, so the app shows each component added on its own to usual care — the additive formula applied to one component, not a trial-tested treatment option."
+          "en": "Additive effects only, no component-by-component interaction: a combination's effect is always exactly the sum of its components' individual effects. Unlike the previous model, this refit doesn't flag any specific combination of components as trial-tested, so the app shows each component added on its own to usual care: the additive formula applied to one component, not a trial-tested treatment option."
+        }
+      ]
+    },
+    {
+      "id": "singleComponents",
+      "heading": {
+        "de": "Wie Einzelschätzungen entstehen und wie verlässlich sie sind",
+        "en": "How single-component estimates are made, and how reliable they are"
+      },
+      "body": [
+        {
+          "de": "Keine der 12 Studien hat einen Baustein allein gegen übliche Versorgung getestet. Jede Studie verglich ein Paket aus mehreren Bausteinen (zum Beispiel Psychotherapie plus regelmäßige Verlaufskontrollen plus Rückfallprävention) mit üblicher Versorgung.",
+          "en": "None of the 12 studies tested a single component on its own against usual care. Each study compared a package of several components (for example psychotherapy plus regular patient review plus relapse prevention) with usual care."
+        },
+        {
+          "de": "Weil sich die Pakete zwischen den Studien unterscheiden, kann das Modell die beobachteten Paketeffekte auf die einzelnen Bausteine aufteilen: Es sucht die Baustein-Effekte (beta_k und delta_k), die zusammenaddiert die Ergebnisse aller Studien am besten erklären. Die Schätzung für einen einzelnen Baustein ist diese additive Formel auf genau einen Baustein angewendet. Sie ist eine Modellableitung, keine direkte Beobachtung.",
+          "en": "Because the packages differ between studies, the model can split the observed package effects across the individual components: it finds the component effects (beta_k and delta_k) that, added together, best explain the results of all studies. The estimate for one component is that additive formula applied to just that one component. It is a model-based derivation, not a direct observation."
+        },
+        {
+          "de": "Die Verlässlichkeit hängt an drei Punkten. Erstens Additivität: Das Modell nimmt an, dass Bausteine sich nicht gegenseitig verstärken oder abschwächen. Wirkt ein Baustein nur zusammen mit einem anderen (etwa regelmäßige Verlaufskontrollen nur, wenn es auch eine Behandlung gibt, die angepasst werden kann), wird sein Einzeleffekt falsch geschätzt. Zweitens Trennbarkeit: Bausteine, die in den Studien fast immer gemeinsam vorkommen, lassen sich statistisch schwer auseinanderhalten; ihre Schätzungen sind unsicher und miteinander verknüpft. Drittens Konfundierung zwischen Studien: Mit nur 12 Studien können Unterschiede in Population, Land oder Studiendesign einem Baustein zugeschrieben werden, der zufällig nur in bestimmten Studien vorkam.",
+          "en": "Reliability rests on three things. First, additivity: the model assumes components don't strengthen or weaken each other. If a component only works together with another (for example, regular patient review only helps if there is a treatment that can be adjusted), its single effect is misestimated. Second, separability: components that almost always appear together in the studies are statistically hard to tell apart, so their estimates are uncertain and tied to each other. Third, confounding between studies: with only 12 studies, differences in population, country or study design can be attributed to a component that happened to appear only in certain studies."
+        },
+        {
+          "de": "Das zeigt sich in diesem Refit konkret: Die meisten Einzeleffekte haben breite Kredibilitätsintervalle, die oft null einschließen, und bei einigen Bausteinen (regelmäßige Verlaufskontrollen, gemeinsam festgelegte Behandlungsziele) schätzt das Modell einen ungünstigen Effekt. Das ist klinisch unplausibel und spricht eher für die oben genannten Grenzen als für echten Schaden.",
+          "en": "This shows up concretely in this refit: most single-component effects have wide credible intervals, often including zero, and for some components (regular patient review, jointly set treatment goals) the model estimates an unfavourable effect. That is clinically implausible and more likely reflects the limitations above than real harm."
+        },
+        {
+          "de": "Für Behandlungsentscheidungen heißt das: Die Einzelschätzungen eignen sich als Gesprächsgrundlage und zum Vergleich, welche Bausteine für ein bestimmtes Profil eher im Vordergrund stehen könnten. Die Rangfolge und die Richtung eines Effekts sind aussagekräftiger als die genaue Zahl. Sie sind kein Beleg dafür, dass ein Baustein allein wirkt, und kein Grund, einen Baustein allein anzubieten oder einen bewährten Baustein wegzulassen. Die Entscheidung sollte weiterhin gemeinsam getroffen werden, unter Berücksichtigung von Präferenzen, Verfügbarkeit, klinischer Einschätzung und Leitlinien, in denen kollaborative Versorgung als Paket empfohlen wird.",
+          "en": "For treatment decisions this means: the single-component estimates are useful as a basis for discussion and to compare which components might matter more for a particular profile. The ranking and the direction of an effect are more informative than the exact number. They are not evidence that a component works on its own, and not a reason to offer a component in isolation or to drop an established one. Decisions should still be made together, taking into account preferences, availability, clinical judgment, and guidelines that recommend collaborative care as a package."
         }
       ]
     },
@@ -100,8 +129,8 @@
           "en": "Step 1 and Step 2 are statistically coupled. Step 2 was fit using risk score values produced by one specific version of Step 1. Recalibrating Step 1 alone, without refitting Step 2 against it, would silently break that coupling."
         },
         {
-          "de": "Jeder gezeigte Baustein ist eine Extrapolation der additiven Formel, keine erprobte Behandlung — dieser Refit weist keine bestimmte Kombination von Bausteinen als in den Studien erprobt aus. Siehe Schritt 2 oben.",
-          "en": "Every component shown is an extrapolation from the additive formula, not a trial-tested treatment — this refit doesn't flag any specific combination of components as trial-tested. See Step 2 above."
+          "de": "Jeder gezeigte Baustein ist eine Extrapolation der additiven Formel, keine erprobte Behandlung: In den Studien kam jeder Baustein nur als Teil eines Pakets vor. Siehe „Wie Einzelschätzungen entstehen“ oben.",
+          "en": "Every component shown is an extrapolation from the additive formula, not a trial-tested treatment: in the studies, each component only ever appeared as part of a package. See \"How single-component estimates are made\" above."
         }
       ]
     },

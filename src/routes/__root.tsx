@@ -7,11 +7,13 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { LanguageProvider, useLang, ui } from "../lib/i18n";
 import { SessionProvider } from "../lib/session";
+import { CompassMark, FAVICON_HREF } from "../components/CompassMark";
+import { PrototypeCorner } from "../components/PrototypeCorner";
 
 function NotFoundComponent() {
   return (
@@ -75,17 +77,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "author", content: "Care Compass" },
+      { name: "author", content: "Collaborative Care Compass" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      // Explicit no-op icon: without this, browsers fall back to requesting
-      // /favicon.ico at the domain root (outside our base path) whenever no
-      // <link rel="icon"> is present, which can flash a stale/unrelated
-      // cached icon before resolving to nothing.
-      { rel: "icon", href: "data:," },
+      // The compass mark, inlined as a data URI: without an explicit icon,
+      // browsers fall back to requesting /favicon.ico at the domain root
+      // (outside our base path), which can flash a stale/unrelated cached icon.
+      { rel: "icon", type: "image/svg+xml", href: FAVICON_HREF },
     ],
   }),
   shellComponent: RootShell,
@@ -140,8 +141,15 @@ function SiteHeader() {
 
   return (
     <header className="border-b border-border print:hidden">
-      <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-5 gap-y-2 px-4 py-3">
-        <Link to="/" className="shrink-0 text-sm font-semibold">
+      {/* Same column as PageHero/PageBody (max-w-5xl, px-4 sm:px-8), so the
+          header's left and right edges line up with the page text below.
+          Everything fits on one line on desktop; it wraps on small screens. */}
+      <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-3 sm:px-8">
+        <Link
+          to="/"
+          className="flex shrink-0 items-center gap-2 text-sm font-semibold text-brand-strong"
+        >
+          <CompassMark className="h-7 w-7" />
           {tr(ui.appName)}
         </Link>
         <nav className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
@@ -171,118 +179,31 @@ function SiteFooter() {
   const { tr } = useLang();
   return (
     <footer className="mt-16 border-t border-border print:hidden">
-      <div className="mx-auto max-w-3xl px-4 py-6 text-xs leading-relaxed text-muted-foreground">
+      <div className="mx-auto max-w-5xl px-4 py-6 text-xs leading-relaxed text-muted-foreground sm:px-8">
         <p>{tr(ui.disclaimer)}</p>
       </div>
     </footer>
   );
 }
 
-/**
- * Device preview: lets anyone see the app's phone/tablet layout without
- * needing browser DevTools. It works by loading the app itself inside an
- * <iframe> of a fixed pixel width — an iframe has its own layout viewport,
- * so the same responsive CSS that reacts to a real phone's width reacts to
- * it here too (a plain scaled-down <div> would not: Tailwind's `sm:`
- * breakpoints match the browser window's width, not a container's width).
- */
-type PreviewMode = "desktop" | "tablet" | "mobile";
-
-const DEVICE_SIZE: Record<Exclude<PreviewMode, "desktop">, { width: number; height: number }> = {
-  tablet: { width: 820, height: 1180 },
-  mobile: { width: 390, height: 844 },
-};
-
-function ViewToggle({ mode, onChange }: { mode: PreviewMode; onChange: (m: PreviewMode) => void }) {
-  const labels: Record<PreviewMode, string> = {
-    desktop: "Desktop",
-    tablet: "Tablet",
-    mobile: "Mobile",
-  };
-  return (
-    <div className="flex items-center gap-3 text-xs">
-      <span className="text-muted-foreground">View:</span>
-      {(["desktop", "tablet", "mobile"] as const).map((m) => (
-        <button
-          key={m}
-          type="button"
-          onClick={() => onChange(m)}
-          aria-pressed={mode === m}
-          className={mode === m ? "font-semibold text-foreground" : "text-muted-foreground"}
-        >
-          {labels[m]}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-function DevicePreviewFrame({ mode, src }: { mode: Exclude<PreviewMode, "desktop">; src: string }) {
-  const { width, height } = DEVICE_SIZE[mode];
-  return (
-    <div className="flex flex-col items-center gap-2 bg-secondary px-4 py-8">
-      <div
-        className="overflow-hidden rounded-2xl border-4 border-foreground/70 bg-background"
-        style={{ width, height }}
-      >
-        {src ? (
-          <iframe
-            title={`${mode} preview`}
-            src={src}
-            style={{ width: "100%", height: "100%", border: "none", display: "block" }}
-          />
-        ) : null}
-      </div>
-      <p className="text-xs text-muted-foreground">{width}px wide</p>
-    </div>
-  );
-}
-
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const [mode, setMode] = useState<PreviewMode>("desktop");
-  const [frameSrc, setFrameSrc] = useState("");
-  const [mounted, setMounted] = useState(false);
-  const [framed, setFramed] = useState(false);
-
-  // Client-only: detect whether this page is itself running inside the
-  // preview iframe below, so that document never tries to nest itself.
-  useEffect(() => {
-    setMounted(true);
-    setFramed(window.self !== window.top);
-  }, []);
-
-  const changeMode = (m: PreviewMode) => {
-    setMode(m);
-    if (m !== "desktop") setFrameSrc(window.location.href);
-  };
-
-  const previewDevice = mode === "desktop" ? null : mode;
-  const showFrame = mounted && !framed && previewDevice !== null;
 
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
         <SessionProvider>
-          {!framed && (
-            <div className="border-b border-border bg-secondary/60 px-4 py-1.5 print:hidden">
-              <div className="mx-auto flex max-w-3xl justify-end">
-                <ViewToggle mode={mode} onChange={changeMode} />
-              </div>
-            </div>
-          )}
-          {showFrame && previewDevice ? (
-            <DevicePreviewFrame mode={previewDevice} src={frameSrc} />
-          ) : (
-            <div className="flex min-h-screen flex-col">
-              <SiteHeader />
-              <main className="flex-1">
-                {/* Required: nested routes render here. */}
-                <Outlet />
-              </main>
-              <SiteFooter />
-            </div>
-          )}
+          <div className="flex min-h-screen flex-col">
+            <SiteHeader />
+            {/* `relative` anchors the "Research prototype" corner flag to the
+                top-right of the page content (just below the header). */}
+            <main className="relative flex-1">
+              <PrototypeCorner />
+              {/* Required: nested routes render here. */}
+              <Outlet />
+            </main>
+            <SiteFooter />
+          </div>
         </SessionProvider>
       </LanguageProvider>
     </QueryClientProvider>

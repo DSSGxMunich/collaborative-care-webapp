@@ -2,8 +2,8 @@
   "thankYou": {
     "title": { "de": "Danke für Ihre Antworten", "en": "Thank you for your answers" },
     "body": {
-      "de": "Sie entscheiden selbst, ob Sie Ihre persönliche Auswertung jetzt sehen möchten. Manche Menschen finden Zahlen zu ihrer Situation hilfreich, andere empfinden sie als belastend. Beides ist in Ordnung — Sie können die Auswertung auch später oder gemeinsam mit Ihrer Ärztin oder Ihrem Arzt ansehen.",
-      "en": "You decide whether you want to see your personal results now. Some people find numbers about their situation helpful, others find them distressing. Both are fine — you can also look at the results later or together with your doctor."
+      "de": "Sie entscheiden selbst, ob Sie Ihre persönliche Auswertung jetzt sehen möchten. Manche Menschen finden Zahlen zu ihrer Situation hilfreich, andere empfinden sie als belastend. Beides ist in Ordnung. Sie können die Auswertung auch später oder gemeinsam mit Ihrer Ärztin oder Ihrem Arzt ansehen.",
+      "en": "You decide whether you want to see your personal results now. Some people find numbers about their situation helpful, others find them distressing. Both are fine. You can also look at the results later or together with your doctor."
     },
     "seeResults": { "de": "Ergebnis jetzt ansehen", "en": "See result now" },
     "seeSupport": { "de": "Angebote vor Ort ansehen", "en": "See local support" },
@@ -79,19 +79,21 @@
       "en": "Hide details"
     }
   },
-  "phq9Label": "PHQ-9",
-  "of27": { "de": "von 27 Punkten", "en": "of 27 points" },
-  "range": { "de": "Bereich", "en": "Range" },
+  "currentScore": {
+    "label": { "de": "Ihr aktueller PHQ-9-Wert", "en": "Your current PHQ-9 score" },
+    "outOf27": { "de": "von 27 Punkten", "en": "out of 27 points" },
+    "range": { "de": "(Wertebereich: {range} Punkte)", "en": "(score range: {range} points)" },
+    "info": {
+      "de": "Der PHQ-9-Wert gibt die Beschwerden wieder, die Sie für die letzten zwei Wochen angegeben haben. Er allein stellt keine Diagnose. Diese kann nur im Gespräch mit Ihrer Hausarztpraxis oder einer Fachperson gestellt werden.",
+      "en": "The PHQ-9 score reflects the symptoms you reported for the past two weeks. On its own, it does not establish a diagnosis. That can only be made in a conversation with your GP or another healthcare professional."
+    },
+    "infoAria": { "de": "Was bedeutet dieser Wert?", "en": "What does this score mean?" }
+  },
   "legend": {
-    "better": { "de": "Möglicherweise zusätzlicher Nutzen", "en": "May offer additional benefit" },
+    "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
     "expected": { "de": "Erwarteter Wert nach 12 Monaten", "en": "Expected result at 12 months" },
-    "helpful": { "de": "Möglicherweise zusätzlicher Nutzen", "en": "May offer additional benefit" },
     "interval": { "de": "Unsicherheitsbereich", "en": "Range of uncertainty" },
     "today": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" },
-    "scale": {
-      "de": "PHQ-9-Skala 0–27, niedriger = weniger Beschwerden",
-      "en": "PHQ-9 scale 0–27, lower = fewer symptoms"
-    },
     "fewer": { "de": "weniger Beschwerden", "en": "fewer symptoms" },
     "more": { "de": "mehr Beschwerden", "en": "more symptoms" }
   },
@@ -101,32 +103,45 @@
       "en": "Likely to help more than your current care"
     },
     "otherSection": { "de": "Weitere Bausteine", "en": "Other components" },
+    "comparisonLabel": { "de": "Zum Vergleich", "en": "For comparison" },
     "rankAria": {
-      "de": "Platz {rank} von {total} — nach erwartetem Nutzen gereiht, hilfreichster Baustein zuerst",
-      "en": "Rank {rank} of {total} — ordered by expected benefit, most helpful care component first"
-    }
+      "de": "Platz {rank} von {total}, nach erwartetem Nutzen gereiht, hilfreichster Baustein zuerst",
+      "en": "Rank {rank} of {total}, ordered by expected benefit, most helpful care component first"
+    },
+    "example": {
+      "button": { "de": "So sah das in einer Studie aus", "en": "How this looked in a study" },
+      "close": { "de": "Schließen", "en": "Close" }
+    },
+    "combinedNote": {
+      "de": "In den Studien wurden diese Bausteine nur in Kombination erprobt. Die einzelnen Werte sind daraus berechnet.",
+      "en": "In the studies, these components were only tested in combination. The individual scores are calculated from those results."
+    },
+    "combinedNoteLink": { "de": "Was das bedeutet", "en": "What this means" }
   },
   "scenarios": {
     "usualCare": {
       "label": {
         "de": "Übliche hausärztliche Versorgung",
-        "en": "Usual care from your GP — for comparison"
+        "en": "Usual care from your GP"
       },
-      "short": { "de": "Übliche Versorgung", "en": "Usual care from your GP — for comparison" },
+      "short": {
+        "de": "Übliche hausärztliche Versorgung",
+        "en": "Usual care from your GP"
+      },
       "description": {
-        "de": "Die übliche Behandlung, die eine Hausarztpraxis bei depressiven Beschwerden anbietet. Dazu können Termine bei Ihrer Hausärztin/Ihrem Hausarzt, eine medikamentöse Behandlung oder eine Überweisung an andere Fachpersonen gehören. Die tatsächlich angebotene Versorgung kann sich zwischen Hausarztpraxen unterscheiden und von der Versorgung abweichen, die Sie aktuell erhalten.",
-        "en": "The usual treatment provided by a GP practice for depressive symptoms. This may include appointments with your GP, medication or referral to other healthcare professionals. The exact care provided can vary between GP practices and may differ from the care you currently receive."
+        "de": "Die übliche Behandlung, die eine Hausarztpraxis bei depressiven Beschwerden anbietet. Dazu können Termine bei Ihrer Hausärztin/Ihrem Hausarzt, eine medikamentöse Behandlung oder eine Überweisung an andere Fachpersonen gehören.",
+        "en": "The usual treatment provided by a GP practice for depressive symptoms. This may include appointments with your GP, medication or referral to other healthcare professionals."
       },
-      "example": {
-        "de": "Alle paar Wochen ein Termin in der Hausarztpraxis, um zu besprechen, wie es Ihnen geht – eventuell mit einem Rezept für ein Antidepressivum.",
-        "en": "An appointment with your GP every few weeks to check how you are doing, possibly with a prescription for an antidepressant."
+      "note": {
+        "de": "* Die tatsächlich angebotene Versorgung kann sich zwischen Hausarztpraxen unterscheiden und von der Versorgung abweichen, die Sie aktuell erhalten.",
+        "en": "* The exact care provided can vary between GP practices and may differ from the care you currently receive."
       }
     }
   },
   "components": {
     "specialistInvolvement": {
       "label": {
-        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Einbindung einer Fachärztin/eines Facharztes oder Psychologin/Psychologen",
+        "de": "[Entwurf: fachliche/UX-Prüfung ausstehend] Einbindung einer Fachärztin/eines Facharztes oder Psychologin/Psychologen",
         "en": "Specialist advice for your care team"
       },
       "short": {
@@ -138,13 +153,19 @@
         "en": "A psychiatrist or psychologist advises your care team. You do not need a separate appointment with this specialist for the team to receive this advice."
       },
       "example": {
-        "de": "Ihre Hausärztin bespricht Ihre Situation mit einem Psychiater, der vorschlägt, die Medikation anzupassen.",
-        "en": "Your GP talks your situation through with a psychiatrist, who suggests adjusting your medication."
+        "text": {
+          "de": "Eine Psychologin bzw. ein Psychologe bot psychologische und verhaltenstherapeutische Behandlung an und verfolgte den Verlauf. Ein Psychiater überprüfte die Fortschritte, kümmerte sich um Fragen zur Medikation und empfahl Änderungen der Behandlung. Die Hausärztin bzw. der Hausarzt blieb weiter in die medizinische Versorgung eingebunden.",
+          "en": "A psychologist gave patients psychological and behavioural treatment and followed how they were doing. A psychiatrist reviewed their progress, dealt with questions about medication and recommended changes to treatment. The GP stayed involved in the patient's medical care."
+        },
+        "source": {
+          "de": "Katon et al., USA, 1996",
+          "en": "Katon et al., USA, 1996"
+        }
       }
     },
     "psychologicalTreatment": {
       "label": {
-        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Beratung oder Psychotherapie",
+        "de": "[Entwurf: fachliche/UX-Prüfung ausstehend] Beratung oder Psychotherapie",
         "en": "Brief counselling: up to 8 sessions"
       },
       "short": {
@@ -152,17 +173,23 @@
         "en": "Brief counselling: up to 8 sessions"
       },
       "description": {
-        "de": "In diesen Gesprächen geht es um Ihre Beschwerden und Wege, damit umzugehen — von kurzer Beratung bis zu strukturierter Psychotherapie über mehrere Sitzungen. Kann auch zusätzlich zu einer Medikation erfolgen.",
+        "de": "In diesen Gesprächen geht es um Ihre Beschwerden und Wege, damit umzugehen, von kurzer Beratung bis zu strukturierter Psychotherapie über mehrere Sitzungen. Kann auch zusätzlich zu einer Medikation erfolgen.",
         "en": "These conversations focus on your symptoms and ways to manage them. Counselling may also be provided alongside medication."
       },
       "example": {
-        "de": "Wöchentliche Gespräche mit einer geschulten Fachkraft, persönlich oder am Telefon, über das, was Sie belastet, und kleine Schritte, die Sie ausprobieren können.",
-        "en": "Weekly conversations with a trained counsellor, in person or by phone, about what is weighing on you and small steps you could try."
+        "text": {
+          "de": "Zusätzlich zur Unterstützung bei ihrer antidepressiven Medikation erhielten Patientinnen und Patienten eine kurze Beratung, die ihnen half, für sie wertvolle Aktivitäten zu planen. Eine Fallmanagerin bzw. ein Fallmanager meldete sich innerhalb von 3 Monaten bis zu 10-mal, meist telefonisch, fragte nach dem Befinden und gab der Hausarztpraxis schriftlich Rückmeldung. Fachleute begleiteten die Fallmanager wöchentlich in Supervision.",
+          "en": "Alongside support with their antidepressant medication, patients received brief counselling that helped them plan activities they value. A care manager contacted them up to 10 times over 3 months, mostly by phone, checked how they were doing and sent written feedback to their GP. Specialists supervised the care managers every week."
+        },
+        "source": {
+          "de": "Richards et al., Großbritannien, 2008",
+          "en": "Richards et al., UK, 2008"
+        }
       }
     },
     "goalSetting": {
       "label": {
-        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Gemeinsam festgelegte Behandlungsziele",
+        "de": "[Entwurf: fachliche/UX-Prüfung ausstehend] Gemeinsam festgelegte Behandlungsziele",
         "en": "Agreeing on your personal treatment goals"
       },
       "short": {
@@ -174,8 +201,14 @@
         "en": "You discuss what you would like treatment to help you change. You and your care team agree on specific goals."
       },
       "example": {
-        "de": "Sie vereinbaren ein Ziel wie „zweimal pro Woche mit einer Freundin spazieren gehen“ und schauen gemeinsam, wie es damit läuft.",
-        "en": "You agree on a goal such as “go for a walk with a friend twice a week” and check together how it is going."
+        "text": {
+          "de": "Eine Fallmanagerin bzw. ein Fallmanager stellte die Situation jeder Patientin und jedes Patienten in einer wöchentlichen Fallbesprechung einem Psychiater und einer Hausärztin vor. Gemeinsam erarbeitete das Team Behandlungsempfehlungen, die zu den Erfahrungen, den aktuellen Behandlungswünschen und dem Versicherungsschutz der Person passten. In den folgenden Besprechungen wurde das Team jeweils über den weiteren Verlauf informiert.",
+          "en": "A care manager presented each patient's situation to a psychiatrist and a GP at a weekly case review. Together, the team drew up treatment recommendations that fit the patient's experiences, current treatment preferences and insurance cover. At each later review, the team was updated on how the patient was doing."
+        },
+        "source": {
+          "de": "Rollman et al., USA, 2009",
+          "en": "Rollman et al., USA, 2009"
+        }
       }
     },
     "patientPreference": {
@@ -192,8 +225,14 @@
         "en": "You discuss which treatment you would prefer and what matters to you. Your preferences are considered when planning your care."
       },
       "example": {
-        "de": "Sie sagen, dass Sie lieber zuerst Gespräche statt Medikamente ausprobieren möchten, und Ihr Behandlungsplan beginnt damit.",
-        "en": "You say you would rather try talking therapy before medication, and your treatment plan starts there."
+        "text": {
+          "de": "In einer Studie mit Menschen mit Herzschwäche entschied jede Patientin und jeder Patient gemeinsam mit einer Pflegekraft, ob zuerst an Schmerzen, Atemnot, Erschöpfung oder Depression gearbeitet werden sollte. Die Behandlung begann dann mit dem gewählten Beschwerdebild.",
+          "en": "In a study with people living with heart failure, each patient decided together with a nurse whether to work on pain, breathlessness, tiredness or depression first. Care then started with the symptom they had chosen."
+        },
+        "source": {
+          "de": "Bekelman et al., USA, 2018",
+          "en": "Bekelman et al., USA, 2018"
+        }
       }
     },
     "automatedFollowUp": {
@@ -210,13 +249,19 @@
         "en": "A system that helps your care team to keep track of your follow-up care. For example, it can remind the team when contact is due or flag signs that your symptoms may be getting worse. This does not mean continuous monitoring or guarantee an immediate response."
       },
       "example": {
-        "de": "Die Praxis bekommt eine Erinnerung, Sie anzurufen, wenn Sie sich vier Wochen lang nicht gemeldet haben.",
-        "en": "The practice gets a reminder to call you if you have not been in touch for four weeks."
+        "text": {
+          "de": "Jeden Monat prüfte eine Depressions-Fachkraft automatisch erfasste Apothekendaten, aus denen hervorging, ob Patientinnen und Patienten ihre Antidepressiva-Rezepte eingelöst hatten. Wiesen diese Daten oder ein per Post verschickter Fragebogen darauf hin, dass jemand noch Beschwerden hatte oder die Medikamente abgesetzt hatte, informierte die Fachkraft die Hausarztpraxis und rief die Person an.",
+          "en": "Every month, a depression specialist reviewed automatically collected pharmacy data showing whether patients had refilled their antidepressant prescriptions. If this data or a questionnaire sent by post suggested that a patient still had symptoms or had stopped their medication, the specialist alerted the GP and phoned the patient."
+        },
+        "source": {
+          "de": "Katon et al., USA, 2001",
+          "en": "Katon et al., USA, 2001"
+        }
       }
     },
     "regularPatientReview": {
       "label": {
-        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Regelmäßige Verlaufskontrollen",
+        "de": "[Entwurf: fachliche/UX-Prüfung ausstehend] Regelmäßige Verlaufskontrollen",
         "en": "Regular team reviews of your treatment"
       },
       "short": {
@@ -224,17 +269,23 @@
         "en": "Regular team reviews of your treatment"
       },
       "description": {
-        "de": "Ihr Behandlungsteam plant feste, wiederkehrende Termine, um Ihren Verlauf zu besprechen — unabhängig davon, ob es Ihnen gerade besser oder schlechter geht.",
+        "de": "Ihr Behandlungsteam plant feste, wiederkehrende Termine, um Ihren Verlauf zu besprechen, unabhängig davon, ob es Ihnen gerade besser oder schlechter geht.",
         "en": "Your care team meets or checks in at planned intervals to review how your treatment is going and whether anything needs to change."
       },
       "example": {
-        "de": "Alle paar Wochen schaut sich das Team Ihre aktuellen Fragebogenwerte an und entscheidet, ob die Behandlung so bleibt oder angepasst wird.",
-        "en": "Every few weeks, the team looks at your latest questionnaire scores and decides whether to keep or change your treatment."
+        "text": {
+          "de": "Fallmanagerinnen und Fallmanager besprachen Patientinnen und Patienten in einer wöchentlichen Supervision, vor allem neue Patienten, Personen mit einem Risiko, sich oder anderen zu schaden, Personen ohne Besserung und Personen, die Termine verpasst hatten. Zusätzlich wurde jeder einzelne Fall einmal im Monat besprochen.",
+          "en": "Care managers discussed patients in weekly supervision, especially new patients, those at risk of harming themselves or others, those who were not improving and those who had missed appointments. In addition, every patient's case was reviewed once a month."
+        },
+        "source": {
+          "de": "Coventry et al., Großbritannien, 2015",
+          "en": "Coventry et al., UK, 2015"
+        }
       }
     },
     "copingStrategies": {
       "label": {
-        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Vermittlung von Bewältigungsstrategien",
+        "de": "[Entwurf: fachliche/UX-Prüfung ausstehend] Vermittlung von Bewältigungsstrategien",
         "en": "Learning ways to manage depressive symptoms"
       },
       "short": {
@@ -246,8 +297,14 @@
         "en": "You learn and practise ways to manage your symptoms in daily life. You discuss which approaches suit your situation."
       },
       "example": {
-        "de": "Jeden Tag eine angenehme Aktivität einplanen oder sehr negative Gedanken bemerken und hinterfragen.",
-        "en": "Planning one enjoyable activity each day, or noticing and questioning very negative thoughts."
+        "text": {
+          "de": "Medizinische Fachangestellte in deutschen Hausarztpraxen vermittelten Patientinnen und Patienten einfache, praktische Fertigkeiten wie Techniken zum Lösen von Problemen, Entspannungsübungen und Übungen zur Stärkung des Selbstvertrauens. Ziel war, dass die Patientinnen und Patienten besser für sich sorgen und ihre Beschwerden im Alltag bewältigen können.",
+          "en": "Practice nurses in German GP practices taught patients simple, practical skills such as problem solving, relaxation exercises and activities to build self-confidence. The aim was to help patients look after themselves and manage their symptoms in daily life."
+        },
+        "source": {
+          "de": "Zimmermann et al., Deutschland, 2016",
+          "en": "Zimmermann et al., Germany, 2016"
+        }
       }
     },
     "relapsePrevention": {
@@ -264,8 +321,14 @@
         "en": "Together with your care partner or doctor, you make a plan for staying well and recognizing early warning signs to look out for. Your plan explains what you can do and whom to contact if symptoms return."
       },
       "example": {
-        "de": "Eine schriftliche Notiz Ihrer persönlichen Warnzeichen, etwa eine Woche lang schlecht schlafen, und an wen Sie sich dann wenden.",
-        "en": "A written note of your personal warning signs, such as sleeping badly for a week, and whom to contact if they appear."
+        "text": {
+          "de": "Sobald eine Patientin oder ein Patient die Behandlungsziele erreicht hatte, erstellte sie bzw. er gemeinsam mit der Pflegekraft einen Plan, um gesund zu bleiben. Er umfasste Wege zum Stressabbau, persönliche Ziele, die Fortführung der Medikation und frühe Warnzeichen dafür, dass die Depression zurückkehren könnte.",
+          "en": "Once a patient had reached their treatment goals, they and the nurse drew up a plan to stay well. It covered ways to reduce stress, personal goals, continuing medication, and the early warning signs that depression might be coming back."
+        },
+        "source": {
+          "de": "Katon et al., USA, 2010",
+          "en": "Katon et al., USA, 2010"
+        }
       }
     },
     "familyInvolvement": {
@@ -282,13 +345,19 @@
         "en": "With your agreement, family members or friends are involved in your care. You discuss together how they can support you."
       },
       "example": {
-        "de": "Ihr Partner kommt zu einem Termin mit, um mehr über Depression zu erfahren und wie er Sie unterstützen kann.",
-        "en": "Your partner comes along to an appointment to learn about depression and how to support you."
+        "text": {
+          "de": "Pflegekräfte in Hausarztpraxen boten Patientinnen und Patienten persönliche Unterstützung und Informationen zu Themen wie der Behandlung, den Beziehungen zu Familie und Freunden sowie dem Selbstwertgefühl. Familienmitglieder und Freunde wurden ermutigt, sich aktiv an der Behandlung zu beteiligen.",
+          "en": "Nurses in GP practices offered patients personal support and information on topics such as their treatment, relationships with family and friends, and self-esteem. Family members and friends were encouraged to take an active part in the treatment."
+        },
+        "source": {
+          "de": "Aragonès et al., Spanien, 2012",
+          "en": "Aragonès et al., Spain, 2012"
+        }
       }
     },
     "communityCulturalBg": {
       "label": {
-        "de": "[Entwurf – fachliche/UX-Prüfung ausstehend] Berücksichtigung von Gemeinschaft und kulturellem Hintergrund",
+        "de": "[Entwurf: fachliche/UX-Prüfung ausstehend] Berücksichtigung von Gemeinschaft und kulturellem Hintergrund",
         "en": "Taking your community and cultural background into account"
       },
       "short": {
@@ -300,8 +369,14 @@
         "en": "Your care considers support available in your community or your cultural background. This may include support groups, social services, or values and ways of life that matter to you."
       },
       "example": {
-        "de": "Kontakt zu einer Selbsthilfegruppe in Ihrer Nähe oder eine Behandlung in Ihrer Muttersprache.",
-        "en": "Being put in touch with a local support group, or receiving care in your own language."
+        "text": {
+          "de": "Lotsinnen und Lotsen halfen Patientinnen und Patienten, passende Gesundheits-, Sozial- und Gemeindeangebote zu finden und Kontakt aufzunehmen. Die Unterstützung gab es online, telefonisch, per App oder vor Ort in der eigenen Gemeinde.",
+          "en": "Care navigators helped patients find and connect with suitable health, social and community services. Support was offered online, by phone, through an app, or in person in the patient's local community."
+        },
+        "source": {
+          "de": "Fletcher et al., Australien, 2021",
+          "en": "Fletcher et al., Australia, 2021"
+        }
       }
     }
   },
@@ -332,8 +407,8 @@
         "en": "Please read: about distressing thoughts"
       },
       "message": {
-        "de": "Sie haben angegeben, dass Sie an einzelnen Tagen Gedanken hatten, lieber tot zu sein oder sich Leid zuzufügen. Solche Gedanken sind bei Depressionen häufig und behandelbar. Bitte sprechen Sie sie bei Ihrem nächsten Termin an — und melden Sie sich früher, wenn sie stärker werden.",
-        "en": "You reported that on some days you had thoughts of being better off dead or of hurting yourself. Such thoughts are common in depression and can be treated. Please mention them at your next appointment — and get in touch sooner if they get stronger."
+        "de": "Sie haben angegeben, dass Sie an einzelnen Tagen Gedanken hatten, lieber tot zu sein oder sich Leid zuzufügen. Solche Gedanken sind bei Depressionen häufig und behandelbar. Bitte sprechen Sie sie bei Ihrem nächsten Termin an. Melden Sie sich früher, wenn sie stärker werden.",
+        "en": "You reported that on some days you had thoughts of being better off dead or of hurting yourself. Such thoughts are common in depression and can be treated. Please mention them at your next appointment, and get in touch sooner if they get stronger."
       }
     },
     "advisory": {
@@ -352,7 +427,7 @@
     }
   },
   "predictorsNote": {
-    "de": "Ausgangswert PHQ-9, Alter und Geschlecht fließen in die Schätzung ein. Ihre übrige Vorgeschichte (z. B. Vorbehandlung) sehen Sie in der Zusammenfassung für die Praxis, sie verändert die Schätzung aber nicht.",
+    "de": "Ausgangswert PHQ-9, Alter und Geschlecht fließen in die Schätzung ein. Ihre übrige Vorgeschichte (z. B. Vorbehandlung) sehen Sie in der Praxis-Zusammenfassung, sie verändert die Schätzung aber nicht.",
     "en": "Baseline PHQ-9, age and sex feed into the estimate. Your other history (e.g. prior treatment) appears in the practice summary but does not change the estimate."
   },
   "predictors": {
@@ -362,21 +437,52 @@
     "notProvided": { "de": "keine Angabe", "en": "not provided" }
   },
   "whatCanBeExpected": {
-    "de": "Optionen für das Gespräch mit Ihrer Ärztin oder Ihrem Arzt",
-    "en": "Options to discuss with your doctor"
+    "de": "Ihre geschätzten Beschwerdewerte (Entwicklung des PHQ-9-Werts) nach 12 Monaten mit verschiedenen Versorgungsangeboten",
+    "en": "Your estimated symptom scores (PHQ-9 score development) after 12 months with different care options"
   },
   "whatCanBeExpectedBody": {
-    "de": "Jede Zeile zeigt, wo die Beschwerden von Menschen mit ähnlichen Merkmalen nach 12 Monaten ungefähr lagen. Je breiter der Bereich, desto unsicherer die Schätzung. Was hilft, kann sich von Person zu Person unterscheiden.",
-    "en": "Each row shows roughly where symptoms were after 12 months for people with similar characteristics. The wider the band, the less certain the estimate. What helps can differ from person to person."
+    "de": "Niedrigere Werte bedeuten weniger depressive Beschwerden. Es handelt sich um Schätzungen auf Grundlage früherer Forschungsdaten und Ihrer Angaben. Ihre eigenen Beschwerden können sich anders entwickeln.",
+    "en": "Lower scores mean fewer depressive symptoms. These are estimates based on past research data and the information you entered, and your own symptoms may develop differently."
   },
-  "whatInfluences": {
-    "de": "Was beeinflusst diese Schätzung?",
-    "en": "What influences this estimate?"
+  "aboutEstimates": {
+    "heading": { "de": "Über diese Schätzungen", "en": "About these estimates" },
+    "facts": [
+      {
+        "value": { "de": "12 RCTs", "en": "12 RCTs" },
+        "label": {
+          "de": "Randomisierte kontrollierte Studien zur kollaborativen Depressionsversorgung bilden die Grundlage dieser Schätzungen.",
+          "en": "Randomised controlled trials of collaborative depression care are the evidence behind these estimates."
+        }
+      },
+      {
+        "value": { "de": "10 Bausteine", "en": "10 components" },
+        "label": {
+          "de": "Die Studien haben die Versorgungsbausteine in Kombination erprobt; hier wird jeder einzeln geschätzt.",
+          "en": "The trials tested the care components in combination; here each one is estimated on its own."
+        }
+      },
+      {
+        "value": { "de": "12 Monate", "en": "12 months" },
+        "label": {
+          "de": "Jede Schätzung gibt Ihren erwarteten PHQ-9-Wert 12 Monate nach Beginn der Versorgung an.",
+          "en": "Each estimate is your expected PHQ-9 score 12 months after care begins."
+        }
+      }
+    ],
+    "research": {
+      "de": "Grundlage sind 12 klinische Studien zur kollaborativen Depressionsversorgung, in denen die Bausteine in Kombination erprobt wurden.",
+      "en": "Based on 12 clinical studies of collaborative depression care, in which the components were tested in combination."
+    },
+    "ranking": {
+      "de": "Die Versorgungsbausteine sind vom wahrscheinlich hilfreichsten bis zum am wenigsten hilfreichen geordnet. Das Modell ist ein Forschungsprototyp und nicht klinisch validiert.",
+      "en": "Care components are listed from the one most likely to help to the least. The model is a research prototype and has not been clinically validated."
+    },
+    "methodologyLink": { "de": "Mehr zur Methodik", "en": "More about the method" }
   },
   "actions": {
     "clinicianSummary": {
-      "de": "Zusammenfassung für die Praxis",
-      "en": "Summary for the practice"
+      "de": "Praxis-Zusammenfassung",
+      "en": "Practice summary"
     },
     "localSupport": { "de": "Passende Angebote vor Ort", "en": "Suitable local offers" },
     "downloadPdf": { "de": "PDF herunterladen", "en": "Download PDF" }
@@ -392,36 +498,8 @@
       "note": { "de": "Einschätzung", "en": "Assessment" }
     },
     "footer": {
-      "de": "Dieser Ausdruck stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Bausteine sind nach erwartetem Nutzen gereiht, nicht nach exakten Zahlenwerten. Die Einschätzungen sind nicht klinisch validiert und ersetzen keine ärztliche Diagnose oder Behandlung.",
-      "en": "This printout comes from a research prototype built on a component network meta-analysis (10 components, 12 trials). Components are ranked by expected benefit, not exact numeric values. These assessments haven't been clinically validated and do not replace medical diagnosis or treatment."
+      "de": "Dieser Ausdruck stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Die Bausteine wurden in den Studien nur in Kombinationen erprobt; die Einzelschätzungen sind eine statistische Aufteilung, keine Einzelstudienergebnisse. Bausteine sind nach erwartetem Nutzen gereiht, nicht nach exakten Zahlenwerten. Die Einschätzungen sind nicht klinisch validiert und ersetzen keine ärztliche Diagnose oder Behandlung.",
+      "en": "This printout comes from a research prototype built on a component network meta-analysis (10 components, 12 trials). The components were only ever tested in combinations; single-component estimates are a statistical split, not results of single-component trials. Components are ranked by expected benefit, not exact numeric values. These assessments haven't been clinically validated and do not replace medical diagnosis or treatment."
     }
-  },
-  "chart": {
-    "bands": {
-      "minimal": { "de": "minimal", "en": "minimal" },
-      "mild": { "de": "leicht", "en": "mild" },
-      "moderate": { "de": "mittel", "en": "moderate" },
-      "moderatelySevere": { "de": "mittel bis schwer", "en": "moderately severe" },
-      "severe": { "de": "schwer", "en": "severe" }
-    },
-    "mostLikely": { "de": "Am ehesten: {band}", "en": "Most likely: {band}" },
-    "today": { "de": "Heute", "en": "Today" },
-    "legend": {
-      "other": { "de": "Weitere Option", "en": "Other option" },
-      "usualCare": { "de": "Übliche Versorgung (Vergleich)", "en": "Usual care (for comparison)" },
-      "range": { "de": "Wahrscheinlicher Bereich", "en": "Likely range" },
-      "today": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" }
-    }
-  },
-  "componentGuide": {
-    "heading": {
-      "de": "Was diese Versorgungsbausteine bedeuten",
-      "en": "What these care components mean"
-    },
-    "body": {
-      "de": "Eine kurze Erklärung zu jedem Baustein, mit einem Beispiel, wie er im Alltag aussehen kann.",
-      "en": "A short explanation of each component, with an example of what it can look like in practice."
-    },
-    "example": { "de": "Zum Beispiel:", "en": "For example:" }
   }
 }

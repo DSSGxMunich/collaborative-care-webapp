@@ -63,19 +63,31 @@
     ],
     "severity": {
       "minimal": {
-        "label": { "de": "Minimale Symptome", "en": "Minimal symptoms" },
+        "label": { "de": "Minimale depressive Symptome", "en": "Minimal depressive symptoms" },
         "range": "0–4"
       },
-      "mild": { "label": { "de": "Leichte Symptome", "en": "Mild symptoms" }, "range": "5–9" },
+      "mild": {
+        "label": { "de": "Leichte depressive Symptome", "en": "Mild depressive symptoms" },
+        "range": "5–9"
+      },
       "moderate": {
-        "label": { "de": "Mittelgradige Symptome", "en": "Moderate symptoms" },
+        "label": {
+          "de": "Mittelgradige depressive Symptome",
+          "en": "Moderate depressive symptoms"
+        },
         "range": "10–14"
       },
       "moderatelySevere": {
-        "label": { "de": "Mittelgradig bis schwere Symptome", "en": "Moderately severe symptoms" },
+        "label": {
+          "de": "Mittelschwere bis schwere depressive Symptome",
+          "en": "Moderately severe depressive symptoms"
+        },
         "range": "15–19"
       },
-      "severe": { "label": { "de": "Schwere Symptome", "en": "Severe symptoms" }, "range": "20–27" }
+      "severe": {
+        "label": { "de": "Schwere depressive Symptome", "en": "Severe depressive symptoms" },
+        "range": "20–27"
+      }
     }
   },
   "safety": {
@@ -116,14 +128,6 @@
     "whyShown": { "de": "Warum wird das angezeigt?", "en": "Why is this shown?" }
   },
   "profile": {
-    "sectionIntro": {
-      "de": "Fangen wir mit ein paar kurzen Angaben zu Ihnen an.",
-      "en": "Let's start with a few quick questions about you."
-    },
-    "historyIntro": {
-      "de": "Noch ein paar Fragen zu Ihrer Vorgeschichte.",
-      "en": "A few more questions about your history."
-    },
     "age": {
       "question": { "de": "Wann sind Sie geboren?", "en": "When were you born?" },
       "underageWarning": {
@@ -167,6 +171,15 @@
         },
         { "id": "none", "label": { "de": "Noch keine Behandlung", "en": "No treatment so far" } }
       ]
+    }
+  },
+  "stepTitles": {
+    "basics": { "de": "Einige Angaben zu Ihnen", "en": "A few details about you" },
+    "phq9": { "de": "Ihre Stimmung und Ihr Alltag", "en": "Your mood and daily life" },
+    "safety": { "de": "Ihre Sicherheit und Ihr Wohlbefinden", "en": "Your safety and wellbeing" },
+    "history": {
+      "de": "Ihre bisherigen Erfahrungen mit Depression",
+      "en": "Your previous experience with depression"
     }
   },
   "pleaseAnswerAll": { "de": "Bitte alle Fragen beantworten", "en": "Please answer all questions" },

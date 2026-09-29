@@ -47,6 +47,17 @@
       }
     },
     {
+      "id": "testedSeparately",
+      "question": {
+        "de": "Wurde jeder Baustein einzeln getestet?",
+        "en": "Was each component tested on its own?"
+      },
+      "answer": {
+        "de": "Nein. In den Studien bekamen Patient:innen immer ein Paket aus mehreren Bausteinen. Weil sich die Pakete zwischen den Studien unterscheiden, kann ein statistisches Modell abschätzen, wie viel jeder Baustein zur Gesamtwirkung beiträgt. Diese Einzelschätzungen sind unsicherer als echte Einzelstudien und beruhen auf der Annahme, dass sich die Wirkungen einfach addieren. Sie sind deshalb eine Hilfe für das Gespräch mit Ihrer Praxis, keine Empfehlung, nur einen einzelnen Baustein zu wählen. Mehr dazu auf der Seite Methodik.",
+        "en": "No. In the studies, patients always received a package of several components. Because the packages differ between studies, a statistical model can estimate how much each component contributes to the overall effect. These single-component estimates are less certain than real single-component trials and rest on the assumption that effects simply add up. So they are a help for the conversation with your practice, not a recommendation to choose just one component. More on the Methodology page."
+      }
+    },
+    {
       "id": "wherefrom",
       "question": {
         "de": "Woher kommen die Schätzungen?",
