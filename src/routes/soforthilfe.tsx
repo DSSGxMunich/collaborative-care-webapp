@@ -24,7 +24,7 @@ function Crisis() {
         icon={<AlertIcon className="h-6 w-6" />}
         tone="destructive"
         title={tr(c.title)}
-        titleClassName="text-destructive"
+        titleClassName="text-foreground"
         intro={tr(c.intro)}
       />
       <PageBody>
@@ -36,17 +36,27 @@ function Crisis() {
               </span>
               <div className="min-w-0">
                 <p className="text-sm font-medium">{tr(contact.name)}</p>
-                <p className="mt-0.5 text-2xl font-bold tabular-nums tracking-tight text-primary">
+                <p className="mt-0.5 text-2xl font-bold tabular-nums tracking-tight text-foreground">
                   {contact.detail}
                 </p>
                 <p className="mt-1 text-sm text-muted-foreground">{tr(contact.note)}</p>
+                {"url" in contact && (
+                  <a
+                    href={contact.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1 inline-flex text-sm font-medium text-foreground underline underline-offset-2"
+                  >
+                    {contact.url.replace(/^https?:\/\//, "")}
+                  </a>
+                )}
               </div>
             </li>
           ))}
         </ul>
 
         <div className="mt-8 rounded-xl border border-destructive/30 bg-destructive-soft p-6">
-          <h2 className="text-base font-semibold text-destructive">{tr(c.helpNowTitle)}</h2>
+          <h2 className="text-base font-semibold text-foreground">{tr(c.helpNowTitle)}</h2>
           <ul className="mt-3 space-y-2 text-sm leading-relaxed text-foreground/80">
             {c.helpNowItems.map((line) => (
               <li key={line.en} className="flex gap-2">

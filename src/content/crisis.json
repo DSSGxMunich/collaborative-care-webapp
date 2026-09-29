@@ -6,6 +6,18 @@
   },
   "contacts": [
     {
+      "name": {
+        "de": "Krisendienste Bayern",
+        "en": "Bavarian Crisis Services (Krisendienste Bayern)"
+      },
+      "detail": "0800 / 6553000",
+      "note": {
+        "de": "Täglich von 0–14 Uhr in über 120 Sprachen · qualifizierte Soforthilfe bei psychischen Krisen und Notfällen",
+        "en": "Daily from midnight to 2 p.m. in over 120 languages · qualified immediate assistance for mental health crises and emergencies"
+      },
+      "url": "https://www.krisendienste.bayern"
+    },
+    {
       "name": { "de": "Notruf", "en": "Emergency services" },
       "detail": "112",
       "note": {
