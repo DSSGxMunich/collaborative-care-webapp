@@ -12,7 +12,7 @@ type GpUnlockError = "mismatch" | "noSession" | null;
 /**
  * The GP-side half of the waiting-room gate: the patient's screen
  * (WaitingBlocker) shows a code, and the GP types it in here — on the
- * "For the practice" page (src/routes/praxis.tsx) — to unlock the results.
+ * "Practice" page (src/routes/praxis.tsx) — to unlock the results.
  */
 export function GpUnlockCard() {
   const { tr } = useLang();

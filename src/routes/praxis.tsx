@@ -56,7 +56,7 @@ function Clinician() {
   }
 
   // Waiting-room answers stay locked until the GP enters the patient's code
-  // here — this page ("For the practice") is where that code is entered.
+  // here — this page ("Practice") is where that code is entered.
   if (p.session.mode === "waitingRoom" && !p.session.unlocked) {
     return (
       <>
