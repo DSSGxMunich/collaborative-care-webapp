@@ -293,9 +293,11 @@ function Results() {
         <section className="panel mt-6 p-6">
           <h2 className="text-lg font-semibold">{tr(r.aboutEstimates.heading)}</h2>
           {/* The three facts behind every estimate, at a glance. The components
-              fact links to Methodology for why single-component estimates come
-              from combination trials — kept here rather than above the chart,
-              where it didn't help during a consultation. */}
+              fact carries the section's only Methodology link ("Learn more"),
+              straight to why single-component estimates come from combination
+              trials. It sits here rather than above the chart, where it didn't
+              help during a consultation, and replaces a general "More about the
+              method" link that duplicated it. */}
           <dl className="mt-4 grid gap-4 sm:grid-cols-3">
             {r.aboutEstimates.facts.map((fact, i) => (
               <div key={i} className="border-t-2 border-primary pt-2">
@@ -310,7 +312,7 @@ function Results() {
                         hash={fact.methodologyHash}
                         className="font-medium text-foreground underline underline-offset-2"
                       >
-                        {tr(r.aboutEstimates.whatThisMeans)}
+                        {tr(r.aboutEstimates.learnMore)}
                       </Link>
                     </>
                   ) : null}
@@ -349,12 +351,6 @@ function Results() {
               </dd>
             </div>
           </dl>
-          <Link
-            to="/methodology"
-            className="mt-3 inline-flex text-sm font-medium underline underline-offset-2"
-          >
-            {tr(r.aboutEstimates.methodologyLink)}
-          </Link>
         </section>
 
         <div className="mt-8 flex flex-wrap gap-2">

@@ -458,8 +458,7 @@
       "de": "Die Versorgungsbausteine sind vom wahrscheinlich hilfreichsten bis zum am wenigsten hilfreichen geordnet. Das Modell ist ein Forschungsprototyp und nicht klinisch validiert.",
       "en": "Care components are listed from the one most likely to help to the least. The model is a research prototype and has not been clinically validated."
     },
-    "whatThisMeans": { "de": "Was das bedeutet", "en": "What this means" },
-    "methodologyLink": { "de": "Mehr zur Methodik", "en": "More about the method" }
+    "learnMore": { "de": "Mehr erfahren →", "en": "Learn more →" }
   },
   "actions": {
     "clinicianSummary": {
