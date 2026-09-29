@@ -6,20 +6,19 @@
   },
   "contacts": [
     {
-      "name": {
-        "de": "Krisendienste Bayern",
-        "en": "Bavarian Crisis Services (Krisendienste Bayern)"
-      },
-      "detail": "0800 / 6553000",
+      "name": { "de": "Krisendienste Bayern", "en": "Bavarian Crisis Services" },
+      "numbers": ["0800 / 6553000"],
+      "hours": { "de": "Täglich 0–14 Uhr", "en": "Daily, midnight–2 p.m." },
       "note": {
-        "de": "Täglich von 0–14 Uhr in über 120 Sprachen · qualifizierte Soforthilfe bei psychischen Krisen und Notfällen",
-        "en": "Daily from midnight to 2 p.m. in over 120 languages · qualified immediate assistance for mental health crises and emergencies"
+        "de": "Qualifizierte Soforthilfe bei psychischen Krisen und Notfällen, in über 120 Sprachen",
+        "en": "Qualified immediate help for mental health crises and emergencies, in over 120 languages"
       },
       "url": "https://www.krisendienste.bayern"
     },
     {
       "name": { "de": "Notruf", "en": "Emergency services" },
-      "detail": "112",
+      "numbers": ["112"],
+      "hours": { "de": "Rund um die Uhr", "en": "24/7" },
       "note": {
         "de": "Rettungsdienst bei akuter Lebensgefahr",
         "en": "Ambulance, in acute danger to life"
@@ -27,26 +26,34 @@
     },
     {
       "name": { "de": "Telefonseelsorge", "en": "Telephone counselling" },
-      "detail": "0800 111 0 111 / 0800 111 0 222 / 116 123",
-      "note": { "de": "Kostenlos, rund um die Uhr, anonym", "en": "Free, 24/7, anonymous" }
+      "numbers": ["0800 111 0 111", "0800 111 0 222", "116 123"],
+      "hours": { "de": "Rund um die Uhr", "en": "24/7" },
+      "note": { "de": "Kostenlos und anonym", "en": "Free and anonymous" }
     },
     {
       "name": { "de": "Ärztlicher Bereitschaftsdienst", "en": "Out-of-hours medical service" },
-      "detail": "116 117",
+      "numbers": ["116 117"],
+      "hours": { "de": "Rund um die Uhr", "en": "24/7" },
       "note": {
-        "de": "Wenn die Praxis geschlossen ist, rund um die Uhr",
-        "en": "When your practice is closed, 24/7"
+        "de": "Wenn die Hausarztpraxis geschlossen ist",
+        "en": "When your GP practice is closed"
       }
     },
     {
       "name": { "de": "Info-Telefon Depression", "en": "Depression information line" },
-      "detail": "0800 33 44 533",
+      "numbers": ["0800 33 44 533"],
+      "hours": {
+        "de": "Mo, Di, Do 13–17 Uhr · Mi, Fr 8:30–12:30 Uhr",
+        "en": "Mon, Tue, Thu 1–5 p.m. · Wed, Fri 8:30 a.m.–12:30 p.m."
+      },
       "note": {
-        "de": "Stiftung Deutsche Depressionshilfe · Mo, Di, Do 13–17 Uhr; Mi, Fr 8:30–12:30 Uhr · Information, kein Krisendienst",
-        "en": "German Depression Aid Foundation · Mon, Tue, Thu 1–5 pm; Wed, Fri 8:30 am–12:30 pm · information, not a crisis service"
+        "de": "Stiftung Deutsche Depressionshilfe. Information, kein Krisendienst",
+        "en": "German Depression Aid Foundation. Information, not a crisis service"
       }
     }
   ],
+  "hoursLabel": { "de": "Erreichbarkeit", "en": "Hours" },
+  "noteLabel": { "de": "Beschreibung", "en": "Description" },
   "helpNowTitle": { "de": "Was jetzt hilft", "en": "What helps right now" },
   "helpNowItems": [
     {
