@@ -26,19 +26,36 @@ export const Route = createFileRoute("/ergebnis")({
 
 const r = resultsContent;
 
-/** Where the PHQ-9 severity bands start (0–4, 5–9, 10–14, 15–19, 20–27). */
-const SEVERITY_CUTOFFS = [5, 10, 15, 20];
+/** The PHQ-9 severity bands (0–4, 5–9, 10–14, 15–19, 20–27), as [from, to) on the 0–27 scale. */
+const SEVERITY_BANDS: Record<Severity, { from: number; to: number }> = {
+  minimal: { from: 0, to: 5 },
+  mild: { from: 5, to: 10 },
+  moderate: { from: 10, to: 15 },
+  moderatelySevere: { from: 15, to: 20 },
+  severe: { from: 20, to: PHQ9_MAX },
+};
+
+/** Position on the 0–27 scale as a CSS percentage. */
+const scalePos = (v: number) => `${(Math.min(PHQ9_MAX, Math.max(0, v)) / PHQ9_MAX) * 100}%`;
 
 /**
- * Today's PHQ-9 score, read top to bottom: the number, its severity band,
- * then a 0–27 scale with a marker. The scale says "lower is better" three
- * ways at once (end labels, an arrow sentence, and a green → red fill), so
- * nobody reads a high score as a good one.
+ * Near either end, anchor a label to its inner side so it stays inside the
+ * scale; otherwise center it on its position.
+ */
+const edgeAnchor = (v: number, margin: number) =>
+  v <= margin ? "" : v >= PHQ9_MAX - margin ? "-translate-x-full" : "-translate-x-1/2";
+
+/**
+ * Today's PHQ-9 score, shown once, on the scale rather than repeated as text
+ * above it. The bar is neutral grey split into the five severity bands; only
+ * the patient's own band is darkened and named underneath, so the card reads
+ * without a green → red gradient. The end labels say which way is better.
  */
 function CurrentScore({ score, severity }: { score: number; severity: Severity }) {
   const { tr } = useLang();
   const c = r.currentScore;
-  const pos = `${(Math.min(PHQ9_MAX, Math.max(0, score)) / PHQ9_MAX) * 100}%`;
+  const band = SEVERITY_BANDS[severity];
+  const bandMid = (band.from + band.to) / 2;
 
   return (
     <div className="panel mt-6 p-6">
@@ -53,44 +70,47 @@ function CurrentScore({ score, severity }: { score: number; severity: Severity }
           <span aria-hidden="true">i</span>
         </InfoTooltip>
       </div>
-      <p className="mt-1 flex items-baseline gap-2">
-        <span className="text-4xl font-semibold tabular-nums leading-none">{score}</span>
-        <span className="text-sm text-muted-foreground">{tr(c.outOf27)}</span>
-      </p>
-      <p className="mt-2 text-sm font-medium">
-        {tr(SEVERITY_LABEL[severity])}{" "}
-        <span className="whitespace-nowrap font-normal text-muted-foreground">
-          {fill(tr(c.range), { range: SEVERITY_RANGE[severity] })}
-        </span>
+      {/* Screen readers get the score and band as one sentence; the scale itself is decorative. */}
+      <p className="sr-only">
+        {score} {tr(c.outOf27)}. {tr(SEVERITY_LABEL[severity])}{" "}
+        {fill(tr(c.range), { range: SEVERITY_RANGE[severity] })}
       </p>
 
-      {/* The bar is decorative; its end labels below say which way is better. */}
-      <div className="mt-8">
-        <div aria-hidden className="relative">
-          {/* Near either end, anchor the label to the marker's inner side so it stays inside the scale. */}
+      <div aria-hidden className="mt-10">
+        <div className="relative">
           <div
-            className={`absolute bottom-full mb-1.5 ${score <= 2 ? "" : score >= PHQ9_MAX - 2 ? "-translate-x-full" : "-translate-x-1/2"}`}
-            style={{ left: pos }}
+            className={`absolute bottom-full mb-1.5 ${edgeAnchor(score, 2)}`}
+            style={{ left: scalePos(score) }}
           >
-            <span className="whitespace-nowrap text-xs font-semibold tabular-nums">
+            <span className="whitespace-nowrap text-sm font-semibold tabular-nums">
               {fill(tr(c.you), { score })}
             </span>
           </div>
-          <div className="relative h-2 overflow-hidden rounded-full bg-linear-to-r from-success/55 via-warning/50 to-destructive/55">
-            {SEVERITY_CUTOFFS.map((t) => (
+          <div className="flex h-2 gap-0.5">
+            {(Object.keys(SEVERITY_BANDS) as Severity[]).map((sev) => (
               <span
-                key={t}
-                className="absolute inset-y-0 w-0.5 bg-background"
-                style={{ left: `${(t / PHQ9_MAX) * 100}%` }}
+                key={sev}
+                className={`h-full rounded-full ${sev === severity ? "bg-foreground/70" : "bg-muted-foreground/20"}`}
+                style={{ width: scalePos(SEVERITY_BANDS[sev].to - SEVERITY_BANDS[sev].from) }}
               />
             ))}
           </div>
           <span
             className="absolute top-1/2 h-4 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-foreground ring-2 ring-background"
-            style={{ left: pos }}
+            style={{ left: scalePos(score) }}
           />
         </div>
-        <div className="mt-1.5 flex justify-between gap-4 text-[11px] text-muted-foreground">
+        {/*
+         * Centered under the band, but sliding with it: at p% along the scale
+         * the label's own p% sits there, so it never overflows either edge.
+         */}
+        <p
+          className="mt-2 w-max max-w-full text-sm font-medium"
+          style={{ marginLeft: scalePos(bandMid), translate: `-${scalePos(bandMid)}` }}
+        >
+          {tr(SEVERITY_LABEL[severity])}
+        </p>
+        <div className="mt-1 flex justify-between gap-4 text-[11px] text-muted-foreground">
           <span>{tr(c.min)}</span>
           <span className="text-right">{tr(c.max)}</span>
         </div>
