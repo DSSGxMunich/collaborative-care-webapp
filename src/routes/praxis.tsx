@@ -3,7 +3,7 @@ import { CareOptions } from "@/components/CareOptions";
 import { fill, ui, useLang } from "@/lib/i18n";
 import { PHQ9_ITEMS, SEVERITY_LABEL } from "@/lib/phq9";
 import { assessRisk } from "@/lib/safety";
-import { MODEL_META } from "@/lib/model";
+import { beatsUsualCare, MODEL_META } from "@/lib/model";
 import { generatePraxisPdf } from "@/lib/pdf";
 import { usePrediction } from "@/lib/usePrediction";
 import {
@@ -141,9 +141,7 @@ function Clinician() {
       : undefined;
   };
 
-  /** A component is flagged "likely to help" when its expected outcome beats the patient's own baseline — no magnitude shown, just the direction. */
-  const isHelpful = (scenario: (typeof p.scenarios)[number]) =>
-    scenario.expectedEndpoint < p.baseline;
+  const isHelpful = beatsUsualCare(p.scenarios, p.baseline);
 
   const rankedScenarios = p.scenarios.filter((s) => s.id !== "usualCare");
   const usualCareScenario = p.scenarios.find((s) => s.id === "usualCare");

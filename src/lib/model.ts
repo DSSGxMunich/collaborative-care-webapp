@@ -257,6 +257,20 @@ function rankByHelpfulness(scenarios: Scenario[]): Scenario[] {
   return [usualCare, ...rest.sort((a, b) => a.expectedEndpoint - b.expectedEndpoint)];
 }
 
+/**
+ * Whether a scenario "may offer additional benefit": its expected 12-month
+ * PHQ-9 beats usual care's. Compared against usual care, not the patient's
+ * score today: with a high baseline almost every option lands below today
+ * (scores drift down over 12 months either way), so that comparison would
+ * mark nearly every option, including ones expected to do worse than usual
+ * care. Falls back to `baseline` if usual care is missing.
+ */
+export function beatsUsualCare(scenarios: Scenario[], baseline: number) {
+  const reference = scenarios.find((s) => s.id === "usualCare")?.expectedEndpoint ?? baseline;
+  return (scenario: Scenario) =>
+    scenario.id !== "usualCare" && scenario.expectedEndpoint < reference;
+}
+
 export function buildPredictions(input: PredictionInput) {
   const estimates = estimateComponents(input);
   const predictors = describePredictors(input);

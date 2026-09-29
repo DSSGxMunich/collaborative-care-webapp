@@ -1,8 +1,13 @@
 import type { ReactNode } from "react";
 import type { Scenario } from "@/lib/model";
 import { severityFor, type Severity } from "@/lib/phq9";
-import { PHQ9_MAX } from "@/components/OutcomeStrip";
 
+/**
+ * The chart always spans the full PHQ-9 range (0–27), never a zoomed one:
+ * a zoomed axis would make small differences between options look bigger
+ * than they are.
+ */
+const PHQ9_MAX = 27;
 const pct = (x: number) => (Math.min(PHQ9_MAX, Math.max(0, x)) / PHQ9_MAX) * 100;
 
 /**
@@ -150,7 +155,7 @@ function Row({ labelSlot, children }: { labelSlot: ReactNode; children: ReactNod
 
 const TONES = {
   helpful: { dot: "bg-success", band: "via-success/45" },
-  other: { dot: "bg-primary", band: "via-primary/35" },
+  other: { dot: "border-2 border-muted-foreground bg-card", band: "via-muted-foreground/30" },
   usual: { dot: "bg-muted-foreground", band: "via-muted-foreground/40" },
 } as const;
 
@@ -227,7 +232,7 @@ function Legend({ labels }: { labels: OutcomeChartLabels["legend"] }) {
   return (
     <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-muted-foreground">
       {item(dot("bg-success"), labels.helpful)}
-      {item(dot("bg-primary"), labels.other)}
+      {item(dot("border-2 border-muted-foreground bg-card"), labels.other)}
       {item(dot("bg-muted-foreground"), labels.usualCare)}
       {item(
         <span className="h-2.5 w-6 shrink-0 rounded-full bg-linear-to-r from-transparent via-foreground/35 to-transparent" />,
