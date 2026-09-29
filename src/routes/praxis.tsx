@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CareRanking } from "@/components/CareRanking";
+import { CareOptions } from "@/components/CareOptions";
 import { fill, ui, useLang } from "@/lib/i18n";
 import { PHQ9_ITEMS, SEVERITY_LABEL } from "@/lib/phq9";
 import { assessRisk } from "@/lib/safety";
@@ -12,7 +12,6 @@ import {
   PROBABILITY_OPTIONS,
   SEX_OPTIONS,
 } from "@/lib/session";
-import { chunk } from "@/lib/utils";
 import { GpUnlockCard } from "@/components/GpUnlockCard";
 import { DownloadIcon, StethoscopeIcon } from "@/components/icons";
 import { PageBody, PageHero } from "@/components/PageHero";
@@ -133,15 +132,6 @@ function Clinician() {
     scenario.id === "usualCare"
       ? tr(r.scenarios.usualCare.label)
       : scenario.components.map((id) => tr(r.components[id].short)).join(" + ");
-
-  /** Same components as careComponentLabel, grouped at most 2 per line so a 3-4 component package doesn't run on into one long string in the table cell. */
-  const careComponentLabelLines = (scenario: (typeof p.scenarios)[number]): string[] =>
-    scenario.id === "usualCare"
-      ? [tr(r.scenarios.usualCare.label)]
-      : chunk(
-          scenario.components.map((id) => tr(r.components[id].short)),
-          2,
-        ).map((group) => group.join(" + "));
 
   /** Every row is a single component added alone, so it always has one unambiguous explanation to show. */
   const careComponentDescription = (scenario: (typeof p.scenarios)[number]): string | undefined => {
@@ -289,47 +279,7 @@ function Clinician() {
           </div>
         </section>
 
-        <section className="panel mt-6 p-6">
-          <h2 className="text-base font-semibold">{tr(c.modelEstimates)}</h2>
-          <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-            {tr(c.modelEstimatesIntro)}
-          </p>
-
-          {usualCareScenario && (
-            <div className="mt-4">
-              <CareRanking
-                usualCare={usualCareScenario}
-                ranked={rankedScenarios}
-                labelLines={careComponentLabelLines}
-                description={careComponentDescription}
-                helpful={isHelpful}
-                usualCareDescription={tr(r.scenarios.usualCare.description)}
-                usualCareNote={tr(r.scenarios.usualCare.note)}
-                helpfulSectionLabel={tr(c.ranking.helpfulSection)}
-                otherSectionLabel={tr(c.ranking.otherSection)}
-                comparisonLabel={tr(c.ranking.comparisonLabel)}
-                rankAriaLabel={(rank, total) => fill(tr(c.ranking.rankAria), { rank, total })}
-                outcome={{
-                  baseline: p.baseline,
-                  todayLabel: tr(c.outcome.todayLine),
-                  expectedLabel: () => tr(c.outcome.expected),
-                  lowLabel: tr(c.outcome.fewer),
-                  highLabel: tr(c.outcome.more),
-                  legend: {
-                    expected: tr(c.outcome.expected),
-                    helpful: tr(c.outcome.helpful),
-                    interval: tr(c.outcome.interval),
-                    today: tr(c.outcome.todayLine),
-                    scale: tr(c.outcome.scale),
-                  },
-                }}
-              />
-            </div>
-          )}
-          <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-            {fill(tr(c.footer), { version: MODEL_META.version })}
-          </p>
-        </section>
+        <CareOptions baseline={p.baseline} scenarios={p.scenarios} />
 
         {/* The next patient's code can be entered straight from here. */}
         <section className="mt-10 print:hidden">

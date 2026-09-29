@@ -96,22 +96,13 @@
     "max": {
       "de": "27: höchstmöglicher Beschwerdewert",
       "en": "27: highest possible symptom score"
-    },
-    "direction": {
-      "de": "Niedrigere Werte bedeuten weniger depressive Beschwerden",
-      "en": "Lower scores mean fewer depressive symptoms"
     }
   },
   "legend": {
     "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
     "expected": { "de": "Erwarteter Wert nach 12 Monaten", "en": "Expected result at 12 months" },
-    "helpful": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" },
     "interval": { "de": "Unsicherheitsbereich", "en": "Range of uncertainty" },
     "today": { "de": "Ihr PHQ-9 heute", "en": "Your PHQ-9 today" },
-    "scale": {
-      "de": "PHQ-9-Skala 0–27, niedriger = weniger Beschwerden",
-      "en": "PHQ-9 scale 0–27, lower = fewer symptoms"
-    },
     "fewer": { "de": "weniger Beschwerden", "en": "fewer symptoms" },
     "more": { "de": "mehr Beschwerden", "en": "more symptoms" }
   },
@@ -127,10 +118,14 @@
       "en": "Rank {rank} of {total}, ordered by expected benefit, most helpful care component first"
     },
     "example": {
-      "button": { "de": "Beispiel aus einer Studie", "en": "Example from a study" },
-      "heading": { "de": "So sah das in einer Studie aus", "en": "How this looked in a study" },
+      "button": { "de": "So sah das in einer Studie aus", "en": "How this looked in a study" },
       "close": { "de": "Schließen", "en": "Close" }
-    }
+    },
+    "combinedNote": {
+      "de": "Schätzungen aus früheren Studien, in denen diese Bausteine gemeinsam statt einzeln erprobt wurden.",
+      "en": "Estimates from past studies, in which these components were tested together rather than one at a time."
+    },
+    "combinedNoteLink": { "de": "Was das bedeutet", "en": "What this means" }
   },
   "scenarios": {
     "usualCare": {
@@ -168,12 +163,12 @@
       },
       "example": {
         "text": {
-          "de": "Speziell geschulte Pflegekräfte begleiteten Patientinnen und Patienten in der Hausarztpraxis. Alle zwei Wochen besprachen sie mit einem Team aus Psychiater, Psychologin und Hausarzt neue Patientinnen und Patienten sowie den Verlauf der übrigen. Der Psychiater prüfte Wahl und Dosis der Medikamente und schlug Änderungen vor, die die Pflegekraft dann mit der Hausarztpraxis und der Patientin bzw. dem Patienten besprach.",
-          "en": "Specially trained nurses supported patients in their GP practice. Every two weeks, they met with a psychiatrist, a psychologist and a family doctor to go through new patients and how the others were doing. The psychiatrist checked the choice and dose of medication and suggested changes, which the nurse then discussed with the GP and the patient."
+          "de": "Eine Psychologin bzw. ein Psychologe bot psychologische und verhaltenstherapeutische Behandlung an und verfolgte den Verlauf. Ein Psychiater überprüfte die Fortschritte, kümmerte sich um Fragen zur Medikation und empfahl Änderungen der Behandlung. Die Hausärztin bzw. der Hausarzt blieb weiter in die medizinische Versorgung eingebunden.",
+          "en": "A psychologist gave patients psychological and behavioural treatment and followed how they were doing. A psychiatrist reviewed their progress, dealt with questions about medication and recommended changes to treatment. The GP stayed involved in the patient's medical care."
         },
         "source": {
-          "de": "Katon et al., USA, 2004",
-          "en": "Katon et al., USA, 2004"
+          "de": "Katon et al., USA, 1996",
+          "en": "Katon et al., USA, 1996"
         }
       }
     },
@@ -240,8 +235,8 @@
       },
       "example": {
         "text": {
-          "de": "In einer Studie mit Menschen mit Herzschwäche wählte jede Patientin und jeder Patient gemeinsam mit einer Pflegekraft aus, an welchem Beschwerdebild zuerst gearbeitet werden sollte: Schmerzen, Atemnot, Erschöpfung oder Depression. Die Behandlung begann dann mit dem gewählten Beschwerdebild.",
-          "en": "In a study with people living with heart failure, each patient chose together with a nurse which symptom to work on first: pain, breathlessness, tiredness or depression. Care then started with the symptom they had chosen."
+          "de": "In einer Studie mit Menschen mit Herzschwäche entschied jede Patientin und jeder Patient gemeinsam mit einer Pflegekraft, ob zuerst an Schmerzen, Atemnot, Erschöpfung oder Depression gearbeitet werden sollte. Die Behandlung begann dann mit dem gewählten Beschwerdebild.",
+          "en": "In a study with people living with heart failure, each patient decided together with a nurse whether to work on pain, breathlessness, tiredness or depression first. Care then started with the symptom they had chosen."
         },
         "source": {
           "de": "Bekelman et al., USA, 2018",
@@ -312,8 +307,8 @@
       },
       "example": {
         "text": {
-          "de": "Medizinische Fachangestellte in deutschen Hausarztpraxen vermittelten Patientinnen und Patienten einfache, praktische Fertigkeiten: Techniken zum Lösen von Problemen, Entspannungsübungen und Übungen zur Stärkung des Selbstvertrauens. Ziel war, dass die Patientinnen und Patienten besser für sich sorgen und ihre Beschwerden im Alltag bewältigen können.",
-          "en": "Practice nurses in German GP practices taught patients simple, practical skills: ways to solve problems, relaxation exercises and activities to build self-confidence. The aim was to help patients look after themselves and manage their symptoms in daily life."
+          "de": "Medizinische Fachangestellte in deutschen Hausarztpraxen vermittelten Patientinnen und Patienten einfache, praktische Fertigkeiten wie Techniken zum Lösen von Problemen, Entspannungsübungen und Übungen zur Stärkung des Selbstvertrauens. Ziel war, dass die Patientinnen und Patienten besser für sich sorgen und ihre Beschwerden im Alltag bewältigen können.",
+          "en": "Practice nurses in German GP practices taught patients simple, practical skills such as problem solving, relaxation exercises and activities to build self-confidence. The aim was to help patients look after themselves and manage their symptoms in daily life."
         },
         "source": {
           "de": "Zimmermann et al., Deutschland, 2016",
@@ -471,8 +466,8 @@
       {
         "value": { "de": "10", "en": "10" },
         "label": {
-          "de": "Versorgungsbausteine, jeweils zusätzlich zur üblichen Versorgung verglichen",
-          "en": "care components, each compared on top of usual care"
+          "de": "Versorgungsbausteine, in den Studien in verschiedenen Kombinationen erprobt, hier einzeln geschätzt",
+          "en": "care components, tested in different combinations in the studies and estimated one by one here"
         }
       },
       {
@@ -484,8 +479,8 @@
       }
     ],
     "research": {
-      "de": "Die Schätzungen stammen aus einem Forschungsmodell, das auf Daten aus 12 klinischen Studien zur kollaborativen Depressionsversorgung beruht. Es betrachtet, wie es Menschen mit einer ähnlichen Ausgangslage nach 12 Monaten ging: mit der üblichen Versorgung und mit jedem zusätzlichen Versorgungsbaustein.",
-      "en": "The estimates come from a research model built on data from 12 clinical studies of collaborative depression care. It looks at how people with a similar starting point were doing after 12 months: with usual care, and with each additional care component."
+      "de": "Grundlage sind 12 klinische Studien zur kollaborativen Depressionsversorgung, in denen die Bausteine in Kombination erprobt wurden.",
+      "en": "Based on 12 clinical studies of collaborative depression care, in which the components were tested in combination."
     },
     "ranking": {
       "de": "Die Versorgungsbausteine sind vom wahrscheinlich hilfreichsten bis zum am wenigsten hilfreichen geordnet. Das Modell ist ein Forschungsprototyp und nicht klinisch validiert.",
@@ -512,8 +507,8 @@
       "note": { "de": "Einschätzung", "en": "Assessment" }
     },
     "footer": {
-      "de": "Dieser Ausdruck stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Bausteine sind nach erwartetem Nutzen gereiht, nicht nach exakten Zahlenwerten. Die Einschätzungen sind nicht klinisch validiert und ersetzen keine ärztliche Diagnose oder Behandlung.",
-      "en": "This printout comes from a research prototype built on a component network meta-analysis (10 components, 12 trials). Components are ranked by expected benefit, not exact numeric values. These assessments haven't been clinically validated and do not replace medical diagnosis or treatment."
+      "de": "Dieser Ausdruck stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Die Bausteine wurden in den Studien nur in Kombinationen erprobt; die Einzelschätzungen sind eine statistische Aufteilung, keine Einzelstudienergebnisse. Bausteine sind nach erwartetem Nutzen gereiht, nicht nach exakten Zahlenwerten. Die Einschätzungen sind nicht klinisch validiert und ersetzen keine ärztliche Diagnose oder Behandlung.",
+      "en": "This printout comes from a research prototype built on a component network meta-analysis (10 components, 12 trials). The components were only ever tested in combinations; single-component estimates are a statistical split, not results of single-component trials. Components are ranked by expected benefit, not exact numeric values. These assessments haven't been clinically validated and do not replace medical diagnosis or treatment."
     }
   }
 }

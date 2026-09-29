@@ -4,20 +4,20 @@ import { useEffect, useId, useRef, useState } from "react";
  * A click-to-open popover showing how a care component looked in a real
  * study. Unlike InfoTooltip (hover/focus, for one sentence), this holds a
  * few sentences plus a source, so it opens on click/tap and stays open
- * until the reader closes it (✕, Esc, or a click outside).
+ * until the reader closes it (✕, Esc, or a click outside). It has no
+ * visible heading: the button's own label already says what it shows, so
+ * it only names the dialog for screen readers.
  *
  * On phones it docks to the bottom of the screen as a sheet, so long text
  * doesn't get squeezed next to the row or cover the strip being compared.
  */
 export function ExamplePopover({
   buttonLabel,
-  heading,
   text,
   source,
   closeLabel,
 }: {
   buttonLabel: string;
-  heading: string;
   text: string;
   source?: string | undefined;
   closeLabel: string;
@@ -55,13 +55,11 @@ export function ExamplePopover({
         <div
           id={panelId}
           role="dialog"
-          aria-label={heading}
+          aria-label={buttonLabel}
           className="fixed inset-x-0 bottom-0 z-30 rounded-t-xl border border-border bg-card p-4 text-sm shadow-lg sm:absolute sm:inset-x-auto sm:bottom-auto sm:left-0 sm:top-full sm:mt-2 sm:w-96 sm:rounded-md"
         >
           <div className="flex items-start justify-between gap-3">
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              {heading}
-            </p>
+            <p className="leading-relaxed">{text}</p>
             <button
               type="button"
               onClick={() => setOpen(false)}
@@ -71,7 +69,6 @@ export function ExamplePopover({
               ✕
             </button>
           </div>
-          <p className="mt-2 leading-relaxed">{text}</p>
           {source ? <p className="mt-2 text-xs text-muted-foreground">{source}</p> : null}
         </div>
       )}

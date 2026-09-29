@@ -36,7 +36,7 @@ function Methodology() {
       <PageBody>
         <ol className="space-y-6">
           {m.sections.map((section, i) => (
-            <li key={section.id} className="panel flex gap-4 p-6">
+            <li key={section.id} id={section.id} className="panel flex scroll-mt-24 gap-4 p-6">
               <span
                 aria-hidden="true"
                 className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-soft text-sm font-semibold text-primary"

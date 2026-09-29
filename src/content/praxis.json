@@ -35,42 +35,6 @@
     "de": "Geschätzte Beschwerdewerte (Entwicklung des PHQ-9-Werts) nach 12 Monaten mit verschiedenen Versorgungsangeboten",
     "en": "Estimated symptom scores (PHQ-9 score development) after 12 months with different care options"
   },
-  "modelEstimatesIntro": {
-    "de": "Niedrigere Werte bedeuten weniger depressive Beschwerden. Es handelt sich um Schätzungen auf Grundlage früherer Forschungsdaten und der Angaben im Fragebogen. Die Beschwerden können sich individuell anders entwickeln. Die Bausteine sind, zusätzlich zur üblichen Versorgung, vom für diese:n Patient:in wahrscheinlich hilfreichsten bis zum am wenigsten hilfreichen gereiht.",
-    "en": "Lower scores mean fewer depressive symptoms. These are estimates based on past research data and the information entered in the questionnaire, and the patient's symptoms may develop differently. Components are ranked, on top of usual care, from what's likely to help this patient most to the least."
-  },
-  "ranking": {
-    "helpfulSection": {
-      "de": "Wahrscheinlich hilfreicher als die übliche Versorgung",
-      "en": "Likely to help more than usual care"
-    },
-    "otherSection": { "de": "Weitere Bausteine", "en": "Other components" },
-    "comparisonLabel": { "de": "Zum Vergleich", "en": "For comparison" },
-    "rankAria": {
-      "de": "Rang {rank} von {total}, nach erwartetem Zusatznutzen gereiht",
-      "en": "Rank {rank} of {total}, ranked by expected added benefit"
-    }
-  },
-  "outcome": {
-    "today": { "de": "PHQ-9 heute ({baseline})", "en": "PHQ-9 today ({baseline})" },
-    "todayLine": { "de": "PHQ-9 heute", "en": "PHQ-9 today" },
-    "expected": {
-      "de": "Erwarteter PHQ-9 nach 12 Mo. (Mittelwert)",
-      "en": "Expected PHQ-9 at 12 mo. (mean)"
-    },
-    "expectedHover": {
-      "de": "Erwarteter PHQ-9 nach 12 Mo.: {value}",
-      "en": "Expected PHQ-9 at 12 mo.: {value}"
-    },
-    "helpful": { "de": "Niedriger als heute", "en": "Lower than today" },
-    "interval": { "de": "95 %-Kredibilitätsintervall", "en": "95% credible interval" },
-    "scale": {
-      "de": "PHQ-9-Skala 0–27, niedriger = besser",
-      "en": "PHQ-9 scale 0–27, lower = better"
-    },
-    "fewer": { "de": "weniger Beschwerden", "en": "fewer symptoms" },
-    "more": { "de": "mehr Beschwerden", "en": "more symptoms" }
-  },
   "rows": {
     "phq9Total": { "de": "PHQ-9 Summenwert", "en": "PHQ-9 total" },
     "severity": { "de": "Schweregrad", "en": "Severity" },
@@ -106,7 +70,7 @@
     "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" }
   },
   "footer": {
-    "de": "Dieser Kurzbefund stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Bausteine sind nach erwartetem Zusatznutzen gereiht. Die Einschätzungen sind nicht klinisch validiert. Alle Angaben bleiben in dieser Browser-Sitzung und werden nicht übertragen.",
-    "en": "This report comes from a research prototype built on a component network meta-analysis (10 components, 12 studies). Components are ranked by expected added benefit. These assessments haven't been clinically validated. Everything entered stays in this browser session and is not transmitted."
+    "de": "Dieser Kurzbefund stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Die Bausteine wurden in den Studien nur in Kombinationen erprobt; die Einzelschätzungen sind eine modellbasierte Aufteilung, keine Einzelstudienergebnisse. Bausteine sind nach erwartetem Zusatznutzen gereiht. Die Einschätzungen sind nicht klinisch validiert. Alle Angaben bleiben in dieser Browser-Sitzung und werden nicht übertragen.",
+    "en": "This report comes from a research prototype built on a component network meta-analysis (10 components, 12 studies). The components were only ever tested in combinations; single-component estimates are a model-based split, not results of single-component trials. Components are ranked by expected added benefit. These assessments haven't been clinically validated. Everything entered stays in this browser session and is not transmitted."
   }
 }
