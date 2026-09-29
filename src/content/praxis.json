@@ -42,6 +42,10 @@
     "de": "Niedrigere Werte bedeuten weniger depressive Beschwerden. Es handelt sich um Schätzungen auf Grundlage früherer Forschungsdaten und der Angaben im Fragebogen. Die Beschwerden können sich individuell anders entwickeln. Die Bausteine sind, zusätzlich zur üblichen Versorgung, vom für diese:n Patient:in wahrscheinlich hilfreichsten bis zum am wenigsten hilfreichen gereiht.",
     "en": "Lower scores mean fewer depressive symptoms. These are estimates based on past research data and the information entered in the questionnaire, and the patient's symptoms may develop differently. Components are ranked, on top of usual care, from what's likely to help this patient most to the least."
   },
+  "modelEstimatesCaveat": {
+    "de": "Keiner dieser Bausteine wurde in den zugrunde liegenden Studien allein erprobt: Jede Studie testete ein Paket aus mehreren Bausteinen. Die Einzelschätzungen entstehen, indem das Modell (additive Komponenten-NMA) die Paketeffekte auf die Bausteine aufteilt. Sie hängen daher an der Additivitätsannahme (keine Wechselwirkungen), an wenigen Studien pro Baustein und daran, dass Bausteine häufig gemeinsam vorkommen. Einzelne Schätzungen sind klinisch unplausibel (z. B. scheinbar ungünstige Effekte regelmäßiger Verlaufskontrollen), was eher auf Konfundierung zwischen Studien als auf echten Schaden hindeutet. Bitte als Hypothesen für die gemeinsame Entscheidung lesen: Rangfolge und Richtung sind aussagekräftiger als einzelne Zahlen, und ein Baustein sollte nicht allein aufgrund dieser Schätzung angeboten oder weggelassen werden.",
+    "en": "None of these components was tested on its own in the underlying trials: every trial tested a package of several components. The single-component estimates come from the model (an additive component NMA) splitting the package effects across components. They therefore rest on the additivity assumption (no interactions), on few trials per component, and on components that often occur together. Some estimates are clinically implausible (e.g. apparently unfavourable effects of regular patient review), which more likely reflects confounding between trials than real harm. Read them as hypotheses for shared decision-making: the ranking and direction are more informative than any single number, and no component should be offered or withheld on the basis of this estimate alone."
+  },
   "ranking": {
     "helpfulSection": {
       "de": "Wahrscheinlich hilfreicher als die übliche Versorgung",
@@ -109,7 +113,7 @@
     "better": { "de": "Wahrscheinlich hilfreich", "en": "Likely to help" }
   },
   "footer": {
-    "de": "Dieser Kurzbefund stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Bausteine sind nach erwartetem Zusatznutzen gereiht. Die Einschätzungen sind nicht klinisch validiert. Alle Angaben bleiben in der Browser-Sitzung des Patienten.",
-    "en": "This report comes from a research prototype built on a component network meta-analysis (10 components, 12 studies). Components are ranked by expected added benefit. These assessments haven't been clinically validated. Everything entered stays in the patient's browser session."
+    "de": "Dieser Kurzbefund stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Die Bausteine wurden in den Studien nur in Kombinationen erprobt; die Einzelschätzungen sind eine modellbasierte Aufteilung, keine Einzelstudienergebnisse. Bausteine sind nach erwartetem Zusatznutzen gereiht. Die Einschätzungen sind nicht klinisch validiert. Alle Angaben bleiben in der Browser-Sitzung des Patienten.",
+    "en": "This report comes from a research prototype built on a component network meta-analysis (10 components, 12 studies). The components were only ever tested in combinations; single-component estimates are a model-based split, not results of single-component trials. Components are ranked by expected added benefit. These assessments haven't been clinically validated. Everything entered stays in the patient's browser session."
   }
 }

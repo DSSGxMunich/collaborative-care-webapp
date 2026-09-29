@@ -130,6 +130,10 @@
       "button": { "de": "Beispiel aus einer Studie", "en": "Example from a study" },
       "heading": { "de": "So sah das in einer Studie aus", "en": "How this looked in a study" },
       "close": { "de": "Schließen", "en": "Close" }
+    },
+    "combinedNote": {
+      "de": "Wichtig: In den Studien wurden diese Bausteine immer als Paket zusammen mit anderen Bausteinen angeboten, nie einzeln getestet. Die Schätzung für einen einzelnen Baustein ist daher eine statistische Aufteilung des Gesamteffekts, kein Ergebnis einer eigenen Studie. Nutzen Sie die Reihenfolge als Anregung für das Gespräch mit Ihrer Praxis, nicht als Empfehlung, einen einzelnen Baustein auszuwählen oder wegzulassen.",
+      "en": "Important: in the studies, these components were always offered as a package together with other components, never tested one at a time. The estimate for a single component is therefore a statistical split of the combined effect, not the result of a study of that component alone. Use the order as a starting point for a conversation with your practice, not as advice to pick or drop a single component."
     }
   },
   "scenarios": {
@@ -471,8 +475,8 @@
       {
         "value": { "de": "10", "en": "10" },
         "label": {
-          "de": "Versorgungsbausteine, jeweils zusätzlich zur üblichen Versorgung verglichen",
-          "en": "care components, each compared on top of usual care"
+          "de": "Versorgungsbausteine, in den Studien in verschiedenen Kombinationen erprobt, hier einzeln geschätzt",
+          "en": "care components, tested in different combinations in the studies and estimated one by one here"
         }
       },
       {
@@ -484,8 +488,8 @@
       }
     ],
     "research": {
-      "de": "Die Schätzungen stammen aus einem Forschungsmodell, das auf Daten aus 12 klinischen Studien zur kollaborativen Depressionsversorgung beruht. Es betrachtet, wie es Menschen mit einer ähnlichen Ausgangslage nach 12 Monaten ging: mit der üblichen Versorgung und mit jedem zusätzlichen Versorgungsbaustein.",
-      "en": "The estimates come from a research model built on data from 12 clinical studies of collaborative depression care. It looks at how people with a similar starting point were doing after 12 months: with usual care, and with each additional care component."
+      "de": "Die Schätzungen stammen aus einem Forschungsmodell, das auf Daten aus 12 klinischen Studien zur kollaborativen Depressionsversorgung beruht. Jede Studie hat ein eigenes Paket aus mehreren Bausteinen erprobt. Weil sich diese Pakete unterscheiden, kann das Modell abschätzen, welcher Anteil der Wirkung auf welchen Baustein entfällt, unter der Annahme, dass sich die Wirkungen einfach addieren. Diese Einzelschätzungen sind deutlich unsicherer, als wenn jeder Baustein für sich getestet worden wäre.",
+      "en": "The estimates come from a research model built on data from 12 clinical studies of collaborative depression care. Each study tested its own package of several components. Because these packages differ, the model can estimate how much of the effect belongs to each component, assuming the effects simply add up. These single-component estimates are much less certain than if each component had been tested on its own."
     },
     "ranking": {
       "de": "Die Versorgungsbausteine sind vom wahrscheinlich hilfreichsten bis zum am wenigsten hilfreichen geordnet. Das Modell ist ein Forschungsprototyp und nicht klinisch validiert.",
@@ -512,8 +516,8 @@
       "note": { "de": "Einschätzung", "en": "Assessment" }
     },
     "footer": {
-      "de": "Dieser Ausdruck stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Bausteine sind nach erwartetem Nutzen gereiht, nicht nach exakten Zahlenwerten. Die Einschätzungen sind nicht klinisch validiert und ersetzen keine ärztliche Diagnose oder Behandlung.",
-      "en": "This printout comes from a research prototype built on a component network meta-analysis (10 components, 12 trials). Components are ranked by expected benefit, not exact numeric values. These assessments haven't been clinically validated and do not replace medical diagnosis or treatment."
+      "de": "Dieser Ausdruck stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Die Bausteine wurden in den Studien nur in Kombinationen erprobt; die Einzelschätzungen sind eine statistische Aufteilung, keine Einzelstudienergebnisse. Bausteine sind nach erwartetem Nutzen gereiht, nicht nach exakten Zahlenwerten. Die Einschätzungen sind nicht klinisch validiert und ersetzen keine ärztliche Diagnose oder Behandlung.",
+      "en": "This printout comes from a research prototype built on a component network meta-analysis (10 components, 12 trials). The components were only ever tested in combinations; single-component estimates are a statistical split, not results of single-component trials. Components are ranked by expected benefit, not exact numeric values. These assessments haven't been clinically validated and do not replace medical diagnosis or treatment."
     }
   }
 }
