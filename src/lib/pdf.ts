@@ -4,9 +4,9 @@ import autoTable from "jspdf-autotable";
 export type PdfRow = { label: string; value: string; tone?: "warning" | "destructive" | undefined };
 export type PdfPhqItem = { index: number; label: string; value: number };
 /**
- * `endpoint` (expected PHQ-9 with CI) is only filled on the GP report; the
- * patient PDF shows no numbers. `description` explains the care component
- * and is printed under its name.
+ * `endpoint` (expected PHQ-9 with CI) is optional; both PDFs currently leave
+ * it out so they show no outcome numbers. `description` explains the care
+ * component and is printed under its name.
  */
 export type PdfScenarioRow = {
   label: string;
@@ -35,7 +35,7 @@ export type PraxisPdfInput = {
   phq9Heading: string;
   phq9Items: PdfPhqItem[];
   modelHeading: string;
-  tableHeaders: ScenarioTableHeaders & { endpoint: string };
+  tableHeaders: ScenarioTableHeaders;
   scenarioTables: PdfScenarioTable[];
   footer: string;
 };
@@ -82,7 +82,7 @@ const pdfSafe = (text: string): string =>
 
 /**
  * The ranked care-component table shared by both PDFs. It has an endpoint
- * column only when `headers.endpoint` is given (GP report).
+ * column only when `headers.endpoint` is given.
  *
  * autoTable uses one font per cell, but each care component's name should
  * read as the main text with its description smaller and grey underneath.

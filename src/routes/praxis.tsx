@@ -162,12 +162,6 @@ function Clinician() {
   const rankedScenarios = p.scenarios.filter((s) => s.id !== "usualCare");
   const usualCareScenario = p.scenarios.find((s) => s.id === "usualCare");
 
-  /** e.g. "9.2 (7.1–11.4)": expected 12-month PHQ-9 and its 95% credible interval. */
-  const formatEndpoint = (scenario: (typeof p.scenarios)[number]) => {
-    const f = (x: number) => x.toFixed(1);
-    return `${f(scenario.expectedEndpoint)} (${f(scenario.endpointRange[0])}–${f(scenario.endpointRange[1])})`;
-  };
-
   const scenarioTableRows = (scenarios: typeof p.scenarios) =>
     scenarios.map((scenario) => {
       const isUsualCare = scenario.id === "usualCare";
@@ -178,7 +172,6 @@ function Clinician() {
           ? `${tr(r.scenarios.usualCare.description)} ${tr(r.scenarios.usualCare.note)}`
           : careComponentDescription(scenario),
         rank,
-        endpoint: formatEndpoint(scenario),
         note: !isUsualCare && isHelpful(scenario) ? tr(c.table.better) : "–",
       };
     });
@@ -204,7 +197,6 @@ function Clinician() {
       tableHeaders: {
         careComponent: tr(c.table.careComponent),
         rank: tr(c.table.rank),
-        endpoint: tr(c.table.endpoint),
         note: tr(c.table.note),
       },
       scenarioTables: [
