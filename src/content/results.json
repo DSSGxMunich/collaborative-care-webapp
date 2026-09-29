@@ -336,7 +336,7 @@
     }
   },
   "predictorsNote": {
-    "de": "Ausgangswert PHQ-9, Alter und Geschlecht fließen in die Schätzung ein. Ihre übrige Vorgeschichte (z. B. Vorbehandlung) sehen Sie in der Zusammenfassung für die Praxis, sie verändert die Schätzung aber nicht.",
+    "de": "Ausgangswert PHQ-9, Alter und Geschlecht fließen in die Schätzung ein. Ihre übrige Vorgeschichte (z. B. Vorbehandlung) sehen Sie in der Praxis-Zusammenfassung, sie verändert die Schätzung aber nicht.",
     "en": "Baseline PHQ-9, age and sex feed into the estimate. Your other history (e.g. prior treatment) appears in the practice summary but does not change the estimate."
   },
   "predictors": {
@@ -390,8 +390,8 @@
   },
   "actions": {
     "clinicianSummary": {
-      "de": "Zusammenfassung für die Praxis",
-      "en": "Summary for the practice"
+      "de": "Praxis-Zusammenfassung",
+      "en": "Practice summary"
     },
     "localSupport": { "de": "Passende Angebote vor Ort", "en": "Suitable local offers" },
     "downloadPdf": { "de": "PDF herunterladen", "en": "Download PDF" }

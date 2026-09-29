@@ -22,7 +22,7 @@ import resultsContent from "@/content/results.json";
 export const Route = createFileRoute("/praxis")({
   head: () => ({
     meta: [
-      { title: "Kurzbefund für die Praxis | Versorgungskompass" },
+      { title: "Praxis-Kurzbefund | Versorgungskompass" },
       { name: "description", content: praxisContent.subtitle.de },
     ],
   }),
