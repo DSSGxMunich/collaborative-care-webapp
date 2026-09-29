@@ -35,6 +35,15 @@
             "de": "Kursangebote Ihrer Krankenkasse, Sportvereine am Wohnort",
             "en": "Course catalogue of your health insurer, local sports clubs"
           },
+          "links": [
+            {
+              "label": {
+                "de": "Kurssuche der Krankenkassen (ZPP)",
+                "en": "Health insurer course search (ZPP)"
+              },
+              "url": "https://portal.zentrale-pruefstelle-praevention.de/portfolio/gkv-sv/suche"
+            }
+          ],
           "searchTerm": {
             "de": "Bewegungsgruppe Präventionskurs",
             "en": "movement group prevention course"
@@ -54,6 +63,19 @@
             "de": "Schwimmbäder, Volkshochschule, Krankenkasse",
             "en": "Public pools, adult education centres, insurer"
           },
+          "links": [
+            {
+              "label": { "de": "vhs-Kursfinder", "en": "Adult education course finder (vhs)" },
+              "url": "https://www.volkshochschule.de/kursfinder.php"
+            },
+            {
+              "label": {
+                "de": "Kurssuche der Krankenkassen (ZPP)",
+                "en": "Health insurer course search (ZPP)"
+              },
+              "url": "https://portal.zentrale-pruefstelle-praevention.de/portfolio/gkv-sv/suche"
+            }
+          ],
           "searchTerm": { "de": "Wassergymnastik Kurs", "en": "water gymnastics course" }
         }
       ]
@@ -73,6 +95,15 @@
             "de": "NAKOS-Datenbank, Selbsthilfekontaktstelle im Landkreis",
             "en": "NAKOS database, regional self-help contact point"
           },
+          "links": [
+            {
+              "label": {
+                "de": "NAKOS: Selbsthilfekontaktstellen vor Ort",
+                "en": "NAKOS: local self-help contact points"
+              },
+              "url": "https://www.nakos.de/adressen/rot/"
+            }
+          ],
           "searchTerm": { "de": "Selbsthilfegruppe Depression", "en": "depression self-help group" }
         },
         {
@@ -89,6 +120,15 @@
             "de": "Stadtteilzentren, Kirchengemeinden, Mehrgenerationenhäuser",
             "en": "Neighbourhood centres, parishes, community centres"
           },
+          "links": [
+            {
+              "label": {
+                "de": "Mehrgenerationenhaus in der Nähe",
+                "en": "Multi-generation houses near you"
+              },
+              "url": "https://www.mehrgenerationenhaeuser.de/mehrgenerationenhaeuser/haeuser-in-ihrer-naehe/"
+            }
+          ],
           "searchTerm": { "de": "Gesprächskreis Begegnungscafé", "en": "drop-in social café" }
         }
       ]
@@ -111,6 +151,15 @@
             "de": "Caritas, Diakonie, AWO, Sozialamt der Gemeinde",
             "en": "Caritas, Diakonie, AWO, municipal social services"
           },
+          "links": [
+            {
+              "label": {
+                "de": "Caritas: Sozialberatung nach PLZ",
+                "en": "Caritas: social advice by postcode"
+              },
+              "url": "https://www.caritas.de/hilfeundberatung/onlineberatung/allgemeine-soziale-beratung/adressen"
+            }
+          ],
           "searchTerm": { "de": "Sozialberatung Beratungsstelle", "en": "social advice centre" }
         }
       ]
@@ -136,6 +185,12 @@
             "de": "DiGA-Verzeichnis des BfArM, Verordnung in der Praxis",
             "en": "BfArM DiGA directory, prescription at the practice"
           },
+          "links": [
+            {
+              "label": { "de": "DiGA-Verzeichnis des BfArM", "en": "BfArM DiGA directory" },
+              "url": "https://diga.bfarm.de/"
+            }
+          ],
           "searchTerm": { "de": "DiGA Depression Verzeichnis", "en": "DiGA depression directory" }
         }
       ]
@@ -158,6 +213,15 @@
             "de": "Gemeinde, Seniorenbüro, Kirchengemeinden",
             "en": "Municipality, senior citizens' office, parishes"
           },
+          "links": [
+            {
+              "label": {
+                "de": "Seniorenbüros nach Bundesland",
+                "en": "Senior offices by federal state"
+              },
+              "url": "https://seniorenbueros.org/seniorenbueros/standorte/"
+            }
+          ],
           "searchTerm": { "de": "Seniorentreff Begegnungsstätte", "en": "senior meeting point" }
         },
         {
@@ -174,6 +238,19 @@
             "de": "Freiwilligenagentur, Stadtteilzentrum",
             "en": "Volunteering agency, neighbourhood hub"
           },
+          "links": [
+            {
+              "label": {
+                "de": "Freiwilligenagenturen (bagfa-Agenturatlas)",
+                "en": "Volunteer centres (bagfa atlas)"
+              },
+              "url": "https://bagfa.de/agenturatlas/"
+            },
+            {
+              "label": { "de": "Repair-Cafés in der Nähe", "en": "Repair caf\u00e9s near you" },
+              "url": "https://www.reparatur-initiativen.de/"
+            }
+          ],
           "searchTerm": {
             "de": "Freiwilligenagentur Gemeinschaftsgarten",
             "en": "volunteering community garden"

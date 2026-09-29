@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { MapPinIcon, SearchIcon } from "@/components/icons";
+import { ExternalLinkIcon, MapPinIcon, SearchIcon } from "@/components/icons";
 import { PageBody, PageHero } from "@/components/PageHero";
 import { fill, useLang } from "@/lib/i18n";
 import supportContent from "@/content/support.json";
@@ -63,11 +63,27 @@ function Support() {
                     <span className="font-medium">{tr(s.whereToFind)}: </span>
                     {tr(offer.route)}
                   </p>
+                  {/* Official directories first; the Google search below is only a fallback. */}
+                  <ul className="mt-3 space-y-1.5">
+                    {offer.links.map((link) => (
+                      <li key={link.url}>
+                        <a
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-sm font-medium text-primary underline underline-offset-2"
+                        >
+                          <ExternalLinkIcon className="h-4 w-4 shrink-0" />
+                          {tr(link.label)}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
                   <a
                     href={searchLink(tr(offer.searchTerm))}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-3 inline-flex items-center gap-1.5 self-start text-sm font-medium text-primary underline underline-offset-2"
+                    className="mt-2 inline-flex items-center gap-1.5 self-start text-sm text-muted-foreground underline underline-offset-2 hover:text-foreground"
                   >
                     <SearchIcon className="h-4 w-4" />
                     {place ? fill(tr(s.searchInPlace), { place }) : tr(s.searchInArea)}
