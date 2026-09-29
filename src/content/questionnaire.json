@@ -183,10 +183,7 @@
   },
   "stepTitles": {
     "basics": { "de": "Einige Angaben zu Ihnen", "en": "A few details about you" },
-    "phq9": {
-      "de": "Ihr Befinden in den letzten zwei Wochen",
-      "en": "How you have been feeling recently"
-    },
+    "phq9": { "de": "Ihre Stimmung und Ihr Alltag", "en": "Your mood and daily life" },
     "safety": { "de": "Ihre Sicherheit und Ihr Wohlbefinden", "en": "Your safety and wellbeing" },
     "history": {
       "de": "Ihre bisherigen Erfahrungen mit Depression",
