@@ -104,10 +104,10 @@ function Questionnaire() {
               key={index}
               className="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
             >
-              {`${tr(ui.step)} ${index + 1} ${tr(ui.of)} ${total}`}
+              {`${tr(ui.nav.questionnaire)} · ${tr(ui.step)} ${index + 1} ${tr(ui.of)} ${total}`}
             </p>
           </div>
-          <h1 className="mt-4 text-3xl font-bold tracking-tight">{tr(ui.nav.questionnaire)}</h1>
+          <h1 className="mt-4 text-3xl font-bold tracking-tight">{tr(q.stepTitles[key])}</h1>
           <div
             className="mt-5 h-2 w-full overflow-hidden rounded-full bg-card"
             role="progressbar"

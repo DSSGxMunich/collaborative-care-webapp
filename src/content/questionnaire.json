@@ -181,6 +181,15 @@
       ]
     }
   },
+  "stepTitles": {
+    "basics": { "de": "Angaben zu Ihrer Person", "en": "About you" },
+    "phq9": {
+      "de": "Ihre Stimmung in den letzten 2 Wochen",
+      "en": "Your mood over the last 2 weeks"
+    },
+    "safety": { "de": "Ihre Sicherheit", "en": "Your safety" },
+    "history": { "de": "Frühere Depression und Behandlung", "en": "Past depression and treatment" }
+  },
   "pleaseAnswerAll": { "de": "Bitte alle Fragen beantworten", "en": "Please answer all questions" },
   "showCrisisContacts": { "de": "Krisenkontakte anzeigen", "en": "Show crisis contacts" }
 }
