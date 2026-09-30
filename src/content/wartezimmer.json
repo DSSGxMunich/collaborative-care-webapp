@@ -2,8 +2,8 @@
   "start": {
     "title": { "de": "Fragebogen im Wartezimmer", "en": "Questionnaire in the waiting room" },
     "body": {
-      "de": "Sie können den Fragebogen schon jetzt ausfüllen, während Sie auf Ihren Termin warten. Ihre Antworten werden gespeichert. Die Auswertung sehen Sie aber erst gemeinsam mit Ihrer Ärztin oder Ihrem Arzt im Sprechzimmer.",
-      "en": "You can fill in the questionnaire now, while you wait for your appointment. Your answers are saved, but you'll see the results together with your GP in the consultation room."
+      "de": "Sie können den Fragebogen schon jetzt ausfüllen, während Sie auf Ihren Termin warten. Ihre Antworten bleiben bis zum Termin auf diesem Gerät. Die Auswertung sehen Sie aber erst gemeinsam mit Ihrer Ärztin oder Ihrem Arzt im Sprechzimmer.",
+      "en": "You can fill in the questionnaire now, while you wait for your appointment. Your answers stay on this device until your appointment, but you'll see the results together with your GP in the consultation room."
     },
     "start": { "de": "Fragebogen jetzt ausfüllen", "en": "Fill in the questionnaire now" },
     "note": {
@@ -14,8 +14,8 @@
   "blocked": {
     "title": { "de": "Danke, fast geschafft", "en": "Thank you, almost done" },
     "body": {
-      "de": "Ihre Antworten sind gespeichert. Nennen oder zeigen Sie Ihrer Ärztin oder Ihrem Arzt diesen Code, damit Sie die Auswertung gemeinsam öffnen können.",
-      "en": "Your answers are saved. Tell or show your GP this code so you can open your results together."
+      "de": "Ihre Antworten bleiben bis zum Termin auf diesem Gerät. Nennen oder zeigen Sie Ihrer Ärztin oder Ihrem Arzt diesen Code, damit Sie die Auswertung gemeinsam öffnen können.",
+      "en": "Your answers stay on this device until your appointment. Tell or show your GP this code so you can open your results together."
     },
     "codeLabel": { "de": "Ihr Code", "en": "Your code" },
     "codeHint": {
