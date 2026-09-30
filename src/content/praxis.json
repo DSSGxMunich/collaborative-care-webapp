@@ -29,6 +29,16 @@
     "de": "Suizidalität explizit ansprechen, Sicherheitsplan und Erreichbarkeit klären, ggf. fachpsychiatrische Mitbeurteilung veranlassen.",
     "en": "Address suicidality explicitly, agree a safety plan and availability, consider psychiatric co-assessment."
   },
+  "reasons": {
+    "probabilityVery": { "de": "Umsetzung sehr wahrscheinlich", "en": "Very likely to act" },
+    "probabilitySomewhat": {
+      "de": "Umsetzung einigermaßen wahrscheinlich",
+      "en": "Somewhat likely to act"
+    },
+    "noPreventive": { "de": "Keine schützenden Faktoren", "en": "No protective factors" },
+    "plan": { "de": "Methode überlegt", "en": "Method considered" },
+    "past": { "de": "Frühere Selbstverletzung/Suizidversuch", "en": "Past self-harm/attempt" }
+  },
   "summary": { "de": "Zusammenfassung", "en": "Summary" },
   "phq9ItemProfile": { "de": "PHQ-9 Itemprofil", "en": "PHQ-9 item profile" },
   "modelEstimates": {
@@ -38,19 +48,7 @@
   "rows": {
     "phq9Total": { "de": "PHQ-9 (Schweregrad)", "en": "PHQ-9 (severity)" },
     "riskAssessment": { "de": "P4-Suizidscreening", "en": "P4 suicide screening" },
-    "past": {
-      "de": "Selbstverletzung/Suizidversuch (jemals)",
-      "en": "Self-harm/suicide attempt (ever)"
-    },
-    "plan": { "de": "Gedanken an Methode (Plan)", "en": "Thought about method (plan)" },
-    "probability": {
-      "de": "Selbsteingeschätzte Wahrscheinlichkeit",
-      "en": "Self-rated probability"
-    },
-    "preventive": {
-      "de": "Schützende Faktoren vorhanden",
-      "en": "Protective factors present"
-    },
+    "reason": { "de": "Grund", "en": "Reason" },
     "familyHistory": {
       "de": "Suizid/-versuch in der Familie",
       "en": "Family history of suicide/attempt"

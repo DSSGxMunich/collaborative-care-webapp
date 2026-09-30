@@ -6,12 +6,7 @@ import { assessRisk } from "@/lib/safety";
 import { MODEL_META } from "@/lib/model";
 import { generatePraxisPdf } from "@/lib/pdf";
 import { usePrediction } from "@/lib/usePrediction";
-import {
-  ageFromBirthDate,
-  PRIOR_TREATMENTS,
-  PROBABILITY_OPTIONS,
-  SEX_OPTIONS,
-} from "@/lib/session";
+import { ageFromBirthDate, PRIOR_TREATMENTS, SEX_OPTIONS } from "@/lib/session";
 import { GpUnlockCard } from "@/components/GpUnlockCard";
 import { DownloadIcon, StethoscopeIcon } from "@/components/icons";
 import { PageBody, PageHero } from "@/components/PageHero";
@@ -82,23 +77,24 @@ function Clinician() {
     { label: tr(c.rows.riskAssessment), value: tr(c.riskFlag[risk]), tone: RISK_TONE[risk] },
     // Total and severity band read as one fact; item 9 is already highlighted in the item profile.
     { label: tr(c.rows.phq9Total), value: `${p.baseline}/27 · ${tr(SEVERITY_LABEL[p.severity])}` },
-    // A "minimal" P4 flag already implies every answer (no, no, not at all likely, yes), so the
-    // individual answers only earn a row when they explain a raised flag.
+    // A "minimal" P4 flag already implies every answer, so only a raised flag gets a reason row,
+    // listing just the answers that raised it (same order as riskReasons in safety.ts).
     ...(risk === "minimal"
       ? []
       : [
-          { label: tr(c.rows.past), value: yesNo(safety.past) },
-          { label: tr(c.rows.plan), value: yesNo(safety.plan) },
           {
-            label: tr(c.rows.probability),
-            value: tr(
-              PROBABILITY_OPTIONS.find((o) => o.value === safety.probability)?.label ?? {
-                de: "–",
-                en: "–",
-              },
-            ),
+            label: tr(c.rows.reason),
+            value: [
+              safety.probability === 2 && c.reasons.probabilityVery,
+              safety.probability === 1 && c.reasons.probabilitySomewhat,
+              safety.preventive === "no" && c.reasons.noPreventive,
+              safety.plan === "yes" && c.reasons.plan,
+              safety.past === "yes" && c.reasons.past,
+            ]
+              .filter((reason) => reason !== false)
+              .map(tr)
+              .join(" · "),
           },
-          { label: tr(c.rows.preventive), value: yesNo(safety.preventive) },
         ]),
     // Family history is an extra risk factor outside P4: only worth a line when present.
     ...(safety.familyHistory === "yes"
