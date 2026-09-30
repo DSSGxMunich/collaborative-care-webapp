@@ -6,7 +6,7 @@ import { assessRisk } from "@/lib/safety";
 import { MODEL_META } from "@/lib/model";
 import { generatePraxisPdf } from "@/lib/pdf";
 import { usePrediction } from "@/lib/usePrediction";
-import { ageFromBirthDate, PRIOR_TREATMENTS, SEX_OPTIONS } from "@/lib/session";
+import { ageFromBirthDate, TREATMENTS, SEX_OPTIONS } from "@/lib/session";
 import { GpUnlockCard } from "@/components/GpUnlockCard";
 import { DownloadIcon, StethoscopeIcon } from "@/components/icons";
 import { PageBody, PageHero } from "@/components/PageHero";
@@ -110,14 +110,15 @@ function Clinician() {
           : "–",
       ].join(" · "),
     },
-    { label: tr(c.rows.priorEpisode), value: yesNo(profile.priorEpisode) },
-    {
-      label: tr(c.rows.priorTreatment),
+    // Now and before as separate rows: an ongoing treatment and an earlier one call for
+    // different next steps.
+    ...(["current", "past"] as const).map((when) => ({
+      label: tr(when === "current" ? c.rows.currentTreatment : c.rows.pastTreatment),
       value:
-        profile.priorTreatment
-          .map((id) => tr(PRIOR_TREATMENTS.find((t) => t.id === id)?.label ?? { de: "–", en: "–" }))
-          .join(", ") || "–",
-    },
+        profile.treatment[when]
+          .map((id) => tr(TREATMENTS.find((t) => t.id === id)?.label ?? { de: "–", en: "–" }))
+          .join(", ") || tr(c.noTreatment),
+    })),
   ];
 
   /** Usual care keeps its own label; a package's label is its active components joined together. */

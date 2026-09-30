@@ -54,8 +54,8 @@
       "en": "Family history of suicide/attempt"
     },
     "ageSex": { "de": "Alter · Geschlecht", "en": "Age · sex" },
-    "priorEpisode": { "de": "Frühere depressive Episode", "en": "Previous depressive episode" },
-    "priorTreatment": { "de": "Bisherige Behandlung", "en": "Treatment so far" }
+    "currentTreatment": { "de": "Aktuelle Behandlung", "en": "Current treatment" },
+    "pastTreatment": { "de": "Frühere Behandlung", "en": "Past treatment" }
   },
   "table": {
     "careComponent": { "de": "Versorgungsbaustein", "en": "Care component" },
@@ -66,5 +66,6 @@
   "footer": {
     "de": "Dieser Kurzbefund stammt aus einem Forschungsprototyp, der auf einer Komponenten-Netzwerk-Metaanalyse (10 Bausteine, 12 Studien) beruht. Die Bausteine wurden in den Studien nur in Kombinationen erprobt; die Einzelschätzungen sind eine modellbasierte Aufteilung, keine Einzelstudienergebnisse. Bausteine sind nach erwartetem Zusatznutzen gereiht. Die Einschätzungen sind nicht klinisch validiert. Alle Angaben bleiben in dieser Browser-Sitzung und werden nicht übertragen.",
     "en": "This report comes from a research prototype built on a component network meta-analysis (10 components, 12 studies). The components were only ever tested in combinations; single-component estimates are a model-based split, not results of single-component trials. Components are ranked by expected added benefit. These assessments haven't been clinically validated. Everything entered stays in this browser session and is not transmitted."
-  }
+  },
+  "noTreatment": { "de": "Keine", "en": "None" }
 }
