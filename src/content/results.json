@@ -111,12 +111,7 @@
     "exampleHeading": {
       "de": "So sah das in einer Studie aus",
       "en": "How this looked in a study"
-    },
-    "combinedNote": {
-      "de": "In den Studien wurden diese Bausteine nur in Kombination erprobt. Die einzelnen Werte sind daraus berechnet.",
-      "en": "In the studies, these components were only tested in combination. The individual scores are calculated from those results."
-    },
-    "combinedNoteLink": { "de": "Was das bedeutet", "en": "What this means" }
+    }
   },
   "scenarios": {
     "usualCare": {
@@ -437,8 +432,8 @@
     "notProvided": { "de": "keine Angabe", "en": "not provided" }
   },
   "whatCanBeExpected": {
-    "de": "Ihre geschätzten Beschwerdewerte (Entwicklung des PHQ-9-Werts) nach 12 Monaten mit verschiedenen Versorgungsangeboten",
-    "en": "Your estimated symptom scores (PHQ-9 score development) after 12 months with different care options"
+    "de": "Ihre geschätzten Beschwerden in 12 Monaten je nach Versorgung",
+    "en": "Your estimated symptoms in 12 months, by care option"
   },
   "whatCanBeExpectedBody": {
     "de": "Niedrigere Werte bedeuten weniger depressive Beschwerden. Es handelt sich um Schätzungen auf Grundlage früherer Forschungsdaten und Ihrer Angaben. Ihre eigenen Beschwerden können sich anders entwickeln.",

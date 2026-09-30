@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router";
 import { CareRanking } from "@/components/CareRanking";
 import { fill, useLang } from "@/lib/i18n";
 import type { Scenario } from "@/lib/model";
@@ -11,8 +10,7 @@ const r = resultsContent;
  * shared verbatim by the patient results page (/ergebnis) and the practice
  * report (/praxis): GP and patient look at it together, so both must see
  * the same heading, wording, ranking and study examples. All copy comes
- * from results.json; the details live on the Methodology page, linked
- * rather than repeated here.
+ * from results.json.
  */
 export function CareOptions({ baseline, scenarios }: { baseline: number; scenarios: Scenario[] }) {
   const { tr } = useLang();
@@ -32,16 +30,6 @@ export function CareOptions({ baseline, scenarios }: { baseline: number; scenari
   return (
     <section className="panel mt-6 p-6">
       <h2 className="text-lg font-semibold">{tr(r.whatCanBeExpected)}</h2>
-      <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-        {tr(r.ranking.combinedNote)}{" "}
-        <Link
-          to="/methodology"
-          hash="singleComponents"
-          className="font-medium text-foreground underline underline-offset-2"
-        >
-          {tr(r.ranking.combinedNoteLink)}
-        </Link>
-      </p>
 
       {usualCare && (
         <div className="mt-5">
