@@ -54,6 +54,10 @@ function Track({ paddingX, children }: { paddingX: string; children: ReactNode }
  * `ranked` is already sorted by expected outcome, so that split is a single
  * prefix, not a scattered subset.
  *
+ * Each option's name is a dropdown toggle: its description (and, for
+ * ranked components, how it looked in a study) stays collapsed by default,
+ * so the list reads as names and strips first, with detail on demand.
+ *
  * Below each label, an OutcomeStrip shows where that option is expected to
  * land on the shared 0–27 PHQ-9 scale relative to today, so the list shows
  * how far apart the options are, not just their order.
@@ -74,7 +78,7 @@ export function CareRanking({
   example,
   compact = false,
 }: {
-  /** Optional "example from a study" control rendered under each ranked row. */
+  /** Optional "example from a study", shown in each ranked row's dropdown after its description. */
   example?: (scenario: Scenario) => ReactNode;
   usualCare: Scenario;
   ranked: Scenario[];
@@ -116,20 +120,25 @@ export function CareRanking({
         </p>
         <div className={compact ? "pb-2.5 pt-1" : "pb-3.5 pt-1.5"}>
           <Track paddingX={rowPaddingX}>
-            <LabelWithValue
-              lines={[labelLines(usualCare).join(" ")]}
-              value={outcome.formatValue?.(usualCare)}
-            />
-            {usualCareDescription ? (
-              <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
-                {usualCareDescription}
-              </p>
-            ) : null}
-            {usualCareNote ? (
-              <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
-                {usualCareNote}
-              </p>
-            ) : null}
+            <Disclosure
+              label={
+                <LabelWithValue
+                  lines={[labelLines(usualCare).join(" ")]}
+                  value={outcome.formatValue?.(usualCare)}
+                />
+              }
+            >
+              {usualCareDescription ? (
+                <p className="text-xs leading-relaxed text-muted-foreground">
+                  {usualCareDescription}
+                </p>
+              ) : null}
+              {usualCareNote ? (
+                <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                  {usualCareNote}
+                </p>
+              ) : null}
+            </Disclosure>
             <div className="mt-2.5">
               <OutcomeStrip
                 reference
@@ -172,14 +181,19 @@ export function CareRanking({
                 </span>
                 <div className="min-w-0 flex-1">
                   <span className="sr-only">{rankAriaLabel(rank, ranked.length)}</span>
-                  <LabelWithValue
-                    lines={labelLines(scenario)}
-                    value={outcome.formatValue?.(scenario)}
-                  />
-                  {desc ? (
-                    <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{desc}</p>
-                  ) : null}
-                  {example ? <div className="mt-1.5">{example(scenario)}</div> : null}
+                  <Disclosure
+                    label={
+                      <LabelWithValue
+                        lines={labelLines(scenario)}
+                        value={outcome.formatValue?.(scenario)}
+                      />
+                    }
+                  >
+                    {desc ? (
+                      <p className="text-xs leading-relaxed text-muted-foreground">{desc}</p>
+                    ) : null}
+                    {example?.(scenario)}
+                  </Disclosure>
                   <div className="mt-2.5">
                     <OutcomeStrip
                       scenario={scenario}
@@ -209,6 +223,36 @@ export function CareRanking({
         <OutcomeLegend labels={outcome.legend} />
       </div>
     </div>
+  );
+}
+
+/**
+ * A native <details> dropdown whose summary is the option's label, with a
+ * chevron that turns when open. Keyboard and screen-reader support come
+ * from the element itself.
+ */
+function Disclosure({ label, children }: { label: ReactNode; children: ReactNode }) {
+  return (
+    <details className="group">
+      <summary className="flex cursor-pointer list-none items-start gap-1.5 rounded-sm [&::-webkit-details-marker]:hidden">
+        <svg
+          aria-hidden
+          viewBox="0 0 16 16"
+          className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-90"
+        >
+          <path
+            d="M6 4l4 4-4 4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        <div className="min-w-0 flex-1">{label}</div>
+      </summary>
+      <div className="mt-1 pl-[1.375rem]">{children}</div>
+    </details>
   );
 }
 

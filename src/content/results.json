@@ -99,8 +99,8 @@
   },
   "ranking": {
     "helpfulSection": {
-      "de": "Wahrscheinlich hilfreicher als Ihre derzeitige Versorgung",
-      "en": "Likely to help more than your current care"
+      "de": "Wahrscheinlich hilfreich",
+      "en": "Likely to help"
     },
     "otherSection": { "de": "Weitere Bausteine", "en": "Other components" },
     "comparisonLabel": { "de": "Zum Vergleich", "en": "For comparison" },
@@ -108,9 +108,9 @@
       "de": "Platz {rank} von {total}, nach erwartetem Nutzen gereiht, hilfreichster Baustein zuerst",
       "en": "Rank {rank} of {total}, ordered by expected benefit, most helpful care component first"
     },
-    "example": {
-      "button": { "de": "So sah das in einer Studie aus", "en": "How this looked in a study" },
-      "close": { "de": "Schließen", "en": "Close" }
+    "exampleHeading": {
+      "de": "So sah das in einer Studie aus",
+      "en": "How this looked in a study"
     },
     "combinedNote": {
       "de": "In den Studien wurden diese Bausteine nur in Kombination erprobt. Die einzelnen Werte sind daraus berechnet.",

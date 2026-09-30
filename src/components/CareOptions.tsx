@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
 import { CareRanking } from "@/components/CareRanking";
-import { ExamplePopover } from "@/components/ExamplePopover";
 import { fill, useLang } from "@/lib/i18n";
 import type { Scenario } from "@/lib/model";
 import resultsContent from "@/content/results.json";
@@ -63,12 +62,13 @@ export function CareOptions({ baseline, scenarios }: { baseline: number; scenari
               if (id === undefined) return null;
               const study = r.components[id].example;
               return (
-                <ExamplePopover
-                  buttonLabel={tr(r.ranking.example.button)}
-                  text={tr(study.text)}
-                  source={tr(study.source)}
-                  closeLabel={tr(r.ranking.example.close)}
-                />
+                <div className="mt-2.5">
+                  <p className="text-xs font-semibold">{tr(r.ranking.exampleHeading)}</p>
+                  <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
+                    {tr(study.text)}
+                  </p>
+                  <p className="mt-1 text-[11px] text-muted-foreground">{tr(study.source)}</p>
+                </div>
               );
             }}
             outcome={{
