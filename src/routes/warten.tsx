@@ -8,7 +8,7 @@ import wartezimmerContent from "@/content/wartezimmer.json";
 
 export const Route = createFileRoute("/warten")({
   head: () => ({
-    meta: [{ title: "Bitte warten | Depressions-Kompass" }],
+    meta: [{ title: "Bitte warten | Versorgungskompass" }],
   }),
   component: Waiting,
 });
