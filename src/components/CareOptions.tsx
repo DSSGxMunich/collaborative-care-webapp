@@ -40,7 +40,6 @@ export function CareOptions({ baseline, scenarios }: { baseline: number; scenari
             description={description}
             helpful={(scenario) => scenario.expectedEndpoint < baseline}
             usualCareDescription={tr(r.scenarios.usualCare.description)}
-            usualCareNote={tr(r.scenarios.usualCare.note)}
             helpfulSectionLabel={tr(r.ranking.helpfulSection)}
             otherSectionLabel={tr(r.ranking.otherSection)}
             comparisonLabel={tr(r.ranking.comparisonLabel)}

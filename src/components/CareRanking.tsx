@@ -69,7 +69,6 @@ export function CareRanking({
   description,
   helpful,
   usualCareDescription,
-  usualCareNote,
   helpfulSectionLabel,
   otherSectionLabel,
   comparisonLabel,
@@ -88,8 +87,6 @@ export function CareRanking({
   helpful: (scenario: Scenario) => boolean;
   /** What "usual care" itself means. */
   usualCareDescription?: string;
-  /** Footnote under usual care's description (e.g. "care varies between practices"). */
-  usualCareNote?: string;
   helpfulSectionLabel: string;
   otherSectionLabel: string;
   /** Eyebrow on the usual-care box, naming its role ("For comparison") apart from its name. */
@@ -131,11 +128,6 @@ export function CareRanking({
               {usualCareDescription ? (
                 <p className="text-xs leading-relaxed text-muted-foreground">
                   {usualCareDescription}
-                </p>
-              ) : null}
-              {usualCareNote ? (
-                <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
-                  {usualCareNote}
                 </p>
               ) : null}
             </Disclosure>
