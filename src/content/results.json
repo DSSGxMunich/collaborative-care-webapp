@@ -432,8 +432,8 @@
     "notProvided": { "de": "keine Angabe", "en": "not provided" }
   },
   "whatCanBeExpected": {
-    "de": "Mögliche Entwicklung Ihrer Beschwerden in 12 Monaten, je nach Baustein der kollaborativen Versorgung",
-    "en": "Possible development of your symptoms in 12 months, by collaborative care component"
+    "de": "Mögliche Entwicklung Ihrer Beschwerden über 12 Monate",
+    "en": "Possible development of your symptoms over 12 months"
   },
   "whatCanBeExpectedBody": {
     "de": "Niedrigere Werte bedeuten weniger depressive Beschwerden. Es handelt sich um Schätzungen auf Grundlage früherer Forschungsdaten und Ihrer Angaben. Ihre eigenen Beschwerden können sich anders entwickeln.",
