@@ -36,9 +36,7 @@
     "en": "Estimated symptom scores (PHQ-9 score development) after 12 months with different care options"
   },
   "rows": {
-    "phq9Total": { "de": "PHQ-9 Summenwert", "en": "PHQ-9 total" },
-    "severity": { "de": "Schweregrad", "en": "Severity" },
-    "suicidality": { "de": "Suizidalität (Item 9)", "en": "Suicidality (item 9)" },
+    "phq9Total": { "de": "PHQ-9 (Schweregrad)", "en": "PHQ-9 (severity)" },
     "riskAssessment": { "de": "P4-Suizidscreening", "en": "P4 suicide screening" },
     "past": {
       "de": "Selbstverletzung/Suizidversuch (jemals)",
@@ -57,11 +55,9 @@
       "de": "Suizid/-versuch in der Familie",
       "en": "Family history of suicide/attempt"
     },
-    "age": { "de": "Alter", "en": "Age" },
-    "sex": { "de": "Geschlecht", "en": "Sex" },
+    "ageSex": { "de": "Alter · Geschlecht", "en": "Age · sex" },
     "priorEpisode": { "de": "Frühere depressive Episode", "en": "Previous depressive episode" },
-    "priorTreatment": { "de": "Vorbehandlungen", "en": "Previous treatments" },
-    "riskScore": { "de": "Schritt-1-Schätzung", "en": "Step 1 estimate" }
+    "priorTreatment": { "de": "Vorbehandlungen", "en": "Previous treatments" }
   },
   "table": {
     "careComponent": { "de": "Versorgungsbaustein", "en": "Care component" },

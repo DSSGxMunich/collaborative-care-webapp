@@ -80,38 +80,38 @@ function Clinician() {
 
   const rows: { label: string; value: string; tone?: "warning" | "destructive" | undefined }[] = [
     { label: tr(c.rows.riskAssessment), value: tr(c.riskFlag[risk]), tone: RISK_TONE[risk] },
-    { label: tr(c.rows.phq9Total), value: `${p.baseline}/27` },
-    { label: tr(c.rows.severity), value: tr(SEVERITY_LABEL[p.severity]) },
-    { label: tr(c.rows.suicidality), value: `${p.session.phq[8] ?? 0}/3` },
-    { label: tr(c.rows.past), value: yesNo(safety.past) },
-    { label: tr(c.rows.plan), value: yesNo(safety.plan) },
-    {
-      label: tr(c.rows.probability),
-      value:
-        safety.probability !== null
-          ? tr(
+    // Total and severity band read as one fact; item 9 is already highlighted in the item profile.
+    { label: tr(c.rows.phq9Total), value: `${p.baseline}/27 · ${tr(SEVERITY_LABEL[p.severity])}` },
+    // A "minimal" P4 flag already implies every answer (no, no, not at all likely, yes), so the
+    // individual answers only earn a row when they explain a raised flag.
+    ...(risk === "minimal"
+      ? []
+      : [
+          { label: tr(c.rows.past), value: yesNo(safety.past) },
+          { label: tr(c.rows.plan), value: yesNo(safety.plan) },
+          {
+            label: tr(c.rows.probability),
+            value: tr(
               PROBABILITY_OPTIONS.find((o) => o.value === safety.probability)?.label ?? {
                 de: "–",
                 en: "–",
               },
-            )
+            ),
+          },
+          { label: tr(c.rows.preventive), value: yesNo(safety.preventive) },
+        ]),
+    // Family history is an extra risk factor outside P4: only worth a line when present.
+    ...(safety.familyHistory === "yes"
+      ? [{ label: tr(c.rows.familyHistory), value: tr(ui.yes), tone: "warning" as const }]
+      : []),
+    {
+      label: tr(c.rows.ageSex),
+      value: [
+        profile.birthDate ? Math.floor(ageFromBirthDate(profile.birthDate)).toString() : "–",
+        profile.sex
+          ? tr(SEX_OPTIONS.find((o) => o.value === profile.sex)?.label ?? { de: "–", en: "–" })
           : "–",
-    },
-    { label: tr(c.rows.preventive), value: yesNo(safety.preventive) },
-    {
-      label: tr(c.rows.familyHistory),
-      value: yesNo(safety.familyHistory),
-      tone: safety.familyHistory === "yes" ? "warning" : undefined,
-    },
-    {
-      label: tr(c.rows.age),
-      value: profile.birthDate ? ageFromBirthDate(profile.birthDate).toFixed(2) : "–",
-    },
-    {
-      label: tr(c.rows.sex),
-      value: profile.sex
-        ? tr(SEX_OPTIONS.find((o) => o.value === profile.sex)?.label ?? { de: "–", en: "–" })
-        : "–",
+      ].join(" · "),
     },
     { label: tr(c.rows.priorEpisode), value: yesNo(profile.priorEpisode) },
     {
@@ -120,10 +120,6 @@ function Clinician() {
         profile.priorTreatment
           .map((id) => tr(PRIOR_TREATMENTS.find((t) => t.id === id)?.label ?? { de: "–", en: "–" }))
           .join(", ") || "–",
-    },
-    {
-      label: tr(c.rows.riskScore),
-      value: p.predictors.find((row) => row.id === "riskScore")?.value ?? "–",
     },
   ];
 
@@ -245,6 +241,9 @@ function Clinician() {
                 </div>
               ))}
             </dl>
+            {risk !== "minimal" && (
+              <p className="mt-3 text-sm text-muted-foreground">{tr(c.riskAdvice)}</p>
+            )}
           </div>
 
           <div className="panel p-6">
