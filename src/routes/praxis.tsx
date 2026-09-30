@@ -6,12 +6,7 @@ import { assessRisk } from "@/lib/safety";
 import { MODEL_META } from "@/lib/model";
 import { generatePraxisPdf } from "@/lib/pdf";
 import { usePrediction } from "@/lib/usePrediction";
-import {
-  ageFromBirthDate,
-  PRIOR_TREATMENTS,
-  PROBABILITY_OPTIONS,
-  SEX_OPTIONS,
-} from "@/lib/session";
+import { ageFromBirthDate, PRIOR_TREATMENTS, SEX_OPTIONS } from "@/lib/session";
 import { GpUnlockCard } from "@/components/GpUnlockCard";
 import { DownloadIcon, StethoscopeIcon } from "@/components/icons";
 import { PageBody, PageHero } from "@/components/PageHero";
@@ -80,38 +75,40 @@ function Clinician() {
 
   const rows: { label: string; value: string; tone?: "warning" | "destructive" | undefined }[] = [
     { label: tr(c.rows.riskAssessment), value: tr(c.riskFlag[risk]), tone: RISK_TONE[risk] },
-    { label: tr(c.rows.phq9Total), value: `${p.baseline}/27` },
-    { label: tr(c.rows.severity), value: tr(SEVERITY_LABEL[p.severity]) },
-    { label: tr(c.rows.suicidality), value: `${p.session.phq[8] ?? 0}/3` },
-    { label: tr(c.rows.past), value: yesNo(safety.past) },
-    { label: tr(c.rows.plan), value: yesNo(safety.plan) },
+    // A "minimal" P4 flag already implies every answer, so only a raised flag gets a reason row,
+    // listing just the answers that raised it (same order as riskReasons in safety.ts).
+    ...(risk === "minimal"
+      ? []
+      : [
+          {
+            label: tr(c.rows.reason),
+            value: [
+              safety.probability === 2 && c.reasons.probabilityVery,
+              safety.probability === 1 && c.reasons.probabilitySomewhat,
+              safety.preventive === "no" && c.reasons.noPreventive,
+              safety.plan === "yes" && c.reasons.plan,
+              safety.past === "yes" && c.reasons.past,
+            ]
+              .filter((reason) => reason !== false)
+              .map(tr)
+              // One reason per line: a single long line wraps mid-word in the narrow value column.
+              .join("\n"),
+          },
+        ]),
+    // Family history is an extra risk factor outside P4: only worth a line when present.
+    ...(safety.familyHistory === "yes"
+      ? [{ label: tr(c.rows.familyHistory), value: tr(ui.yes), tone: "warning" as const }]
+      : []),
+    // Total and severity band read as one fact; item 9 is already highlighted in the item profile.
+    { label: tr(c.rows.phq9Total), value: `${p.baseline}/27 · ${tr(SEVERITY_LABEL[p.severity])}` },
     {
-      label: tr(c.rows.probability),
-      value:
-        safety.probability !== null
-          ? tr(
-              PROBABILITY_OPTIONS.find((o) => o.value === safety.probability)?.label ?? {
-                de: "–",
-                en: "–",
-              },
-            )
+      label: tr(c.rows.ageSex),
+      value: [
+        profile.birthDate ? Math.floor(ageFromBirthDate(profile.birthDate)).toString() : "–",
+        profile.sex
+          ? tr(SEX_OPTIONS.find((o) => o.value === profile.sex)?.label ?? { de: "–", en: "–" })
           : "–",
-    },
-    { label: tr(c.rows.preventive), value: yesNo(safety.preventive) },
-    {
-      label: tr(c.rows.familyHistory),
-      value: yesNo(safety.familyHistory),
-      tone: safety.familyHistory === "yes" ? "warning" : undefined,
-    },
-    {
-      label: tr(c.rows.age),
-      value: profile.birthDate ? ageFromBirthDate(profile.birthDate).toFixed(2) : "–",
-    },
-    {
-      label: tr(c.rows.sex),
-      value: profile.sex
-        ? tr(SEX_OPTIONS.find((o) => o.value === profile.sex)?.label ?? { de: "–", en: "–" })
-        : "–",
+      ].join(" · "),
     },
     { label: tr(c.rows.priorEpisode), value: yesNo(profile.priorEpisode) },
     {
@@ -120,10 +117,6 @@ function Clinician() {
         profile.priorTreatment
           .map((id) => tr(PRIOR_TREATMENTS.find((t) => t.id === id)?.label ?? { de: "–", en: "–" }))
           .join(", ") || "–",
-    },
-    {
-      label: tr(c.rows.riskScore),
-      value: p.predictors.find((row) => row.id === "riskScore")?.value ?? "–",
     },
   ];
 
@@ -239,7 +232,7 @@ function Clinician() {
                         {row.value}
                       </span>
                     ) : (
-                      <span className="font-medium">{row.value}</span>
+                      <span className="whitespace-pre-line font-medium">{row.value}</span>
                     )}
                   </dd>
                 </div>
