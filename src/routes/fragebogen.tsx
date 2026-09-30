@@ -97,7 +97,11 @@ function Questionnaire() {
       <PageHero
         icon={<ClipboardIcon className="h-6 w-6" />}
         title={tr(q.stepTitles[key])}
-        {...(key === "safety" ? { intro: tr(q.safety.intro) } : {})}
+        {...(key === "safety"
+          ? { intro: tr(q.safety.intro) }
+          : key === "history"
+            ? { intro: tr(q.profile.historyIntro) }
+            : {})}
       >
         <p
           key={index}

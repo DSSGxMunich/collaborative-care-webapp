@@ -55,7 +55,7 @@
     },
     "ageSex": { "de": "Alter · Geschlecht", "en": "Age · sex" },
     "priorEpisode": { "de": "Frühere depressive Episode", "en": "Previous depressive episode" },
-    "priorTreatment": { "de": "Vorbehandlungen", "en": "Previous treatments" }
+    "priorTreatment": { "de": "Bisherige Behandlung", "en": "Treatment so far" }
   },
   "table": {
     "careComponent": { "de": "Versorgungsbaustein", "en": "Care component" },
