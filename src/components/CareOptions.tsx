@@ -44,6 +44,10 @@ export function CareOptions({ baseline, scenarios }: { baseline: number; scenari
             helpfulSectionLabel={tr(r.ranking.helpfulSection)}
             otherSectionLabel={tr(r.ranking.otherSection)}
             comparisonLabel={tr(r.ranking.comparisonLabel)}
+            detailsLabels={{
+              show: tr(r.ranking.details.show),
+              hide: tr(r.ranking.details.hide),
+            }}
             rankAriaLabel={(rank, total) => fill(tr(r.ranking.rankAria), { rank, total })}
             example={(scenario) => {
               const [id] = scenario.components;
