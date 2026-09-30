@@ -142,6 +142,49 @@ export function YesNoField({
   );
 }
 
+/** A row like YesNoField, but "now" and "before" are independent: either, both or neither. */
+export function NowBeforeField({
+  label,
+  labels,
+  current,
+  past,
+  onToggle,
+}: {
+  label: L;
+  labels: { current: L; past: L };
+  current: boolean;
+  past: boolean;
+  onToggle: (when: "current" | "past") => void;
+}) {
+  const { tr } = useLang();
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-border px-3.5 py-2.5">
+      <span className="max-w-md text-sm">{tr(label)}</span>
+      <div className="flex gap-1.5">
+        {(["current", "past"] as const).map((when) => {
+          const on = when === "current" ? current : past;
+          return (
+            <button
+              key={when}
+              type="button"
+              aria-pressed={on}
+              onClick={() => onToggle(when)}
+              className={[
+                "rounded-md border px-3 py-1 text-sm",
+                on
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border bg-card hover:border-foreground/30",
+              ].join(" ")}
+            >
+              {tr(labels[when])}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export function Toggle({
   checked,
   onChange,

@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Choice, DateField, MultiChoice, YesNoField } from "@/components/fields";
+import { Choice, DateField, MultiChoice, NowBeforeField, YesNoField } from "@/components/fields";
 import { ClipboardIcon } from "@/components/icons";
 import { PageBody, PageHero } from "@/components/PageHero";
 import { ui, useLang } from "@/lib/i18n";
@@ -8,7 +8,8 @@ import { PHQ9_INTRO, PHQ9_ITEMS, PHQ9_OPTIONS } from "@/lib/phq9";
 import {
   ageFromBirthDate,
   birthDateBounds,
-  PRIOR_TREATMENTS,
+  TREATMENTS,
+  treatmentAnswered,
   PROBABILITY_OPTIONS,
   SEX_OPTIONS,
   useSession,
@@ -60,7 +61,7 @@ function Questionnaire() {
           session.safety.familyHistory !== null
         );
       case "history":
-        return session.profile.priorEpisode !== null && session.profile.priorTreatment.length > 0;
+        return treatmentAnswered(session.profile.treatment);
       default:
         return false;
     }
@@ -78,26 +79,31 @@ function Questionnaire() {
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const toggleTreatment = (id: string) => {
-    const current = session.profile.priorTreatment;
-    if (id === "none") {
-      updateProfile({ priorTreatment: current.includes("none") ? [] : ["none"] });
-      return;
-    }
-    const withoutNone = current.filter((x) => x !== "none");
+  // Picking any treatment clears "none"; picking "none" clears every treatment.
+  const toggleTreatment = (id: string, when: "current" | "past") => {
+    const t = session.profile.treatment;
+    const list = t[when];
     updateProfile({
-      priorTreatment: withoutNone.includes(id)
-        ? withoutNone.filter((x) => x !== id)
-        : [...withoutNone, id],
+      treatment: {
+        ...t,
+        none: false,
+        [when]: list.includes(id) ? list.filter((x) => x !== id) : [...list, id],
+      },
     });
   };
+  const toggleNoTreatment = () =>
+    updateProfile({ treatment: { current: [], past: [], none: !session.profile.treatment.none } });
 
   return (
     <>
       <PageHero
         icon={<ClipboardIcon className="h-6 w-6" />}
         title={tr(q.stepTitles[key])}
-        {...(key === "safety" ? { intro: tr(q.safety.intro) } : {})}
+        {...(key === "safety"
+          ? { intro: tr(q.safety.intro) }
+          : key === "history"
+            ? { intro: tr(q.profile.historyIntro) }
+            : {})}
       >
         <p
           key={index}
@@ -200,26 +206,29 @@ function Questionnaire() {
         )}
 
         {key === "history" && (
-          <div className="space-y-6">
-            <YesNoField
-              label={q.profile.priorEpisode.question}
-              value={session.profile.priorEpisode}
-              onChange={(v) => updateProfile({ priorEpisode: v })}
-            />
-            <fieldset className="surface-card p-5">
-              <legend className="mb-1 block text-base font-semibold">
-                {tr(q.profile.priorTreatment.question)}
-              </legend>
-              <p className="mb-4 text-sm text-muted-foreground">
-                {tr(q.profile.priorTreatment.hint)}
-              </p>
+          <fieldset className="surface-card p-5">
+            <legend className="mb-1 block text-base font-semibold">
+              {tr(q.profile.treatment.question)}
+            </legend>
+            <p className="mb-4 text-sm text-muted-foreground">{tr(q.profile.treatment.hint)}</p>
+            <div className="space-y-2">
+              {TREATMENTS.map((t) => (
+                <NowBeforeField
+                  key={t.id}
+                  label={t.label}
+                  labels={q.profile.treatment}
+                  current={session.profile.treatment.current.includes(t.id)}
+                  past={session.profile.treatment.past.includes(t.id)}
+                  onToggle={(when) => toggleTreatment(t.id, when)}
+                />
+              ))}
               <MultiChoice
-                options={PRIOR_TREATMENTS}
-                values={session.profile.priorTreatment}
-                onToggle={toggleTreatment}
+                options={[{ id: "none", label: q.profile.treatment.none }]}
+                values={session.profile.treatment.none ? ["none"] : []}
+                onToggle={toggleNoTreatment}
               />
-            </fieldset>
-          </div>
+            </div>
+          </fieldset>
         )}
 
         <div className="mt-8 flex items-center justify-between gap-4">

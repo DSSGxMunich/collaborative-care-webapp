@@ -128,6 +128,10 @@
     "whyShown": { "de": "Warum wird das angezeigt?", "en": "Why is this shown?" }
   },
   "profile": {
+    "historyIntro": {
+      "de": "Diese Angaben helfen Ihrer Ärztin oder Ihrem Arzt bei der Wahl der Versorgung. Ihre Schätzung verändern sie nicht.",
+      "en": "These answers help your doctor choose your care. They don't change your estimate."
+    },
     "age": {
       "question": { "de": "Wann sind Sie geboren?", "en": "When were you born?" },
       "underageWarning": {
@@ -146,30 +150,32 @@
         { "value": "preferNotToSay", "label": { "de": "Keine Angabe", "en": "Prefer not to say" } }
       ]
     },
-    "priorEpisode": {
+    "treatment": {
       "question": {
-        "de": "Hatten Sie früher schon einmal eine depressive Phase?",
-        "en": "Have you had a depressive episode before?"
-      }
-    },
-    "priorTreatment": {
-      "question": {
-        "de": "Welche Behandlungen haben Sie bereits erhalten?",
-        "en": "Which treatments have you already had?"
+        "de": "Bekommen Sie wegen Depression aktuell Hilfe, oder haben Sie früher welche bekommen?",
+        "en": "Are you getting help for depression now, or have you had help before?"
       },
-      "hint": { "de": "Mehrfachauswahl möglich.", "en": "You can select more than one." },
+      "hint": {
+        "de": "Wählen Sie bei jedem Angebot „Aktuell“, „Früher“ oder beides.",
+        "en": "For each option, choose “Now”, “Before” or both."
+      },
+      "current": { "de": "Aktuell", "en": "Now" },
+      "past": { "de": "Früher", "en": "Before" },
+      "none": {
+        "de": "Bisher keine Hilfe wegen Depression",
+        "en": "No help for depression so far"
+      },
       "options": [
         {
           "id": "antidepressant",
           "label": { "de": "Antidepressiva", "en": "Antidepressant medication" }
         },
         { "id": "psychotherapy", "label": { "de": "Psychotherapie", "en": "Psychotherapy" } },
-        { "id": "inpatient", "label": { "de": "Klinikaufenthalt", "en": "Inpatient treatment" } },
+        { "id": "inpatient", "label": { "de": "Klinikaufenthalt", "en": "Hospital stay" } },
         {
           "id": "selfhelp",
           "label": { "de": "Selbsthilfe / Online-Programm", "en": "Self-help or online programme" }
-        },
-        { "id": "none", "label": { "de": "Noch keine Behandlung", "en": "No treatment so far" } }
+        }
       ]
     }
   },
@@ -177,10 +183,7 @@
     "basics": { "de": "Einige Angaben zu Ihnen", "en": "A few details about you" },
     "phq9": { "de": "Ihre Stimmung und Ihr Alltag", "en": "Your mood and daily life" },
     "safety": { "de": "Ihre Sicherheit und Ihr Wohlbefinden", "en": "Your safety and wellbeing" },
-    "history": {
-      "de": "Ihre bisherigen Erfahrungen mit Depression",
-      "en": "Your previous experience with depression"
-    }
+    "history": { "de": "Behandlung wegen Depression", "en": "Treatment for depression" }
   },
   "pleaseAnswerAll": { "de": "Bitte alle Fragen beantworten", "en": "Please answer all questions" },
   "showCrisisContacts": { "de": "Krisenkontakte anzeigen", "en": "Show crisis contacts" }

@@ -24,9 +24,24 @@ export type Profile = {
   birthDate: string | null;
   /** Used by the Step-1 risk-score model (src/lib/riskScore.ts) when female/male. */
   sex: Sex | null;
-  priorEpisode: YesNo | null;
-  priorTreatment: string[];
+  treatment: TreatmentAnswers;
 };
+
+/**
+ * Help received for depression, split into now and before so the GP can
+ * tell an ongoing treatment from one that was tried earlier. Ids are the
+ * TREATMENTS option ids; one treatment can be in both lists. Context for
+ * the GP only: none of this feeds the outcome model.
+ */
+export type TreatmentAnswers = {
+  current: string[];
+  past: string[];
+  /** "No help so far": always false while either list has an entry. */
+  none: boolean;
+};
+
+export const treatmentAnswered = (t: TreatmentAnswers) =>
+  t.none || t.current.length > 0 || t.past.length > 0;
 
 /**
  * The "4 P's" of the P4 Screener (Dube, Kroenke, Bair, Theobald & Williams,
@@ -91,15 +106,14 @@ export const emptySession = (): Session => ({
   profile: {
     birthDate: null,
     sex: null,
-    priorEpisode: null,
-    priorTreatment: [],
+    treatment: { current: [], past: [], none: false },
   },
   completedAt: null,
   mode: "clinic",
   unlocked: false,
 });
 
-export const PRIOR_TREATMENTS = questionnaireContent.profile.priorTreatment.options;
+export const TREATMENTS = questionnaireContent.profile.treatment.options;
 export const SEX_OPTIONS = questionnaireContent.profile.sex.options as {
   value: Sex;
   label: { de: string; en: string };
@@ -140,7 +154,7 @@ type Ctx = {
 };
 
 const SessionContext = createContext<Ctx | null>(null);
-const KEY = "sdc-session-v2";
+const KEY = "sdc-session-v3";
 
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session>(emptySession);
