@@ -48,7 +48,7 @@
   "rows": {
     "phq9Total": { "de": "PHQ-9", "en": "PHQ-9" },
     "riskAssessment": { "de": "P4-Suizidscreening", "en": "P4 suicide screening" },
-    "reason": { "de": "Grund", "en": "Reason" },
+    "reason": { "de": "P4-Auffälligkeit wegen", "en": "P4 flagged because" },
     "familyHistory": {
       "de": "Suizid/-versuch in der Familie",
       "en": "Family history of suicide/attempt"

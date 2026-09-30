@@ -91,7 +91,8 @@ function Clinician() {
             ]
               .filter((reason) => reason !== false)
               .map(tr)
-              .join(" · "),
+              // One reason per line: a single long line wraps mid-word in the narrow value column.
+              .join("\n"),
           },
         ]),
     // Family history is an extra risk factor outside P4: only worth a line when present.
@@ -231,7 +232,7 @@ function Clinician() {
                         {row.value}
                       </span>
                     ) : (
-                      <span className="font-medium">{row.value}</span>
+                      <span className="whitespace-pre-line font-medium">{row.value}</span>
                     )}
                   </dd>
                 </div>
