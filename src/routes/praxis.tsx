@@ -241,9 +241,6 @@ function Clinician() {
                 </div>
               ))}
             </dl>
-            {risk !== "minimal" && (
-              <p className="mt-3 text-sm text-muted-foreground">{tr(c.riskAdvice)}</p>
-            )}
           </div>
 
           <div className="panel p-6">
