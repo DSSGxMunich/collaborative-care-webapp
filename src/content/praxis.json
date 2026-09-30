@@ -46,7 +46,7 @@
     "en": "Estimated symptom scores (PHQ-9 score development) after 12 months with different care options"
   },
   "rows": {
-    "phq9Total": { "de": "PHQ-9 (Schweregrad)", "en": "PHQ-9 (severity)" },
+    "phq9Total": { "de": "PHQ-9", "en": "PHQ-9" },
     "riskAssessment": { "de": "P4-Suizidscreening", "en": "P4 suicide screening" },
     "reason": { "de": "Grund", "en": "Reason" },
     "familyHistory": {

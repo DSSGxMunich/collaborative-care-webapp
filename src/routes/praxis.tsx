@@ -75,8 +75,6 @@ function Clinician() {
 
   const rows: { label: string; value: string; tone?: "warning" | "destructive" | undefined }[] = [
     { label: tr(c.rows.riskAssessment), value: tr(c.riskFlag[risk]), tone: RISK_TONE[risk] },
-    // Total and severity band read as one fact; item 9 is already highlighted in the item profile.
-    { label: tr(c.rows.phq9Total), value: `${p.baseline}/27 · ${tr(SEVERITY_LABEL[p.severity])}` },
     // A "minimal" P4 flag already implies every answer, so only a raised flag gets a reason row,
     // listing just the answers that raised it (same order as riskReasons in safety.ts).
     ...(risk === "minimal"
@@ -100,6 +98,8 @@ function Clinician() {
     ...(safety.familyHistory === "yes"
       ? [{ label: tr(c.rows.familyHistory), value: tr(ui.yes), tone: "warning" as const }]
       : []),
+    // Total and severity band read as one fact; item 9 is already highlighted in the item profile.
+    { label: tr(c.rows.phq9Total), value: `${p.baseline}/27 · ${tr(SEVERITY_LABEL[p.severity])}` },
     {
       label: tr(c.rows.ageSex),
       value: [
