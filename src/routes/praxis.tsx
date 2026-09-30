@@ -155,7 +155,7 @@ function Clinician() {
       return {
         label: careComponentLabel(scenario),
         description: isUsualCare
-          ? `${tr(r.scenarios.usualCare.description)} ${tr(r.scenarios.usualCare.note)}`
+          ? tr(r.scenarios.usualCare.description)
           : careComponentDescription(scenario),
         rank,
         note: !isUsualCare && isHelpful(scenario) ? tr(c.table.better) : "–",

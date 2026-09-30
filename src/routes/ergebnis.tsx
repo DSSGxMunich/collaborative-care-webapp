@@ -203,7 +203,7 @@ function Results() {
       return {
         label: scenarioLabel(scenario),
         description: isUsualCare
-          ? `${tr(r.scenarios.usualCare.description)} ${tr(r.scenarios.usualCare.note)}`
+          ? tr(r.scenarios.usualCare.description)
           : scenarioDescription(scenario),
         rank,
         note: isUsualCare

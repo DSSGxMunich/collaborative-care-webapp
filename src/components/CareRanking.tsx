@@ -54,6 +54,10 @@ function Track({ paddingX, children }: { paddingX: string; children: ReactNode }
  * `ranked` is already sorted by expected outcome, so that split is a single
  * prefix, not a scattered subset.
  *
+ * Each option has a "Show details" dropdown under its name: its description
+ * (and, for ranked components, how it looked in a study) stays collapsed by
+ * default, so the list reads as names and strips first, with detail on demand.
+ *
  * Below each label, an OutcomeStrip shows where that option is expected to
  * land on the shared 0–27 PHQ-9 scale relative to today, so the list shows
  * how far apart the options are, not just their order.
@@ -65,16 +69,16 @@ export function CareRanking({
   description,
   helpful,
   usualCareDescription,
-  usualCareNote,
   helpfulSectionLabel,
   otherSectionLabel,
   comparisonLabel,
+  detailsLabels,
   rankAriaLabel,
   outcome,
   example,
   compact = false,
 }: {
-  /** Optional "example from a study" control rendered under each ranked row. */
+  /** Optional "example from a study", shown in each ranked row's dropdown after its description. */
   example?: (scenario: Scenario) => ReactNode;
   usualCare: Scenario;
   ranked: Scenario[];
@@ -83,12 +87,12 @@ export function CareRanking({
   helpful: (scenario: Scenario) => boolean;
   /** What "usual care" itself means. */
   usualCareDescription?: string;
-  /** Footnote under usual care's description (e.g. "care varies between practices"). */
-  usualCareNote?: string;
   helpfulSectionLabel: string;
   otherSectionLabel: string;
   /** Eyebrow on the usual-care box, naming its role ("For comparison") apart from its name. */
   comparisonLabel: string;
+  /** Toggle text for each option's details dropdown, closed and open. */
+  detailsLabels: { show: string; hide: string };
   rankAriaLabel: (rank: number, total: number) => string;
   outcome: OutcomeDisplay;
   compact?: boolean;
@@ -120,16 +124,13 @@ export function CareRanking({
               lines={[labelLines(usualCare).join(" ")]}
               value={outcome.formatValue?.(usualCare)}
             />
-            {usualCareDescription ? (
-              <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
-                {usualCareDescription}
-              </p>
-            ) : null}
-            {usualCareNote ? (
-              <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
-                {usualCareNote}
-              </p>
-            ) : null}
+            <Disclosure labels={detailsLabels}>
+              {usualCareDescription ? (
+                <p className="text-xs leading-relaxed text-muted-foreground">
+                  {usualCareDescription}
+                </p>
+              ) : null}
+            </Disclosure>
             <div className="mt-2.5">
               <OutcomeStrip
                 reference
@@ -176,10 +177,12 @@ export function CareRanking({
                     lines={labelLines(scenario)}
                     value={outcome.formatValue?.(scenario)}
                   />
-                  {desc ? (
-                    <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{desc}</p>
-                  ) : null}
-                  {example ? <div className="mt-1.5">{example(scenario)}</div> : null}
+                  <Disclosure labels={detailsLabels}>
+                    {desc ? (
+                      <p className="text-xs leading-relaxed text-muted-foreground">{desc}</p>
+                    ) : null}
+                    {example?.(scenario)}
+                  </Disclosure>
                   <div className="mt-2.5">
                     <OutcomeStrip
                       scenario={scenario}
@@ -209,6 +212,44 @@ export function CareRanking({
         <OutcomeLegend labels={outcome.legend} />
       </div>
     </div>
+  );
+}
+
+/**
+ * A native <details> dropdown under an option's name. The toggle is a
+ * visible "Show details ⌄" text button, switching to "Hide details" with
+ * the chevron flipped when open, so it reads as clickable without relying
+ * on a lone icon. Keyboard and screen-reader support come from <details>.
+ */
+function Disclosure({
+  labels,
+  children,
+}: {
+  labels: { show: string; hide: string };
+  children: ReactNode;
+}) {
+  return (
+    <details className="group mt-1">
+      <summary className="inline-flex cursor-pointer list-none items-center gap-1 rounded-sm text-xs font-medium text-primary hover:underline underline-offset-2 [&::-webkit-details-marker]:hidden">
+        <span className="group-open:hidden">{labels.show}</span>
+        <span className="hidden group-open:inline">{labels.hide}</span>
+        <svg
+          aria-hidden
+          viewBox="0 0 16 16"
+          className="h-3.5 w-3.5 transition-transform group-open:rotate-180"
+        >
+          <path
+            d="M4 6l4 4 4-4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.75"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </summary>
+      <div className="mt-1.5">{children}</div>
+    </details>
   );
 }
 

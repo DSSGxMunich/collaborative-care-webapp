@@ -99,8 +99,8 @@
   },
   "ranking": {
     "helpfulSection": {
-      "de": "Wahrscheinlich hilfreicher als Ihre derzeitige Versorgung",
-      "en": "Likely to help more than your current care"
+      "de": "Wahrscheinlich hilfreich",
+      "en": "Likely to help"
     },
     "otherSection": { "de": "Weitere Bausteine", "en": "Other components" },
     "comparisonLabel": { "de": "Zum Vergleich", "en": "For comparison" },
@@ -108,15 +108,14 @@
       "de": "Platz {rank} von {total}, nach erwartetem Nutzen gereiht, hilfreichster Baustein zuerst",
       "en": "Rank {rank} of {total}, ordered by expected benefit, most helpful care component first"
     },
-    "example": {
-      "button": { "de": "So sah das in einer Studie aus", "en": "How this looked in a study" },
-      "close": { "de": "Schließen", "en": "Close" }
+    "details": {
+      "show": { "de": "Details anzeigen", "en": "Show details" },
+      "hide": { "de": "Details ausblenden", "en": "Hide details" }
     },
-    "combinedNote": {
-      "de": "In den Studien wurden diese Bausteine nur in Kombination erprobt. Die einzelnen Werte sind daraus berechnet.",
-      "en": "In the studies, these components were only tested in combination. The individual scores are calculated from those results."
-    },
-    "combinedNoteLink": { "de": "Was das bedeutet", "en": "What this means" }
+    "exampleHeading": {
+      "de": "So sah das in einer Studie aus",
+      "en": "How this looked in a study"
+    }
   },
   "scenarios": {
     "usualCare": {
@@ -129,12 +128,8 @@
         "en": "Usual care from your GP"
       },
       "description": {
-        "de": "Die übliche Behandlung, die eine Hausarztpraxis bei depressiven Beschwerden anbietet. Dazu können Termine bei Ihrer Hausärztin/Ihrem Hausarzt, eine medikamentöse Behandlung oder eine Überweisung an andere Fachpersonen gehören.",
-        "en": "The usual treatment provided by a GP practice for depressive symptoms. This may include appointments with your GP, medication or referral to other healthcare professionals."
-      },
-      "note": {
-        "de": "* Die tatsächlich angebotene Versorgung kann sich zwischen Hausarztpraxen unterscheiden und von der Versorgung abweichen, die Sie aktuell erhalten.",
-        "en": "* The exact care provided can vary between GP practices and may differ from the care you currently receive."
+        "de": "Die übliche Behandlung, die eine Hausarztpraxis bei depressiven Beschwerden anbietet. Dazu können Termine bei Ihrer Hausärztin/Ihrem Hausarzt, eine medikamentöse Behandlung oder eine Überweisung an andere Fachpersonen gehören. Die tatsächlich angebotene Versorgung kann sich zwischen Hausarztpraxen unterscheiden und von der Versorgung abweichen, die Sie aktuell erhalten.",
+        "en": "The usual treatment provided by a GP practice for depressive symptoms. This may include appointments with your GP, medication or referral to other healthcare professionals. The exact care provided can vary between GP practices and may differ from the care you currently receive."
       }
     }
   },
@@ -437,8 +432,8 @@
     "notProvided": { "de": "keine Angabe", "en": "not provided" }
   },
   "whatCanBeExpected": {
-    "de": "Ihre geschätzten Beschwerdewerte (Entwicklung des PHQ-9-Werts) nach 12 Monaten mit verschiedenen Versorgungsangeboten",
-    "en": "Your estimated symptom scores (PHQ-9 score development) after 12 months with different care options"
+    "de": "Mögliche Entwicklung Ihrer Beschwerden über 12 Monate",
+    "en": "Possible development of your symptoms over 12 months"
   },
   "whatCanBeExpectedBody": {
     "de": "Niedrigere Werte bedeuten weniger depressive Beschwerden. Es handelt sich um Schätzungen auf Grundlage früherer Forschungsdaten und Ihrer Angaben. Ihre eigenen Beschwerden können sich anders entwickeln.",

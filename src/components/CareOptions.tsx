@@ -1,6 +1,4 @@
-import { Link } from "@tanstack/react-router";
 import { CareRanking } from "@/components/CareRanking";
-import { ExamplePopover } from "@/components/ExamplePopover";
 import { fill, useLang } from "@/lib/i18n";
 import type { Scenario } from "@/lib/model";
 import resultsContent from "@/content/results.json";
@@ -12,8 +10,7 @@ const r = resultsContent;
  * shared verbatim by the patient results page (/ergebnis) and the practice
  * report (/praxis): GP and patient look at it together, so both must see
  * the same heading, wording, ranking and study examples. All copy comes
- * from results.json; the details live on the Methodology page, linked
- * rather than repeated here.
+ * from results.json.
  */
 export function CareOptions({ baseline, scenarios }: { baseline: number; scenarios: Scenario[] }) {
   const { tr } = useLang();
@@ -33,16 +30,6 @@ export function CareOptions({ baseline, scenarios }: { baseline: number; scenari
   return (
     <section className="panel mt-6 p-6">
       <h2 className="text-lg font-semibold">{tr(r.whatCanBeExpected)}</h2>
-      <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-        {tr(r.ranking.combinedNote)}{" "}
-        <Link
-          to="/methodology"
-          hash="singleComponents"
-          className="font-medium text-foreground underline underline-offset-2"
-        >
-          {tr(r.ranking.combinedNoteLink)}
-        </Link>
-      </p>
 
       {usualCare && (
         <div className="mt-5">
@@ -53,22 +40,26 @@ export function CareOptions({ baseline, scenarios }: { baseline: number; scenari
             description={description}
             helpful={(scenario) => scenario.expectedEndpoint < baseline}
             usualCareDescription={tr(r.scenarios.usualCare.description)}
-            usualCareNote={tr(r.scenarios.usualCare.note)}
             helpfulSectionLabel={tr(r.ranking.helpfulSection)}
             otherSectionLabel={tr(r.ranking.otherSection)}
             comparisonLabel={tr(r.ranking.comparisonLabel)}
+            detailsLabels={{
+              show: tr(r.ranking.details.show),
+              hide: tr(r.ranking.details.hide),
+            }}
             rankAriaLabel={(rank, total) => fill(tr(r.ranking.rankAria), { rank, total })}
             example={(scenario) => {
               const [id] = scenario.components;
               if (id === undefined) return null;
               const study = r.components[id].example;
               return (
-                <ExamplePopover
-                  buttonLabel={tr(r.ranking.example.button)}
-                  text={tr(study.text)}
-                  source={tr(study.source)}
-                  closeLabel={tr(r.ranking.example.close)}
-                />
+                <div className="mt-2.5">
+                  <p className="text-xs font-semibold">{tr(r.ranking.exampleHeading)}</p>
+                  <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
+                    {tr(study.text)}
+                  </p>
+                  <p className="mt-1 text-[11px] text-muted-foreground">{tr(study.source)}</p>
+                </div>
               );
             }}
             outcome={{
