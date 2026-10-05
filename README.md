@@ -1,82 +1,83 @@
-# Predict Care
+# Collaborative Care Compass — Web App
 
-Predict Care is a web-based prediction tool for structured depression care. Built on patient-level and study-level data from an individual patient data (IPD) meta-analysis, it estimates how effective different care components - and combinations of them - are likely to be for a specific patient profile. It is designed to be introduced by a GP and completed by patients, either at the practice or independently at home, through an easy-to-navigate interface.
+Web prototype of the Collaborative Care Compass. For the project background, data and modelling approach, see the [main project README](https://github.com/DSSGxMunich/collaborative-care-analysis#readme).
 
-The tool is explicitly practice-oriented: its form and design are shaped in close contact with GP offices and patient feedback, aiming for clear practical value and real-world relevance that extends existing evidence towards patient-level prediction and everyday clinical use. It is built in layers to allow flexibility as development continues. The core feature is a questionnaire — including the PHQ-9 for depressive symptom severity plus basic clinical and demographic information — that is evaluated to produce an evidence-informed, patient-level prediction of probable depression outcomes under different treatments and potentially helpful components of structured depression care. The questionnaire also runs a safety algorithm that surfaces appropriate warning messages, crisis contacts, and guidance on urgent help-seeking whenever it detects indications of acute risk, including possible suicidal tendencies. The tool can additionally present aggregated data to the GP or other mental health providers to save time, and may include a page for patient-tailored social prescribing — pointing patients towards practical, low-threshold activities and services suited to their needs, ranging from general recommendations to geographically specific local offers (e.g. public insurance offerings in Germany, community activities, exercise groups, courses, or other publicly available support services).
+**Live:** https://dssgxmunich.github.io/collaborative-care-webapp/
+
+## Data privacy
+
+Patient data is never sent to or stored on a server. All answers stay in the browser:
+
+- Questionnaire answers are kept only in the tab's `sessionStorage` ([`src/lib/session.tsx`](src/lib/session.tsx)) and are deleted when the tab or browser is closed.
+- Predictions and the PDF report are computed entirely client-side; the app is deployed as a static site with no backend.
+- The only value persisted across sessions is the language preference (`localStorage`), which contains no patient data.
 
 ## Tech stack
 
 - [TanStack Start](https://tanstack.com/start) (React 19, file-based routing via TanStack Router)
-- [Tailwind CSS](https://tailwindcss.com/) v4 + [shadcn/ui](https://ui.shadcn.com/) components
-- [Vite](https://vite.dev/) + [Nitro](https://nitro.build/) for dev/build/server output
+- [Tailwind CSS](https://tailwindcss.com/) v4 + [shadcn/ui](https://ui.shadcn.com/)
+- [Vite](https://vite.dev/) + [Nitro](https://nitro.build/)
 - TypeScript, ESLint, Prettier
 
-## Development
+## Setup
 
-### Prerequisites
-
-- [Bun](https://bun.sh/) 1.x (the project uses `bun.lock` and `bunfig.toml`)
-- Node.js 20+ is required at runtime for the built server output
-
-### Setup
+Requires [Bun](https://bun.sh/) 1.x (Node.js 20+ to run the built server output).
 
 ```sh
 git clone https://github.com/DSSGxMunich/collaborative-care-webapp
 cd collaborative-care-webapp
 bun install
-bun run dev
+bun run dev        # http://localhost:3000
 ```
 
-The dev server starts at `http://localhost:3000` by default, with hot module reloading.
+## Scripts
 
-### Available scripts
+| Command                | Description                      |
+| ---------------------- | -------------------------------- |
+| `bun run dev`          | Start the dev server             |
+| `bun run build`        | Production build into `.output/` |
+| `bun run build:dev`    | Unminified development build     |
+| `bun run preview`      | Preview the production build     |
+| `bun run lint`         | ESLint                           |
+| `bun run format`       | Prettier (write)                 |
+| `bun run format:check` | Prettier (check only)            |
+| `bun run typecheck`    | `tsc --noEmit`                   |
 
-| Command                | Description                                                  |
-| ---------------------- | ------------------------------------------------------------ |
-| `bun run dev`          | Start the Vite dev server                                    |
-| `bun run build`        | Build the production app into `.output/`                     |
-| `bun run build:dev`    | Build in development mode (unminified, useful for debugging) |
-| `bun run preview`      | Preview the production build locally                         |
-| `bun run lint`         | Run ESLint over the project                                  |
-| `bun run format`       | Format the project with Prettier                             |
-| `bun run format:check` | Check formatting with Prettier without writing changes       |
-| `bun run typecheck`    | Type-check the project with `tsc`                            |
+Run the production server with `node .output/server/index.mjs`.
 
-### Running the production build
+## Deployment
 
-```sh
-bun run build
-node .output/server/index.mjs
+Pushes to `main` build a fully prerendered static site and publish it to GitHub Pages via [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml). The workflow sets `GITHUB_PAGES_BASE=/collaborative-care-webapp/`; local builds without it target the root path.
+
+## Project structure
+
+```mermaid
+graph LR
+    root[collaborative-care-webapp] --> src[src/]
+    root --> model[model/]
+
+    src --> routes["routes/<br/>file-based routes"]
+    src --> components["components/<br/>shared components + ui/ (shadcn)"]
+    src --> content["content/<br/>bilingual de/en copy (JSON)"]
+    src --> lib["lib/<br/>PHQ-9, safety, prediction model, i18n, session"]
+    src --> entry["server.ts / start.ts<br/>server entry + middleware"]
+    lib --> data["lib/data/<br/>exported model artifacts"]
+
+    model --> step1["step1_risk_score/<br/>R export script"]
+    model --> step2["step2_cnma/<br/>Python export script"]
+    step1 -. generates .-> riskjson[risk-model.json]
+    step2 -. generates .-> nmajson[nma-posterior.json]
+    riskjson --> data
+    nmajson --> data
 ```
 
-### Deployment
+Routing conventions are documented in [`src/routes/README.md`](src/routes/README.md).
 
-Every push to `main` builds the app as a fully static site (all routes have no
-dynamic segments, so they're prerendered to HTML) and publishes it to
-**GitHub Pages** via `.github/workflows/deploy-pages.yml`. Enable it once
-under repo Settings → Pages → Source: "GitHub Actions".
+## Model integration
 
-The build is prefixed with `/collaborative-care-webapp/` (via `GITHUB_PAGES_BASE`,
-matching the repo name) so assets and links resolve correctly at
-`https://dssgxmunich.github.io/collaborative-care-webapp/`. Running `bun run build`
-locally without that env var builds for a root path instead, e.g. for a
-custom domain.
+The app runs the prediction client-side from two JSON exports; the models themselves are fitted in the [analysis repo](https://github.com/DSSGxMunich/collaborative-care-analysis).
 
-### Project structure
-
-- `src/routes/` - file-based routes (see `src/routes/README.md` for the routing conventions)
-- `src/components/` - shared React components, including `src/components/ui/` (shadcn/ui primitives)
-- `src/content/` — all bilingual (German/English) user-facing copy, as JSON (`{ "de": ..., "en": ... }` per string), one file per page/topic. Edit these to change wording without touching component code.
-- `src/lib/` — domain logic: PHQ-9 scoring, the risk score + network meta-regression outcome model (`model.ts`, `safety.ts`), i18n, session state
-- `src/server.ts` / `src/start.ts` — server entry and middleware (SSR error handling, CSRF)
-
-### Model
-
-Predictions come from two independent parts, both prototype/provisional:
-
-1. **Safety risk score** (`src/lib/safety.ts`) — from the three safety questions plus PHQ-9 severity. Drives the crisis message only, no outcome numbers.
-2. **Outcome model** (`src/lib/riskScore.ts` + `src/lib/model.ts`) — a two-step model estimating the 12-month PHQ-9 score under usual care and under each structured-care component added to usual care:
-   - **Step 1** (`src/lib/riskScore.ts`, data: `src/lib/data/risk-model.json`) — a proportional-odds mixed model (`ordinal::clmm`, with per-study random effects), fitted on individual patient data, predicting each patient's risk score (the model's linear predictor, `eta`) from age, sex and baseline PHQ-9 — GAD-7 was dropped as a predictor in this refit.
-   - **Step 2** (`src/lib/model.ts`, data: `src/lib/data/nma-posterior.json`) — a 10-component network meta-analysis (CNMA) fitted with PyMC on individual-patient data across 12 studies, estimating the 12-month PHQ-9 for usual care plus each structured-care component added on its own, letting each component's effect vary with the Step-1 risk score. Unlike the previous 6-component/7-trial refit, this one doesn't flag any specific combination of components as trial-tested, so the app only offers single components, not combinations. `nma-posterior.json` holds the real (thinned) MCMC posterior draws — 4 chains x 4000 draws, thinned to every 8th (2000 draws) — for `alpha_study`, `lambda_risk`, `beta_component` and `delta_component_risk`, plus a `summary` of posterior means/95% credible intervals from the full unthinned posterior, kept for transparency. Every prediction, including the posterior-distribution chart on the results page (`posteriorEndpointDraws`), is a Monte Carlo simulation over these real draws — not an approximation from a summary-table CI.
-
-Both `src/lib/data/*.json` files are exports of model artifacts fitted outside this repo (R / PyMC), not computed here. `model/step1_risk_score/` and `model/step2_cnma/` hold the export scripts and document how to regenerate each JSON file from its fitted source artifact — see those directories' READMEs, including the data-safety rules for handling fitted model files that may embed real patient records.
+| File                              | Code                   | Source                                      |
+| --------------------------------- | ---------------------- | ------------------------------------------- |
+| `src/lib/data/risk-model.json`    | `src/lib/riskScore.ts` | Step 1 risk score (`ordinal::clmm`, R)      |
+| `src/lib/data/nma-posterior.json` | `src/lib/model.ts`     | Step 2 CNMA posterior draws (PyMC, thinned) |
