@@ -81,5 +81,3 @@ The app runs the prediction client-side from two JSON exports; the models themse
 | --------------------------------- | ---------------------- | ------------------------------------------- |
 | `src/lib/data/risk-model.json`    | `src/lib/riskScore.ts` | Step 1 risk score (`ordinal::clmm`, R)      |
 | `src/lib/data/nma-posterior.json` | `src/lib/model.ts`     | Step 2 CNMA posterior draws (PyMC, thinned) |
-
-
