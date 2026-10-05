@@ -1,6 +1,6 @@
 # Collaborative Care Compass — Web App
 
-Web prototype of the Collaborative Care Compass. For the project background, data and modelling approach, see the [main project README](https://github.com/DSSGxMunich/collaborative-care-analysis#readme).
+Web prototype of the Collaborative Care Compass. For the project background, data and modelling approach, see the **main project README** at [`DSSGxMunich/collaborative-care-analysis`](https://github.com/DSSGxMunich/collaborative-care-analysis).
 
 **Live:** https://dssgxmunich.github.io/collaborative-care-webapp/
 
